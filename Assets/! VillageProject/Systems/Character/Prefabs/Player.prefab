@@ -140,6 +140,8 @@ GameObject:
   - component: {fileID: 7607239667730542548}
   - component: {fileID: 6289998790647139161}
   - component: {fileID: 571716326834205840}
+  - component: {fileID: 4093635338694876248}
+  - component: {fileID: 4544766494745786852}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -225,14 +227,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 9006005799577284954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 748993e39747e6c44a468c0ee592bb46, type: 3}
+  m_Script: {fileID: 11500000, guid: 694f6465e3092204f817309395d0d7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActionsAsset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   _look: {fileID: 0}
   _head: {fileID: 6814062708651249968}
   _FOVLimitX: 90
-  _sensitivity: 0.15
+  _sensitivity: 0.21
 --- !u!143 &4400724433860528703
 CharacterController:
   m_ObjectHideFlags: 0
@@ -256,7 +258,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7607239667730542548
 MonoBehaviour:
@@ -267,13 +269,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 9006005799577284954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b11b2389133040048a0eadfe75ee9c35, type: 3}
+  m_Script: {fileID: 11500000, guid: 517ca39fcbee96f4fa171a0780941e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActionsAsset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  _characterController: {fileID: 4400724433860528703}
-  _move: {fileID: 0}
-  _speed: 0.1
+  _jump: {fileID: 0}
+  _velocity: {fileID: 4093635338694876248}
+  _groundDetector: {fileID: 4544766494745786852}
+  _height: 2
+  _duration: 0.2
+  _factor: 0.7
+  _gravity: {fileID: 6289998790647139161}
 --- !u!114 &6289998790647139161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,11 +289,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 9006005799577284954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 387b04e84702e7b438f6defefbc55f83, type: 3}
+  m_Script: {fileID: 11500000, guid: 63ac6f83faabcca4eb550a193f629e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterController: {fileID: 4400724433860528703}
-  _gravity: 0.1
+  _velocity: {fileID: 4093635338694876248}
+  _groundDetector: {fileID: 4544766494745786852}
+  _acceleration: 9.8
+  _maxValue: 0.2
+  _minValue: 0
+  _gravity: 0
 --- !u!114 &571716326834205840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,11 +307,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 9006005799577284954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 318094d8dea784940be48a206465a5d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 524625f9bcd64e8489c1a26dde818e4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActionsAsset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  _jump: {fileID: 0}
+  _velocity: {fileID: 4093635338694876248}
+  _move: {fileID: 0}
+  _maxSpeed: 0.2
+  _acceleration: 0.02
+  _deceleration: 0.03
+  _movingDelta: 0.02
+--- !u!114 &4093635338694876248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006005799577284954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a72c52dc3c5ab91439400cf3cb287df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _characterController: {fileID: 4400724433860528703}
-  _height: 10
-  _groundDetector: {fileID: 0}
+--- !u!114 &4544766494745786852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006005799577284954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd9117d88bd0e8849948409075d36728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterController: {fileID: 4400724433860528703}

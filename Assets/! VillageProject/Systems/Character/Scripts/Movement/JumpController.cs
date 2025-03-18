@@ -7,17 +7,17 @@ using UnityEngine.InputSystem;
 public class JumpController : InputListener
 {
     [SerializeField, FromInputActionAsset("Jump")] private InputActionReference _jump;
-    [SerializeField] private CharacterController _characterController;
+    [SerializeField] private CharacterVelocity _velocity;
+    [SerializeField] private GroundDetectorBase _groundDetector;
     [SerializeField] private float _height;
     [SerializeField] private float _duration;
+    [SerializeField] private float _factor = 1;
     [SerializeField] private GravityAffected _gravity;
+    private Vector3 JumpDirection => transform.up;
 
-    private Vector3 JumpVector => transform.up * (_height / _duration) * Time.fixedDeltaTime;
-
-    protected override void Reset()
+    private void Reset()
     {
-        base.Reset();
-        _characterController = GetComponent<CharacterController>();
+        _velocity = GetComponent<CharacterVelocity>();
     }
 
     private void OnEnable()
@@ -32,8 +32,7 @@ public class JumpController : InputListener
 
     private void TryJump(InputAction.CallbackContext context)
     {
-        Debug.Log(_characterController.isGrounded);
-        if (_characterController.isGrounded)
+        if (_groundDetector.IsGrounded)
         {
             StartCoroutine(MoveOverTime());
         }
@@ -42,12 +41,22 @@ public class JumpController : InputListener
     private IEnumerator MoveOverTime()
     {
         _gravity.enabled = false;
-        float travelled = 0;
-        while (travelled < _height) 
+        float target = 0;
+        float traveled = 0;
+        float elapsed = 0;
+
+        while (elapsed < _duration) 
         {
-            var delta = Vector3.ClampMagnitude(JumpVector, _height - travelled);
-            _characterController.Move(delta);
-            travelled += delta.magnitude;
+            target = _height * Mathf.Pow(elapsed / _duration, _factor);
+
+            var delta = target - traveled;
+
+            var velocity = JumpDirection * delta;
+            _velocity.Add(velocity);
+
+            traveled = target;
+
+            elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
         _gravity.enabled = true;
