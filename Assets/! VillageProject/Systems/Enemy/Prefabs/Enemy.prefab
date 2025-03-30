@@ -13,6 +13,12 @@ GameObject:
   - component: {fileID: 4398657056147477057}
   - component: {fileID: 6285754069848190224}
   - component: {fileID: 4270375731433118956}
+  - component: {fileID: 5383509700018479388}
+  - component: {fileID: 4126286932289340171}
+  - component: {fileID: 5477875385912440299}
+  - component: {fileID: 2238302470197304574}
+  - component: {fileID: 1145631691006747708}
+  - component: {fileID: 4998450467607654862}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -133,3 +139,181 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5383509700018479388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d026280c84e6e89419ccd10960758dd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _raycastDistance: 5
+  _navMeshSearchDistance: 1
+  _navMeshAgent: {fileID: 4270375731433118956}
+  _agent: {fileID: 4126286932289340171}
+--- !u!114 &4126286932289340171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f310e97f9d9875f4da4b35bc312351e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestinationReached:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1145631691006747708}
+        m_TargetAssemblyTypeName: MovementOrchestrator, Assembly-CSharp
+        m_MethodName: HandleDestinationReached
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4126286932289340171}
+          m_ObjectArgumentAssemblyTypeName: NavmeshMovementAgent, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  PathAssigned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1145631691006747708}
+        m_TargetAssemblyTypeName: MovementOrchestrator, Assembly-CSharp
+        m_MethodName: HandlePathAssigned
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4126286932289340171}
+          m_ObjectArgumentAssemblyTypeName: NavmeshMovementAgent, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _navMeshAgent: {fileID: 4270375731433118956}
+--- !u!114 &5477875385912440299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9c4dc518901e5044b6772166101a589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestinationReached:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1145631691006747708}
+        m_TargetAssemblyTypeName: MovementOrchestrator, Assembly-CSharp
+        m_MethodName: HandleDestinationReached
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5477875385912440299}
+          m_ObjectArgumentAssemblyTypeName: BezierCurveMovementAgent, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  PathAssigned:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1145631691006747708}
+        m_TargetAssemblyTypeName: MovementOrchestrator, Assembly-CSharp
+        m_MethodName: HandlePathAssigned
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5477875385912440299}
+          m_ObjectArgumentAssemblyTypeName: BezierCurveMovementAgent, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _speed: 0.1
+  _elevation: 0.5
+  _spline: {fileID: 0}
+  _raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _raycastDistance: 5
+--- !u!114 &2238302470197304574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4275c753dca127498dad854cb73a99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _path: {fileID: 0}
+  _freeAgent: {fileID: 5383509700018479388}
+  _pathAgent: {fileID: 5477875385912440299}
+  _orchestrator: {fileID: 1145631691006747708}
+  _minDelta: 0
+  _searchStep: 0.04
+--- !u!114 &1145631691006747708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 844939056e2728743a1ba4d369f82f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnNeutralEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4270375731433118956}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnNeutralExit:
+    m_PersistentCalls:
+      m_Calls: []
+  _agents:
+  - {fileID: 4126286932289340171}
+  - {fileID: 5477875385912440299}
+--- !u!114 &4998450467607654862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ae7651cba036e4f91d542e8a401265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _activeZone: {fileID: 0}
+  OnNewActiveZone:
+    m_PersistentCalls:
+      m_Calls: []
