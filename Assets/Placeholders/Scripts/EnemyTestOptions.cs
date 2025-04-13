@@ -7,31 +7,21 @@ public class EnemyTestOptions : MonoBehaviour
     [SerializeField, Range(0, 1)] private float initialProgress;
     [SerializeField] protected Transform target;
 
-    [SerializeField] protected SurfaceNavigation nav;
     [SerializeField] protected BezierCurveMovementAgent bezier;
-    [SerializeField] private PathFollower pathFollower;
 
     [ContextMenu("Set target")]
     private void SetTarget()
     {
-        nav.GoTo(target.position);
     }
 
     [ContextMenu("Set path")]
     private void SetPath()
     {
-        bezier.TryTakePathWithCallback(new BezierPathWithStart(spline, initialProgress));
-    }
-
-    [ContextMenu("Go to path")]
-    private void GoToPath()
-    {
-        pathFollower.ReturnToPath();
+        bezier.TrySetInstructions(new BezierPathWithStart(spline, initialProgress), out var source);
     }
 
     private void Reset()
     {
-        nav = GetComponent<SurfaceNavigation>();
         bezier = GetComponent<BezierCurveMovementAgent>();
     }
 }
