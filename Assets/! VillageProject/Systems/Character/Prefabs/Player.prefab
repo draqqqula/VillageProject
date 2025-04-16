@@ -217,9 +217,10 @@ GameObject:
   - component: {fileID: 4093635338694876248}
   - component: {fileID: 4544766494745786852}
   - component: {fileID: 567896467627347817}
+  - component: {fileID: 5576199886500978972}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: damageable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -432,6 +433,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Priority>k__BackingField: 0
+--- !u!114 &5576199886500978972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006005799577284954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98505cab4c1a3b24db4107f815ee059b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Components:
+  - rid: 8889540885582709008
+  <Amount>k__BackingField: 10
+  references:
+    version: 2
+    RefIds:
+    - rid: 8889540885582709008
+      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
+      data:
+        Value: 0
 --- !u!1001 &9171624299505158174
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+[Serializable]
+public class TeamDamageComponent : DamageComponentBase
+{
+    public enum Team
+    {
+        Player,
+        Enemy
+    }
+
+    public Team Value;
+}
