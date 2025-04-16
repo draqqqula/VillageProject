@@ -51,6 +51,11 @@ MonoBehaviour:
   _maxSeries: 1
   _noInterruptionWindow: 0.5
   _noScheduleWindow: 0.3
+  _stamp: 0.2
+  _slowdownTime: 0.1
+  _slowdownFactor: 0.5
+  _maxSlowdown: 0.98
+  _maxHoldDuration: 1
 --- !u!1001 &5588765261457195544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -177,10 +182,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arms
       objectReference: {fileID: 0}
+    - target: {fileID: 4831018558786363571, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 3e1bef15eab1b224bbf42be53fdab50a, type: 2}
+    - target: {fileID: 5866666021909216657, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

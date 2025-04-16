@@ -13,22 +13,33 @@ public class CombatController : InputListener
     [SerializeField] private float _maxSeries = 1;
     [SerializeField] private float _noInterruptionWindow = 0.7f;
     [SerializeField] private float _noScheduleWindow = 0.3f;
+
+    [Header("Holding")]
+    [SerializeField] private float _stamp = 0.2f;
+    [SerializeField] private float _slowdownEnterTime = 0.1f;
+    [SerializeField] private float _slowdownExitTime = 1f;
+    [SerializeField] private float _slowdownEnterFactor = 1f;
+    [SerializeField] private float _slowdownExitFactor = 1f;
+    [SerializeField] private float _maxSlowdown = 1f;
+    [SerializeField] private float _minSlowdown = 0.8f;
+
     private int _successiveCounter = 0;
     private Coroutine _scheduledAttack;
-
-    private float _cachedTime = 0;
+    private Coroutine _holdingCoroutine;
 
     private void OnEnable()
     {
-        Attack.action.performed += HandleAttackInput;
+        Attack.action.started += HandleAttackInputPressed;
+        Attack.action.canceled += HandleAttackInputReleased;
     }
 
     private void OnDisable()
     {
-        Attack.action.performed -= HandleAttackInput;
+        Attack.action.started -= HandleAttackInputPressed;
+        Attack.action.canceled -= HandleAttackInputReleased;
     }
 
-    private void HandleAttackInput(InputAction.CallbackContext context)
+    private void HandleAttackInputPressed(InputAction.CallbackContext context)
     {
         var animatorState = _animator.GetCurrentAnimatorStateInfo(0);
 
@@ -49,6 +60,26 @@ public class CombatController : InputListener
         StartAttack();
     }
 
+    private void HandleAttackInputReleased(InputAction.CallbackContext context)
+    {
+        if (_holdingCoroutine != null)
+        {
+            StopCoroutine(_holdingCoroutine);
+            _holdingCoroutine = null;
+        }
+        _animator.speed = 1;
+    }
+
+    public void HandleAttackAnimationStarted()
+    {
+        _holdingCoroutine = StartCoroutine(DelayEnterHolding());
+    }
+
+    public void HandleAttackAnimationEnded()
+    {
+
+    }
+
     private void SetNextAttack()
     {
         if (_successiveCounter < _maxSeries)
@@ -66,19 +97,41 @@ public class CombatController : InputListener
     {
         var remainingTime = (_noInterruptionWindow - animatorState.normalizedTime)
             * animatorState.length;
-        //Debug.Log($"Attack scheduled for {remainingTime} s.");
         yield return new WaitForSeconds(remainingTime);
         StartAttack();
     }
 
+    private IEnumerator DelayEnterHolding()
+    {
+        yield return new WaitForSeconds(_stamp);
+
+        var holdDuration = 0.0f;
+        while (Attack.action.inProgress)
+        {
+            if (holdDuration < _slowdownEnterTime)
+            {
+                _animator.speed = Mathf.Pow(1 - Mathf.Clamp01(holdDuration / _slowdownEnterTime), _slowdownEnterFactor)
+                * _maxSlowdown + (1 - _maxSlowdown);
+            }
+            else if (holdDuration < _slowdownEnterTime + _slowdownExitTime)
+            {
+                var exitDuration = holdDuration - _slowdownEnterTime;
+                _animator.speed = Mathf.Pow(1 - Mathf.Clamp01(exitDuration / _slowdownExitTime), _slowdownEnterFactor)
+                * (_minSlowdown - _maxSlowdown) - _minSlowdown + 1;
+            }
+            else
+            {
+                break;
+            }
+
+            yield return new WaitForFixedUpdate();
+            holdDuration += Time.fixedDeltaTime;
+        }
+        _animator.speed = 1;
+    }
+
     private void StartAttack()
     {
-        Debug.Log($"Attack started after {Time.time - _cachedTime}");
-        if (Time.time - _cachedTime < _noInterruptionWindow * 0.833)
-        {
-            Debug.Log("Early attack");
-        }
-        _cachedTime = Time.time;
         SetNextAttack();
         _animator.SetTrigger(AttackTrigger);
     }
