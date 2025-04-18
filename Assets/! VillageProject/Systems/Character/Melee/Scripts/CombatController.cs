@@ -7,6 +7,7 @@ public class CombatController : InputListener
     private const string AttackTrigger = "Attack";
     private const string AttackTag = "Attack";
     private const string SeriesVariable = "Series";
+    private const string ThrustTrigger = "Thrust";
 
     [SerializeField, FromInputActionAsset("Attack")] public InputActionReference Attack;
     [SerializeField] private Animator _animator;
@@ -121,6 +122,7 @@ public class CombatController : InputListener
             }
             else
             {
+                _animator.SetTrigger(ThrustTrigger);
                 break;
             }
 

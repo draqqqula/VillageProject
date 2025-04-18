@@ -9405,6 +9405,18 @@ PrefabInstance:
       propertyPath: rayDistance
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 449092677447237004, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
+      propertyPath: m_Data.m_SourceObjects.m_Item0.weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180015571751150431, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2199204399707505556, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2199204399707505556, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
       propertyPath: managedReferences[8889540591476801995].m_Value
       value: 
@@ -9413,6 +9425,10 @@ PrefabInstance:
       propertyPath: managedReferences[8889540591476801997].m_Value
       value: 
       objectReference: {fileID: 919401536}
+    - target: {fileID: 2270988667521923088, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
+      propertyPath: _builder
+      value: 
+      objectReference: {fileID: 270136142}
     - target: {fileID: 3739041979553607919, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
       propertyPath: m_Data.m_AimAxis
       value: 2
@@ -12613,6 +12629,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0b23f83fa874654ab1894b8e4c3ad11, type: 3}
+--- !u!114 &270136142 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4315586062440053411, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
+  m_PrefabInstance: {fileID: 177036219}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &271433951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8983709918630676707, guid: b0b23f83fa874654ab1894b8e4c3ad11, type: 3}
@@ -56093,7 +56120,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1328797731
 Transform:
   m_ObjectHideFlags: 0
