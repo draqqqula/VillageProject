@@ -29,8 +29,8 @@ public class Health : MonoBehaviour
                 amount = effect.Apply(context, amount);
             }
 
-            OnDamageDealt?.Invoke(amount);
             Amount -= amount;
+            OnDamageDealt?.Invoke(amount);
             return true;
         }
         return false;
