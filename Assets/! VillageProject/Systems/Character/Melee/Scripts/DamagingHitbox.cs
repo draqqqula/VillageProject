@@ -20,7 +20,7 @@ public class DamagingHitbox : MonoBehaviour
         var health = other.GetComponent<Health>();
         if (health != null)
         {
-            health.Take(_damageSource.DamageInfo);
+            health.Deal(_damageSource);
         }
     }
 }

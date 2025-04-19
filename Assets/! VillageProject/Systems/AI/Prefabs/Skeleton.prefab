@@ -201,7 +201,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DamageInfo>k__BackingField: {fileID: 11400000, guid: d4f70a55a6edd2b4ab20e34b57700c2b, type: 2}
+  <Data>k__BackingField:
+    Components:
+    - rid: 8889540938514301053
+    Conditions:
+    - rid: 8889540938514301054
+    Effects: []
+  <Info>k__BackingField: {fileID: 11400000, guid: d4f70a55a6edd2b4ab20e34b57700c2b, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8889540938514301053
+      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
+      data:
+        Value: 1
+    - rid: 8889540938514301054
+      type: {class: NotSameTeamCondition, ns: , asm: Assembly-CSharp}
+      data: 
 --- !u!114 &7022075888420964182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,7 +305,7 @@ Transform:
   m_GameObject: {fileID: 2349084671279629254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.664, z: 0}
+  m_LocalPosition: {x: 0, y: 2.433, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -308,14 +324,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_ConstrainedObject: {fileID: 4426178179523956528}
     m_SourceObjects:
       m_Length: 1
       m_Item0:
         transform: {fileID: 4555981765366819380}
-        weight: 0
+        weight: 1
       m_Item1:
         transform: {fileID: 0}
         weight: 0
@@ -370,26 +386,26 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.7000122
-      outSlope: 0.7000122
+      inSlope: 2.8126762
+      outSlope: 2.8126762
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.5
-      value: 0.3500061
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      time: 0.32799378
+      value: 0.9225403
+      inSlope: -0.36828923
+      outSlope: -0.36828923
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.48447514
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -0.7000122
-      outSlope: -0.7000122
+      inSlope: -1.372815
+      outSlope: -1.372815
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -397,7 +413,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _targetRange: 2
+  _targetRange: 3.16
 --- !u!1 &4118244557251772574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,6 +1206,50 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: 'managedReferences[-2]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: 'managedReferences[8889540938514301050]'
+      value: Assembly-CSharp DamageTiltableComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: 'managedReferences[8889540938514301051]'
+      value: Assembly-CSharp TransformDamageComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: 'managedReferences[8889540938514301052]'
+      value: Assembly-CSharp TeamDamageComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: <Data>k__BackingField.Components.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: managedReferences[8889540938514301052].Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[0]'
+      value: 8889540938514301050
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[1]'
+      value: 8889540938514301051
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[2]'
+      value: 8889540938514301052
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: managedReferences[8889540938514301051].Transform
+      value: 
+      objectReference: {fileID: 6935714135886979317}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: managedReferences[8889540938514301050].DamageTilt
+      value: 
+      objectReference: {fileID: 2270988667521923088}
     - target: {fileID: 4990850150768041798, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
