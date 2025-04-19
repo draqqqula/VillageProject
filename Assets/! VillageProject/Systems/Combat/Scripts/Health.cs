@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,11 +6,14 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     private IDamageComponentProviderFactory _factory = new DefaultDamageComponentProviderFactory();
+
+    public event Action<float> OnDamageDealt;
+
     [field: SerializeField] public DamageData Data { get; private set; }
     [field: SerializeField] public float Amount { get; private set; }
     public IDamageComponentProvider ComponentProvider { get; private set; }
 
-    public void Deal(DamageSource damage)
+    public bool Deal(DamageSource damage)
     {
         var context = new DamageContext(damage.ComponentProvider, ComponentProvider);
 
@@ -24,8 +28,12 @@ public class Health : MonoBehaviour
             {
                 amount = effect.Apply(context, amount);
             }
+
+            OnDamageDealt?.Invoke(amount);
             Amount -= amount;
+            return true;
         }
+        return false;
     }
 
     private void Awake()
