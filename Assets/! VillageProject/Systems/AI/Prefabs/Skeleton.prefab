@@ -204,9 +204,12 @@ MonoBehaviour:
   <Data>k__BackingField:
     Components:
     - rid: 8889540938514301053
+    - rid: 8889540957336764507
     Conditions:
     - rid: 8889540938514301054
-    Effects: []
+    - rid: 8889540957336764511
+    Effects:
+    - rid: 8889540957336764509
   <Info>k__BackingField: {fileID: 11400000, guid: d4f70a55a6edd2b4ab20e34b57700c2b, type: 2}
   references:
     version: 2
@@ -217,6 +220,17 @@ MonoBehaviour:
         Value: 1
     - rid: 8889540938514301054
       type: {class: NotSameTeamCondition, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8889540957336764507
+      type: {class: KeyComponent, ns: , asm: Assembly-CSharp}
+      data:
+        Key: {fileID: 8022318565940833783}
+    - rid: 8889540957336764509
+      type: {class: GiveInvincibilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        Factor: 1
+    - rid: 8889540957336764511
+      type: {class: NotInvincibeCondition, ns: , asm: Assembly-CSharp}
       data: 
 --- !u!114 &7022075888420964182
 MonoBehaviour:
@@ -1223,8 +1237,12 @@ PrefabInstance:
       value: Assembly-CSharp TeamDamageComponent
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: 'managedReferences[8889540957336764517]'
+      value: Assembly-CSharp InvincibilityComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: <Data>k__BackingField.Components.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: managedReferences[8889540938514301052].Value
@@ -1243,6 +1261,10 @@ PrefabInstance:
       value: 8889540938514301052
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[3]'
+      value: 8889540957336764517
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: managedReferences[8889540938514301051].Transform
       value: 
       objectReference: {fileID: 6935714135886979317}
@@ -1250,6 +1272,10 @@ PrefabInstance:
       propertyPath: managedReferences[8889540938514301050].DamageTilt
       value: 
       objectReference: {fileID: 2270988667521923088}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: managedReferences[8889540957336764517].DefaultDuration
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4990850150768041798, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
