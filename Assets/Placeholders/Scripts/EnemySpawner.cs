@@ -1,29 +1,28 @@
+using System;
 using System.Collections;
 using Unity.Behavior;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private float _interval;
+    public Action<GameObject> OnUnitSpawned;
     [SerializeField] private float _aiDelay;
-    [SerializeField] private int _remaining;
-    [SerializeField] private GameObject _enemy;
     [SerializeField] private GameObject _village;
     [SerializeField] private GameObject _road;
     [SerializeField] private GameObject _player;
 
-    private void Start()
+    private IEnumerator SpawnOnInterval(WaveInfo.Spawn spawn, WorkEventSource eventSource)
     {
-        StartCoroutine(SpawnOnInterval());
-    }
-
-    private IEnumerator SpawnOnInterval()
-    {
-        while (_remaining > 0)
+        foreach (var group in spawn.Groups)
         {
-            yield return new WaitForSeconds(_interval);
-            Spawn();
+            yield return new WaitForSeconds(group.RelaxTime);
+            for (var i = 0; i < group.Amount; i++)
+            {
+                var unit = Spawn(group.Unit);
+                yield return new WaitForSeconds(group.Interval);
+            }
         }
+        eventSource.Finish(WorkResult.Success);
     }
 
     private IEnumerator DelayAI(BehaviorGraphAgent agent)
@@ -32,15 +31,23 @@ public class EnemySpawner : MonoBehaviour
         agent.enabled = true;
     }
 
-    private void Spawn()
+    private GameObject Spawn(GameObject unit)
     {
-        _remaining--;
-        var enemy = Instantiate(_enemy, transform.position, transform.rotation);
+        var enemy = Instantiate(unit, transform.position, transform.rotation);
         var ai = enemy.GetComponent<BehaviorGraphAgent>();
         ai.enabled = false;
         StartCoroutine(DelayAI(ai));
         ai.SetVariableValue("VillageZone", _village);
         ai.SetVariableValue("RoadZone", _road);
         ai.SetVariableValue("Player", _player);
+        OnUnitSpawned?.Invoke(enemy);
+        return enemy;
+    }
+
+    public IWorkEventSource<WorkResult> Schedule(WaveInfo.Spawn spawn)
+    {
+        var eventSource = new WorkEventSource();
+        StartCoroutine(SpawnOnInterval(spawn, eventSource));
+        return eventSource;
     }
 }
