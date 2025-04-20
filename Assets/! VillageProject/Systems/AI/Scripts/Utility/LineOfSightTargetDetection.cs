@@ -11,8 +11,8 @@ public class LineOfSightTargetDetection : MonoBehaviour
     [SerializeField] private Target _target;
     [SerializeField] private LayerMask _layerMask;
 
-    private Dictionary<Collider, Coroutine> _losChecks = new();
-    private Dictionary<Collider, float> _forgetTimers = new();
+    private IDictionary<Collider, Coroutine> _losChecks = new KeyValidReferenceDictionary<Collider, Coroutine>();
+    private IDictionary<Collider, float> _forgetTimers = new KeyValidReferenceDictionary<Collider, float>();
 
     private void Reset()
     {
@@ -60,7 +60,7 @@ public class LineOfSightTargetDetection : MonoBehaviour
     private IEnumerator KeepContact(Collider collider, SearchForTarget searcher)
     {
         _forgetTimers.Add(collider, _timeToForget);
-        while (true)
+        while (collider != null)
         {
             if (HasLineOfSight(collider))
             {
