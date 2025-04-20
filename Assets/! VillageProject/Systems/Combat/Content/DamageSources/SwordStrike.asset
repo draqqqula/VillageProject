@@ -12,19 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f399fc55b8faa4f9ea1670fa37db52, type: 3}
   m_Name: SwordStrike
   m_EditorClassIdentifier: 
-  Components:
-  - rid: 8889540885582709003
-  Conditions:
-  - rid: 8889540885582709002
-  Effects: []
-  <BaseAmount>k__BackingField: 1
+  <Data>k__BackingField:
+    Components: []
+    Conditions: []
+    Effects: []
+  <BaseAmount>k__BackingField: 5
   references:
     version: 2
-    RefIds:
-    - rid: 8889540885582709002
-      type: {class: NotSameTeamCondition, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 8889540885582709003
-      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Value: 0
+    RefIds: []

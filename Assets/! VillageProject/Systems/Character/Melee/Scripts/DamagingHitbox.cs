@@ -18,9 +18,9 @@ public class DamagingHitbox : MonoBehaviour
         }
 
         var health = other.GetComponent<Health>();
-        if (health != null)
+        if (health != null && health.isActiveAndEnabled)
         {
-            health.Take(_damageSource.DamageInfo);
+            health.Deal(_damageSource);
         }
     }
 }

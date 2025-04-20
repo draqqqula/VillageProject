@@ -102,7 +102,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DamageInfo>k__BackingField: {fileID: 11400000, guid: c588542dc7191ef44bae3edc42211219, type: 2}
+  <Data>k__BackingField:
+    Components:
+    - rid: 8889540938514301056
+    - rid: 8889540938514301060
+    - rid: 8889540957336764514
+    Conditions:
+    - rid: 8889540938514301055
+    - rid: 8889540957336764513
+    Effects:
+    - rid: 8889540938514301058
+    - rid: 8889540957336764512
+  <Info>k__BackingField: {fileID: 11400000, guid: c588542dc7191ef44bae3edc42211219, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8889540938514301055
+      type: {class: NotSameTeamCondition, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8889540938514301056
+      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
+      data:
+        Value: 0
+    - rid: 8889540938514301058
+      type: {class: KnockbackDamageEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8889540938514301060
+      type: {class: TransformDamageComponent, ns: , asm: Assembly-CSharp}
+      data:
+        Transform: {fileID: 3150373172160477491}
+    - rid: 8889540957336764512
+      type: {class: GiveInvincibilityEffect, ns: , asm: Assembly-CSharp}
+      data:
+        Factor: 1
+    - rid: 8889540957336764513
+      type: {class: NotInvincibeCondition, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8889540957336764514
+      type: {class: KeyComponent, ns: , asm: Assembly-CSharp}
+      data:
+        Key: {fileID: 4941780909574640563}
 --- !u!114 &3234421236207589236
 MonoBehaviour:
   m_ObjectHideFlags: 0

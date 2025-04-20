@@ -445,16 +445,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98505cab4c1a3b24db4107f815ee059b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Components:
-  - rid: 8889540885582709008
+  <Data>k__BackingField:
+    Components:
+    - rid: 8889540957336764516
+    Conditions: []
+    Effects: []
   <Amount>k__BackingField: 10
   references:
     version: 2
     RefIds:
-    - rid: 8889540885582709008
-      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
+    - rid: 8889540957336764516
+      type: {class: InvincibilityComponent, ns: , asm: Assembly-CSharp}
       data:
-        Value: 0
+        DefaultDuration: 0.5
 --- !u!1001 &9171624299505158174
 PrefabInstance:
   m_ObjectHideFlags: 0
