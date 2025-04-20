@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 [Serializable]
-public class NotSameTeamCondition : DamageConditionBase
+public class EnemyTeamCondition : DamageConditionBase
 {
     public override bool IsSatisfied(DamageContext context)
     {
         return context.Source.TryGetComponent<TeamDamageComponent>(out var sourceTeam)
             && context.Target.TryGetComponent<TeamDamageComponent>(out var targetTeam)
-            && !sourceTeam.Value.Equals(targetTeam.Value);
+            && sourceTeam.Member.Team.IsEnemiesWith(targetTeam.Member.Team);
     }
 }

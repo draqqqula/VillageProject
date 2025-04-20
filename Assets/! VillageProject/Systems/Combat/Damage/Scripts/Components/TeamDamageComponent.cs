@@ -7,11 +7,5 @@ using System.Threading.Tasks;
 [Serializable]
 public class TeamDamageComponent : DamageComponentBase
 {
-    public enum Team
-    {
-        Player,
-        Enemy
-    }
-
-    public Team Value;
+    public TeamMember Member;
 }

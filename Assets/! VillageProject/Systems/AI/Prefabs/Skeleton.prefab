@@ -180,35 +180,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Data>k__BackingField:
     Components:
-    - rid: 8889540938514301053
-    - rid: 8889540957336764507
+    - rid: 8889540975359426942
+    - rid: 8889540975359426943
+    - rid: 8889540975359426946
     Conditions:
-    - rid: 8889540938514301054
-    - rid: 8889540957336764511
+    - rid: 8889540975359426944
+    - rid: 8889540975359426945
     Effects:
-    - rid: 8889540957336764509
+    - rid: 8889540975359426947
   <Info>k__BackingField: {fileID: 11400000, guid: d4f70a55a6edd2b4ab20e34b57700c2b, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 8889540938514301053
-      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Value: 1
-    - rid: 8889540938514301054
-      type: {class: NotSameTeamCondition, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 8889540957336764507
+    - rid: 8889540975359426942
       type: {class: KeyComponent, ns: , asm: Assembly-CSharp}
       data:
         Key: {fileID: 8022318565940833783}
-    - rid: 8889540957336764509
+    - rid: 8889540975359426943
+      type: {class: TransformDamageComponent, ns: , asm: Assembly-CSharp}
+      data:
+        Transform: {fileID: 793984657755896695}
+    - rid: 8889540975359426944
+      type: {class: EnemyTeamCondition, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8889540975359426945
+      type: {class: NotInvincibeCondition, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8889540975359426946
+      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
+      data:
+        Member: {fileID: 63300340969468009}
+    - rid: 8889540975359426947
       type: {class: GiveInvincibilityEffect, ns: , asm: Assembly-CSharp}
       data:
         Factor: 1
-    - rid: 8889540957336764511
-      type: {class: NotInvincibeCondition, ns: , asm: Assembly-CSharp}
-      data: 
 --- !u!114 &7022075888420964182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1249,6 +1254,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: managedReferences[8889540938514301052].Member
+      value: 
+      objectReference: {fileID: 63300340969468009}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: '<Data>k__BackingField.Components.Array.data[0]'
       value: 8889540938514301050
       objectReference: {fileID: 0}
@@ -1330,6 +1339,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1346228245960298043, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7159240231132442957}
+    - targetCorrespondingSourceObject: {fileID: 1346228245960298043, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 63300340969468009}
   m_SourcePrefab: {fileID: 100100000, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
 --- !u!1 &4011959546620064136 stripped
 GameObject:
@@ -1424,6 +1436,19 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   _health: {fileID: 7308106497875193394}
+--- !u!114 &63300340969468009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4011959546620064136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbbe0a24668bd3e4dbf9a89428f5a1a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Team>k__BackingField: {fileID: 11400000, guid: ba2852fb48d2ba04c83c59f79a4d3323, type: 2}
 --- !u!114 &6177989388953775670 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8124269545049411973, guid: e016442de3910e543b2a333955bf7ccd, type: 3}

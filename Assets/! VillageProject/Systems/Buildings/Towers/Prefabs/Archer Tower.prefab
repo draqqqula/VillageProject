@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6084123627870945827}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 5.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -67,7 +67,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interval: 2
-  _damage: {fileID: 7566240446912002815}
+  _projectile: {fileID: 822112668561322717, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
+  _team: {fileID: 4226481529840161161}
 --- !u!1 &8862546195155982014
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,7 +78,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1074966483338026673}
-  - component: {fileID: 7566240446912002815}
+  - component: {fileID: 4226481529840161161}
   m_Layer: 0
   m_Name: Archer Tower
   m_TagString: Untagged
@@ -102,7 +103,7 @@ Transform:
   - {fileID: 6225998389631564696}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7566240446912002815
+--- !u!114 &4226481529840161161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,10 +112,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8862546195155982014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
+  m_Script: {fileID: 11500000, guid: bbbe0a24668bd3e4dbf9a89428f5a1a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DamageInfo>k__BackingField: {fileID: 11400000, guid: 4f32253853fa3bb4ebd8ef477ead481b, type: 2}
+  <Team>k__BackingField: {fileID: 11400000, guid: 298386bd74f26414f970c4761992fd76, type: 2}
 --- !u!1001 &3844507480357149237
 PrefabInstance:
   m_ObjectHideFlags: 0
