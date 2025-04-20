@@ -46,7 +46,7 @@ public class TowerDamageOverTime : MonoBehaviour
         {
             foreach (var target in _targets.Values)
             {
-                target.Take(_damage.DamageInfo);
+                target.Deal(_damage);
                 Debug.Log($"Tower dealt damage to {target.gameObject.name}");
             }
             yield return new WaitForSeconds(_interval);
