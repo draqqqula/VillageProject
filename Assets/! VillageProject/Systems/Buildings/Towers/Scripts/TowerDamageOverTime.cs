@@ -12,16 +12,14 @@ public class TowerDamageOverTime : MonoBehaviour
     [SerializeField] private GameObject _projectile;
     [SerializeField] private TeamMember _team;
     private Coroutine _shooting;
-    private Dictionary<Collider, Health> _targets = new Dictionary<Collider, Health>();
-
-    private void OnEnable()
-    {
-        _shooting = StartCoroutine(ShootOverTime());
-    }
+    private IDictionary<Collider, Health> _targets = new KeyValidReferenceDictionary<Collider, Health>();
 
     private void OnDisable()
     {
-        StopCoroutine(_shooting);
+        if (_shooting != null)
+        {
+            StopCoroutine(_shooting);
+        }
         _shooting = null;
     }
 
@@ -36,6 +34,11 @@ public class TowerDamageOverTime : MonoBehaviour
                 && _team.Team.IsEnemiesWith(targetTeamMember.Team))
             {
                 _targets.Add(other, health);
+
+                if (_shooting == null)
+                {
+                    _shooting = StartCoroutine(ShootOverTime());
+                }
             }
         }
     }
@@ -52,28 +55,41 @@ public class TowerDamageOverTime : MonoBehaviour
     {
         while (true)
         {
-            var min = float.MaxValue;
-            Health closest = null;
-            foreach (var target in _targets.Values)
+            if (_targets.Count != 0)
             {
-                var distance = Vector3.Distance(target.transform.position, transform.position);
-                if (distance < min)
-                {
-                    min = distance;
-                    closest = target;
-                }
+                ShootClosestTarget();
             }
-
-            if (closest != null)
+            else
             {
-                var arrow = Instantiate(_projectile, transform);
-                var projectile = arrow.GetComponent<TravellingProjectile>();
-                projectile.SetPath(transform, closest.transform);
-
-                Debug.Log($"Tower dealt damage to {closest.gameObject.name}");
+                _shooting = null;
+                yield break;
             }
 
             yield return new WaitForSeconds(_interval);
+        }
+    }
+
+    private void ShootClosestTarget()
+    {
+        var min = float.MaxValue;
+        Health closest = null;
+        foreach (var target in _targets.Values)
+        {
+            var distance = Vector3.Distance(target.transform.position, transform.position);
+            if (distance < min)
+            {
+                min = distance;
+                closest = target;
+            }
+        }
+
+        if (closest != null)
+        {
+            var arrow = Instantiate(_projectile, transform);
+            var projectile = arrow.GetComponent<TravellingProjectile>();
+            projectile.SetPath(transform, closest.transform);
+
+            Debug.Log($"Tower dealt damage to {closest.gameObject.name}");
         }
     }
 }
