@@ -7,7 +7,7 @@ public class AnchorView : InputListener
     [SerializeField] private Anchor _defaultAnchor;
     [SerializeField, FromInputActionAsset("Navigate")] public InputActionReference Navigate;
     [SerializeField] private float _cameraElevation;
-    private Anchor _activeAnchor;
+    public Anchor ActiveAnchor { get; private set; }
 
     private void OnEnable()
     {
@@ -27,7 +27,7 @@ public class AnchorView : InputListener
 
     private void MoveTo(Anchor anchor)
     {
-        _activeAnchor = anchor;
+        ActiveAnchor = anchor;
         var position = anchor.transform.position;
         _anchorCamera.transform.position = new Vector3(position.x, _cameraElevation, position.z);
     }
@@ -35,7 +35,7 @@ public class AnchorView : InputListener
     private void HandleNaviagation(InputAction.CallbackContext context)
     {
         var value = context.ReadValue<Vector2>();
-        if (_activeAnchor.Links.TryGetLinkTo(GetDirection(value), out var linked))
+        if (ActiveAnchor.Links.TryGetLinkTo(GetDirection(value), out var linked))
         {
             MoveTo(linked);
         }
@@ -55,9 +55,13 @@ public class AnchorView : InputListener
         {
             return AnchorLinks.Direction.Right;
         }
-        else
+        else if (vector == Vector2.left)
         {
             return AnchorLinks.Direction.Left;
+        }
+        else
+        {
+            return AnchorLinks.Direction.None;
         }
 
     }

@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class DeathEvent : MonoBehaviour
 {
+    public Action FiredEvent;
     public UnityEvent Fired;
     [SerializeField] private Health _health;
 
@@ -26,6 +28,7 @@ public class DeathEvent : MonoBehaviour
         if (_health.Amount <= 0)
         {
             _health.enabled = false;
+            FiredEvent?.Invoke();
             Fired?.Invoke();
         }
     }

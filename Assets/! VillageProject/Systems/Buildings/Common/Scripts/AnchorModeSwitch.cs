@@ -13,12 +13,12 @@ public class AnchorModeSwitch : InputListener
 
     private void OnEnable()
     {
-        Switch.action.performed += HandleSwitch;
+        Switch.action.started += HandleSwitch;
     }
 
     private void OnDisable()
     {
-        Switch.action.performed -= HandleSwitch;
+        Switch.action.started -= HandleSwitch;
     }
 
     private void HandleSwitch(InputAction.CallbackContext context)
