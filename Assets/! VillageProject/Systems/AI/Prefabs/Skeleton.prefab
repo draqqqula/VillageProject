@@ -1230,6 +1230,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: <Amount>k__BackingField
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: 'managedReferences[8889540938514301050]'
       value: Assembly-CSharp DamageTiltableComponent
       objectReference: {fileID: 0}
@@ -1246,13 +1250,21 @@ PrefabInstance:
       value: Assembly-CSharp InvincibilityComponent
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: 'managedReferences[8889541114415808653]'
+      value: Assembly-CSharp WeakSpotDamageComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: <Data>k__BackingField.Components.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: managedReferences[8889540938514301052].Value
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: managedReferences[8889541114415808653]._body
+      value: 
+      objectReference: {fileID: 4533745517801289469}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: managedReferences[8889540938514301052].Member
       value: 
@@ -1275,7 +1287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: '<Data>k__BackingField.Components.Array.data[4]'
-      value: -2
+      value: 8889541114415808653
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: managedReferences[8889540938514301051].Transform
@@ -1641,6 +1653,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100062, guid: f227b5017a7c0184a96c2c26f1e4408d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1838159377175338518}
+    - targetCorrespondingSourceObject: {fileID: 100062, guid: f227b5017a7c0184a96c2c26f1e4408d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4533745517801289469}
+    - targetCorrespondingSourceObject: {fileID: 100062, guid: f227b5017a7c0184a96c2c26f1e4408d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7449380755024635591}
     - targetCorrespondingSourceObject: {fileID: 100032, guid: f227b5017a7c0184a96c2c26f1e4408d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2897870021829302543}
@@ -1863,7 +1881,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.094710454
+  m_Radius: 0.15
   m_Center: {x: -0.094710454, y: 0, z: 0}
 --- !u!54 &3466206296656099398
 Rigidbody:
@@ -2744,6 +2762,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _listener: {fileID: 3775215481788016731}
   _object: {fileID: 1365865483834694514}
+--- !u!114 &4533745517801289469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4426178179523924820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0d50e5e84464a4c8c3c54cabd1dd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sfx: {fileID: 1140644022695473014, guid: c5aad4304b735154e8c3aef056324cd9, type: 3}
+  _bodyParts:
+  - {fileID: 2897870021829302543}
+  - {fileID: 4257497193047062191}
+  - {fileID: 8184132848577502775}
+  - {fileID: 371875108570950477}
+  - {fileID: 1217143069329511275}
+  - {fileID: 8121936707759747461}
+  - {fileID: 7358492222169679443}
+  - {fileID: 4575346961234252016}
+  - {fileID: 7129121189169550745}
+  - {fileID: 6330957745078697298}
+  - {fileID: 2944373006391127477}
+--- !u!114 &7449380755024635591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4426178179523924820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ce953ca6ea2474b988aaf9cae14ec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _threshold: 15
+  _health: {fileID: 7308106497875193394}
+  _bodyRoot: {fileID: 4533745517801289469}
 --- !u!1 &4426178179523924826 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100048, guid: f227b5017a7c0184a96c2c26f1e4408d, type: 3}
