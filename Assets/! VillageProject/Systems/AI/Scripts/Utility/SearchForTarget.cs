@@ -18,6 +18,7 @@ public class SearchForTarget : MonoBehaviour
     [SerializeField] private Target _mainTarget;
     private SortedSet<Target> _targets = new (new PriorityComparer());
 
+    public event Action OnMainTargetChangedEvent;
     public UnityEvent OnMainTargetChanged;
     public UnityEvent<Target, float> OnDistanceToTargetUpdated;
     public Target MainTarget
@@ -33,12 +34,18 @@ public class SearchForTarget : MonoBehaviour
             {
                 _mainTarget = value;
                 OnMainTargetChanged?.Invoke();
+                OnMainTargetChangedEvent?.Invoke();
             }
         }
     }
 
     public void Detect(Target target)
     {
+        if (!target.isActiveAndEnabled)
+        {
+            return;
+        }
+        target.ForgetByAll += Forget;
         if (_targets.Add(target))
         {
             ResetMainTarget();
@@ -46,6 +53,7 @@ public class SearchForTarget : MonoBehaviour
     }
     public void Forget(Target target)
     {
+        target.ForgetByAll -= Forget;
         if (_targets.Remove(target)
             && MainTarget == target)
         {

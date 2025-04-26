@@ -14,22 +14,18 @@ public partial class TargetDetectedStateSequence : BinaryStateSequenceBase
 
     protected override bool GetValue()
     {
-        if (Agent.Value.MainTarget != null)
-        {
-            Target.Value = Agent.Value.MainTarget;
-            return true;
-        }
-        return false;
+        Target.Value = Agent.Value.MainTarget;
+        return Agent.Value.MainTarget != null;
     }
 
     protected override void Subscribe(System.Action handler)
     {
-        Agent.Value.OnMainTargetChanged.AddListener(new UnityAction(handler));
+        Agent.Value.OnMainTargetChangedEvent += handler;
     }
 
     protected override void Unsubscribe(System.Action handler)
     {
-        Agent.Value.OnMainTargetChanged.RemoveListener(new UnityAction(handler));
+        Agent.Value.OnMainTargetChangedEvent -= handler;
     }
 }
 
