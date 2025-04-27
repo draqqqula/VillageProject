@@ -6,8 +6,13 @@ public class WeakSpotDamageComponent : DamageComponentBase
 {
     [SerializeField] private WeakSpot _body;
 
-    public bool Raycast(Ray ray, float maxDistance)
+    public bool TryHit(Ray ray, float maxDistance)
     {
-        return _body.Raycast(ray, maxDistance);
+        if (_body.Raycast(ray, maxDistance))
+        {
+            _body.Close();
+            return true;
+        }
+        return false;
     }
 }

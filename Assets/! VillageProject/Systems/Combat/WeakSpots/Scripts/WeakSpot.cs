@@ -6,6 +6,7 @@ public class WeakSpot : MonoBehaviour
     [SerializeField] private GameObject _sfx;
     [SerializeField] private List<Collider> _bodyParts;
     private Collider _collider;
+    private GameObject _effect;
 
     private void Reset()
     {
@@ -22,7 +23,17 @@ public class WeakSpot : MonoBehaviour
         }
         var index = Random.Range(0, _bodyParts.Count);
         _collider = _bodyParts[index];
-        var effect = Instantiate(_sfx, _collider.bounds.center, Quaternion.identity, _collider.transform);
+        _effect = Instantiate(_sfx, _collider.bounds.center, Quaternion.identity, _collider.transform);
+    }
+
+    public void Close()
+    {
+        if (!IsOpened)
+        {
+            return;
+        }
+        _collider = null;
+        Destroy(_effect);
     }
 
     public bool Raycast(Ray ray, float maxDistance)

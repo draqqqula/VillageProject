@@ -10,7 +10,7 @@ public class HitWeakSpotEffect : DamageEffectBase
     {
         if (context.Source.TryGetComponent(out RaycastOriginDamageComponent raycastOrigin)
             && context.Target.TryGetComponent(out WeakSpotDamageComponent weakSpot)
-            && weakSpot.Raycast(raycastOrigin.Ray, raycastOrigin.MaxDistance))
+            && weakSpot.TryHit(raycastOrigin.Ray, raycastOrigin.MaxDistance))
         {
             return baseDamage * _modifier;
         }
