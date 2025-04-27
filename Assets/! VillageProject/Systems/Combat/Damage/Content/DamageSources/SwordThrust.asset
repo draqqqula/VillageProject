@@ -10,30 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40f399fc55b8faa4f9ea1670fa37db52, type: 3}
-  m_Name: SwordStrike
+  m_Name: SwordThrust
   m_EditorClassIdentifier: 
   <Data>k__BackingField:
     Components: []
     Conditions:
-    - rid: 8889540975359426956
-    - rid: 8889540975359426959
+    - rid: 8889541134996734134
+    - rid: 8889541134996734135
     Effects:
-    - rid: 8889540975359426953
-    - rid: 8889540975359426966
-  <BaseAmount>k__BackingField: 5
+    - rid: 8889541134996734136
+    - rid: 8889541134996734137
+  <BaseAmount>k__BackingField: 6
   references:
     version: 2
     RefIds:
-    - rid: 8889540975359426953
+    - rid: 8889541134996734134
+      type: {class: NotInvincibeCondition, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8889541134996734135
+      type: {class: EnemyTeamCondition, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8889541134996734136
       type: {class: GiveInvincibilityEffect, ns: , asm: Assembly-CSharp}
       data:
         Factor: 1
-    - rid: 8889540975359426956
-      type: {class: NotInvincibeCondition, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 8889540975359426959
-      type: {class: EnemyTeamCondition, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 8889540975359426966
+    - rid: 8889541134996734137
       type: {class: KnockbackDamageEffect, ns: , asm: Assembly-CSharp}
       data: 

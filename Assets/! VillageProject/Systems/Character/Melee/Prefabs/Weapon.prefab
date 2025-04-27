@@ -31,6 +31,7 @@ Transform:
   m_Children:
   - {fileID: 8886879356056085215}
   - {fileID: 198713884524778797}
+  - {fileID: 780774422370043814}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2865954099798946647
@@ -46,7 +47,7 @@ GameObject:
   - component: {fileID: 4941780909574640563}
   - component: {fileID: 3234421236207589236}
   m_Layer: 0
-  m_Name: Hitbox
+  m_Name: SlashHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,44 +105,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Data>k__BackingField:
     Components:
-    - rid: 8889540938514301056
-    - rid: 8889540938514301060
-    - rid: 8889540957336764514
+    - rid: -2
+    - rid: -2
+    - rid: -2
     Conditions:
-    - rid: 8889540938514301055
-    - rid: 8889540957336764513
+    - rid: -2
+    - rid: -2
     Effects:
-    - rid: 8889540938514301058
-    - rid: 8889540957336764512
+    - rid: -2
+    - rid: -2
   <Info>k__BackingField: {fileID: 11400000, guid: c588542dc7191ef44bae3edc42211219, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 8889540938514301055
-      type: {class: NotSameTeamCondition, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 8889540938514301056
-      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Value: 0
-    - rid: 8889540938514301058
-      type: {class: KnockbackDamageEffect, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 8889540938514301060
-      type: {class: TransformDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Transform: {fileID: 3150373172160477491}
-    - rid: 8889540957336764512
-      type: {class: GiveInvincibilityEffect, ns: , asm: Assembly-CSharp}
-      data:
-        Factor: 1
-    - rid: 8889540957336764513
-      type: {class: NotInvincibeCondition, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 8889540957336764514
-      type: {class: KeyComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Key: {fileID: 4941780909574640563}
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!114 &3234421236207589236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +133,105 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageSource: {fileID: 4941780909574640563}
+--- !u!1 &3188816294859762828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 780774422370043814}
+  - component: {fileID: 7270165503765979805}
+  - component: {fileID: 1316553162650983737}
+  - component: {fileID: 113751721865034739}
+  m_Layer: 0
+  m_Name: ThrustHitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &780774422370043814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3188816294859762828}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.68, z: 0}
+  m_LocalScale: {x: 0.18, y: 0.52, z: 0.18}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3150373172160477491}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7270165503765979805
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3188816294859762828}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.22
+  m_Height: 1.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1316553162650983737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3188816294859762828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Data>k__BackingField:
+    Components:
+    - rid: -2
+    - rid: -2
+    - rid: -2
+    Conditions:
+    - rid: -2
+    - rid: -2
+    Effects:
+    - rid: -2
+    - rid: -2
+  <Info>k__BackingField: {fileID: 11400000, guid: c588542dc7191ef44bae3edc42211219, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!114 &113751721865034739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3188816294859762828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9063dcde14ecb488565dd7870c88fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageSource: {fileID: 1316553162650983737}
 --- !u!1001 &8997682766682572084
 PrefabInstance:
   m_ObjectHideFlags: 0
