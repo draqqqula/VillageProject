@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +12,10 @@ public class CombatController : InputListener
     private const string ThrustTrigger = "Thrust";
 
     [SerializeField, FromInputActionAsset("Attack")] public InputActionReference Attack;
+    [SerializeField] private AnimationWindow _slashWindow;
+    [SerializeField] private AnimationWindow _thrustWindow;
+    private AnimationWindowListener _slashListener;
+    private AnimationWindowListener _thrustListener;
     [SerializeField] private Animator _animator;
     [SerializeField] private float _maxSeries = 1;
     [SerializeField] private float _noInterruptionWindow = 0.7f;
@@ -28,16 +34,27 @@ public class CombatController : InputListener
     private Coroutine _scheduledAttack;
     private Coroutine _holdingCoroutine;
 
+    private void Awake()
+    {
+        var listeners = GetComponentsInChildren<AnimationWindowListener>();
+        _slashListener = listeners.First(it => it.Window.Equals(_slashWindow));
+        _thrustListener = listeners.First(it => it.Window.Equals(_thrustWindow));
+    }
+
     private void OnEnable()
     {
         Attack.action.started += HandleAttackInputPressed;
         Attack.action.canceled += HandleAttackInputReleased;
+        _slashListener.OnEntered += HandleSlashStarted;
+        _thrustListener.OnEntered += HandleThrustStarted;
     }
 
     private void OnDisable()
     {
         Attack.action.started -= HandleAttackInputPressed;
         Attack.action.canceled -= HandleAttackInputReleased;
+        _slashListener.OnEntered -= HandleSlashStarted;
+        _thrustListener.OnEntered -= HandleThrustStarted;
     }
 
     private void HandleAttackInputPressed(InputAction.CallbackContext context)
@@ -71,9 +88,14 @@ public class CombatController : InputListener
         _animator.speed = 1;
     }
 
-    public void HandleAttackAnimationStarted()
+    public void HandleSlashStarted()
     {
-        _holdingCoroutine = StartCoroutine(DelayEnterHolding());
+        _holdingCoroutine = StartCoroutine(DelayEnterHolding(true));
+    }
+
+    public void HandleThrustStarted()
+    {
+        _holdingCoroutine = StartCoroutine(DelayEnterHolding(false));
     }
 
     public void HandleAttackAnimationEnded()
@@ -102,7 +124,7 @@ public class CombatController : InputListener
         StartAttack();
     }
 
-    private IEnumerator DelayEnterHolding()
+    private IEnumerator DelayEnterHolding(bool transistionToThrust)
     {
         yield return new WaitForSeconds(_stamp);
 
@@ -122,7 +144,10 @@ public class CombatController : InputListener
             }
             else
             {
-                _animator.SetTrigger(ThrustTrigger);
+                if (transistionToThrust)
+                {
+                    _animator.SetTrigger(ThrustTrigger);
+                }
                 break;
             }
 

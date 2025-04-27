@@ -10,7 +10,7 @@ public class AttackState : StateMachineBehaviour
         {
             return;
         }
-        _combatController.HandleAttackAnimationStarted();
+        _combatController.HandleSlashStarted();
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
