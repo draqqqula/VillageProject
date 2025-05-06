@@ -1354,6 +1354,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1346228245960298043, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 63300340969468009}
+    - targetCorrespondingSourceObject: {fileID: 1346228245960298043, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1027262985331761567}
   m_SourcePrefab: {fileID: 100100000, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
 --- !u!1 &4011959546620064136 stripped
 GameObject:
@@ -1461,6 +1464,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Team>k__BackingField: {fileID: 11400000, guid: ba2852fb48d2ba04c83c59f79a4d3323, type: 2}
+--- !u!114 &1027262985331761567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4011959546620064136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa8ec15e23add641972c3d394dfb585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Resource>k__BackingField: {fileID: 11400000, guid: d8cc3def2216a474bb6e984c4900bc13, type: 2}
+  _deathEvent: {fileID: 7159240231132442957}
+  _amount: 3
 --- !u!114 &6177989388953775670 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8124269545049411973, guid: e016442de3910e543b2a333955bf7ccd, type: 3}

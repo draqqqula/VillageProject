@@ -41,6 +41,7 @@ public class EnemySpawner : MonoBehaviour
         ai.SetVariableValue("RoadZone", _road);
         ai.SetVariableValue("Player", _player);
         OnUnitSpawned?.Invoke(enemy);
+
         return enemy;
     }
 

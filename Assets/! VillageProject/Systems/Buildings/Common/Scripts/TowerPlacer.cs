@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class TowerPlacer : InputListener
 {
-    [SerializeField] private int Remaining = 3;
+    [SerializeField] private PriceReference Price;
     [SerializeField] private AnchorView AnchorView;
     [SerializeField] private GameObject Tower;
     [SerializeField, FromInputActionAsset("Jump")] public InputActionReference Submit;
@@ -25,10 +25,9 @@ public class TowerPlacer : InputListener
 
     private void HandleSumbit(InputAction.CallbackContext context)
     {
-        if (Remaining > 0)
+        if (Price.Value.TryPay())
         {
             Instantiate(Tower, AnchorView.ActiveAnchor.transform);
-            Remaining -= 1;
         }
     }
 }
