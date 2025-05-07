@@ -23,11 +23,22 @@ public class AnchorView : InputListener
         _anchorCamera.gameObject.SetActive(false);
         Navigate.action.performed -= HandleNaviagation;
         Time.timeScale = 1.0f;
+
+        if (ActiveAnchor != null)
+        {
+            ActiveAnchor.Active.Value = false;
+        }
+        ActiveAnchor = null;
     }
 
     private void MoveTo(Anchor anchor)
     {
+        if (ActiveAnchor != null)
+        {
+            ActiveAnchor.Active.Value = false;
+        }
         ActiveAnchor = anchor;
+        ActiveAnchor.Active.Value = true;
         var position = anchor.transform.position;
         _anchorCamera.transform.position = new Vector3(position.x, _cameraElevation, position.z);
     }
@@ -63,6 +74,5 @@ public class AnchorView : InputListener
         {
             return AnchorLinks.Direction.None;
         }
-
     }
 }

@@ -14,6 +14,11 @@ public class AnchorLinks : MonoBehaviour
     [Serializable]
     public class LinkedAnchor
     {
+        public LinkedAnchor(Direction direction, Anchor anchor)
+        {
+            Direction = direction;
+            Anchor = anchor;
+        }
         [field: SerializeField] public Direction Direction { get; private set; }
         [field: SerializeField] public Anchor Anchor { get; private set; }
     }
@@ -29,5 +34,25 @@ public class AnchorLinks : MonoBehaviour
     public bool TryGetLinkTo(Direction direction, out Anchor anchor)
     {
         return _directionToAnchor.TryGetValue(direction, out anchor);
+    }
+
+    [ContextMenu("Mirror links")]
+    public void Mirror()
+    {
+        var anchor = GetComponent<Anchor>();
+        foreach (var link in Links)
+        {
+            var otherLinks = link.Anchor.Links.Links;
+            var oppositeDirection = link.Direction.Opposite();
+            var mirrored = otherLinks.FirstOrDefault(it => it.Anchor == anchor);
+            var opposite = otherLinks.FirstOrDefault(it => it.Direction == oppositeDirection);
+            if (mirrored == opposite && mirrored != null)
+            {
+                return;
+            }
+            otherLinks.Remove(mirrored);
+            otherLinks.Remove(opposite);
+            otherLinks.Add(new LinkedAnchor(oppositeDirection, anchor));
+        }
     }
 }
