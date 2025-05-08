@@ -15,4 +15,28 @@ public static class AnchorExtensions
             default: return AnchorLinks.Direction.None;
         }
     }
+
+    public static AnchorLinks.Direction GetDirection(Vector2 vector)
+    {
+        if (vector == Vector2.up)
+        {
+            return AnchorLinks.Direction.Up;
+        }
+        else if (vector == Vector2.down)
+        {
+            return AnchorLinks.Direction.Down;
+        }
+        else if (vector == Vector2.right)
+        {
+            return AnchorLinks.Direction.Right;
+        }
+        else if (vector == Vector2.left)
+        {
+            return AnchorLinks.Direction.Left;
+        }
+        else
+        {
+            return AnchorLinks.Direction.None;
+        }
+    }
 }

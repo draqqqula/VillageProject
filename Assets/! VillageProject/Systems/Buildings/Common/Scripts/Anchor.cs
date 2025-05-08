@@ -6,7 +6,7 @@ using UnityEngine;
 public class Anchor : MonoBehaviour
 {
     [field: SerializeField] public AnchorLinks Links { get; set; }
-    public ReactiveProperty<bool> Active { get; private set; } = new ReactiveProperty<bool>();
+    public ReactiveProperty<bool> Active { get; private set; } = new ReactiveProperty<bool>(false);
 
     private void Reset()
     {

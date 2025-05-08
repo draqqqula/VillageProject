@@ -2,15 +2,22 @@
 using System;
 using UnityEngine;
 
-public class ActivateOnSelected : MonoBehaviour
+public class TargetActivator : MonoBehaviour
 {
     [SerializeField] public GameObject Target;
-    private void Awake()
+    private IDisposable _eventListener;
+
+    private void OnEnable()
     {
         var anchor = GetComponentInParent<Anchor>();
-        anchor.Active
+        _eventListener = anchor.Active
             .Subscribe(HandleActivation)
             .AddTo(this);
+    }
+
+    private void OnDisable()
+    {
+        _eventListener?.Dispose();
     }
 
     private void HandleActivation(bool value)

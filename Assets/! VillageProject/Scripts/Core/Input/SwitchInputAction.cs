@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class AnchorModeSwitch : InputListener
+public class SwitchInputAction : MonoBehaviour
 {
-    [SerializeField, FromInputActionAsset("Interact")] public InputActionReference Switch;
-    [SerializeField] private GameObject AnchorView;
+    [SerializeField] public InputActionReference Switch;
+    [SerializeField] private GameObject Target;
 
     private void OnEnable()
     {
@@ -23,13 +23,13 @@ public class AnchorModeSwitch : InputListener
 
     private void HandleSwitch(InputAction.CallbackContext context)
     {
-        if (AnchorView.activeSelf)
+        if (Target.activeSelf)
         {
-            AnchorView.SetActive(false);
+            Target.SetActive(false);
         }
         else
         {
-            AnchorView.SetActive(true);
+            Target.SetActive(true);
         }
     }
 }

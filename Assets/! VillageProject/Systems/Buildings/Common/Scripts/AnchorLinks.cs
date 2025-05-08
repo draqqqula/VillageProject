@@ -23,7 +23,7 @@ public class AnchorLinks : MonoBehaviour
         [field: SerializeField] public Anchor Anchor { get; private set; }
     }
 
-    [field: SerializeField] public List<LinkedAnchor> Links { get; set; } = new();
+    [field: SerializeField] public List<LinkedAnchor> Links { get; set; }
     private Dictionary<Direction, Anchor> _directionToAnchor;
 
     private void Awake()
@@ -48,7 +48,7 @@ public class AnchorLinks : MonoBehaviour
             var opposite = otherLinks.FirstOrDefault(it => it.Direction == oppositeDirection);
             if (mirrored == opposite && mirrored != null)
             {
-                return;
+                continue;
             }
             otherLinks.Remove(mirrored);
             otherLinks.Remove(opposite);

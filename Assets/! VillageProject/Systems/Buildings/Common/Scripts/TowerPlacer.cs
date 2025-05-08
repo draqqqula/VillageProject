@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class TowerPlacer : InputListener
 {
     [SerializeField] private PriceReference Price;
-    [SerializeField] private AnchorView AnchorView;
+    [SerializeField] private AnchorMode AnchorView;
     [SerializeField] private GameObject Tower;
     [SerializeField, FromInputActionAsset("Jump")] public InputActionReference Submit;
 
@@ -27,7 +27,7 @@ public class TowerPlacer : InputListener
     {
         if (Price.Value.TryPay())
         {
-            Instantiate(Tower, AnchorView.ActiveAnchor.transform);
+            Instantiate(Tower, AnchorView.ActiveAnchor.CurrentValue.transform);
         }
     }
 }
