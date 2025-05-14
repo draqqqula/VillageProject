@@ -6,12 +6,12 @@ public class ObservableBehaviour : MonoBehaviour
     private ReactiveProperty<bool> _enabled = new ReactiveProperty<bool>(false);
     public ReadOnlyReactiveProperty<bool> Enabled => _enabled;
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         _enabled.Value = true;
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         _enabled.Value = false;
     }

@@ -79,6 +79,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1074966483338026673}
   - component: {fileID: 4226481529840161161}
+  - component: {fileID: 2558085571468816421}
   m_Layer: 0
   m_Name: Archer Tower
   m_TagString: Untagged
@@ -94,7 +95,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8862546195155982014}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.54999995, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -116,6 +117,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Team>k__BackingField: {fileID: 11400000, guid: 298386bd74f26414f970c4761992fd76, type: 2}
+--- !u!114 &2558085571468816421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862546195155982014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edac518a09de2214f91006041e1b427a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _options: []
+  <Name>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2
+    m_TableEntryReference:
+      m_KeyId: 50758834380800
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &3844507480357149237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -167,6 +193,10 @@ PrefabInstance:
     - target: {fileID: 7173998236604818472, guid: 5026ef9fe5ae7bd4690ff5d87c80b8fc, type: 3}
       propertyPath: m_Name
       value: Wooden_Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 7173998236604818472, guid: 5026ef9fe5ae7bd4690ff5d87c80b8fc, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -19,7 +19,7 @@ public class ResourceVariable : ScriptableObject
         AmountChanged?.Invoke();
     }
 
-    private void Awake()
+    private void OnEnable()
     {
         Amount = DefaultAmount;
     }
