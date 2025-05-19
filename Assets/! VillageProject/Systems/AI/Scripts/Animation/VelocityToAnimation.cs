@@ -17,7 +17,7 @@ public class VelocityToAnimation : MonoBehaviour
         float veclocity = 0;
         if (_movementSwitcher.ActiveWorker != null)
         {
-            veclocity = _movementSwitcher.ActiveWorker.GetVelocity();
+            veclocity = _movementSwitcher.ActiveWorker.GetVelocityPerSecond();
         }
         _movementAnimator.SetFloat(_variableName, Mathf.Clamp01(veclocity / _maxVelocity));
     }

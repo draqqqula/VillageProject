@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public abstract class MovementWorkerBase : WorkerBase
 {
-    public abstract float GetVelocity();
+    public abstract float GetVelocityPerSecond();
     public abstract float GetProgress();
     public abstract void HandleCancellation();
 }

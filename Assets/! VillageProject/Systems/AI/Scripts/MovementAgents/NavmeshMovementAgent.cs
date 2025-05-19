@@ -65,7 +65,7 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
         }
     }
 
-    public override float GetVelocity()
+    public override float GetVelocityPerSecond()
     {
         return _navMeshAgent.velocity.magnitude;
     }

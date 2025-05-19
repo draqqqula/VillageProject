@@ -19,15 +19,16 @@ public class BezierCurveMovementAgent : MovementWorkerBase<BezierPathWithStart>,
     [SerializeField] private LayerMask _raycastLayerMask;
     [SerializeField] private float _raycastDistance;
     [SerializeField] private float _accuracy = 0.01f;
+    private float _velocity;
 
     public override float GetProgress()
     {
         return _progressDistance / _spline.length;
     }
 
-    public override float GetVelocity()
+    public override float GetVelocityPerSecond()
     {
-        return _speed;
+        return _velocity / Time.fixedDeltaTime;
     }
 
     public override void HandleCancellation()
@@ -57,8 +58,12 @@ public class BezierCurveMovementAgent : MovementWorkerBase<BezierPathWithStart>,
         var direction = _spline.GetNormal(progress);
         if (Physics.Raycast(pointInSpline, Vector3.down, out var hit, _raycastDistance, _raycastLayerMask))
         {
+            var cached = transform.position;
             transform.position = hit.point + Vector3.up * _elevation;
-            transform.rotation = Quaternion.Euler(direction);
+            _velocity = Vector3.Distance(cached, transform.position);
+            var rotation = Quaternion.LookRotation(direction, Vector3.up);
+            transform.rotation = rotation;
+            transform.Rotate(Vector3.up, 90);
         }
         if (_progressDistance == _spline.length)
         {
