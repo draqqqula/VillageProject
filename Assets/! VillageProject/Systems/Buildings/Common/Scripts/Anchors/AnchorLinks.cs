@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class AnchorLinks : MonoBehaviour
@@ -60,7 +59,7 @@ public class AnchorLinks : MonoBehaviour
         if (GUI.changed)
         {
             UnityEditor.EditorUtility.SetDirty(this);
-            EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
         }
 #endif
     }
