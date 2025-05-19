@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class TravellingProjectile : MonoBehaviour
 {
     public UnityEvent DestinationReached;
+    public UnityEvent TargetLost;
     [SerializeField] private float _speed = 1f;
     private float _traveled = 0;
 
@@ -20,6 +21,8 @@ public class TravellingProjectile : MonoBehaviour
     {
         if (Source == null || Destination == null)
         {
+            TargetLost?.Invoke();
+            enabled = false;
             return;
         }
 
