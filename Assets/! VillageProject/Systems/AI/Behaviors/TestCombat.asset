@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Nodes:
   - rid: 8889540693894627453
   - rid: 8889540693894627620
-  m_VersionTimestamp: 638796794551724832
+  m_VersionTimestamp: 638833465966437525
   m_DebugInfo: {fileID: 5161297859722133330}
   m_RuntimeGraph: {fileID: 3649783889850794012}
   AssetID:
@@ -157,6 +157,7 @@ MonoBehaviour:
   m_MainBlackboardAuthoringAsset: {fileID: -6103511343527895531}
   m_CommandBuffer:
     m_Commands: []
+  m_SubgraphsInfo: []
   references:
     version: 2
     RefIds:
@@ -178,6 +179,7 @@ MonoBehaviour:
           m_Value1: 11549843281177505721
         m_FieldValues: []
         Repeat: 1
+        AllowMultipleRepeatsPerTick: 0
     - rid: 8889540693894627454
       type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
@@ -329,16 +331,16 @@ MonoBehaviour:
   m_Name: TestCombat
   m_EditorClassIdentifier: 
   Graphs:
-  - rid: 8889540716506383035
+  - rid: 6436827403553603677
   RootGraph:
-    rid: 8889540716506383035
+    rid: 6436827403553603677
   m_DebugInfo: {fileID: 5161297859722133330}
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8889540716506383035
+    - rid: 6436827403553603677
       type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         AuthoringAssetID:
@@ -346,74 +348,75 @@ MonoBehaviour:
           m_Value1: 12069878217569411082
         m_DebugInfo: {fileID: 0}
         Root:
-          rid: 8889540716506383036
+          rid: 6436827403553603678
         BlackboardReference:
-          rid: 8889540716506383037
+          rid: 6436827403553603679
         BlackboardGroupReferences:
-        - rid: 8889540716506383038
-        ProcessedNodes: []
-        m_RunningNodes: []
+        - rid: 6436827403553603680
+        m_ActiveNodes: []
+        m_NodesToTick: []
         m_NodesToEnd:
-          rid: 8889540716506383039
+          rid: 6436827403553603681
         m_EndedNodes:
-          rid: 8889540716506383040
-        m_VersionTimestamp: 638796794551724832
-    - rid: 8889540716506383036
+          rid: 6436827403553603682
+        m_VersionTimestamp: 638833465966437525
+    - rid: 6436827403553603678
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 15409581123857059621
           m_Value1: 10553197737023663041
         Graph:
-          rid: 8889540716506383035
+          rid: 6436827403553603677
         m_Parent:
           rid: -2
         m_Child:
-          rid: 8889540716506383041
+          rid: 6436827403553603683
         Repeat: 1
-    - rid: 8889540716506383037
+        AllowMultipleRepeatsPerTick: 0
+    - rid: 6436827403553603679
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Blackboard:
-          rid: 8889540716506383042
+          rid: 6436827403553603684
         m_Source: {fileID: 2543146397180955681}
-    - rid: 8889540716506383038
+    - rid: 6436827403553603680
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Blackboard:
-          rid: 8889540716506383043
+          rid: 6436827403553603685
         m_Source: {fileID: -3165671894056340170, guid: 051b197358c9c4b4cb133dff32a74975, type: 2}
-    - rid: 8889540716506383039
+    - rid: 6436827403553603681
       type: {class: 'Stack`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: mscorlib}
       data: 
-    - rid: 8889540716506383040
+    - rid: 6436827403553603682
       type: {class: 'HashSet`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: System.Core}
       data: 
-    - rid: 8889540716506383041
+    - rid: 6436827403553603683
       type: {class: GoToTargetNavmeshAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
           m_Value0: 18061479611518336767
           m_Value1: 7687099968920960176
         Graph:
-          rid: 8889540716506383035
+          rid: 6436827403553603677
         m_Parent:
-          rid: 8889540716506383036
+          rid: 6436827403553603678
         Agent:
-          rid: 8889540716506383044
+          rid: 6436827403553603686
         Target:
-          rid: 8889540716506383045
-    - rid: 8889540716506383042
+          rid: 6436827403553603687
+    - rid: 6436827403553603684
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 8889540716506383046
-    - rid: 8889540716506383043
+        - rid: 6436827403553603688
+    - rid: 6436827403553603685
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 8889540716506383047
-    - rid: 8889540716506383044
+        - rid: 6436827403553603689
+    - rid: 6436827403553603686
       type: {class: 'GameObjectToComponentBlackboardVariable`1[[NavmeshMovementAgent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -422,8 +425,8 @@ MonoBehaviour:
         Name: 
         m_Value: {fileID: 0}
         m_LinkedVariable:
-          rid: 8889540716506383046
-    - rid: 8889540716506383045
+          rid: 6436827403553603688
+    - rid: 6436827403553603687
       type: {class: 'ComponentToGameObjectBlackboardVariable`1[[Target, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -432,8 +435,8 @@ MonoBehaviour:
         Name: 
         m_Value: {fileID: 0}
         m_LinkedVariable:
-          rid: 8889540716506383047
-    - rid: 8889540716506383046
+          rid: 6436827403553603689
+    - rid: 6436827403553603688
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -441,7 +444,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 0}
-    - rid: 8889540716506383047
+    - rid: 6436827403553603689
       type: {class: 'BlackboardVariable`1[[Target, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
