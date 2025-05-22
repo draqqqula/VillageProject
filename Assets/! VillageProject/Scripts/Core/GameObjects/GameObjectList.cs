@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using R3;
+using System.Linq;
 
 public class GameObjectList : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class GameObjectList : MonoBehaviour
 
     public virtual GameObject Add(GameObject item)
     {
-        item.transform.parent = transform;
+        item.transform.SetParent(transform);
         item.OnDestroyAsObservable().Subscribe(value => HandleDestroyed(item));
         _items.Add(item);
         return item;
@@ -28,6 +29,21 @@ public class GameObjectList : MonoBehaviour
         var instances = InstantiateRange(prefabs);
         _items.AddRange(instances);
         return instances;
+    }
+
+    public virtual void Clear()
+    {
+        foreach (var item in _items)
+        {
+            Destroy(item);
+        }
+        _items.Clear();
+    }
+
+    public virtual void Remove(GameObject item)
+    {
+        _items.Remove(item);
+        Destroy(item);
     }
 
     private IEnumerable<GameObject> InstantiateRange(IEnumerable<GameObject> prefabs)

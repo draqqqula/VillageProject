@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 using static NewBuildingOption;
 
 public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
@@ -23,7 +24,8 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
         }
     }
 
-    private ReactiveProperty<NewBuildingData> _data;
+    [Inject] private DiContainer _container;
+    private ReactiveProperty<NewBuildingData> _data = new ReactiveProperty<NewBuildingData>();
     private SingleInstance _slot;
     private GameObject _previewObject;
     [field: SerializeField] public GameObject BuildingPrefab { get; private set; }
@@ -32,11 +34,14 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
 
     public override ReadOnlyReactiveProperty<NewBuildingData> Data => _data;
 
+    public override ReadOnlyReactiveProperty<bool> Available => Price.Available;
+
     public override bool TryPerform()
     {
         if (Price.Value.TryPay())
         {
             var building = Instantiate(BuildingPrefab, _slot.transform);
+            _container.InjectGameObject(building);
             _slot.Substitute(building);
             return true;
         }
@@ -60,11 +65,6 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
     {
         _slot = GetComponentInParent<SingleInstance>();
         var name = BuildingPrefab.GetComponent<BuildingInfo>().Name.GetLocalizedString();
-        _data = new ReactiveProperty<NewBuildingData>(new NewBuildingData(name, Price.Value));
-    }
-
-    public override bool IsAvailable()
-    {
-        return Price.Available.CurrentValue;
+        _data.Value = new NewBuildingData(name, Price.Value);
     }
 }

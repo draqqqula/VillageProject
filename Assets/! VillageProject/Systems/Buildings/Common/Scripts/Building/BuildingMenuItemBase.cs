@@ -10,7 +10,7 @@ public abstract class BuildingMenuItemBase : ObservableBehaviour
     {
         GetComponentInParent<BuildingInfo>().Refresh();
     }
-    public abstract bool IsAvailable();
+    public abstract ReadOnlyReactiveProperty<bool> Available { get; }
     public abstract void ShowPreview();
     public abstract void HidePreview();
     public abstract bool TryPerform();
@@ -24,6 +24,8 @@ public abstract class BuildingMenuItemBase<T> : BuildingMenuItemBase
     public sealed override GameObject GetUI(Transform transform)
     {
         var component = _container.Resolve<IFactory<Transform, DataDisplay<T>>>().Create(transform);
+        component.Load(Data.CurrentValue);
+        Data.Subscribe(component.Load).AddTo(this).AddTo(component);
         return component.gameObject;
     }
 }

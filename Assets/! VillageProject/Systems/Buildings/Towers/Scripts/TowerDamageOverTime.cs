@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,12 @@ public class TowerDamageOverTime : MonoBehaviour
 {
     private const string TargetTag = "damageable";
 
-    [SerializeField] private float _interval;
-    [SerializeField] private GameObject _projectile;
+    public event Action ProjectileFired;
     [SerializeField] private TeamMember _team;
+    [SerializeField] private float _defaultInterval;
     private Coroutine _shooting;
     private IDictionary<Collider, Health> _targets = new KeyValidReferenceDictionary<Collider, Health>();
+    public ProjectileSpawner Spawner { get; set; }
 
     private void OnDisable()
     {
@@ -57,19 +59,17 @@ public class TowerDamageOverTime : MonoBehaviour
         {
             if (_targets.Count != 0)
             {
-                ShootClosestTarget();
+                yield return new WaitForSeconds(ShootClosestTarget());
             }
             else
             {
                 _shooting = null;
                 yield break;
             }
-
-            yield return new WaitForSeconds(_interval);
         }
     }
 
-    private void ShootClosestTarget()
+    private float ShootClosestTarget()
     {
         var min = float.MaxValue;
         Health closest = null;
@@ -83,13 +83,12 @@ public class TowerDamageOverTime : MonoBehaviour
             }
         }
 
-        if (closest != null)
+        if (closest != null && Spawner != null)
         {
-            var arrow = Instantiate(_projectile, transform);
-            var projectile = arrow.GetComponent<TravellingProjectile>();
-            projectile.SetPath(transform, closest.transform);
-
-            Debug.Log($"Tower dealt damage to {closest.gameObject.name}");
+            var projectile = Spawner.Spawn(closest.transform, transform);
+            ProjectileFired?.Invoke();
+            return projectile;
         }
+        return _defaultInterval;
     }
 }

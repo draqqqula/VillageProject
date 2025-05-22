@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6225998389631564696}
   - component: {fileID: 2545157150571517164}
   - component: {fileID: 4997322888087095976}
+  - component: {fileID: 5666561135211183262}
+  - component: {fileID: 2805341447617116203}
   m_Layer: 0
   m_Name: AttackReach
   m_TagString: Untagged
@@ -66,9 +68,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb56a53762aef446a51a08a6332e735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interval: 2
-  _projectile: {fileID: 822112668561322717, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
   _team: {fileID: 4226481529840161161}
+  _defaultInterval: 0.5
+--- !u!114 &5666561135211183262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6084123627870945827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 862994a5f7188034dba29d2dc4fa2c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tower: {fileID: 4997322888087095976}
+--- !u!114 &2805341447617116203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6084123627870945827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c209bfc765d9894ea55aa93563ea71d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _amount: 5
+  <Storage>k__BackingField: {fileID: 5666561135211183262}
+  <Price>k__BackingField: {fileID: 11400000, guid: d0a8fc3644c1cd84db02ffd1aaf42eef, type: 2}
+  <Ammunition>k__BackingField: {fileID: 11400000, guid: 964e2ff660e6f1a48a73f3d71785dea5, type: 2}
 --- !u!1 &8862546195155982014
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +159,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edac518a09de2214f91006041e1b427a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _options: []
+  _options:
+  - {fileID: 2805341447617116203}
   <Name>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2

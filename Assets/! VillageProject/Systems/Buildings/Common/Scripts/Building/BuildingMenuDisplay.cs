@@ -16,7 +16,7 @@ public class BuildingMenuDisplay : MonoBehaviour
 {
     private const string DefaultLabel = "None";
 
-    [SerializeField] private GameObject _menuItemPrefab;
+    [SerializeField] private GameObject _menuPrefab;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private ExpandableLayout _optionList;
     [SerializeField] private IServiceProvider _serviceProvider;
@@ -65,10 +65,7 @@ public class BuildingMenuDisplay : MonoBehaviour
     {
         _text.text = DefaultLabel;
 
-        foreach (var item in _optionList.Items)
-        {
-            Destroy(item);
-        }
+        _optionList.Clear();
         ClearSubsrciptions();
     }
 
