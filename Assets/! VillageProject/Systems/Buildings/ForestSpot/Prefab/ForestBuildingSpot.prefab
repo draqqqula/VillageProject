@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7762858282298559673}
   - component: {fileID: 219240475991788296}
   - component: {fileID: 3218522706714556468}
+  - component: {fileID: 7382540605586337051}
   m_Layer: 0
   m_Name: ForestBuildingSpot
   m_TagString: Untagged
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _options:
   - {fileID: 3218522706714556468}
+  - {fileID: 7382540605586337051}
   <Name>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2
@@ -74,3 +76,18 @@ MonoBehaviour:
   <BuildingPrefab>k__BackingField: {fileID: 8862546195155982014, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
   <PreviewPrefab>k__BackingField: {fileID: 7868380842163869210, guid: 5e171b5ce10262742a3793fe42dbd6e4, type: 3}
   <Price>k__BackingField: {fileID: 11400000, guid: c7e95d3d8fefc7a43a6b70bfdc701446, type: 2}
+--- !u!114 &7382540605586337051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420009077780514494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48c6ff0c72e805c48bc5ff8fa4319524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <BuildingPrefab>k__BackingField: {fileID: 6585943900527090621, guid: f9fa5aed95d3bd647bad7b75825c75b0, type: 3}
+  <PreviewPrefab>k__BackingField: {fileID: 630107557841673214, guid: d06de02d4d3cef34c82559fae164b2e7, type: 3}
+  <Price>k__BackingField: {fileID: 11400000, guid: 18ec7f2966c4acc48b0bb9065419a43e, type: 2}

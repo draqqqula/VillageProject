@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4997322888087095976}
   - component: {fileID: 5666561135211183262}
   - component: {fileID: 2805341447617116203}
+  - component: {fileID: 8412005407044101625}
   m_Layer: 0
   m_Name: AttackReach
   m_TagString: Untagged
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb56a53762aef446a51a08a6332e735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: {fileID: 4226481529840161161}
+  Range: {fileID: 8412005407044101625}
   _defaultInterval: 0.5
 --- !u!114 &5666561135211183262
 MonoBehaviour:
@@ -99,6 +100,19 @@ MonoBehaviour:
   <Storage>k__BackingField: {fileID: 5666561135211183262}
   <Price>k__BackingField: {fileID: 11400000, guid: d0a8fc3644c1cd84db02ffd1aaf42eef, type: 2}
   <Ammunition>k__BackingField: {fileID: 11400000, guid: 964e2ff660e6f1a48a73f3d71785dea5, type: 2}
+--- !u!114 &8412005407044101625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6084123627870945827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab06ff5c6e87ea84d9de03402ee8380a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _team: {fileID: 4226481529840161161}
 --- !u!1 &8862546195155982014
 GameObject:
   m_ObjectHideFlags: 0
