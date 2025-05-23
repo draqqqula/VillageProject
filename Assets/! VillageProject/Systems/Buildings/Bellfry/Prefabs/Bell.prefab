@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5323485999765441525}
-  - component: {fileID: 3722745847261390640}
-  - component: {fileID: 3841695396880590034}
   m_Layer: 0
   m_Name: BellActive
   m_TagString: Untagged
@@ -38,49 +36,6 @@ Transform:
   - {fileID: 7455833867895033660}
   m_Father: {fileID: 3886376019261401794}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &3722745847261390640
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17439776490759875}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!138 &3841695396880590034
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17439776490759875}
-  serializedVersion: 1
-  m_ConnectedBody: {fileID: 3208793576093965822}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!1 &905307337280951704
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +48,6 @@ GameObject:
   - component: {fileID: 6791340349660385195}
   - component: {fileID: 5504188199375848445}
   - component: {fileID: 2025610527235696211}
-  - component: {fileID: 3208793576093965822}
   m_Layer: 0
   m_Name: Bell
   m_TagString: Untagged
@@ -131,8 +85,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioWeak: {fileID: 4283139145726404381}
   _audioStrong: {fileID: 3818817075107893468}
-  _rb: {fileID: 3722745847261390640}
-  _force: {x: 50, y: 0, z: 0}
 --- !u!114 &5504188199375848445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,8 +99,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alarm: {fileID: 2025610527235696211}
   _bell: {fileID: 6791340349660385195}
-  _smallAlarmInterval: 2
-  _bigAlarmInterval: 1
+  _smallAlarmInterval: 5
+  _bigAlarmInterval: 3
+  _smallAlarmAmplitude: 20
+  _bigAlarmAmplitude: 40
+  _direction: {x: 1, y: 0, z: 0}
 --- !u!114 &2025610527235696211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,34 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Gates: []
-  _smallAlarmDuration: 5
---- !u!54 &3208793576093965822
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905307337280951704}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
+  _smallAlarmDuration: 3
 --- !u!1 &1155611897253830387
 GameObject:
   m_ObjectHideFlags: 0
