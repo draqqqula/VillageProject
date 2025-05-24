@@ -17,7 +17,7 @@ public class BellRinger : MonoBehaviour
 
     private float Interval => _alarm.Alarm.CurrentValue == GateAlarm.AlarmStatus.SmallAlarm ? _smallAlarmInterval : _bigAlarmInterval;
     private float Amplitude => _alarm.Alarm.CurrentValue == GateAlarm.AlarmStatus.SmallAlarm ? _smallAlarmAmplitude : _bigAlarmAmplitude;
-    private int Force => _alarm.Alarm.CurrentValue == GateAlarm.AlarmStatus.SmallAlarm ? 1 : 2;
+    private int Force => _alarm.Alarm.CurrentValue == GateAlarm.AlarmStatus.SmallAlarm ? 0 : 1;
 
     private void Reset()
     {
