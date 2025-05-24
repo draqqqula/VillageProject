@@ -27,6 +27,11 @@ public class SmokeSignal : TowerIntervalAction
         return _interval;
     }
 
+    protected override void HandleBreak()
+    {
+        Perform();
+    }
+
     private bool IsUnobscured(Collider collider)
     {
         var direction = (collider.transform.position - transform.position).normalized;

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Unity.AppUI.UI;
 using UnityEngine;
 
 public class LinkDisplay : MonoBehaviour
@@ -18,6 +20,10 @@ public class LinkDisplay : MonoBehaviour
         foreach (var link in _generated)
         {
             DestroyImmediate(link.gameObject);
+        }
+        foreach (var child in transform.EnumerateImmediateChildren().ToArray())
+        {
+            DestroyImmediate(child);
         }
         _generated = new List<GameObject>();
 

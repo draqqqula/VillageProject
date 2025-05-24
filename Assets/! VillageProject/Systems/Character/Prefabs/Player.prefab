@@ -246,13 +246,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 4400724433860528703}
   _walkSoundSource: {fileID: 8735430252331922947}
-  _stopSoundSource: {fileID: 3401917504518335746}
   _walkingSounds:
   - {fileID: 8300000, guid: 096f256d266a2534bbf1725e3e25d829, type: 3}
   - {fileID: 8300000, guid: 71731cbeaf1edd146b833e72064482c5, type: 3}
-  _stopSound: {fileID: 8300000, guid: 50ac316c204fe784eb227e5455b215b1, type: 3}
   _interval: 0.5
-  _stopSoundCooldown: 0.3
 --- !u!82 &8735430252331922947
 AudioSource:
   m_ObjectHideFlags: 0
@@ -861,7 +858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: <Data>k__BackingField.Effects.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889540975359426962].Key
@@ -869,7 +866,7 @@ PrefabInstance:
       objectReference: {fileID: 8526392019573758389}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: <Data>k__BackingField.Components.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: <Data>k__BackingField.Conditions.Array.size
@@ -983,6 +980,86 @@ PrefabInstance:
       propertyPath: _noInterruptionWindow
       value: 0.9
       objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: <Info>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6759f8bc64dc3d945a478612106faa47, type: 2}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: 'managedReferences[8889541134996734129]'
+      value: Assembly-CSharp TeamDamageComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: 'managedReferences[8889541134996734130]'
+      value: Assembly-CSharp TransformDamageComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: 'managedReferences[8889541134996734131]'
+      value: Assembly-CSharp KeyComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: 'managedReferences[8889541134996734132]'
+      value: Assembly-CSharp RaycastOriginDamageComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: 'managedReferences[8889541134996734133]'
+      value: Assembly-CSharp HitWeakSpotEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: <Data>k__BackingField.Effects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[8889541134996734131].Key
+      value: 
+      objectReference: {fileID: 2199898837827217034}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: <Data>k__BackingField.Components.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: <Data>k__BackingField.Conditions.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: '<Data>k__BackingField.Effects.Array.data[0]'
+      value: 8889541134996734133
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[8889541134996734129].Member
+      value: 
+      objectReference: {fileID: 2355530964904927286}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[0]'
+      value: 8889541134996734129
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[1]'
+      value: 8889541134996734130
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[2]'
+      value: 8889541134996734131
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[3]'
+      value: 8889541134996734132
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[8889541134996734132]._origin
+      value: 
+      objectReference: {fileID: 6814062708651249968}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[8889541134996734130].Transform
+      value: 
+      objectReference: {fileID: 4040487405302074784}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[8889541134996734133]._modifier
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[8889541134996734132].<MaxDistance>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7233204979396179562, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: m_Name
       value: Hands
@@ -1001,10 +1078,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6781213716250072029, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2323221799235373157}
+    - targetCorrespondingSourceObject: {fileID: 6781213716250072029, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7743456974586285696}
+    - targetCorrespondingSourceObject: {fileID: 6781213716250072029, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7156360527672306457}
   m_SourcePrefab: {fileID: 100100000, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
 --- !u!1 &1957278229721415284 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7233204979396179562, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+  m_PrefabInstance: {fileID: 9171624299505158174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2199898837827217034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7048058527153450644, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
   m_PrefabInstance: {fileID: 9171624299505158174}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2401423861272746947 stripped
@@ -1038,9 +1126,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Window>k__BackingField: {fileID: 11400000, guid: ae118c43f4aacc54faba97b6327ea540, type: 2}
+--- !u!114 &7743456974586285696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2401423861272746947}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c545dd689961f24799c03798e6fe0e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Window>k__BackingField: {fileID: 11400000, guid: 94e7ff9902ad03c44a8c426ee59d356d, type: 2}
+--- !u!114 &7156360527672306457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2401423861272746947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1f62171e3f1f8499d9ea3af634ac20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _listener: {fileID: 7743456974586285696}
+  _object: {fileID: 2199898837827217034}
 --- !u!4 &3460619294044462891 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5714699988781143861, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+  m_PrefabInstance: {fileID: 9171624299505158174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4040487405302074784 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5141587221800863166, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
   m_PrefabInstance: {fileID: 9171624299505158174}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5552916549312351297 stripped

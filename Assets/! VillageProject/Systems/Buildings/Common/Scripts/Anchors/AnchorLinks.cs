@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.AppUI.UI;
 using UnityEngine;
 
 public class AnchorLinks : MonoBehaviour
@@ -48,19 +49,38 @@ public class AnchorLinks : MonoBehaviour
             var opposite = otherLinks.FirstOrDefault(it => it.Direction == oppositeDirection);
             if (mirrored == opposite && mirrored != null)
             {
+                link.Anchor.Links.ValidateVisual();
                 continue;
             }
             otherLinks.Remove(mirrored);
             otherLinks.Remove(opposite);
             otherLinks.Add(new LinkedAnchor(oppositeDirection, anchor));
+            link.Anchor.Links.ValidateVisual();
         }
-
+        ValidateVisual();
 #if UNITY_EDITOR
-        if (GUI.changed)
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+#endif
+    }
+
+    private void ValidateVisual()
+    {
+        var display = gameObject.GetComponentInChildren<LinkDisplay>(true);
+        display.gameObject.layer = LayerMask.NameToLayer("Overlay");
+        display.GenerateLinks();
+        var vfx = transform.Find("States/Visible/VFX").gameObject;
+        foreach (var child in vfx.GetComponentsInChildren<Transform>())
         {
-            UnityEditor.EditorUtility.SetDirty(this);
-            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            child.gameObject.layer = LayerMask.NameToLayer("Overlay");
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(child.gameObject);
+#endif
         }
+        vfx.layer = LayerMask.NameToLayer("Overlay");
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(vfx);
+        UnityEditor.EditorUtility.SetDirty(display);
+        UnityEditor.EditorUtility.SetDirty(display.gameObject);
 #endif
     }
 }

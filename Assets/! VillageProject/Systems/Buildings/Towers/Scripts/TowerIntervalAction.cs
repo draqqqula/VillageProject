@@ -36,10 +36,16 @@ public abstract class TowerIntervalAction : MonoBehaviour
             else
             {
                 _coroutine = null;
+                HandleBreak();
                 yield break;
             }
         }
     }
 
     protected abstract float Perform();
+
+    protected virtual void HandleBreak()
+    {
+
+    }
 }

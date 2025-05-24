@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1802941589652903267}
   - component: {fileID: 5668932354353675242}
   - component: {fileID: 6296112965617450976}
-  m_Layer: 13
+  m_Layer: 18
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ MonoBehaviour:
   _interval: 0.3
   _mask:
     serializedVersion: 2
-    m_Bits: 8321
+    m_Bits: 131201
   _particles: {fileID: 4276067083384923545}
   _sphere: {fileID: 7644253774558938636}
 --- !u!114 &3017732425668250845
@@ -330,12 +330,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 4771072104918107248}
     m_Modifications:
     - target: {fileID: 1616531522783736, guid: d26aaf76e6e2409448242b9a2d66f31f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1616531522783736, guid: d26aaf76e6e2409448242b9a2d66f31f, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1642322455942316, guid: d26aaf76e6e2409448242b9a2d66f31f, type: 3}
       propertyPath: m_Name
       value: smoke_thick
+      objectReference: {fileID: 0}
+    - target: {fileID: 1642322455942316, guid: d26aaf76e6e2409448242b9a2d66f31f, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4105057708622760, guid: d26aaf76e6e2409448242b9a2d66f31f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -498,7 +506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7173998236604818472, guid: 5026ef9fe5ae7bd4690ff5d87c80b8fc, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
