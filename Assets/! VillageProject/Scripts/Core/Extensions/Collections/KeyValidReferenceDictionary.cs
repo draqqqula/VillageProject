@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem;
 
-public class KeyValidReferenceDictionary<TKey, TValue> : IDictionary<TKey, TValue> where TKey : UnityEngine.Object
+public class KeyValidReferenceDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue> where TKey : UnityEngine.Object
 {
     private readonly IDictionary<TKey, TValue> _inner = new Dictionary<TKey, TValue>();
 
@@ -35,6 +35,10 @@ public class KeyValidReferenceDictionary<TKey, TValue> : IDictionary<TKey, TValu
     public int Count => GetUpdatedItems().Count();
 
     public bool IsReadOnly => false;
+
+    IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+
+    IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
 
     public void Add(TKey key, TValue value)
     {

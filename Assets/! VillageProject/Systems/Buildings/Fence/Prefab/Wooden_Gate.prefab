@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 2971634728623416961}
   - component: {fileID: 4087502778215016156}
   - component: {fileID: 784608083519715094}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Door.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 1136519668359800130}
   - component: {fileID: 6286689947253544170}
   - component: {fileID: 9052882619356743812}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Door.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51e9959ff8352b4883c3c6442821af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Priority>k__BackingField: 0
+  <Priority>k__BackingField: -1
 --- !u!114 &2705789490830106555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,7 +447,8 @@ MonoBehaviour:
     - rid: 8889541055079776361
     - rid: 8889541055079776362
     Conditions: []
-    Effects: []
+    Effects:
+    - rid: 8889541077617082467
   <Amount>k__BackingField: 15
   references:
     version: 2
@@ -460,6 +461,11 @@ MonoBehaviour:
       type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
       data:
         Member: {fileID: 948848763175444669}
+    - rid: 8889541077617082467
+      type: {class: TriggerAnimatorEffect, ns: , asm: Assembly-CSharp}
+      data:
+        Animator: {fileID: 2806308279671874773}
+        Trigger: Damage
 --- !u!114 &5346194551346715880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -744,7 +750,7 @@ GameObject:
   - component: {fileID: 6548601803714981353}
   - component: {fileID: 5650142605813309226}
   - component: {fileID: 8433466774233386164}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Doorway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,6 +836,7 @@ GameObject:
   - component: {fileID: 4785530286210580575}
   - component: {fileID: 2806308279671874773}
   - component: {fileID: 7192404346196671724}
+  - component: {fileID: 9212047837172498996}
   m_Layer: 7
   m_Name: Wooden_Gate
   m_TagString: Untagged
@@ -898,3 +905,28 @@ MonoBehaviour:
   _animator: {fileID: 2806308279671874773}
   _hitbox: {fileID: 4892622090762266247}
   <Current>k__BackingField: 1
+--- !u!114 &9212047837172498996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638632888674053106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edac518a09de2214f91006041e1b427a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _options: []
+  <Name>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2
+    m_TableEntryReference:
+      m_KeyId: 15955845120
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6681491927928343442}
   - component: {fileID: 4570911635610671160}
+  - component: {fileID: 92664872371513846}
   m_Layer: 0
   m_Name: Active
   m_TagString: Untagged
@@ -45,6 +46,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe50553a5702f849b02748214ba78c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &92664872371513846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227547422923211209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a2807d07776b341a8e43b49bba1ec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectable: {fileID: 5334991123922898130}
+--- !u!1 &1155921415845578258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2918706629226330874}
+  - component: {fileID: 760944437642289057}
+  m_Layer: 0
+  m_Name: Building
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2918706629226330874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155921415845578258}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1548620879013740014}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &760944437642289057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155921415845578258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27dbf80d86c3ea7408b5cdca131fb4ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Instance>k__BackingField: {fileID: 0}
 --- !u!1 &1756304354845490402
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,6 +194,7 @@ GameObject:
   - component: {fileID: 1548620879013740014}
   - component: {fileID: 2749729034289376196}
   - component: {fileID: 1589865477453413275}
+  - component: {fileID: 5334991123922898130}
   m_Layer: 0
   m_Name: Anchor
   m_TagString: Untagged
@@ -156,6 +216,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8949480295546847369}
+  - {fileID: 2918706629226330874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2749729034289376196
@@ -184,6 +245,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Links>k__BackingField: {fileID: 2749729034289376196}
+--- !u!114 &5334991123922898130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2707043120984444651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8426115251593083482}
+        m_TargetAssemblyTypeName: BuildingMenuLoader, Assembly-CSharp
+        m_MethodName: Load
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4081657970428551885
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,6 +389,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8816646208697658956}
+  - component: {fileID: 8426115251593083482}
+  - component: {fileID: 7079482527415694765}
   m_Layer: 0
   m_Name: Targeted
   m_TagString: Untagged
@@ -294,6 +413,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8949480295546847369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8426115251593083482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8619042590628625226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842237e164403b14bb288fb7c9e94b84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buildingRoot: {fileID: 760944437642289057}
+--- !u!114 &7079482527415694765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8619042590628625226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e2d046a8006237488abb424aeacc864, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectable: {fileID: 5334991123922898130}
 --- !u!1001 &1699894044791463550
 PrefabInstance:
   m_ObjectHideFlags: 0

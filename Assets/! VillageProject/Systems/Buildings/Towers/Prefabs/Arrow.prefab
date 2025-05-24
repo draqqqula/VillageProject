@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 3938190265022249069}
   - component: {fileID: 6099484905878034266}
   - component: {fileID: 5683293508219481640}
+  - component: {fileID: 6236400959978826394}
+  - component: {fileID: 9191432750880202387}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -76,7 +78,35 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  TargetLost:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6236400959978826394}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 9191432750880202387}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _speed: 25
+  _penetrationDepth: 1
   <Source>k__BackingField: {fileID: 0}
   <Destination>k__BackingField: {fileID: 0}
 --- !u!114 &670902638927328873
@@ -157,6 +187,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Team>k__BackingField: {fileID: 11400000, guid: 298386bd74f26414f970c4761992fd76, type: 2}
+--- !u!114 &6236400959978826394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822112668561322717}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75e9077e13c842409037f65403b4388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _surfaces:
+    serializedVersion: 2
+    m_Bits: 128
+  _speed: 25
+  _penetrationDepth: 0.2
+  OnSurfaceHit:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &9191432750880202387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822112668561322717}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3e6992d10a0e34098be07875bc209a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _delay: 10
 --- !u!1001 &1818618588374793059
 PrefabInstance:
   m_ObjectHideFlags: 0
