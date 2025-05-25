@@ -78,6 +78,7 @@ public class AnchorLinks : MonoBehaviour
         }
         vfx.layer = LayerMask.NameToLayer("Overlay");
 #if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
         UnityEditor.EditorUtility.SetDirty(vfx);
         UnityEditor.EditorUtility.SetDirty(display);
         UnityEditor.EditorUtility.SetDirty(display.gameObject);
