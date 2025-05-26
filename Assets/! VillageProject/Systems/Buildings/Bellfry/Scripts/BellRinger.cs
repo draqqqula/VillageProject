@@ -12,6 +12,7 @@ public class BellRinger : MonoBehaviour
     [SerializeField] private float _smallAlarmAmplitude;
     [SerializeField] private float _bigAlarmAmplitude;
     [SerializeField] private Vector3 _direction;
+    [SerializeField] private Transform _activeElement;
     private IDisposable _subscription;
     private Coroutine _ringing;
 
@@ -74,7 +75,7 @@ public class BellRinger : MonoBehaviour
             while (t < intervalDuration)
             {
                 var a = Mathf.Sin(2 * (t / intervalDuration) * Mathf.PI) * amplitude;
-                transform.eulerAngles = _direction * a;
+                _activeElement.eulerAngles = _direction * a;
                 yield return new WaitForEndOfFrame();
                 t += Time.deltaTime;
             }

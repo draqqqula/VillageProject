@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GoNextSceneOnInput : InputListener
 {
-    private const string SceneName = "PlaseholderVillagePlaytest";
+    [SerializeField] private string SceneName = "PlaseholderVillagePlaytest";
 
     [SerializeField, FromInputActionAsset("Jump")] public InputActionReference Restart;
 

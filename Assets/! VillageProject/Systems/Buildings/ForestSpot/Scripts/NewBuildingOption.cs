@@ -16,11 +16,13 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
     {
         public string Name;
         public Price Price;
+        public string Description;
 
-        public NewBuildingData(string name, Price price)
+        public NewBuildingData(string name, Price price, string description)
         {
             Name = name;
             Price = price;
+            Description = description;
         }
     }
 
@@ -31,6 +33,7 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
     [field: SerializeField] public GameObject BuildingPrefab { get; private set; }
     [field: SerializeField] public GameObject PreviewPrefab { get; private set; }
     [field: SerializeField] public PriceReference Price { get; private set; }
+    [field: SerializeField] public string Description { get; private set; }
 
     public override ReadOnlyReactiveProperty<NewBuildingData> Data => _data;
 
@@ -65,6 +68,6 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
     {
         _slot = GetComponentInParent<SingleInstance>();
         var name = BuildingPrefab.GetComponent<BuildingInfo>().Name.GetLocalizedString();
-        _data.Value = new NewBuildingData(name, Price.Value);
+        _data.Value = new NewBuildingData(name, Price.Value, Description);
     }
 }
