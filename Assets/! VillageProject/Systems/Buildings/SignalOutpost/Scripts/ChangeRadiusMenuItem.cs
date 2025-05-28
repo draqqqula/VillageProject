@@ -36,12 +36,12 @@ public class ChangeRadiusMenuItem : BuildingMenuItemBase<SignalTowerRangeData>
         SetRadius();
     }
 
-    public override void ShowPreview()
+    public override void ShowPreview(GameObject ui)
     {
         _rangeDisplay.SetActive(true);
     }
 
-    public override void HidePreview()
+    public override void HidePreview(GameObject ui)
     {
         _rangeDisplay.SetActive(false);
     }

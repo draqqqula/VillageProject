@@ -43,10 +43,10 @@ public class BuildingMenuDisplay : MonoBehaviour
             var item = _optionList.Add(ui);
             item.SetActive(option.Enabled.CurrentValue);
             var button = item.GetComponent<Button>();
-            Subscribe(button.OnSelectAsObservable(), value => option.ShowPreview());
-            Subscribe(button.OnDeselectAsObservable(), value => option.HidePreview());
-            Subscribe(button.OnDisableAsObservable(), value => option.HidePreview());
-            Subscribe(button.OnDestroyAsObservable(), value => option.HidePreview());
+            Subscribe(button.OnSelectAsObservable(), value => option.ShowPreview(ui));
+            Subscribe(button.OnDeselectAsObservable(), value => option.HidePreview(ui));
+            Subscribe(button.OnDisableAsObservable(), value => option.HidePreview(ui));
+            Subscribe(button.OnDestroyAsObservable(), value => option.HidePreview(ui));
             Subscribe(button.OnClickAsObservable(), value => option.TryPerform());
             Subscribe(option.Enabled, value => HandleOptionEnabled(value, item));
         }

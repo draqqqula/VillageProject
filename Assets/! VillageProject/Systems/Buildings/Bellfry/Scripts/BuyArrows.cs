@@ -17,11 +17,11 @@ public class BuyArrows : BuildingMenuItemBase<BuyArrowsData>
         [SerializeField] public ResourceAmount Amount;
     }
 
-    public override void ShowPreview()
+    public override void ShowPreview(GameObject ui)
     {
     }
 
-    public override void HidePreview()
+    public override void HidePreview(GameObject ui)
     {
     }
 

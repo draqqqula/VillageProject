@@ -39,11 +39,11 @@ public class FixGatesMenuOption : BuildingMenuItemBase<FixGatesMenuOption.FixGat
 
     public override ReadOnlyReactiveProperty<bool> Available => new ReactiveProperty<bool>();
 
-    public override void HidePreview()
+    public override void HidePreview(GameObject ui)
     {
     }
 
-    public override void ShowPreview()
+    public override void ShowPreview(GameObject ui)
     {
     }
 

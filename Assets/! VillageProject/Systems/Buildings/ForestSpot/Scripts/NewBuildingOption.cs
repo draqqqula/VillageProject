@@ -16,13 +16,11 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
     {
         public string Name;
         public Price Price;
-        public string Description;
 
-        public NewBuildingData(string name, Price price, string description)
+        public NewBuildingData(string name, Price price)
         {
             Name = name;
             Price = price;
-            Description = description;
         }
     }
 
@@ -51,23 +49,27 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
         return false;
     }
 
-    public override void ShowPreview()
+    public override void ShowPreview(GameObject ui)
     {
         var parent = _slot.transform;
         _previewObject = Instantiate(PreviewPrefab, parent);
+        var showDescription = ui.GetComponent<ShowDescription>();
+        showDescription.enabled = true;
+        showDescription.SetText(Description);
     }
-    public override void HidePreview()
+    public override void HidePreview(GameObject ui)
     {
         if (_previewObject != null)
         {
             Destroy(_previewObject);
         }
+        ui.GetComponent<ShowDescription>().enabled = false;
     }
 
     private void Start()
     {
         _slot = GetComponentInParent<SingleInstance>();
         var name = BuildingPrefab.GetComponent<BuildingInfo>().Name.GetLocalizedString();
-        _data.Value = new NewBuildingData(name, Price.Value, Description);
+        _data.Value = new NewBuildingData(name, Price.Value);
     }
 }

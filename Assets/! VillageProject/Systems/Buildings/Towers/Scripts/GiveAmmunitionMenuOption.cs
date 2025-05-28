@@ -46,11 +46,11 @@ public class GiveAmmunitionMenuOption : BuildingMenuItemBase<GiveAmmunitionData>
         }
     }
 
-    public override void HidePreview()
+    public override void HidePreview(GameObject ui)
     {
     }
 
-    public override void ShowPreview()
+    public override void ShowPreview(GameObject ui)
     {
     }
 

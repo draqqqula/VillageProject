@@ -11,8 +11,8 @@ public abstract class BuildingMenuItemBase : ObservableBehaviour
         GetComponentInParent<BuildingInfo>().Refresh();
     }
     public abstract ReadOnlyReactiveProperty<bool> Available { get; }
-    public abstract void ShowPreview();
-    public abstract void HidePreview();
+    public abstract void ShowPreview(GameObject ui);
+    public abstract void HidePreview(GameObject ui);
     public abstract bool TryPerform();
     public abstract GameObject GetUI(Transform transform);
 }
