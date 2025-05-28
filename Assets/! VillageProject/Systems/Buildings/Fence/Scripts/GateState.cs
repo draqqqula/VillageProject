@@ -16,7 +16,19 @@ public class GateState : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private GameObject _hitbox;
     [field: SerializeField] public State Current { get; private set; }
-    
+
+    public void Fix()
+    {
+        if (Current != State.Broken)
+        {
+            return;
+        }
+        Current = State.Closed;
+        _animator.SetBool(Broken, false);
+        _animator.SetBool(Opened, false);
+        _animator.ResetTrigger(Damage);
+    }
+
     public void Break()
     {
         Current = State.Broken;

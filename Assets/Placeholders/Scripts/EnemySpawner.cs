@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using Unity.Behavior;
 using UnityEngine;
+using Zenject;
 
 public class EnemySpawner : MonoBehaviour
 {
     public Action<GameObject> OnUnitSpawned;
+    [Inject] DiContainer _container;
     [SerializeField] private float _aiDelay;
     [SerializeField] private GameObject _village;
     [SerializeField] private GameObject _road;
@@ -33,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
 
     private GameObject Spawn(GameObject unit)
     {
-        var enemy = Instantiate(unit, transform.position, transform.rotation);
+        var enemy = _container.InstantiatePrefab(unit, transform.position, transform.rotation, null);
         var ai = enemy.GetComponent<BehaviorGraphAgent>();
         ai.enabled = false;
         StartCoroutine(DelayAI(ai));

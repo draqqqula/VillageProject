@@ -12,6 +12,8 @@ public class WaveController : MonoBehaviour
 {
     public UnityEvent AllWavesCompleted;
     public UnityEvent<int> OnWaveStarted;
+    public UnityEvent BreakStarted;
+    public UnityEvent BreakFinished;
     [SerializeField] private NightInfo _night;
     [SerializeField] private List<EnemySpawner> _spawners;
     private bool _spawnComplete;
@@ -43,7 +45,9 @@ public class WaveController : MonoBehaviour
             yield break;
         }
 
+        BreakStarted?.Invoke();
         yield return new WaitForSeconds(_wavesSequence.Current.Item1.PreparationTime);
+        BreakFinished?.Invoke();
 
         OnWaveStarted?.Invoke(_wavesSequence.Current.Item2);
         var wave = _wavesSequence.Current.Item1.Wave;

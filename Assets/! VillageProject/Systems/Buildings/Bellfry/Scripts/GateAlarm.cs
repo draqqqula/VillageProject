@@ -1,4 +1,5 @@
 using R3;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ public class GateAlarm : MonoBehaviour
     [SerializeField] private List<GateState> Gates;
     [SerializeField] private float _smallAlarmDuration;
     private Coroutine _smallAlarmCancellation;
+    private IDisposable _subsription;
 
     public ReadOnlyReactiveProperty<AlarmStatus> Alarm => _alarmStatus;
 
@@ -29,8 +31,10 @@ public class GateAlarm : MonoBehaviour
     {
         foreach (var gate in Gates)
         {
-            gate.GetComponentInChildren<Health>().OnDamageDealt += HandleKnocked;
-            gate.GetComponentInChildren<DeathEvent>().FiredEvent += HandleGateBroken;
+            _subsription = gate.GetComponentInChildren<Health>().AmountReactive
+                .Subscribe(HandleKnocked)
+                .AddTo(this);
+            gate.GetComponentInChildren<DeathEvent>(true).FiredEvent += HandleGateBroken;
         }
     }
 
@@ -38,13 +42,18 @@ public class GateAlarm : MonoBehaviour
     {
         foreach (var gate in Gates)
         {
-            gate.GetComponentInChildren<Health>().OnDamageDealt -= HandleKnocked;
-            gate.GetComponentInChildren<DeathEvent>().FiredEvent -= HandleGateBroken;
+            _subsription?.Dispose();
+            gate.GetComponentInChildren<DeathEvent>(true).FiredEvent -= HandleGateBroken;
         }
     }
 
-    private void HandleKnocked(float damage)
+    private void HandleKnocked(float health)
     {
+        if (health > 0 && _alarmStatus.CurrentValue == AlarmStatus.BigAlarm)
+        {
+            TryCancelBigAlarm();
+            return;
+        }
         if (_alarmStatus.Value == AlarmStatus.BigAlarm)
         {
             return;
@@ -72,6 +81,14 @@ public class GateAlarm : MonoBehaviour
         {
             StopCoroutine(_smallAlarmCancellation);
             _smallAlarmCancellation = null;
+        }
+    }
+
+    private void TryCancelBigAlarm()
+    {
+        if (Gates.All(it => it.GetComponentInChildren<Health>(true).Amount > 0))
+        {
+            _alarmStatus.Value = AlarmStatus.Quiet;
         }
     }
 }

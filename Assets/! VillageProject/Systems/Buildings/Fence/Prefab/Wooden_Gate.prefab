@@ -374,6 +374,7 @@ GameObject:
   - component: {fileID: 4594150172894078841}
   - component: {fileID: 948848763175444669}
   - component: {fileID: 8128482272931895168}
+  - component: {fileID: 4771904073367987077}
   m_Layer: 7
   m_Name: Hurtbox
   m_TagString: damageable
@@ -446,6 +447,7 @@ MonoBehaviour:
     Components:
     - rid: 8889541055079776361
     - rid: 8889541055079776362
+    - rid: 6306945575159595130
     Conditions: []
     Effects:
     - rid: 8889541077617082467
@@ -453,6 +455,10 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 6306945575159595130
+      type: {class: MaxHealthComponent, ns: , asm: Assembly-CSharp}
+      data:
+        <MaxHealth>k__BackingField: 15
     - rid: 8889541055079776361
       type: {class: InvincibilityComponent, ns: , asm: Assembly-CSharp}
       data:
@@ -566,6 +572,26 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &4771904073367987077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4892622090762266247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Data>k__BackingField:
+    Components: []
+    Conditions: []
+    Effects: []
+  <Info>k__BackingField: {fileID: 11400000, guid: d1c79d24735ecaf48832c19f557f8f6d, type: 2}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &5690219174216110753
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,6 +863,7 @@ GameObject:
   - component: {fileID: 2806308279671874773}
   - component: {fileID: 7192404346196671724}
   - component: {fileID: 9212047837172498996}
+  - component: {fileID: 5999643507407786837}
   m_Layer: 7
   m_Name: Wooden_Gate
   m_TagString: Untagged
@@ -917,7 +944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edac518a09de2214f91006041e1b427a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _options: []
+  _options:
+  - {fileID: 5999643507407786837}
   <Name>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2
@@ -930,3 +958,19 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &5999643507407786837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638632888674053106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc7eb8f5aafdcad4c82a7df260d4e06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 2705789490830106555}
+  _price: {fileID: 11400000, guid: 34c47749c6f195745a082c05010d9182, type: 2}
+  _healing: {fileID: 4771904073367987077}
+  _gateState: {fileID: 7192404346196671724}
