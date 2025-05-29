@@ -56,6 +56,7 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
         var showDescription = ui.GetComponent<ShowDescription>();
         showDescription.enabled = true;
         showDescription.SetText(Description);
+        showDescription.gameObject.GetComponentInParent<LayoutHelper>().Rebuild();
     }
     public override void HidePreview(GameObject ui)
     {

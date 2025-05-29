@@ -1,23 +1,60 @@
-﻿using System.Collections;
+﻿using R3;
+using R3.Triggers;
+using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
+using UnityEngine.UI;
 
 public class BuyArrowsDataLoader : DataDisplay<BuyArrows.BuyArrowsData>
 {
+    private const string Amount = "amount";
+
+    [SerializeField] private GameObject _arrowsDisplayPrefab;
+    [SerializeField] private Selectable _selectable;
     [SerializeField] private ResourceVariable _resource;
     [SerializeField] private TMP_Text _Price;
-    [SerializeField] private TMP_Text _Amount;
-    [SerializeField] private TMP_Text _ResourceDisplay;
+    [SerializeField] private LocalizeStringEvent _Amount;
+    private Canvas _canvas;
+    private GameObject _arrowsDisplayInstance;
 
     public override void Load(BuyArrows.BuyArrowsData data)
     {
-        _Amount.text = "Купить " + data.Amount.ToString() + " стрел";
-        _Price.text = "Стоит " + data.Price.Required.First().Amount.ToString() + " золота";
+        _canvas = GetComponentInParent<Canvas>(true);
+        ((IntVariable)_Amount.StringReference[Amount]).Value = (int)data.Amount.Amount;
+        _Price.text = data.Price.Required.First().Amount.ToString();
+        _selectable.OnSelectAsObservable().Subscribe(HandleSelected).AddTo(this);
+        _selectable.OnDeselectAsObservable().Subscribe(HandleDeselected).AddTo(this);
+        _selectable.OnDisableAsObservable().Subscribe(HandleDisabled).AddTo(this);
     }
 
-    private void Update()
+    private void HandleSelected(BaseEventData data)
     {
-        _ResourceDisplay.text = "При себе " + _resource.Amount + "Стрел";
+        if (_arrowsDisplayInstance != null)
+        {
+            return;
+        }
+        _arrowsDisplayInstance = Instantiate(_arrowsDisplayPrefab, _canvas.transform);
+    }
+
+    private void HandleDeselected(BaseEventData data)
+    {
+        if (_arrowsDisplayInstance == null)
+        {
+            return;
+        }
+        Destroy(_arrowsDisplayInstance);
+    }
+
+    private void HandleDisabled(Unit data)
+    {
+        if (_arrowsDisplayInstance == null)
+        {
+            return;
+        }
+        Destroy(_arrowsDisplayInstance);
     }
 }
