@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using R3;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,6 +12,8 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
 {
     [SerializeField] private NavMeshAgent _navMeshAgent;
     [SerializeField] private float _raycastHeight;
+    [SerializeField] private Speed _speed;
+    [SerializeField] private float _speedModifier;
     private IDestination _destination;
     private Vector3 _cachedDestination;
     private float _distance;
@@ -22,7 +25,7 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
 
     public override void HandleCancellation()
     {
-
+        base.HandleCancellation();
     }
 
     protected override bool TryAcceptInstructions(NavMeshPath path)
@@ -36,9 +39,21 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
         return false;
     }
 
+    private void Awake()
+    {
+        _speed.Value
+            .Subscribe(HandleSpeedChanged)
+            .AddTo(this);
+    }
+
     private void OnEnable()
     {
         ConnectToNavmesh();
+    }
+
+    private void HandleSpeedChanged(float newValue)
+    {
+        _navMeshAgent.speed = newValue * _speedModifier;
     }
 
     private void OnDisable()

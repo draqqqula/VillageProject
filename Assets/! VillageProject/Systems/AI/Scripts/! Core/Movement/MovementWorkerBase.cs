@@ -31,6 +31,7 @@ public abstract class MovementWorkerBase<T> : MovementWorkerBase, IMovementInsru
 
     public override void HandleCancellation()
     {
+        base.SignalWorkCompleted();
         CurrentWork.Finish(WorkResult.Interrupted);
         CurrentWork = null;
     }

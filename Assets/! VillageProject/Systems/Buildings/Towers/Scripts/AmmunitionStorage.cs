@@ -4,12 +4,14 @@ using UnityEngine;
 public class AmmunitionStorage : MonoBehaviour
 {
     [SerializeField] private TowerDamageOverTime _tower;
+    [SerializeReference, SubclassSelector] private ProjectileSpawner _defaultSpawner;
     private ReactiveProperty<TowerAmmunition> _ammunition = new ReactiveProperty<TowerAmmunition>();
     private ReactiveProperty<uint> _amount = new ReactiveProperty<uint>(0);
     public ReadOnlyReactiveProperty<ResourceAmount> Amount { get; private set; }
 
     private void Awake()
     {
+        _tower.Spawner = _defaultSpawner;
         _tower.ProjectileFired += HandleProjectileFired;
         Amount = _amount
             .CombineLatest(_ammunition, (amount, ammunition) => new ResourceAmount(ammunition?.Resource, amount))
@@ -68,7 +70,7 @@ public class AmmunitionStorage : MonoBehaviour
         if (_amount.Value == 0)
         {
             _ammunition.Value = null;
-            _tower.Spawner = null;
+            _tower.Spawner = _defaultSpawner;
         }
     }
 }

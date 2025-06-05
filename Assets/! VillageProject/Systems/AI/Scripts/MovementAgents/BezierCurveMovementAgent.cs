@@ -11,9 +11,10 @@ public class BezierCurveMovementAgent : MovementWorkerBase<BezierPathWithStart>,
 {
     private float _progressDistance;
 
-    [SerializeField] private float _speed;
+    [SerializeField] private float _speedModifier;
     [SerializeField] private float _elevation;
     [SerializeField] private BezierSpline _spline;
+    [SerializeField] private Speed _speed;
 
     [Header("Raycast")]
     [SerializeField] private LayerMask _raycastLayerMask;
@@ -33,6 +34,7 @@ public class BezierCurveMovementAgent : MovementWorkerBase<BezierPathWithStart>,
 
     public override void HandleCancellation()
     {
+        base.HandleCancellation();
     }
 
     public bool TrySetInstructions(BezierSpline instructions, out IWorkEventSource<WorkResult> source)
@@ -52,7 +54,7 @@ public class BezierCurveMovementAgent : MovementWorkerBase<BezierPathWithStart>,
 
     private void FixedUpdate()
     {
-        _progressDistance = Mathf.Clamp(_progressDistance + _speed, 0, _spline.length);
+        _progressDistance = Mathf.Clamp(_progressDistance + _speed.Value.CurrentValue * _speedModifier, 0, _spline.length);
         var progress = GetProgress();
         var pointInSpline = _spline.GetPoint(progress);
         var direction = _spline.GetNormal(progress);

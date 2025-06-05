@@ -375,6 +375,7 @@ GameObject:
   - component: {fileID: 948848763175444669}
   - component: {fileID: 8128482272931895168}
   - component: {fileID: 4771904073367987077}
+  - component: {fileID: 8017849101043197322}
   m_Layer: 7
   m_Name: Hurtbox
   m_TagString: damageable
@@ -592,6 +593,34 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &8017849101043197322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4892622090762266247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1afe8b210a282c246bfe70051985aad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Callback:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3468123147850131063}
+        m_TargetAssemblyTypeName: GatesBreakingWarning, Assembly-CSharp
+        m_MethodName: Renew
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _health: {fileID: 2705789490830106555}
 --- !u!1 &5690219174216110753
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +893,9 @@ GameObject:
   - component: {fileID: 7192404346196671724}
   - component: {fileID: 9212047837172498996}
   - component: {fileID: 5999643507407786837}
+  - component: {fileID: 5585753674597020949}
+  - component: {fileID: 3468123147850131063}
+  - component: {fileID: 1384682311671238909}
   m_Layer: 7
   m_Name: Wooden_Gate
   m_TagString: Untagged
@@ -974,3 +1006,95 @@ MonoBehaviour:
   _price: {fileID: 11400000, guid: 34c47749c6f195745a082c05010d9182, type: 2}
   _healing: {fileID: 4771904073367987077}
   _gateState: {fileID: 7192404346196671724}
+--- !u!114 &5585753674597020949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638632888674053106}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f24060e215590341bef04ed1e2d06e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _marker: {fileID: 2047087295108565726, guid: 65c99544088c64042902ed640faf7f07, type: 3}
+--- !u!114 &3468123147850131063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638632888674053106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f51747cb23fc54a8bb09c37916823a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Started:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5585753674597020949}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1384682311671238909}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  Stopped:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5585753674597020949}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1384682311671238909}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1384682311671238909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638632888674053106}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cafc7c799c4ecd4d87a690e02484a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tracker: {fileID: 5585753674597020949}
