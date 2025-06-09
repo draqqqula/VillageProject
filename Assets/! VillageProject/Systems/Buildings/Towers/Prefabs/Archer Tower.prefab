@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5666561135211183262}
   - component: {fileID: 2805341447617116203}
   - component: {fileID: 8412005407044101625}
-  - component: {fileID: 8074317731481380474}
   m_Layer: 0
   m_Name: AttackReach
   m_TagString: Untagged
@@ -124,22 +123,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _team: {fileID: 4226481529840161161}
---- !u!114 &8074317731481380474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6084123627870945827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c209bfc765d9894ea55aa93563ea71d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _amount: 5
-  <Storage>k__BackingField: {fileID: 5666561135211183262}
-  <Price>k__BackingField: {fileID: 11400000, guid: 9cce72ca0eb00a740a284d59f9192a0f, type: 2}
-  <Ammunition>k__BackingField: {fileID: 11400000, guid: a9afa827a570aaf448e81a08a7d3b656, type: 2}
 --- !u!1 &8862546195155982014
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +186,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _options:
   - {fileID: 2805341447617116203}
-  - {fileID: 8074317731481380474}
   <Name>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2
