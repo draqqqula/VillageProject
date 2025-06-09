@@ -18,7 +18,7 @@ public class EnterOnlyInputActiob : MonoBehaviour
 
     private void HandleEnter(InputAction.CallbackContext context)
     {
-eee        if (!_target.activeSelf)
+        if (!_target.activeSelf)
         {
             _enter.action.Reset();
             _target.SetActive(true);
