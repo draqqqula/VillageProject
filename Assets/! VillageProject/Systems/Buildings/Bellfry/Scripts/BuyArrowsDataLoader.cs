@@ -18,14 +18,17 @@ public class BuyArrowsDataLoader : DataDisplay<BuyArrows.BuyArrowsData>
     [SerializeField] private ResourceVariable _resource;
     [SerializeField] private TMP_Text _Price;
     [SerializeField] private LocalizeStringEvent _Amount;
+    [SerializeField] private Image _Image;
     private Canvas _canvas;
     private GameObject _arrowsDisplayInstance;
 
     public override void Load(BuyArrows.BuyArrowsData data)
     {
         _canvas = GetComponentInParent<Canvas>(true);
+        _Amount.StringReference.SetReference(data.Label.TableReference, data.Label.TableEntryReference);
         ((IntVariable)_Amount.StringReference[Amount]).Value = (int)data.Amount.Amount;
         _Price.text = data.Price.Required.First().Amount.ToString();
+        _Image.sprite = data.Sprite;
         _selectable.OnSelectAsObservable().Subscribe(HandleSelected).AddTo(this);
         _selectable.OnDeselectAsObservable().Subscribe(HandleDeselected).AddTo(this);
         _selectable.OnDisableAsObservable().Subscribe(HandleDisabled).AddTo(this);

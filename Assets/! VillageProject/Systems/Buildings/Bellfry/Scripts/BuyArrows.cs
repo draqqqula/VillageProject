@@ -1,6 +1,7 @@
 using R3;
 using System;
 using UnityEngine;
+using UnityEngine.Localization;
 using static BuyArrows;
 
 public class BuyArrows : BuildingMenuItemBase<BuyArrowsData>
@@ -13,8 +14,10 @@ public class BuyArrows : BuildingMenuItemBase<BuyArrowsData>
     [Serializable]
     public class BuyArrowsData
     {
+        [SerializeField] public Sprite Sprite;
         [SerializeField] public Price Price;
         [SerializeField] public ResourceAmount Amount;
+        [SerializeField] public LocalizedString Label;
     }
 
     public override void ShowPreview(GameObject ui)

@@ -2469,9 +2469,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1919023754}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -248}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 8}
   m_SizeDelta: {x: 423.23, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &128283129
@@ -2521,8 +2521,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -13330,7 +13330,6 @@ Transform:
   - {fileID: 1222967562}
   - {fileID: 1407503953}
   - {fileID: 327566847}
-  - {fileID: 1227341056}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &731110810
@@ -19933,7 +19932,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1227341055}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -19941,7 +19940,7 @@ Transform:
   - {fileID: 1929619228}
   - {fileID: 1554475349}
   - {fileID: 1681081118}
-  m_Father: {fileID: 731110809}
+  m_Father: {fileID: 1581741246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1230541026
 Mesh:
@@ -25202,6 +25201,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7295254804568409081, guid: ca59310506506c94bad7d6948968f9c9, type: 3}
+      propertyPath: m_spline
+      value: 
+      objectReference: {fileID: 1407503954}
+    - target: {fileID: 7295254804568409081, guid: ca59310506506c94bad7d6948968f9c9, type: 3}
+      propertyPath: prevSpline
+      value: 
+      objectReference: {fileID: 1407503954}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26949,6 +26956,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4237693515271046312, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1132825770}
+    - targetCorrespondingSourceObject: {fileID: 4237693515271046312, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1227341056}
     - targetCorrespondingSourceObject: {fileID: 6241880914175340872, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 128283128}
@@ -27676,6 +27686,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7295254804568409081, guid: ca59310506506c94bad7d6948968f9c9, type: 3}
+      propertyPath: m_spline
+      value: 
+      objectReference: {fileID: 327566848}
+    - target: {fileID: 7295254804568409081, guid: ca59310506506c94bad7d6948968f9c9, type: 3}
+      propertyPath: prevSpline
+      value: 
+      objectReference: {fileID: 327566848}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

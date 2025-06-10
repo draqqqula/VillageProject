@@ -1,10 +1,13 @@
 using R3;
 using UnityEngine;
+using UnityEngine.Localization;
 using static GiveAmmunitionMenuOption;
 
 public class GiveAmmunitionMenuOption : BuildingMenuItemBase<GiveAmmunitionData>
 {
     private ReadOnlyReactiveProperty<GiveAmmunitionData> _data;
+    [SerializeField] private LocalizedString _label;
+    [SerializeField] private Sprite _sprite;
     [SerializeField] private uint _amount;
     [field: SerializeField] public AmmunitionStorage Storage { get; private set; }
     [field: SerializeField] public PriceReference Price {  get; private set; }
@@ -12,7 +15,7 @@ public class GiveAmmunitionMenuOption : BuildingMenuItemBase<GiveAmmunitionData>
     public override ReadOnlyReactiveProperty<GiveAmmunitionData> Data => Storage.Amount
             .CombineLatest(Ammunition.Resource.AmountReactive,
             (storageAmount, resourceAmount) =>
-            new GiveAmmunitionData(storageAmount.Resource, Ammunition.Resource, resourceAmount, storageAmount.Amount, _amount, Ammunition.MaxAmount))
+            new GiveAmmunitionData(storageAmount.Resource, Ammunition.Resource, resourceAmount, storageAmount.Amount, _amount, Ammunition.MaxAmount, _label, _sprite))
             .ToReadOnlyReactiveProperty()
             .AddTo(this);
     public override ReadOnlyReactiveProperty<bool> Available => Price.Available
@@ -28,6 +31,8 @@ public class GiveAmmunitionMenuOption : BuildingMenuItemBase<GiveAmmunitionData>
         public uint StorageAmount;
         public uint BuyAmount;
         public uint MaxAmount;
+        public LocalizedString Label;
+        public Sprite Icon;
 
         public GiveAmmunitionData(
             ResourceVariable storageResource, 
@@ -35,7 +40,9 @@ public class GiveAmmunitionMenuOption : BuildingMenuItemBase<GiveAmmunitionData>
             uint resourceAmount, 
             uint storageAmount, 
             uint buyAmount,
-            uint maxAmount)
+            uint maxAmount,
+            LocalizedString label, 
+            Sprite sprite)
         {
             StorageResource = storageResource;
             BuyResource = buyResource;
@@ -43,6 +50,8 @@ public class GiveAmmunitionMenuOption : BuildingMenuItemBase<GiveAmmunitionData>
             StorageAmount = storageAmount;
             BuyAmount = buyAmount;
             MaxAmount = maxAmount;
+            Label = label;
+            Icon = sprite;
         }
     }
 

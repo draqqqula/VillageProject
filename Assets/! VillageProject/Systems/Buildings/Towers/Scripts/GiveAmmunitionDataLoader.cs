@@ -20,14 +20,20 @@ public class GiveAmmunitionDataLoader : DataDisplay<GiveAmmunitionMenuOption.Giv
     [SerializeField] private LocalizeStringEvent _buyText;
     [SerializeField] private LocalizeStringEvent _storageText;
     [SerializeField] private GameObject _noArrows;
+    [SerializeField] private GameObject _notMatchingResource;
+    [SerializeField] private Image _icon;
     private Canvas _canvas;
     private GameObject _arrowsDisplayInstance;
 
     public override void Load(GiveAmmunitionMenuOption.GiveAmmunitionData data)
     {
         _canvas = GetComponentInParent<Canvas>();
+        _buyText.StringReference.SetReference(data.Label.TableReference, data.Label.TableEntryReference);
+        _icon.sprite = data.Icon;
+
         var variable = (IntVariable)_buyText.StringReference[Amount];
         variable.Value = (int)data.BuyAmount;
+
         _selectable.OnSelectAsObservable().Subscribe(HandleSelected).AddTo(this);
         _selectable.OnDeselectAsObservable().Subscribe(HandleDeselected).AddTo(this);
         _selectable.OnDisableAsObservable().Subscribe(HandleDisabled).AddTo(this);
@@ -35,11 +41,19 @@ public class GiveAmmunitionDataLoader : DataDisplay<GiveAmmunitionMenuOption.Giv
         {
             _storageText.gameObject.SetActive(false);
             _noArrows.SetActive(true);
+            _notMatchingResource.SetActive(false);
+        }
+        else if (data.StorageResource != data.BuyResource)
+        {
+            _storageText.gameObject.SetActive(false);
+            _noArrows.SetActive(false);
+            _notMatchingResource.SetActive(true);
         }
         else
         {
             _storageText.gameObject.SetActive(true);
             _noArrows.SetActive(false);
+            _notMatchingResource.SetActive(false);
             ((IntVariable)_storageText.StringReference[Amount]).Value = (int)data.StorageAmount;
             ((IntVariable)_storageText.StringReference[Max]).Value = (int)data.MaxAmount;
         }
