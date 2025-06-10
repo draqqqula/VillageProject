@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5666561135211183262}
   - component: {fileID: 2805341447617116203}
   - component: {fileID: 8412005407044101625}
+  - component: {fileID: 8531158229741635321}
   m_Layer: 0
   m_Name: AttackReach
   m_TagString: Untagged
@@ -123,6 +124,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _team: {fileID: 4226481529840161161}
+--- !u!114 &8531158229741635321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6084123627870945827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c209bfc765d9894ea55aa93563ea71d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _amount: 1
+  <Storage>k__BackingField: {fileID: 5666561135211183262}
+  <Price>k__BackingField: {fileID: 11400000, guid: 9cce72ca0eb00a740a284d59f9192a0f, type: 2}
+  <Ammunition>k__BackingField: {fileID: 11400000, guid: a9afa827a570aaf448e81a08a7d3b656, type: 2}
 --- !u!1 &8862546195155982014
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,6 +151,9 @@ GameObject:
   - component: {fileID: 1074966483338026673}
   - component: {fileID: 4226481529840161161}
   - component: {fileID: 2558085571468816421}
+  - component: {fileID: 7051679656386904011}
+  - component: {fileID: 7852453036323750667}
+  - component: {fileID: 5603848785068465648}
   m_Layer: 0
   m_Name: Archer Tower
   m_TagString: Untagged
@@ -186,6 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _options:
   - {fileID: 2805341447617116203}
+  - {fileID: 8531158229741635321}
   <Name>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2
@@ -198,6 +219,50 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &7051679656386904011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862546195155982014}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e023dd4e3000c8b42b913ca2f9bc3d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 8881358302732457190, guid: 6431f8d37b0a3eb469f72091e7444511, type: 3}
+--- !u!114 &7852453036323750667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862546195155982014}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e023dd4e3000c8b42b913ca2f9bc3d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 5349730214991356505, guid: d5ac7aa5f473ad34fb9ddf893614ee88, type: 3}
+--- !u!114 &5603848785068465648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862546195155982014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5c1a2de9631344eb63e37c92ca5b64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _storage: {fileID: 5666561135211183262}
+  _icons:
+  - Resource: {fileID: 11400000, guid: d881ad312b5b7a54d85fd666937d2fee, type: 2}
+    Icon: {fileID: 7051679656386904011}
+  - Resource: {fileID: 11400000, guid: 82abc66d90a80144283ab6adf05c01f7, type: 2}
+    Icon: {fileID: 7852453036323750667}
 --- !u!1001 &3844507480357149237
 PrefabInstance:
   m_ObjectHideFlags: 0
