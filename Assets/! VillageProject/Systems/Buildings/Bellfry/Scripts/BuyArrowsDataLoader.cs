@@ -29,6 +29,7 @@ public class BuyArrowsDataLoader : DataDisplay<BuyArrows.BuyArrowsData>
         ((IntVariable)_Amount.StringReference[Amount]).Value = (int)data.Amount.Amount;
         _Price.text = data.Price.Required.First().Amount.ToString();
         _Image.sprite = data.Sprite;
+        _resource = data.Amount.Resource;
         _selectable.OnSelectAsObservable().Subscribe(HandleSelected).AddTo(this);
         _selectable.OnDeselectAsObservable().Subscribe(HandleDeselected).AddTo(this);
         _selectable.OnDisableAsObservable().Subscribe(HandleDisabled).AddTo(this);
@@ -41,6 +42,10 @@ public class BuyArrowsDataLoader : DataDisplay<BuyArrows.BuyArrowsData>
             return;
         }
         _arrowsDisplayInstance = Instantiate(_arrowsDisplayPrefab, _canvas.transform);
+        if (_arrowsDisplayInstance.TryGetComponent<VariableDisplay>(out var variableDisplay))
+        {
+            variableDisplay.Resource = _resource;
+        }
     }
 
     private void HandleDeselected(BaseEventData data)

@@ -12,6 +12,26 @@ public class VariableDisplay : MonoBehaviour
     [SerializeField] private ResourceVariable _resource;
     private IntVariable _variable;
 
+    public ResourceVariable Resource
+    {
+        get
+        {
+            return _resource;
+        }
+        set
+        {
+            if (_resource != null)
+            {
+                _resource.AmountChanged -= HandleHealthUpdated;
+            }
+            _resource = value;
+            if (_resource != null)
+            {
+                _resource.AmountChanged += HandleHealthUpdated;
+            }
+        }
+    }
+
     private void Reset()
     {
         _localizeStringEvent = GetComponentInChildren<LocalizeStringEvent>();
@@ -28,11 +48,19 @@ public class VariableDisplay : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_resource == null)
+        {
+            return;
+        }
         _resource.AmountChanged += HandleHealthUpdated;
     }
 
     private void OnDisable()
     {
+        if (_resource == null)
+        {
+            return;
+        }
         _resource.AmountChanged -= HandleHealthUpdated;
     }
 
@@ -43,6 +71,10 @@ public class VariableDisplay : MonoBehaviour
 
     private void UpdateValue()
     {
+        if (_resource == null)
+        {
+            return;
+        }
         _variable.Value = Convert.ToInt32(_resource.Amount);
     }
 }

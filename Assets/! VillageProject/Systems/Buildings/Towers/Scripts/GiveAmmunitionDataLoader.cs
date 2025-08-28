@@ -22,6 +22,7 @@ public class GiveAmmunitionDataLoader : DataDisplay<GiveAmmunitionMenuOption.Giv
     [SerializeField] private GameObject _noArrows;
     [SerializeField] private GameObject _notMatchingResource;
     [SerializeField] private Image _icon;
+    private ResourceVariable _resource;
     private Canvas _canvas;
     private GameObject _arrowsDisplayInstance;
 
@@ -30,6 +31,7 @@ public class GiveAmmunitionDataLoader : DataDisplay<GiveAmmunitionMenuOption.Giv
         _canvas = GetComponentInParent<Canvas>();
         _buyText.StringReference.SetReference(data.Label.TableReference, data.Label.TableEntryReference);
         _icon.sprite = data.Icon;
+        _resource = data.BuyResource;
 
         var variable = (IntVariable)_buyText.StringReference[Amount];
         variable.Value = (int)data.BuyAmount;
@@ -67,6 +69,10 @@ public class GiveAmmunitionDataLoader : DataDisplay<GiveAmmunitionMenuOption.Giv
             return;
         }
         _arrowsDisplayInstance = Instantiate(_arrowsDisplayPrefab, _canvas.transform);
+        if (_arrowsDisplayInstance.TryGetComponent<VariableDisplay>(out var variableDisplay))
+        {
+            variableDisplay.Resource = _resource;
+        }
     }
 
     private void HandleDeselected(BaseEventData data)
