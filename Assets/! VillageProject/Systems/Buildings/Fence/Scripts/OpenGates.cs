@@ -1,21 +1,23 @@
 using UnityEngine;
+using R3;
 
 public class OpenGates : MonoBehaviour
 {
     [SerializeField] private GateState _state;
-    private void OnTriggerEnter(Collider other)
+    [SerializeField] private PlayerTrigger _trigger;
+
+    private void Awake()
     {
-        if (other.name == "Player")
-        {
-            _state.Open();
-        }
+        _trigger.PlayerInside.Subscribe(HandlePlayerInside);
     }
 
-    private void OnTriggerExit(Collider other)
+    private void HandlePlayerInside(bool value)
     {
-        if (other.name == "Player")
+        if (value)
         {
-            _state.Close();
+            _state.Open();
+            return;
         }
+        _state.Close();
     }
 }

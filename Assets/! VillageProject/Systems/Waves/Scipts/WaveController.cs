@@ -1,4 +1,5 @@
-﻿using System;
+﻿using R3;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ public class WaveController : MonoBehaviour
     public UnityEvent<int> OnWaveStarted;
     public UnityEvent BreakStarted;
     public UnityEvent BreakFinished;
+    public ReadOnlyReactiveProperty<bool> IsOnBreak => _isOnBreak;
 
     [SerializeField] private NightInfo _night;
     [SerializeField] private List<EnemySpawner> _spawners;
@@ -23,6 +25,7 @@ public class WaveController : MonoBehaviour
     private int _unitsRemaining;
     private bool _isSpawning;
     private IEnumerator<(WaveWithPreparaion, int)> _wavesSequence;
+    private ReactiveProperty<bool> _isOnBreak = new ReactiveProperty<bool>(false);
 
     public WaveInfo CurrentWave { get; private set; }
     public IReadOnlyList<EnemySpawner> Spawners => _spawners;
@@ -38,23 +41,24 @@ public class WaveController : MonoBehaviour
     private void Start()
     {
         _wavesSequence = _night.Waves.Select((it, i) => (it, i + 1)).GetEnumerator();
-        StartCoroutine(StartNextWave());
+        ScheduleWave();
     }
 
-    private IEnumerator StartNextWave()
+    private void ScheduleWave()
     {
         if (!_wavesSequence.MoveNext())
         {
             CurrentWave = null;
             AllWavesCompleted?.Invoke();
-            yield break;
+            return;
         }
-
         CurrentWave = _wavesSequence.Current.Item1.Wave;
+        _isOnBreak.Value = true;
         BreakStarted?.Invoke();
-        yield return new WaitForSeconds(_wavesSequence.Current.Item1.PreparationTime);
-        BreakFinished?.Invoke();
+    }
 
+    private void InvokeWave()
+    {
         OnWaveStarted?.Invoke(_wavesSequence.Current.Item2);
         var wave = _wavesSequence.Current.Item1.Wave;
         _unitsRemaining = 0;
@@ -90,7 +94,7 @@ public class WaveController : MonoBehaviour
     private IEnumerator StartNextWaveAfterCooldown()
     {
         yield return new WaitForSeconds(_wavesSequence.Current.Item1.CooldownTime);
-        StartCoroutine(StartNextWave());
+        ScheduleWave();
     }
 
     public void HandleUnitDied()
@@ -99,6 +103,16 @@ public class WaveController : MonoBehaviour
         if (_unitsRemaining == 0 && !_isSpawning)
         {
             StartCoroutine(StartNextWaveAfterCooldown());
+        }
+    }
+
+    public void FinishBreak()
+    {
+        if (_isOnBreak.Value)
+        {
+            _isOnBreak.Value = false;
+            BreakFinished?.Invoke();
+            InvokeWave();
         }
     }
 }

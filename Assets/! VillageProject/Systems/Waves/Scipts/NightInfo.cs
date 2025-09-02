@@ -15,6 +15,14 @@ public class NightInfo : ScriptableObject
         [field: SerializeField] public float CooldownTime { get; private set; }
     }
 
+    [Serializable]
+    public class Target
+    {
+        [field: SerializeField] public float Health { get; private set; }
+    }
+
     [SerializeField] private List<WaveWithPreparaion> _waves;
+    [SerializeField] private List<Target> _targets;
     public IEnumerable<WaveWithPreparaion> Waves => _waves;
+    public IEnumerable<Target> Targets => _targets;
 }

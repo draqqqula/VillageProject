@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 4289309455713303591}
   - component: {fileID: 3243616142365726578}
   - component: {fileID: 4640968921910481281}
+  - component: {fileID: 8236837215715823226}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: damageable
@@ -185,6 +186,8 @@ MonoBehaviour:
         m_CallState: 2
   _navMeshAgent: {fileID: 4270375731433118956}
   _raycastHeight: 5
+  _speed: {fileID: 0}
+  _speedModifier: 0
 --- !u!114 &5477875385912440299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,9 +230,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _speed: 0.1
+  _speedModifier: 0
   _elevation: 1
   _spline: {fileID: 0}
+  _speed: {fileID: 0}
   _raycastLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -383,6 +387,19 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &8236837215715823226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e026eef63d1b243a7fdffa5a97381b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Damage>k__BackingField: 0.2
 --- !u!1 &7504935579471775331
 GameObject:
   m_ObjectHideFlags: 0
