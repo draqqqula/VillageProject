@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using Unity.VisualScripting;
@@ -10,6 +11,9 @@ public class CombatController : InputListener
     private const string AttackTag = "Attack";
     private const string SeriesVariable = "Series";
     private const string ThrustTrigger = "Thrust";
+
+    [SerializeField] private Stamina _stamina;
+    private IDisposable _rateModifier;
 
     [SerializeField, FromInputActionAsset("Attack")] public InputActionReference Attack;
     [SerializeField] private AnimationWindow _slashWindow;
@@ -47,6 +51,9 @@ public class CombatController : InputListener
         Attack.action.canceled += HandleAttackInputReleased;
         _slashListener.OnEntered += HandleSlashStarted;
         _thrustListener.OnEntered += HandleThrustStarted;
+
+        _slashListener.OnExited += HandleSlashEnded;
+        _thrustListener.OnExited += HandleThrustEnded;
     }
 
     private void OnDisable()
@@ -55,6 +62,9 @@ public class CombatController : InputListener
         Attack.action.canceled -= HandleAttackInputReleased;
         _slashListener.OnEntered -= HandleSlashStarted;
         _thrustListener.OnEntered -= HandleThrustStarted;
+
+        _slashListener.OnExited -= HandleSlashEnded;
+        _thrustListener.OnExited -= HandleThrustEnded;
     }
 
     private void HandleAttackInputPressed(InputAction.CallbackContext context)
@@ -82,6 +92,7 @@ public class CombatController : InputListener
     {
         if (_holdingCoroutine != null)
         {
+            _stamina.TrySpend(3);
             StopCoroutine(_holdingCoroutine);
             _holdingCoroutine = null;
         }
@@ -91,11 +102,25 @@ public class CombatController : InputListener
     public void HandleSlashStarted()
     {
         _holdingCoroutine = StartCoroutine(DelayEnterHolding(true));
+        _rateModifier = _stamina.ModifyRate(0);
     }
 
     public void HandleThrustStarted()
     {
         _holdingCoroutine = StartCoroutine(DelayEnterHolding(false));
+        _rateModifier = _stamina.ModifyRate(0);
+    }
+
+    public void HandleSlashEnded()
+    {
+        _rateModifier.Dispose();
+        _rateModifier = null;
+    }
+
+    public void HandleThrustEnded()
+    {
+        _rateModifier.Dispose();
+        _rateModifier = null;
     }
 
     public void HandleAttackAnimationEnded()
@@ -147,6 +172,9 @@ public class CombatController : InputListener
                 if (transistionToThrust)
                 {
                     _animator.SetTrigger(ThrustTrigger);
+                    _animator.speed = 1;
+                    _holdingCoroutine = null;
+                    yield break;
                 }
                 break;
             }
@@ -154,11 +182,17 @@ public class CombatController : InputListener
             yield return new WaitForFixedUpdate();
             holdDuration += Time.fixedDeltaTime;
         }
+            _stamina.TrySpend(3);
         _animator.speed = 1;
+        _holdingCoroutine = null;
     }
 
     private void StartAttack()
     {
+        if (_stamina.IsOnCooldown.CurrentValue)
+        {
+            return;
+        }
         SetNextAttack();
         _animator.SetTrigger(AttackTrigger);
     }
