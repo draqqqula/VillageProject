@@ -598,7 +598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 189ee29f537a34b5f868e392696dbeaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: {fileID: 4311318984696472513}
   _xCurve:
     serializedVersion: 2
     m_Curve:
@@ -669,6 +668,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _frequencyY: 2
   _amplitudeMultiplyerY: 1
+  _offset: {fileID: 4311318984696472513}
   _isShakeWithOffset: 1
 --- !u!1 &9006005799577284954
 GameObject:
@@ -694,6 +694,8 @@ GameObject:
   - component: {fileID: 5000318965541634871}
   - component: {fileID: 2355530964904927286}
   - component: {fileID: 7909287303003687360}
+  - component: {fileID: 9048373072985470376}
+  - component: {fileID: 1586865419826823324}
   m_Layer: 0
   m_Name: Player
   m_TagString: damageable
@@ -884,7 +886,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterController: {fileID: 4400724433860528703}
-  _cameraShaking: {fileID: 8646980538808329007}
 --- !u!114 &4544766494745786852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1051,6 +1052,37 @@ MonoBehaviour:
   - {fileID: 7607239667730542548}
   - {fileID: 571716326834205840}
   - {fileID: 5552916549312351297}
+--- !u!114 &9048373072985470376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006005799577284954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 1586865419826823324}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &1586865419826823324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006005799577284954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44defeb09bc5548b89c4dd640b044640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterVelocity: {fileID: 4093635338694876248}
 --- !u!1001 &9171624299505158174
 PrefabInstance:
   m_ObjectHideFlags: 0

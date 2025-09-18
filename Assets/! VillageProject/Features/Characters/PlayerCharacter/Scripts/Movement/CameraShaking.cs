@@ -1,12 +1,12 @@
 using System;
+using R3;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using Zenject;
 
 public class CameraShaking : MonoBehaviour
 {
-    [SerializeField] private Transform _offset;
-    
     [Header("Horizontal Shake (X Axis)")]
     [SerializeField] private AnimationCurve _xCurve = AnimationCurve.Linear(0, 0, 1, 0);
     [SerializeField, Range(0, 5)] private float _frequencyX = 2;
@@ -18,8 +18,25 @@ public class CameraShaking : MonoBehaviour
     [SerializeField, Range(1, 10)] private float _amplitudeMultiplyerY = 5;
     
     [Space]
+    [SerializeField] private Transform _offset;
+    private Vector3 _velocity;
+    
+    [Space]
     [SerializeField] private bool _isShakeWithOffset;
     private float _shakeTime = 0f;
+
+    [Inject]
+    private void Construct(CharacterVelocity characterVelocity)
+    {
+        characterVelocity.Velocity.Subscribe(OnVelocityChanged).AddTo(this);
+    }
+
+    private void OnVelocityChanged(Vector3 velocity) => _velocity = new Vector3(velocity.x, 0, velocity.z);
+    
+    private void FixedUpdate()
+    {
+        Shake(_velocity.magnitude);
+    }
 
     public void Shake() => Shake(1);
     
