@@ -29,6 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8446676869779552167}
   - {fileID: 4311318984696472513}
   m_Father: {fileID: 5061269798451310176}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -505,7 +506,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8446676869779552167}
   - {fileID: 6456155590894910178}
   - {fileID: 2519613670589227633}
   m_Father: {fileID: 6814062708651249968}
@@ -641,7 +641,7 @@ MonoBehaviour:
     m_PostInfinity: 1
     m_RotationOrder: 4
   _frequencyX: 2
-  _amplitudeMultiplyerX: 1.5
+  _amplitudeMultiplyerX: 1
   _yCurve:
     serializedVersion: 2
     m_Curve:
@@ -694,7 +694,7 @@ MonoBehaviour:
     m_PostInfinity: 1
     m_RotationOrder: 4
   _frequencyY: 2
-  _amplitudeMultiplyerY: 1.5
+  _amplitudeMultiplyerY: 1.2
   _offset: {fileID: 4311318984696472513}
   _isShakeWithOffset: 1
 --- !u!1 &9006005799577284954
@@ -1116,7 +1116,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4311318984696472513}
+    m_TransformParent: {fileID: 6814062708651249968}
     m_Modifications:
     - target: {fileID: 193283492283265818, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: m_CastShadows
