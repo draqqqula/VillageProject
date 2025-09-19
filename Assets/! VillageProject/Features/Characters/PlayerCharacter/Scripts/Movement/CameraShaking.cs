@@ -19,6 +19,7 @@ public class CameraShaking : MonoBehaviour
     
     [Space]
     [SerializeField] private Transform _offset;
+    [SerializeField] private float _targetVelocity = 0.2f;
     private Vector3 _velocity;
     
     [Space]
@@ -42,8 +43,8 @@ public class CameraShaking : MonoBehaviour
     
     public void Shake(float velocity)
     {
-        var offsetX = CalculateShakeOffset(velocity, _amplitudeMultiplyerX, _frequencyX, _xCurve);
-        var offsetY = CalculateShakeOffset(velocity, _amplitudeMultiplyerY, _frequencyY, _yCurve);
+        var offsetX = CalculateShakeOffset(velocity, _amplitudeMultiplyerX, _frequencyX, _xCurve) * velocity / _targetVelocity;
+        var offsetY = CalculateShakeOffset(velocity, _amplitudeMultiplyerY, _frequencyY, _yCurve) * velocity / _targetVelocity;
         
         if (_isShakeWithOffset) _offset.localPosition = new Vector3(offsetX, offsetY, 0);
         else transform.localPosition = new Vector3(offsetX, offsetY, 0);
