@@ -2,11 +2,12 @@ using R3;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Adrenaline : MonoBehaviour
 {
     [SerializeField] private float _defaultRate;
-    [SerializeField] private AnimationCurve _decreaceSpeedOverValue;
+    [SerializeField] private AnimationCurve _decreaseSpeedOverValue;
     private ReactiveProperty<float> _value = new ReactiveProperty<float>(0);
     private ReactiveProperty<bool> _isOnCooldown = new ReactiveProperty<bool>(false);
 
@@ -20,7 +21,7 @@ public class Adrenaline : MonoBehaviour
         {
             return;
         }
-        var rate = _defaultRate * _decreaceSpeedOverValue.Evaluate(Value.CurrentValue / MaxValue) * Time.fixedDeltaTime;
+        var rate = _defaultRate * _decreaseSpeedOverValue.Evaluate(Value.CurrentValue / MaxValue) * Time.fixedDeltaTime;
         _value.Value = Math.Max(_value.Value - rate, 0);
     }
 

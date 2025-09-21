@@ -2689,7 +2689,7 @@ PrefabInstance:
       addedObject: {fileID: 1992239523}
     - targetCorrespondingSourceObject: {fileID: 1957278229721415284, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1992239524}
+      addedObject: {fileID: 1992239525}
   m_SourcePrefab: {fileID: 100100000, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
 --- !u!114 &140915348 stripped
 MonoBehaviour:
@@ -37172,32 +37172,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultRate: 5
-  _decreaceSpeedOverValue:
+  _decreaseSpeedOverValue:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.99999714
-      inSlope: 0.22221898
-      outSlope: 0.22221898
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.19513516
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 2.978721
-      inSlope: 0.13915722
-      outSlope: 0.13915722
+      value: 3.00035
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.45792836
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   <MaxValue>k__BackingField: 50
---- !u!114 &1992239524
+--- !u!114 &1992239525
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -37206,12 +37206,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 140915350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17754c59ff7344b4c9925200e8e2ff4d, type: 3}
+  m_Script: {fileID: 11500000, guid: 670ac2f0c4f7e354dacb497a4295c35a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _adrenaline: {fileID: 1992239523}
   _stamina: {fileID: 1992239521}
-  _stageCount: 3
+  _adrenaline: {fileID: 1992239523}
+  _modifiers:
+  - 1
+  - 2
+  - 3
 --- !u!1001 &2007634596
 PrefabInstance:
   m_ObjectHideFlags: 0

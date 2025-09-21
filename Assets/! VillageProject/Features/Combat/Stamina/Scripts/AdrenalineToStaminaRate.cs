@@ -2,39 +2,37 @@ using R3;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class AdrenalineToStaminaRate : MonoBehaviour
+public class AdrenalineToStaminaRate
 {
-    public class AdrenalineStage
-    {
-        public float Adrenaline;
-        public float Modifier;
-    }
-
-    [SerializeField] private Adrenaline _adrenaline;
-    [SerializeField] private Stamina _stamina;
-    [SerializeField] private int _stageCount;
+    private List<float> _modifiers;
+    [Inject] private Adrenaline _adrenaline;
+    [Inject] private Stamina _stamina;
     private IDisposable _currentModifier;
 
-    public ReadOnlyReactiveProperty<int> Stage { get; private set; }
-    public ReadOnlyReactiveProperty<float> Modifier { get; private set; }
-    public float StageDuration => _adrenaline.MaxValue / _stageCount;
-
-    public void Start()
+    public AdrenalineToStaminaRate(List<float> modifiers)
     {
+        _modifiers = modifiers;
         Stage = _adrenaline.Value.Select(AdrenalineToStage).ToReadOnlyReactiveProperty();
         Modifier = Stage.Select(StageToModifier).ToReadOnlyReactiveProperty();
         Modifier.Subscribe(HandleModifierChanged);
     }
 
+    public int StageCount => _modifiers.Count;
+    public ReadOnlyReactiveProperty<int> Stage { get; private set; }
+    public ReadOnlyReactiveProperty<float> Modifier { get; private set; }
+    public float StageDuration => _adrenaline.MaxValue / StageCount;
+    public IEnumerable<float> Modifiers => _modifiers;
+
     private int AdrenalineToStage(float adrenaline)
     {
-        return Math.Min(Convert.ToInt32(Mathf.Floor(adrenaline / _adrenaline.MaxValue * _stageCount)), _stageCount - 1);
+        return Math.Min(Convert.ToInt32(Mathf.Floor(adrenaline / _adrenaline.MaxValue * StageCount)), StageCount - 1);
     }
 
     private float StageToModifier(int stage)
     {
-        return stage + 1;
+        return _modifiers[stage];
     }
 
     private void HandleModifierChanged(float modifier)
