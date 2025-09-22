@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class WeakSpotDamageComponent : DamageComponentBase
 {
-    [SerializeField] private WeakSpot _body;
+    [SerializeField] private WeakSpotController _body;
 
     public bool TryHit(Ray ray, float maxDistance)
     {
