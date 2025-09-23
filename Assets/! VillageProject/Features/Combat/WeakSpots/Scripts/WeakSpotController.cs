@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
-using Random = UnityEngine.Random;
 
 public class WeakSpotController : MonoBehaviour
 {
@@ -11,12 +11,19 @@ public class WeakSpotController : MonoBehaviour
     private EnemyWeakSpotsData _enemyWeakSpotsDataInstance;
     private WeakSpotsTypesData _spotsTypesDataInstance;
     
-    [FormerlySerializedAs("_bodyParts1")] [SerializeField] private List<GameObject> _bodyParts;
+    [SerializeField] private List<BodyPart> _bodyPartsList;
     private Collider _collider;
 
     private WeakSpotFactory _weakSpotFactory;
     private CommonRandomizer _randomizer;
 
+    [Serializable]
+    private class BodyPart
+    {
+        [field: SerializeField] public GameObject BodyObject { get; set; }
+        [field: SerializeField] public WeakSpotType[] ConnectedWeakSpot { get; set; }
+    }
+    
     [Inject]
     private void Construct(IInstantiator instantiator)
     {
@@ -29,7 +36,7 @@ public class WeakSpotController : MonoBehaviour
     
     private void Reset()
     {
-        GetComponentsInChildren(_bodyParts);
+        GetComponentsInChildren(_bodyPartsList);
     }
 
     public bool IsOpened => _collider != null;
@@ -42,7 +49,11 @@ public class WeakSpotController : MonoBehaviour
         }
 
         var weakSpotType = _randomizer.RandomValueWithProbability(_enemyWeakSpotsDataInstance.ProbabilityInfos).Type;
-        var spot = _randomizer.RandomValue(_bodyParts.ToArray());
+        var spot = _randomizer.RandomValue(_bodyPartsList
+            .Where(bodyPart => bodyPart.ConnectedWeakSpot.Contains(weakSpotType))
+            .ToArray())?.BodyObject;
+        
+        if (spot == null) return;
         var effect = _weakSpotFactory.Create(weakSpotType, spot.transform.position, Quaternion.identity, spot.transform);
         _collider = effect?.GetComponent<Collider>();
     }
@@ -66,3 +77,5 @@ public class WeakSpotController : MonoBehaviour
         return _collider.Raycast(ray, out var hitInfo, maxDistance);
     }
 }
+
+
