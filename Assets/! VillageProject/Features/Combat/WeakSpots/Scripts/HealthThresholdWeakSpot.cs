@@ -9,7 +9,7 @@ public class HealthThresholdWeakSpot : MonoBehaviour
 {
     [SerializeField] private float _threshold;
     [SerializeField] private Health _health;
-    [SerializeField] private WeakSpot _bodyRoot;
+    [SerializeField] private WeakSpotController _bodyRoot;
 
     private void OnEnable()
     {
