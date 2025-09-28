@@ -16,6 +16,7 @@ public sealed class IndicatorActivator
     {
         if (entity == _currentMarkedObj) return;
         _currentMarkedObj = entity;
+        _currentMarkedObj.OnDestroyed += DeactivateIndicator;
         
         _indicator.transform.SetParent(entity.OriginPoint);
         _indicator.transform.localPosition = Vector3.zero;
@@ -26,7 +27,11 @@ public sealed class IndicatorActivator
 
     public void DeactivateIndicator()
     {
+        if (_currentMarkedObj == null) return;
+        
+        _currentMarkedObj.OnDestroyed -= DeactivateIndicator;
         _currentMarkedObj = null;
+        
         _indicator.transform.SetParent(null);
         _indicator.SetActive(false);
     }
