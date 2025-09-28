@@ -889,7 +889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputActionsAsset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   _velocity: {fileID: 4093635338694876248}
-  _move: {fileID: 0}
+  _move: {fileID: -1680190386980627800, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   _maxSpeed: 0.2
   _acceleration: 0.02
   _deceleration: 0.03
@@ -996,7 +996,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MatchState, Assembly-CSharp
-        m_MethodName: DeclareDefeat
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1121,7 +1121,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HurtEffect, Assembly-CSharp
-        m_MethodName: Show
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1280,6 +1280,10 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3623088293240767583, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: Attack
+      value: 
+      objectReference: {fileID: 1120369429361536294, guid: 289c1b55c9541489481df5cc06664110, type: 3}
     - target: {fileID: 3623088293240767583, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: _stamp
       value: 0.1
