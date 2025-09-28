@@ -18,36 +18,42 @@ public abstract class InputListener : MonoBehaviour
     [ContextMenu("Assign Input")]
     private void AssignInput()
     {
-        bool IsInputActionReferenceField(FieldInfo fieldInfo)
-        {
-            return fieldInfo.FieldType.IsEquivalentTo(typeof(InputActionReference)) && fieldInfo.HasAttribute<SerializeField>();
-        }
+        bool IsInputActionReferenceField(FieldInfo fieldInfo) =>
+    fieldInfo.FieldType.IsEquivalentTo(typeof(InputActionReference)) &&
+    fieldInfo.HasAttribute<SerializeField>();
 
         string GetActionName(FieldInfo fieldInfo)
         {
             var attribute = fieldInfo.GetAttribute<FromInputActionAssetAttribute>();
-            if (attribute is not null)
-            {
-                return attribute.ActionName;
-            }
-            return fieldInfo.Name;
+            return attribute != null ? attribute.ActionName : fieldInfo.Name;
         }
 
         var guid = UnityEditor.AssetDatabase.FindAssets($"t:{nameof(InputActionAsset)}").FirstOrDefault();
         var path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
         _inputActionsAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<InputActionAsset>(path);
+
+        var so = new UnityEditor.SerializedObject(this);
         var fields = GetType().GetRuntimeFields().Where(IsInputActionReferenceField);
 
         foreach (var field in fields)
         {
             var name = GetActionName(field);
             var found = _inputActionsAsset.FindAction(name);
-            if (found != null)
+            if (found == null) continue;
+
+            var reference = InputActionReference.Create(found);
+
+            // найти свойство по имени поля
+            var sp = so.FindProperty(field.Name);
+            if (sp != null)
             {
-                var reference = InputActionReference.Create(found);
-                field.SetValue(this, reference);
+                sp.objectReferenceValue = reference;
             }
         }
+
+        so.ApplyModifiedProperties();
+        UnityEditor.EditorUtility.SetDirty(this);
+        UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(this);
     }
 #endif
 }

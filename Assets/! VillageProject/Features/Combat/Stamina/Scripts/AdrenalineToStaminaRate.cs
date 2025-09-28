@@ -4,16 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class AdrenalineToStaminaRate
+public class AdrenalineToStaminaRate : MonoBehaviour
 {
-    private List<float> _modifiers;
-    [Inject] private Adrenaline _adrenaline;
-    [Inject] private Stamina _stamina;
+    [SerializeField] private List<float> _modifiers;
+    private Adrenaline _adrenaline;
+    private Stamina _stamina;
     private IDisposable _currentModifier;
 
-    public AdrenalineToStaminaRate(List<float> modifiers)
+    [Inject]
+    public void Construct(Adrenaline adrenaline, Stamina stamina)
     {
-        _modifiers = modifiers;
+        _adrenaline = adrenaline;
+        _stamina = stamina;
         Stage = _adrenaline.Value.Select(AdrenalineToStage).ToReadOnlyReactiveProperty();
         Modifier = Stage.Select(StageToModifier).ToReadOnlyReactiveProperty();
         Modifier.Subscribe(HandleModifierChanged);

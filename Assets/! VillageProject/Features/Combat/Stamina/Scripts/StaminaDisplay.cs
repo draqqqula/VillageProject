@@ -1,11 +1,12 @@
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 
 public class StaminaDisplay : MonoBehaviour
 {
-    [SerializeField] private Stamina _stamina;
+    [Inject] private Stamina _stamina;
     [SerializeField] private Image _display;
 
     private void Awake()

@@ -12,7 +12,7 @@ public class DefaultDamageComponentProvider : IDamageComponentProvider
         typeToComponent = components.ToDictionary(it => it.GetType(), it => it);
     }
 
-    public bool TryGetComponent<T>(out T component) where T : DamageComponentBase
+    public bool TryGetService<T>(out T component) where T : DamageComponentBase
     {
         if (typeToComponent.TryGetValue(typeof(T), out var result))
         {

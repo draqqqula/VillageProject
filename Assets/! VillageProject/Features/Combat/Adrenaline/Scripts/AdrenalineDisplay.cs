@@ -1,19 +1,20 @@
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class AdrenalineDisplay : MonoBehaviour
 {
-    [SerializeField] private Adrenaline _stamina;
+    [Inject] private Adrenaline _adrenaline;
     [SerializeField] private Image _display;
 
     private void Awake()
     {
-        _stamina.Value.Subscribe(UpdateDisplay);
+        _adrenaline.Value.Subscribe(UpdateDisplay);
     }
 
     private void UpdateDisplay(float value)
     {
-        _display.fillAmount = value / _stamina.MaxValue;
+        _display.fillAmount = value / _adrenaline.MaxValue;
     }
 }
