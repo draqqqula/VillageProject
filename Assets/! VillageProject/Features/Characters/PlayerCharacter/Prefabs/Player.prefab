@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6814062708651249968}
+  - component: {fileID: 5408852363564122418}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -33,6 +34,18 @@ Transform:
   - {fileID: 4311318984696472513}
   m_Father: {fileID: 5061269798451310176}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5408852363564122418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616212979037389192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfce376a437c860498ed81bdbac769af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5412218815846357935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,6 +1145,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: 'managedReferences[6348562089410297998]'
+      value: Assembly-CSharp GainAdrenalineDamageEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: 'managedReferences[8889540975359426950]'
       value: Assembly-CSharp TeamDamageComponent
       objectReference: {fileID: 0}
@@ -1153,7 +1170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: <Data>k__BackingField.Effects.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889540975359426962].Key
@@ -1169,7 +1186,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: '<Data>k__BackingField.Effects.Array.data[0]'
-      value: 8889541114415808654
+      value: 6348562089410297998
       objectReference: {fileID: 0}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889540975359426950].Member
@@ -1196,6 +1213,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6814062708651249968}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[6348562089410297998]._cooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889540975359426963].Transform
       value: 
       objectReference: {fileID: 3460619294044462891}
@@ -1203,6 +1224,10 @@ PrefabInstance:
       propertyPath: managedReferences[8889541114415808654]._modifier
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[6348562089410297998]._adrenaline
+      value: 
+      objectReference: {fileID: 504136180198640169}
     - target: {fileID: 656386352617869739, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889541114415808656].<MaxDistance>k__BackingField
       value: 3
@@ -1284,6 +1309,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 6759f8bc64dc3d945a478612106faa47, type: 2}
     - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: 'managedReferences[6348562089410297999]'
+      value: Assembly-CSharp GainAdrenalineDamageEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: 'managedReferences[8889541134996734129]'
       value: Assembly-CSharp TeamDamageComponent
       objectReference: {fileID: 0}
@@ -1305,7 +1334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: <Data>k__BackingField.Effects.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889541134996734131].Key
@@ -1322,6 +1351,10 @@ PrefabInstance:
     - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: '<Data>k__BackingField.Effects.Array.data[0]'
       value: 8889541134996734133
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: '<Data>k__BackingField.Effects.Array.data[1]'
+      value: 6348562089410297999
       objectReference: {fileID: 0}
     - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889541134996734129].Member
@@ -1348,6 +1381,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6814062708651249968}
     - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[6348562089410297999]._cooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889541134996734130].Transform
       value: 
       objectReference: {fileID: 4040487405302074784}
@@ -1355,6 +1392,10 @@ PrefabInstance:
       propertyPath: managedReferences[8889541134996734133]._modifier
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      propertyPath: managedReferences[6348562089410297999]._adrenaline
+      value: 
+      objectReference: {fileID: 504136180198640169}
     - target: {fileID: 6902362661901147937, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
       propertyPath: managedReferences[8889541134996734132].<MaxDistance>k__BackingField
       value: 2
@@ -1413,7 +1454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a378b04172a75d043bf3d16b4476fa8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rate: 3
+  _rate: 2
   _border: -0.7
   <MaxValue>k__BackingField: 10
   <CooldownDuration>k__BackingField: 1.5
