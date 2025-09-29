@@ -6,16 +6,16 @@ using Zenject;
 
 public class StaminaDisplay : MonoBehaviour
 {
-    [Inject] private Stamina _stamina;
+    [Inject] private SignalBus _signalBus;
     [SerializeField] private Image _display;
 
     private void Awake()
     {
-        _stamina.Value.Subscribe(UpdateDisplay);
+        _signalBus.Subscribe<StaminaSignalInvoker.StaminaChangedSignal>(it => UpdateDisplay(it.Value));
     }
 
     private void UpdateDisplay(float value)
     {
-        _display.fillAmount = value/_stamina.MaxValue;
+        _display.fillAmount = value;
     }
 }

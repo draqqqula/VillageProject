@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6814062708651249968}
-  - component: {fileID: 5408852363564122418}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -34,18 +33,6 @@ Transform:
   - {fileID: 4311318984696472513}
   m_Father: {fileID: 5061269798451310176}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5408852363564122418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4616212979037389192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfce376a437c860498ed81bdbac769af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5412218815846357935
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,6 +724,8 @@ GameObject:
   - component: {fileID: 9048373072985470376}
   - component: {fileID: 1586865419826823324}
   - component: {fileID: 5999979005556004557}
+  - component: {fileID: 3722188603448179419}
+  - component: {fileID: 2144937467035659132}
   m_Layer: 0
   m_Name: Player
   m_TagString: damageable
@@ -994,18 +983,6 @@ MonoBehaviour:
   Fired:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MatchState, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1016297425271336731}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
@@ -1088,6 +1065,7 @@ MonoBehaviour:
   _monoInstallers:
   - {fileID: 1586865419826823324}
   - {fileID: 366537422212433676}
+  - {fileID: 3722188603448179419}
   _installerPrefabs: []
   _autoRun: 1
   _kernel: {fileID: 0}
@@ -1118,20 +1096,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Callback:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HurtEffect, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _health: {fileID: 5576199886500978972}
+--- !u!114 &3722188603448179419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006005799577284954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a7512c8148d3e49b8b00ac01472832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 5576199886500978972}
+  _deathEvent: {fileID: 5000318965541634871}
+--- !u!114 &2144937467035659132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006005799577284954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47781fbbee0c06e4cbf958830d5cea6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9171624299505158174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1199,7 +1191,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7233204979396179562, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3410962237809299214}
   m_SourcePrefab: {fileID: 100100000, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
 --- !u!114 &366537422212433676 stripped
 MonoBehaviour:
@@ -1217,6 +1212,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7233204979396179562, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
   m_PrefabInstance: {fileID: 9171624299505158174}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3410962237809299214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957278229721415284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfce376a437c860498ed81bdbac769af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5552916549312351297 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3623088293240767583, guid: fef138d58de98394b9f6d67bf149f777, type: 3}

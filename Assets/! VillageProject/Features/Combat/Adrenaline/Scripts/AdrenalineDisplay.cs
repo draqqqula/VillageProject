@@ -5,16 +5,16 @@ using Zenject;
 
 public class AdrenalineDisplay : MonoBehaviour
 {
-    [Inject] private Adrenaline _adrenaline;
+    [Inject] private SignalBus _signalBus;
     [SerializeField] private Image _display;
 
     private void Awake()
     {
-        _adrenaline.Value.Subscribe(UpdateDisplay);
+        _signalBus.Subscribe<StaminaSignalInvoker.AdrenalineChangedSignal>(it => UpdateDisplay(it.Value));
     }
 
     private void UpdateDisplay(float value)
     {
-        _display.fillAmount = value / _adrenaline.MaxValue;
+        _display.fillAmount = value;
     }
 }

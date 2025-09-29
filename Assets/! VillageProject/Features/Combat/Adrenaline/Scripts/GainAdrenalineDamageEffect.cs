@@ -13,12 +13,10 @@ public class GainAdrenalineDamageEffect : DamageEffectBase
             if (context.Source.TryGetService(out HitWeakSpotEffect.CriticalHit criticalHit)
                 && criticalHit.Flag)
             {
-                Debug.Log("critical");
                 _adrenaline.Gain(amount.AmountForCriticalHit, _cooldown);
             }
             else
             {
-                Debug.Log("base");
                 _adrenaline.Gain(amount.AmountForBasicHit, _cooldown);
             }
         }
