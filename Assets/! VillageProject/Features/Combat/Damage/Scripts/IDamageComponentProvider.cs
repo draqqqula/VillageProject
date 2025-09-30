@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 public interface IDamageComponentProvider
 {
-    public bool TryGetComponent<T>(out T component) where T : DamageComponentBase;
+    public bool TryGetService<T>(out T component) where T : DamageComponentBase;
 }

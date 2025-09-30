@@ -1,48 +1,37 @@
+using R3;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Localization.Components;
-using UnityEngine.Localization.SmartFormat.PersistentVariables;
 
-public class Healthbar : MonoBehaviour
+public class HealthBar : SignalListener<PlayerHealthSignalInvoker.PlayerHealthChangedSignal>
 {
-    private const string VariableName = "value";
+    [SerializeField] private GameObject _heartPrefab;
 
-    [SerializeField] private LocalizeStringEvent _localizeStringEvent;
-    [SerializeField] private Health _health;
-    private IntVariable _variable;
-
-    private void Reset()
+    protected override void OnSignal(PlayerHealthSignalInvoker.PlayerHealthChangedSignal signal)
     {
-        _localizeStringEvent = GetComponentInChildren<LocalizeStringEvent>();
+        UpdateDisplay(signal.Amount);
     }
 
-    private void Start()
+    private void UpdateDisplay(float amount)
     {
-        if (_localizeStringEvent.StringReference.TryGetValue(VariableName, out var variable))
+        if (amount < 0)
         {
-            _variable = (IntVariable)variable;
+            return;
         }
-        UpdateValue();
-    }
-
-    private void OnEnable()
-    {
-        _health.OnDamageDealt += HandleHealthUpdated;
-    }
-
-    private void OnDisable()
-    {
-        _health.OnDamageDealt -= HandleHealthUpdated;
-    }
-
-    public void HandleHealthUpdated(float amount)
-    {
-        UpdateValue();
-    }
-
-    private void UpdateValue()
-    {
-        _variable.Value = Convert.ToInt32(_health.Amount);
+        var targetCount = Convert.ToInt32(amount);
+        var delta = transform.childCount - targetCount;
+        if (delta < 0)
+        {
+            for (var i = 0; i < -delta; i++)
+            {
+                Instantiate(_heartPrefab, transform);
+            }
+        }
+        else if (delta > 0)
+        {
+            for (var i = 0; i < delta; i++)
+            {
+                Destroy(transform.GetChild(i).gameObject);
+            }
+        }
     }
 }

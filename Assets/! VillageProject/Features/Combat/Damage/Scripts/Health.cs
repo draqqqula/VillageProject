@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using R3;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,16 @@ public class Health : MonoBehaviour
 
     [field: SerializeField] public DamageData Data { get; private set; }
     [field: SerializeField] public float Amount { get; private set; }
-    public IDamageComponentProvider ComponentProvider { get; private set; }
+    public IServiceProvider ComponentProvider { get; private set; }
     public ReadOnlyReactiveProperty<float> AmountReactive => _amount;
 
 
     public bool Deal(DamageSource damage)
     {
-        var context = new DamageContext(damage.ComponentProvider, ComponentProvider, Amount);
+        using var scopeA = damage.ComponentProvider.CreateScope();
+        using var scopeB = ComponentProvider.CreateScope();
+
+        var context = new DamageContext(scopeA.ServiceProvider, scopeB.ServiceProvider, Amount);
 
         if (damage.Data.Conditions.All(it => it.IsSatisfied(context))
             && damage.Info.Data.Conditions.All(it => it.IsSatisfied(context))
@@ -43,12 +47,9 @@ public class Health : MonoBehaviour
 
     private void Awake()
     {
-        IEnumerable<DamageData> GetData()
-        {
-            yield return Data;
-        }
-
-        ComponentProvider = _factory.Create(GetData());
+        var serviceCollection = new ServiceCollection();
+        Data.RegisterTo(serviceCollection);
+        ComponentProvider = serviceCollection.BuildServiceProvider();
         _amount.Value = Amount;
     }
 }

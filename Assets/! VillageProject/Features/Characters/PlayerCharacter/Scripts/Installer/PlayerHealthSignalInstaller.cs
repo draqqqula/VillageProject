@@ -1,0 +1,13 @@
+﻿using System.Collections;
+using UnityEngine;
+using Zenject;
+
+public class PlayerHealthSignalInstaller : MonoInstaller
+{
+    public override void InstallBindings()
+    {
+        Container.DeclareSignal<PlayerHealthSignalInvoker.PlayerDeathSignal>();
+        Container.DeclareSignal<PlayerHealthSignalInvoker.PlayerHurtSignal>();
+        Container.DeclareSignal<PlayerHealthSignalInvoker.PlayerHealthChangedSignal>();
+    }
+}

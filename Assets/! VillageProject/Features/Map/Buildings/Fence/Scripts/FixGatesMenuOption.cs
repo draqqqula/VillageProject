@@ -19,7 +19,7 @@ public class FixGatesMenuOption : BuildingMenuItemBase<FixGatesMenuOption.FixGat
     {
         get
         {
-            if (_health.ComponentProvider.TryGetComponent<MaxHealthComponent>(out var maxHealth))
+            if (_health.ComponentProvider.TryGetService<MaxHealthComponent>(out var maxHealth))
             {
                 return maxHealth.MaxHealth;
             }

@@ -92,6 +92,7 @@ public class CombatController : InputListener
     {
         if (_holdingCoroutine != null)
         {
+            _stamina.HoverAmount.Value = 0;
             _stamina.TrySpend(3);
             StopCoroutine(_holdingCoroutine);
             _holdingCoroutine = null;
@@ -101,6 +102,7 @@ public class CombatController : InputListener
 
     public void HandleSlashStarted()
     {
+        _stamina.HoverAmount.Value = 3;
         _holdingCoroutine = StartCoroutine(DelayEnterHolding(true));
         _rateModifier = _stamina.ModifyRate(0);
     }
@@ -182,6 +184,7 @@ public class CombatController : InputListener
             yield return new WaitForFixedUpdate();
             holdDuration += Time.fixedDeltaTime;
         }
+        _stamina.HoverAmount.Value = 0;
             _stamina.TrySpend(3);
         _animator.speed = 1;
         _holdingCoroutine = null;
