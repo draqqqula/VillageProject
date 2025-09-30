@@ -2,13 +2,12 @@
 using UnityEngine;
 using Zenject;
 
-public class DefeatOnPlayerDeath : MonoBehaviour
+public class DefeatOnPlayerDeath : SignalListener<PlayerHealthSignalInvoker.PlayerDeathSignal>
 {
-    [Inject] private SignalBus _signalBus;
     [Inject] private MatchState _matchState;
 
-    private void Awake()
+    protected override void OnSignal(PlayerHealthSignalInvoker.PlayerDeathSignal signal)
     {
-        _signalBus.Subscribe<PlayerHealthSignalInvoker.PlayerDeathSignal>(it => _matchState.DeclareDefeat());
+        _matchState.DeclareDefeat();
     }
 }

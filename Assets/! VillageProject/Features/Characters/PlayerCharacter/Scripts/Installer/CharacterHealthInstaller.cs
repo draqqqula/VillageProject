@@ -10,5 +10,6 @@ public class CharacterHealthInstaller : MonoInstaller
     {
         Container.BindInstance(_health).AsSingle();
         Container.BindInstance(_deathEvent).AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerHealthSignalInvoker>().AsSingle();
     }
 }

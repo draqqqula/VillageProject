@@ -2,17 +2,11 @@ using R3;
 using UnityEngine;
 using Zenject;
 
-public class HurtOnDamage : MonoBehaviour
+public class HurtOnDamage : SignalListener<PlayerHealthSignalInvoker.PlayerHurtSignal>
 {
-    [Inject] private SignalBus _signalBus;
     [SerializeField] private HurtEffect _hurt;
 
-    private void Awake()
-    {
-        _signalBus.Subscribe<PlayerHealthSignalInvoker.PlayerHurtSignal>(it => HandleDamageDealt(it.Damage));
-    }
-
-    private void HandleDamageDealt(float amount)
+    protected override void OnSignal(PlayerHealthSignalInvoker.PlayerHurtSignal amount)
     {
         _hurt.Show();
     }

@@ -12,5 +12,6 @@ public class StaminaInstaller : MonoInstaller
     {
         Container.BindInstance(_stamina).AsSingle();
         Container.BindInstance(_adrenaline).AsSingle();
+        Container.BindInterfacesAndSelfTo<StaminaSignalInvoker>().AsSingle();
     }
 }
