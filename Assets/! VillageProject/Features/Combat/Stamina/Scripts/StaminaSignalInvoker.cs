@@ -12,6 +12,11 @@ public class StaminaSignalInvoker : IInitializable
         public float Value;
     }
 
+    public class StaminaHoverSignal
+    {
+        public float Amount;
+    }
+
     public class AdrenalineChangedSignal
     {
         public float Value;
@@ -28,6 +33,7 @@ public class StaminaSignalInvoker : IInitializable
 
     public void Initialize()
     {
+        _stamina.HoverAmount.Subscribe(it => _signalBus.Fire(new StaminaHoverSignal() { Amount = it / _stamina.MaxValue }));
         _stamina.Value.Subscribe(it => _signalBus.Fire(new StaminaChangedSignal() { Value = it/_stamina.MaxValue }));
         _adrenaline.Value.Subscribe(it => _signalBus.Fire(new AdrenalineChangedSignal() { Value = it/_adrenaline.MaxValue }));
         _stamina.IsOnCooldown.Subscribe(it => _signalBus.Fire(new FatigueSignal() { OnCooldown = it }));
