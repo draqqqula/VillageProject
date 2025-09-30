@@ -27,9 +27,15 @@ public class StaminaSignalInvoker : IInitializable
         public bool OnCooldown;
     }
 
+    public class AdrenalineStageChangedSignal
+    {
+        public int Stage;
+    }
+
     [Inject] private SignalBus _signalBus;
     [Inject] private Stamina _stamina;
     [Inject] private Adrenaline _adrenaline;
+    [Inject] private AdrenalineToStaminaRate _adrenalineToStaminaRate;
 
     public void Initialize()
     {
@@ -37,5 +43,6 @@ public class StaminaSignalInvoker : IInitializable
         _stamina.Value.Subscribe(it => _signalBus.Fire(new StaminaChangedSignal() { Value = it/_stamina.MaxValue }));
         _adrenaline.Value.Subscribe(it => _signalBus.Fire(new AdrenalineChangedSignal() { Value = it/_adrenaline.MaxValue }));
         _stamina.IsOnCooldown.Subscribe(it => _signalBus.Fire(new FatigueSignal() { OnCooldown = it }));
+        _adrenalineToStaminaRate.Stage.Subscribe(it => _signalBus.Fire(new AdrenalineStageChangedSignal() { Stage = it }));
     }
 }
