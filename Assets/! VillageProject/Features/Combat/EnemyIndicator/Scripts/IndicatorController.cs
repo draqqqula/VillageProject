@@ -17,82 +17,86 @@ public sealed class IndicatorController : MonoBehaviour
     
     [SerializeField] private GameObject _indicatorObject;
     private IndicatorActivator _indicatorActivator;
-    
-    private const float CHECK_INTERVAL = 0.3f;
-    private float lastCheckTime;
+
+    private const float ANGLE_THRESHOLD = 90f;
+
+    private List<Origin> _origins = new List<Origin>();
     
     private void Awake()
     {
         _targetCamera = Camera.main;
         _indicatorActivator = new IndicatorActivator(_indicatorObject, _targetCamera);
     }
+
+    public void AddOrigin(Origin origin)
+    {
+        _origins.Add(origin);
+    }
+
+    public void RemoveOrigin(Origin origin)
+    {
+        if (_origins.Contains(origin)) _origins.Remove(origin);
+    }
     
     private void Update()
     {
         _indicatorActivator.UpdateIndicator();
         
-        if (Time.time - lastCheckTime < CHECK_INTERVAL) return;
-        var markedObj = GetLookedMarkedObj();
-        if (markedObj != null)
+        var origin = GetLookedOrigin();
+        if (origin != null)
         {
-            _indicatorActivator.ActivateIndicator(markedObj);
+            _indicatorActivator.ActivateIndicator(origin);
         }
         else _indicatorActivator.DeactivateIndicator();
-        
-        lastCheckTime = Time.time;
     }
     
-    private IMarkedByIndicator GetLookedMarkedObj()
+    private Origin GetLookedOrigin()
     {
-        var markedObjs = CheckMarkedByIndicatorObjs();
-
         var minDistance = float.MaxValue;
-        IMarkedByIndicator lookedObj = null;
+        Origin result = null;
 
-        foreach (var markedObj in markedObjs)
+        foreach (var origin in _origins)
         {
-            if (!IsCameraLooking(markedObj.OriginPoint.position)) continue;
-            var distanceToViewportPoint = GetDistanceToCursor(markedObj.OriginPoint.position);
+            if (!IsCameraLooking(origin.OriginPoint.position) || IsHaveObstacles(origin)) continue;
+            var distanceToViewportPoint = GetDistanceToCursor(origin.OriginPoint.position);
 
             if (distanceToViewportPoint < minDistance)
             {
                 minDistance = distanceToViewportPoint;
-                lookedObj = markedObj;
+                result = origin;
             }
         }
         
-        return lookedObj;
+        return result;
     }
-    
-    private List<IMarkedByIndicator> CheckMarkedByIndicatorObjs()
+
+    private bool IsHaveObstacles(Origin origin)
     {
-        var detectedEnemies = new List<IMarkedByIndicator>();
-
-        RaycastHit[] hits = Physics.SphereCastAll(
-            _targetCamera.transform.position,
-            0.5f,
-            _targetCamera.transform.forward,
-            _thresholdToCamera
-        );
-
-        foreach (RaycastHit hit in hits)
-        {
-            if (hit.collider.TryGetComponent(out IMarkedByIndicator entity))
-            {
-                detectedEnemies.Add(entity);
-            }
-        }
+        RaycastHit[] hits = Physics.RaycastAll(_targetCamera.transform.position, 
+            (origin.OriginPoint.position - _targetCamera.transform.position).normalized, _thresholdToCamera,
+            ~LayerMask.GetMask("Enemy", "Bodies", "TargetDetector", "Ignore Raycast")); 
         
-        return detectedEnemies;
+        return hits.Length > 0;
     }
     
     private bool IsCameraLooking(Vector3 point)
     {
+        if (!IsRotatedToTarget(_targetCamera.transform, point)) return false;
+        
         float distanceToCursor = GetDistanceToCursor(point);
         float distanceToCamera = GetDistanceToCamera(point);
         
         if (_curve != null) return distanceToCursor <= _thresholdToCursor * _curve.Evaluate(distanceToCamera);
         return distanceToCursor <= _thresholdToCamera;
+    }
+    
+    private bool IsRotatedToTarget(Transform cameraTransform, Vector3 targetPos, float angleThreshold = ANGLE_THRESHOLD)
+    {
+        Vector3 directionToTarget = (targetPos - cameraTransform.position).normalized;
+        Vector3 cameraForward = cameraTransform.forward;
+        float angle = Vector3.Angle(cameraForward, directionToTarget);
+        
+        return angle <= angleThreshold;
     }
     
     private float GetDistanceToCursor(Vector3 point)
