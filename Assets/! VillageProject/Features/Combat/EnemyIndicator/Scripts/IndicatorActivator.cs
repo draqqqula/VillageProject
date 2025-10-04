@@ -3,13 +3,16 @@ using UnityEngine;
 public sealed class IndicatorActivator
 {
     private GameObject _indicator;
+    private Camera _targetCamera;
 
     private IMarkedByIndicator _currentMarkedObj;
     
-    public IndicatorActivator(GameObject indicatorPrefab)
+    public IndicatorActivator(GameObject indicatorObject, Camera camera)
     {
-        _indicator = GameObject.Instantiate(indicatorPrefab, Vector3.zero, Quaternion.identity);
+        _indicator = indicatorObject;
         _indicator.SetActive(false);
+        
+        _targetCamera = camera;
     }
     
     public void ActivateIndicator(IMarkedByIndicator entity)
@@ -18,11 +21,16 @@ public sealed class IndicatorActivator
         _currentMarkedObj = entity;
         _currentMarkedObj.OnDestroyed += DeactivateIndicator;
         
-        _indicator.transform.SetParent(entity.OriginPoint);
-        _indicator.transform.localPosition = Vector3.zero;
-        _indicator.transform.localRotation = Quaternion.identity;
-        
+        var position = _targetCamera.WorldToScreenPoint(entity.OriginPoint.position);
+        _indicator.transform.position = position;
         _indicator.SetActive(true);
+    }
+
+    public void UpdateIndicator()
+    {
+        if (_currentMarkedObj == null) return;
+        var position = _targetCamera.WorldToScreenPoint(_currentMarkedObj.OriginPoint.position);
+        _indicator.transform.position = position;
     }
 
     public void DeactivateIndicator()
@@ -31,8 +39,8 @@ public sealed class IndicatorActivator
         
         _currentMarkedObj.OnDestroyed -= DeactivateIndicator;
         _currentMarkedObj = null;
-        
-        _indicator.transform.SetParent(null);
+
+        _indicator.transform.position = Vector3.zero;
         _indicator.SetActive(false);
     }
 }

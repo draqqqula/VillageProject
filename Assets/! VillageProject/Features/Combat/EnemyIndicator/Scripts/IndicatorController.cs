@@ -15,7 +15,7 @@ public sealed class IndicatorController : MonoBehaviour
     [SerializeField] private AnimationCurve _curve = AnimationCurve.Linear(0, 0, 1, 1);
     [SerializeField] private bool _isAutoRedrawCurve = true;
     
-    [SerializeField] private GameObject _indicatorPrefab;
+    [SerializeField] private GameObject _indicatorObject;
     private IndicatorActivator _indicatorActivator;
     
     private const float CHECK_INTERVAL = 0.3f;
@@ -24,11 +24,13 @@ public sealed class IndicatorController : MonoBehaviour
     private void Awake()
     {
         _targetCamera = Camera.main;
-        _indicatorActivator = new IndicatorActivator(_indicatorPrefab);
+        _indicatorActivator = new IndicatorActivator(_indicatorObject, _targetCamera);
     }
     
     private void Update()
     {
+        _indicatorActivator.UpdateIndicator();
+        
         if (Time.time - lastCheckTime < CHECK_INTERVAL) return;
         var markedObj = GetLookedMarkedObj();
         if (markedObj != null)
