@@ -9,8 +9,8 @@ public class EnemyTeamCondition : DamageConditionBase
 {
     public override bool IsSatisfied(DamageContext context)
     {
-        return context.Source.TryGetComponent<TeamDamageComponent>(out var sourceTeam)
-            && context.Target.TryGetComponent<TeamDamageComponent>(out var targetTeam)
+        return context.Source.TryGetService<TeamDamageComponent>(out var sourceTeam)
+            && context.Target.TryGetService<TeamDamageComponent>(out var targetTeam)
             && sourceTeam.Member.Team.IsEnemiesWith(targetTeam.Member.Team);
     }
 }

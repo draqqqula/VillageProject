@@ -12,7 +12,6 @@ public partial class SyncronizeBlackboardAction : Action
 
     protected override Status OnStart()
     {
-        Debug.Log(Variable.Value.gameObject.name);
         return Status.Success;
     }
 

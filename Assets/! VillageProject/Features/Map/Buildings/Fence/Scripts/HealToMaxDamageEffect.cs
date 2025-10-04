@@ -7,7 +7,7 @@ public class HealToMaxDamageEffect : DamageEffectBase
 {
     public override float Apply(DamageContext context, float baseDamage)
     {
-        if (context.Target.TryGetComponent<MaxHealthComponent>(out var maxHealth))
+        if (context.Target.TryGetService<MaxHealthComponent>(out var maxHealth))
         {
             return context.Health - maxHealth.MaxHealth;
         }
