@@ -16,21 +16,19 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
 
     private void UpdateHealth(float amount)
     {
+        var hearthAmount = amount / 2;
+        
         for (int i = 0; i < _healthsImages.Length; i++)
         {
-            if (i < Mathf.Floor(amount))
+            if (i < Mathf.Ceil(hearthAmount))
             {
-                _healthsImages[i].sprite = _normalHealth;
+                if (i == Mathf.Ceil(hearthAmount) - 1 && hearthAmount % 1 != 0) _healthsImages[i].sprite = _woundedHealth;
+                else _healthsImages[i].sprite = _normalHealth;
+                
                 _healthsImages[i].enabled = true;
                 continue;
             }
-
-            if (i == Mathf.Floor(amount) && amount % 1 != 0)
-            {
-                _healthsImages[i].sprite = _woundedHealth;
-                continue;
-            }
-
+            
             _healthsImages[i].enabled = false;
         }
     }
