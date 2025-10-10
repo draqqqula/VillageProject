@@ -8,18 +8,32 @@ public sealed class IndicatorController : MonoBehaviour
 {
     private Camera _targetCamera;
     
+    [Header("Thresholds")]
+    [Tooltip("Максимальная дистанция до курсора")]
     [SerializeField, Range(0.01f, 0.5f)] private float _thresholdToCursor = 0.2f;
+    [Tooltip("Максимальная дистанция до камеры")]
     [SerializeField, Range(1, 15)] private float _thresholdToCamera = 10;
-    private float _lastThresholdToCamera;
+    private float _lastThresholdToCamera = -1;
     
+    [Tooltip("График зависимости порога дистанции до курсора от дистанции до камеры")]
     [SerializeField] private AnimationCurve _curve = AnimationCurve.Linear(0, 0, 1, 1);
+    [Tooltip("Перерисовывать ли график при изменении длины осей?")]
     [SerializeField] private bool _isAutoRedrawCurve = true;
+
+    [Header("Multipliers")]
+    [Tooltip("Множитель веса расстояния до камеры")]
+    [SerializeField] private float _cameraWeightMultiplier = 1;
+    [Tooltip("Множитель веса расстояния до курсора")]
+    [SerializeField] private float _cursorWeightMultiplier = 1;
+
+    [Header("Additive settings")] 
+    [Tooltip("Переключает на режим строгого закрепления индикатора")]
+    [SerializeField] private bool _isLockIndicator = false;
+    
+    private const float ANGLE_THRESHOLD = 90f;
     
     [SerializeField] private GameObject _indicatorObject;
     private IndicatorActivator _indicatorActivator;
-
-    private const float ANGLE_THRESHOLD = 90f;
-
     private List<Origin> _origins = new List<Origin>();
     
     private void Awake()
@@ -40,29 +54,35 @@ public sealed class IndicatorController : MonoBehaviour
     
     private void Update()
     {
-        _indicatorActivator.UpdateIndicator();
+        Origin origin = GetLockedOrigin();
         
-        var origin = GetLookedOrigin();
-        if (origin != null)
-        {
-            _indicatorActivator.ActivateIndicator(origin);
-        }
+        if (origin != null) _indicatorActivator.ActivateIndicator(origin);
         else _indicatorActivator.DeactivateIndicator();
+        
+        _indicatorActivator.UpdateIndicator();
     }
     
-    private Origin GetLookedOrigin()
+    private Origin GetLockedOrigin()
     {
-        var minDistance = float.MaxValue;
+        if (_isLockIndicator && _indicatorActivator.LockedOrigin != null) return _indicatorActivator.LockedOrigin;
+        
+        var maxWeight = float.MinValue;
         Origin result = null;
 
         foreach (var origin in _origins)
         {
             if (!IsCameraLooking(origin.OriginPoint.position) || IsHaveObstacles(origin)) continue;
-            var distanceToViewportPoint = GetDistanceToCursor(origin.OriginPoint.position);
-
-            if (distanceToViewportPoint < minDistance)
+            
+            var distanceToCamera = GetDistanceToCamera(origin.OriginPoint.position);
+            var distanceToCursor = GetDistanceToCursor(origin.OriginPoint.position);
+            
+            var weightToCamera = Mathf.InverseLerp(_thresholdToCamera, 0, distanceToCamera) * _cameraWeightMultiplier;
+            var weightToCursor = Mathf.InverseLerp(0, _thresholdToCursor, distanceToCursor) * _cursorWeightMultiplier;
+            var weight = weightToCursor + weightToCamera;
+            
+            if (weight > maxWeight)
             {
-                minDistance = distanceToViewportPoint;
+                maxWeight = weight;
                 result = origin;
             }
         }
@@ -72,11 +92,15 @@ public sealed class IndicatorController : MonoBehaviour
 
     private bool IsHaveObstacles(Origin origin)
     {
-        RaycastHit[] hits = Physics.RaycastAll(_targetCamera.transform.position, 
-            (origin.OriginPoint.position - _targetCamera.transform.position).normalized, _thresholdToCamera,
-            ~LayerMask.GetMask("Enemy", "Bodies", "TargetDetector", "Ignore Raycast")); 
+        var direction = (origin.OriginPoint.position - _targetCamera.transform.position).normalized;
+        var distance = GetDistanceToCamera(origin.OriginPoint.position);
         
-        return hits.Length > 0;
+        if (Physics.Raycast(_targetCamera.transform.position, direction, out var hit, distance,
+                ~LayerMask.GetMask("Enemy", "Bodies", "TargetDetector", "Ignore Raycast")))
+        {
+            return true;
+        }
+        return false;
     }
     
     private bool IsCameraLooking(Vector3 point)
@@ -115,7 +139,7 @@ public sealed class IndicatorController : MonoBehaviour
         return Mathf.Clamp(viewportPoint.z, 0, _thresholdToCamera);
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private void OnValidate()
     {
         if (_curve.length < 2) Debug.LogError("Curve has less than 2 keys!");
@@ -124,9 +148,12 @@ public sealed class IndicatorController : MonoBehaviour
         if (_curve[_curve.length - 1].time < _thresholdToCamera)
             _curve.MoveKey(_curve.length - 1, new Keyframe(_thresholdToCamera, _curve[_curve.length - 1].value));
         
-        if (!_isAutoRedrawCurve) return; 
-        if (Mathf.Approximately(_lastThresholdToCamera, _thresholdToCamera))
+        if (!_isAutoRedrawCurve || Mathf.Approximately(_lastThresholdToCamera, _thresholdToCamera)) return;
+        if (_lastThresholdToCamera == -1)
+        {
+            _lastThresholdToCamera = _thresholdToCamera;
             return;
+        }
         
         RedrawCurveWithNewParams();
         _lastThresholdToCamera = _thresholdToCamera;

@@ -5,7 +5,7 @@ public sealed class IndicatorActivator
     private GameObject _indicator;
     private Camera _targetCamera;
 
-    private Origin _currentOrigin;
+    public Origin LockedOrigin {get; private set;}
     
     public IndicatorActivator(GameObject indicatorObject, Camera camera)
     {
@@ -17,29 +17,35 @@ public sealed class IndicatorActivator
     
     public void ActivateIndicator(Origin origin)
     {
-        if (origin == _currentOrigin) return;
-        _currentOrigin = origin;
-        _currentOrigin.OnDestroyed += DeactivateIndicator;
+        if (origin == LockedOrigin) return;
+        
+        LockedOrigin = origin;
+        LockedOrigin.OnDestroyed += DeactivateIndicator;
         
         var position = _targetCamera.WorldToScreenPoint(origin.OriginPoint.position);
+        if (position.z < 0) return;
+        
         _indicator.transform.position = position;
         _indicator.SetActive(true);
     }
 
     public void UpdateIndicator()
     {
-        if (_currentOrigin == null) return;
-        var position = _targetCamera.WorldToScreenPoint(_currentOrigin.OriginPoint.position);
+        if (LockedOrigin == null) return;
+        
+        var position = _targetCamera.WorldToScreenPoint(LockedOrigin.OriginPoint.position);
+        if (position.z < 0) return;
+        
         _indicator.transform.position = position;
     }
 
     public void DeactivateIndicator()
     {
-        if (_currentOrigin == null) return;
+        if (LockedOrigin == null) return;
         
-        _currentOrigin.OnDestroyed -= DeactivateIndicator;
-        _currentOrigin = null;
-
+        LockedOrigin.OnDestroyed -= DeactivateIndicator;
+        LockedOrigin = null;
+        
         _indicator.transform.position = Vector3.zero;
         _indicator.SetActive(false);
     }
