@@ -31,6 +31,8 @@ public sealed class IndicatorController : MonoBehaviour
     [Header("Additive settings")] 
     [Tooltip("Переключает на режим строгого закрепления индикатора")]
     [SerializeField] private bool _isLockIndicator = false;
+    [Tooltip("Активирует дебаг режим")]
+    [SerializeField] private bool _isActivateDebug;
     
     private const float ANGLE_THRESHOLD = 90f;
     
@@ -62,6 +64,10 @@ public sealed class IndicatorController : MonoBehaviour
         else _indicatorActivator.DeactivateIndicator();
         
         _indicatorActivator.UpdateIndicator();
+        
+        #if UNITY_EDITOR
+        if (_isActivateDebug) PrintDebug();
+        #endif
     }
     
     private Origin GetLockedOrigin()
@@ -149,6 +155,18 @@ public sealed class IndicatorController : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    private void PrintDebug()
+    {
+        if (_indicatorActivator.LockedOrigin == null) return;
+        
+        var distance = Vector3.Distance(_targetCamera.transform.position, _indicatorActivator.LockedOrigin.OriginPoint.position);
+        Debug.Log($"Distance from camera to origin: {distance}");
+
+        Vector3 directionToPoint = (_indicatorActivator.LockedOrigin.OriginPoint.position - _targetCamera.transform.position).normalized;
+        float angle = Vector3.Angle(_targetCamera.transform.forward, directionToPoint);
+        Debug.Log($"Angle from cursor to origin: {angle}");
+    }
+    
     private void OnValidate()
     {
         if (_curve.length < 2) Debug.LogError("Curve has less than 2 keys!");
