@@ -25,6 +25,8 @@ public sealed class IndicatorController : MonoBehaviour
     [SerializeField] private float _cameraWeightMultiplier = 1;
     [Tooltip("Множитель веса расстояния до курсора")]
     [SerializeField] private float _cursorWeightMultiplier = 1;
+    [Tooltip("Учитывать график при расчете веса")]
+    [SerializeField] private bool _isConsiderCurve = true;
 
     [Header("Additive settings")] 
     [Tooltip("Переключает на режим строгого закрепления индикатора")]
@@ -77,7 +79,14 @@ public sealed class IndicatorController : MonoBehaviour
             var distanceToCursor = GetDistanceToCursor(origin.OriginPoint.position);
             
             var weightToCamera = Mathf.InverseLerp(_thresholdToCamera, 0, distanceToCamera) * _cameraWeightMultiplier;
-            var weightToCursor = Mathf.InverseLerp(0, _thresholdToCursor, distanceToCursor) * _cursorWeightMultiplier;
+            float weightToCursor = 0;
+
+            if (_curve != null && _isConsiderCurve)
+            {
+                weightToCursor = Mathf.InverseLerp(0, _thresholdToCursor * _curve.Evaluate(distanceToCamera), distanceToCursor) * _cursorWeightMultiplier;
+            }
+            else weightToCursor = Mathf.InverseLerp(0, _thresholdToCursor, distanceToCursor) * _cursorWeightMultiplier;
+            
             var weight = weightToCursor + weightToCamera;
             
             if (weight > maxWeight)
