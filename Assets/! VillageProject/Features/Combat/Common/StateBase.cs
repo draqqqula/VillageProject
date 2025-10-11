@@ -12,7 +12,7 @@ public abstract class StateBase<T> : IState where T : StateBase<T>
         var transitions = _container.ResolveAll<TransitionBase<T>>();
         foreach (var transition in transitions)
         {
-            transition.CurrentState = (T)this;
+            transition.Construct((T)this);
             yield return transition;
         }
     }

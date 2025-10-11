@@ -6,7 +6,6 @@ using Zenject;
 public abstract class TransitionBase<T> : ITransition where T : IState
 {
     private Subject<Unit> _onActivated = new Subject<Unit>();
-    public T CurrentState { get; set; }
     public Observable<Unit> OnActivated => _onActivated;
 
     protected void Activate()
@@ -14,6 +13,7 @@ public abstract class TransitionBase<T> : ITransition where T : IState
         _onActivated.OnNext(Unit.Default);
     }
 
+    public abstract void Construct(T currentState);
     public abstract IState GetNextState();
 }
 
