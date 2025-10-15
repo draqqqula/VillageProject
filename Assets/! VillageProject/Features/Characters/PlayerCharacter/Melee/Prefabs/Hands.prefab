@@ -1157,19 +1157,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1795338641290976596}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5869916974795192477}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7632929299010305217}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5779779289827069928}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4594753489596136697}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1631138282815408275}
@@ -1472,19 +1460,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c0093a41c6e486543ae98bb8975aa84e, type: 3}
   m_PrefabInstance: {fileID: 5970326301785632396}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1795338641290976596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6781213716250072029}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c545dd689961f24799c03798e6fe0e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Window>k__BackingField: {fileID: 11400000, guid: 891ec3490c9f93a44a73dc02bfe5350e, type: 2}
 --- !u!114 &5869916974795192477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1497,47 +1472,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1f62171e3f1f8499d9ea3af634ac20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _listener: {fileID: 1795338641290976596}
+  _window: {fileID: 0}
   _object: {fileID: 7659112738402349391}
---- !u!114 &7632929299010305217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6781213716250072029}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c545dd689961f24799c03798e6fe0e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Window>k__BackingField: {fileID: 11400000, guid: 38548730ab9f7674fb18b84d9d610007, type: 2}
---- !u!114 &5779779289827069928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6781213716250072029}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c545dd689961f24799c03798e6fe0e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Window>k__BackingField: {fileID: 11400000, guid: ae118c43f4aacc54faba97b6327ea540, type: 2}
---- !u!114 &4594753489596136697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6781213716250072029}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c545dd689961f24799c03798e6fe0e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Window>k__BackingField: {fileID: 11400000, guid: 94e7ff9902ad03c44a8c426ee59d356d, type: 2}
 --- !u!114 &1631138282815408275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1550,7 +1486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1f62171e3f1f8499d9ea3af634ac20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _listener: {fileID: 4594753489596136697}
+  _window: {fileID: 0}
   _object: {fileID: 7048058527153450644}
 --- !u!4 &6818766379088398179 stripped
 Transform:

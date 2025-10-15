@@ -3,6 +3,7 @@ using UnityEngine;
 using Zenject;
 using R3;
 using System.Collections.Generic;
+using System.Linq;
 
 public class StateManager : IInitializable
 {
@@ -19,9 +20,9 @@ public class StateManager : IInitializable
             _transition = transition;
         }
 
-        public void Activate(Unit _)
+        public void Activate(IState next)
         {
-            _stateManager.SetState(_transition.GetNextState());
+            _stateManager.SetState(next);
             _subsriptions.Dispose();
         }
     }
@@ -33,13 +34,14 @@ public class StateManager : IInitializable
 
     public void Initialize()
     {
-        var initial = _container.Resolve<IState>();
+        var initial = _container.ResolveAll<IState>().First();
         SetState(initial);
     }
 
     private void SetState(IState state)
     {
         _current.Value?.OnExit();
+        _current.Value?.Dispose();
         _current.Value = state;
         state.OnEnter();
 
@@ -49,7 +51,8 @@ public class StateManager : IInitializable
         foreach (var transition in transitions)
         {
             var handler = new TransitionHandler(subscriptions, transition, this);
-            transition.OnActivated.Subscribe(handler.Activate).AddTo(subscriptions);
+            subscriptions.Add(transition.OnActivated.Subscribe(handler.Activate));
+            subscriptions.Add(transition);
         }
     }
 }

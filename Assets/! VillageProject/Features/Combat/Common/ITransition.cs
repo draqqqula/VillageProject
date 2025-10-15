@@ -1,8 +1,7 @@
 ﻿using R3;
 using System;
 
-public interface ITransition
+public interface ITransition : IDisposable
 {
-    public Observable<Unit> OnActivated { get; }
-    public IState GetNextState();
+    public Observable<IState> OnActivated { get; }
 }

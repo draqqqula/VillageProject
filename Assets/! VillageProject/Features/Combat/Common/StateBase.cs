@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public abstract class StateBase<T> : IState where T : StateBase<T>
+public abstract class StateBase<T> : CompositeDisposableBase, IState where T : StateBase<T>
 {
     [Inject] private DiContainer _container;
 

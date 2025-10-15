@@ -1,28 +1,30 @@
 ﻿using R3;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
-public abstract class TransitionBase<T> : ITransition where T : IState
+public abstract class TransitionBase<T> : CompositeDisposableBase, ITransition where T : IState
 {
-    private Subject<Unit> _onActivated = new Subject<Unit>();
-    public Observable<Unit> OnActivated => _onActivated;
+    [Inject] private DiContainer _container;
+    private Subject<IState> _onActivated = new Subject<IState>();
+    public Observable<IState> OnActivated => _onActivated;
 
-    protected void Activate()
+    protected void Activate<TNext>()
     {
-        _onActivated.OnNext(Unit.Default);
+        var state = (IState)_container.Resolve<TNext>();
+        _onActivated.OnNext(state);
     }
 
     public abstract void Construct(T currentState);
-    public abstract IState GetNextState();
 }
 
 public abstract class TransitionBase<A, B> : TransitionBase<A> where A : IState
 {
-    [Inject] private DiContainer _container;
-
-    public override IState GetNextState()
+    protected void Activate()
     {
-        return (IState)_container.Resolve<B>();
+        Activate<B>();
     }
 }

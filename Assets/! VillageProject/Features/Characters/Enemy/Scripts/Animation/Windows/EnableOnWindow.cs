@@ -1,34 +1,38 @@
-﻿using System;
+﻿using R3;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 public class EnableOnWindow : MonoBehaviour
 {
-    [SerializeField] private AnimationWindowListener _listener;
+    [SerializeField] private AnimationWindow _window;
+    private IAnimationWindowListener _listener;
     [SerializeField] private GameObject _object;
 
-    private void OnEnable()
+    [Inject]
+    private void Construct(DiContainer container)
     {
-        _listener.OnEntered += HandleEntered;
-        _listener.OnExited += HandleExit;
+        _listener = container.ResolveId<IAnimationWindowListener>(_window);
     }
 
-    private void OnDisable()
+    private void Awake()
     {
-        _listener.OnEntered -= HandleEntered;
-        _listener.OnExited -= HandleExit;
+        _listener.IsActive.Subscribe(HandleEntered).AddTo(this);
     }
 
-    private void HandleEntered()
+    private void HandleEntered(bool value)
     {
-        _object.SetActive(true);
-    }
-
-    private void HandleExit()
-    {
-        _object.SetActive(false);
+        if (value)
+        {
+            _object.SetActive(true);
+        }
+        else
+        {
+            _object.SetActive(false);
+        }
     }
 }
