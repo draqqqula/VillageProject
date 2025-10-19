@@ -13,12 +13,8 @@ public class StaminaDisplayV2 : SignalListener<StaminaSignalInvoker.StaminaChang
 
     protected override void OnSignal(StaminaSignalInvoker.StaminaChangedSignal value)
     {
-        if (value.Value < _display.fillAmount)
-        {
-            if (_coroutine != null) StopCoroutine(_coroutine);
-            _coroutine = StartCoroutine(ChangeSpendableBgRoutine(value.Value));
-        }
-        else _spendableBg.fillAmount = value.Value;
+        if (_coroutine != null) StopCoroutine(_coroutine);
+        _coroutine = StartCoroutine(ChangeSpendableBgRoutine(value.Value));
 
         _display.fillAmount = value.Value;
     }

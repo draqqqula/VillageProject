@@ -1,11 +1,15 @@
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 public class AlignerByPixels : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
+    [SerializeField] private Transform _scaledParent;
+    
     [SerializeField] public bool _isAlignDaughterImages;
     
     [ContextMenu("CheckCanvasOverlay")]
@@ -44,21 +48,29 @@ public class AlignerByPixels : MonoBehaviour
     {
         if (_isAlignDaughterImages)
         {
-            Image[] targetImages = GetComponentsInChildren<Image>();
+            Image[] targetImages = GetComponentsInChildren<Image>(includeInactive: true);
 
+            #if UNITY_EDITOR
             Undo.RecordObjects(targetImages.Select(image => image.rectTransform).ToArray<Object>(), "AlignByPixels");
+            #endif
             foreach (var targetImage in targetImages)
             {
                 AlignByPixels(targetImage);
+                # if UNITY_EDITOR
                 EditorUtility.SetDirty(targetImage.rectTransform);
+                #endif
             }
         }
         else
         {
             Image targetImage = GetComponent<Image>();
+#if UNITY_EDITOR
             Undo.RecordObject(targetImage.rectTransform, $"Align {targetImage.gameObject.name} by pixels");
+#endif
             AlignByPixels(targetImage);
+            #if UNITY_EDITOR
             EditorUtility.SetDirty(targetImage.rectTransform);
+            #endif
         }
     }
 
@@ -66,10 +78,22 @@ public class AlignerByPixels : MonoBehaviour
     {
         RectTransform rect = targetImage.rectTransform;
         
-        Vector2 pixelPerfectPosition = GetPixelPerfectVector(rect.anchoredPosition, rect.lossyScale.x);
-        rect.anchoredPosition = pixelPerfectPosition;
+        if (_scaledParent.lossyScale.x != rect.lossyScale.x) Debug.LogError("Can't align images! Parent and rect has different lossy scale!");
+        if (rect.pivot != Vector2.zero) ChangePivot(rect, Vector2.zero);
         
-        Debug.Log($"Aligned {targetImage.gameObject.name} to: Pos={pixelPerfectPosition}");
+        Vector2 pixelPerfectPosition = GetPixelPerfectVector(_scaledParent.InverseTransformPoint(rect.position), _scaledParent.lossyScale.x);
+        rect.position = _scaledParent.TransformPoint(pixelPerfectPosition);
+        
+        Debug.Log($"Aligned {targetImage.gameObject.name} to: Pos={rect.anchoredPosition}");
+    }
+
+    private void ChangePivot(RectTransform rect, Vector2 newPivot)
+    {
+        Vector2 deltaPivot = rect.pivot - newPivot;
+        Vector2 deltaPosition = new Vector2(deltaPivot.x * rect.rect.width, deltaPivot.y * rect.rect.height);
+    
+        rect.pivot = newPivot;
+        rect.anchoredPosition -= deltaPosition;
     }
     
     private Vector2 GetPixelPerfectVector(Vector2 vector, float totalScaleFactor)
@@ -106,5 +130,19 @@ public class AlignerByPixels : MonoBehaviour
     private Vector2 PixelsToUnits(Vector2 pixels, float totalScaleFactor)
     {
         return pixels / totalScaleFactor;
+    }
+
+    private void OnValidate()
+    {
+        if (_canvas == null) _canvas = transform.GetComponentInParent<Canvas>();
+        if (_scaledParent == null)
+        {
+            var curTransform = transform;
+            while (curTransform.parent != _canvas.transform)
+            {
+                curTransform = curTransform.parent;
+            }
+            _scaledParent = curTransform;
+        }
     }
 }
