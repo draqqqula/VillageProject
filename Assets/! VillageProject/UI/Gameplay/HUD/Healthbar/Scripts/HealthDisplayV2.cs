@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 [RequireComponent(typeof(AlignerByPixels))]
-public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHealthChangedSignal>
+public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHealthChangedSignal, PlayerHealthSignalInvoker.PlayerInitializeHealthSignal>
 {
     private List<Image> _healthsImages = new List<Image>();
 
@@ -21,6 +22,8 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
     
     private void Init(float amount)
     {
+        if (_isInitialized) return;
+        
         _alignerByPixels = GetComponent<AlignerByPixels>();
         SpawnHearts(amount);
         AlignHearts(_healthsImages);
@@ -58,10 +61,14 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
         
         _alignerByPixels.AlignByPixels();
     }
-
+    
+    protected override void OnSignal(PlayerHealthSignalInvoker.PlayerInitializeHealthSignal signal)
+    {
+        Init(signal.Value);
+    }
+    
     protected override void OnSignal(PlayerHealthSignalInvoker.PlayerHealthChangedSignal signal)
     {
-        if (!_isInitialized) Init(signal.Amount);
         UpdateHearts(signal.Amount);
     }
     
