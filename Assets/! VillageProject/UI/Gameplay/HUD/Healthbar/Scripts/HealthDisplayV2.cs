@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 [RequireComponent(typeof(AlignerByPixels))]
 public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHealthChangedSignal, PlayerHealthSignalInvoker.PlayerInitializeHealthSignal>
 {
-    private List<Image> _healthsImages = new List<Image>();
+    private List<HeartView> _healthsImages = new List<HeartView>();
 
-    [SerializeField] private Image _heartPrefab;
-    [SerializeField] private Sprite _normalHealth;
-    [SerializeField] private Sprite _woundedHealth;
-
+    [SerializeField] private HeartView _heartPrefab;
+    
     [SerializeField] private Transform _startPoint;
     [SerializeField] private Transform _endPoint;
     
@@ -39,10 +36,10 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
         }
     }
     
-    private void AlignHearts(List<Image> hearts)
+    private void AlignHearts(List<HeartView> hearts)
     {
         var width = _endPoint.localPosition.x - _startPoint.localPosition.x;
-        var heartWidth = hearts[0].rectTransform.rect.width;
+        var heartWidth = hearts[0].RectTransform.rect.width;
         
         var totalHeartsWidth = heartWidth * hearts.Count;
         var totalGapSpace = width - totalHeartsWidth;
@@ -52,10 +49,10 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
         foreach (var heart in hearts)
         {
             if (counter % 2 == 0)
-                heart.rectTransform.localPosition = new Vector2(_startPoint.localPosition.x, _endPoint.localPosition.y);
-            else heart.rectTransform.localPosition = _startPoint.localPosition;
+                heart.RectTransform.localPosition = new Vector2(_startPoint.localPosition.x, _endPoint.localPosition.y);
+            else heart.RectTransform.localPosition = _startPoint.localPosition;
             
-            heart.rectTransform.localPosition += Vector3.right * (heartWidth + gapBetweenHearts) * counter;
+            heart.RectTransform.localPosition += Vector3.right * (heartWidth + gapBetweenHearts) * counter;
             counter++;
         }
         
@@ -80,14 +77,12 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
         {
             if (i < Mathf.Ceil(hearthAmount))
             {
-                if (i == Mathf.Ceil(hearthAmount) - 1 && hearthAmount % 1 != 0) _healthsImages[i].sprite = _woundedHealth;
-                else _healthsImages[i].sprite = _normalHealth;
-                
-                _healthsImages[i].enabled = true;
+                if (i == Mathf.Ceil(hearthAmount) - 1 && hearthAmount % 1 != 0) _healthsImages[i].SetWoundedHeart();
+                else _healthsImages[i].SetNormalHeart();
                 continue;
             }
             
-            _healthsImages[i].enabled = false;
+            _healthsImages[i].DisableHeart();
         }
     }
 }

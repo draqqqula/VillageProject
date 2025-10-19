@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7650103518338028518}
   - component: {fileID: 5478878127780977034}
   - component: {fileID: 9139391478490371637}
+  - component: {fileID: -8801466063485538626}
+  - component: {fileID: -7994808446291008412}
   m_Layer: 5
   m_Name: Rose
   m_TagString: Untagged
@@ -75,3 +77,39 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &-8801466063485538626
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7076287775606102826}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a6a1d960675694da791fd9ecbcba8c0e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7994808446291008412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7076287775606102826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b59b4d400bf0402495cc8b826b6c818f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _normalHealth: {fileID: 1280787089, guid: d5f24c45fe0c847888473930876a32a4, type: 3}
+  _woundedHealth: {fileID: 616834780, guid: d5f24c45fe0c847888473930876a32a4, type: 3}
