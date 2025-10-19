@@ -79,10 +79,13 @@ public class AlignerByPixels : MonoBehaviour
         RectTransform rect = targetImage.rectTransform;
         
         if (_scaledParent.lossyScale.x != rect.lossyScale.x) Debug.LogError("Can't align images! Parent and rect has different lossy scale!");
-        if (rect.pivot != Vector2.zero) ChangePivot(rect, Vector2.zero);
+        
+        var pivot = rect.pivot;
+        ChangePivot(rect, Vector2.zero);
         
         Vector2 pixelPerfectPosition = GetPixelPerfectVector(_scaledParent.InverseTransformPoint(rect.position), _scaledParent.lossyScale.x);
         rect.position = _scaledParent.TransformPoint(pixelPerfectPosition);
+        ChangePivot(rect, pivot);
         
         Debug.Log($"Aligned {targetImage.gameObject.name} to: Pos={rect.anchoredPosition}");
     }
