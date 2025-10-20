@@ -31,6 +31,7 @@ public class StaminaDisplayV2 : SignalListener<StaminaSignalInvoker.StaminaHover
         if (value.Amount == 0) return;
         var fillAmount = _displayFillMaterial.GetFloat(VAR_NAME);
         _displayFillMaterial.SetFloat(VAR_NAME, fillAmount - value.Amount);
+        _displayFillMaterial.SetInt("_WithEdge", 0);
     }
     
     protected override void OnSignal(StaminaSignalInvoker.StaminaChangedSignal value)
@@ -56,5 +57,6 @@ public class StaminaDisplayV2 : SignalListener<StaminaSignalInvoker.StaminaHover
             _bgFillMaterial.SetFloat(VAR_NAME, Mathf.Lerp(fromValue, toValue, progress / FILLING_TIME)); 
             yield return null;
         }
+        _displayFillMaterial.SetInt("_WithEdge", 1);
     }
 }
