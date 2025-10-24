@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Animation Window", menuName = "Animation Window")]
 public class AnimationWindow : ScriptableObject
 {
-    [SerializeField] private string _name;
+    [field: SerializeField] public string Key { get; private set; }
 }

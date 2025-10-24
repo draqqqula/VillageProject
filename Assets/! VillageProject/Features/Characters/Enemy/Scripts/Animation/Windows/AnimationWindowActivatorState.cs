@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using Zenject;
 
 public class AnimationWindowActivatorState : StateMachineBehaviour
 {
@@ -21,19 +22,19 @@ public class AnimationWindowActivatorState : StateMachineBehaviour
     class AnimationWindowState
     {
         public AnimationWindowState(
-            AnimationWindow window, 
-            AnimationWindowListener listener,
+            AnimationWindow window,
+            IAnimationWindowController listener,
             float startNormalized,
-            float exitNoralized) 
+            float exitNormalized) 
         {
             Window = window;
             _isActive = false;
             _listener = listener;
             StartNormalized = startNormalized;
-            ExitNormalized = exitNoralized;
+            ExitNormalized = exitNormalized;
         }
 
-        private readonly AnimationWindowListener _listener;
+        private readonly IAnimationWindowController _listener;
         private bool _isActive;
         public readonly AnimationWindow Window;
         public readonly float StartNormalized;
@@ -51,13 +52,40 @@ public class AnimationWindowActivatorState : StateMachineBehaviour
                 {
                     return;
                 }
-                _listener.enabled = value;
+                _listener.Active = value;
                 _isActive = value;
+            }
+        }
+
+        public float Progress
+        {
+            get
+            {
+                return _listener.Progress;
+            }
+            set
+            {
+                _listener.Progress = value;
             }
         }
     }
 
     [SerializeField] private List<AnimationWindowInfo> _windows;
+    private List<(IAnimationWindowController, AnimationWindow)> _listeners;
+
+    [Inject]
+    public void Construct(DiContainer container)
+    {
+        _listeners = new List<(IAnimationWindowController, AnimationWindow)>();
+        foreach (var window in _windows)
+        {
+            var listener = container.TryResolveId<IAnimationWindowController>(window.Window);
+            if (listener != null)
+            {
+                _listeners.Add((listener, window.Window));
+            }
+        }
+    }
 
     private AnimationWindowState[] _states;
 
@@ -67,21 +95,25 @@ public class AnimationWindowActivatorState : StateMachineBehaviour
         {
             state.IsActive = stateInfo.normalizedTime >= state.StartNormalized 
                 && stateInfo.normalizedTime < state.ExitNormalized;
+            if (state.IsActive)
+            {
+                state.Progress = Mathf.Clamp01(stateInfo.normalizedTime - state.StartNormalized);
+            }
         }
     }
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-        var listeners = animator.GetComponents<AnimationWindowListener>();
+        
 
         if (_states == null)
         {
-            _states = _windows.Join(listeners, it => it.Window, it => it.Window, (info, listener) =>
+            _states = _windows.Join(_listeners, it => it.Window, it => it.Item2, (info, listener) =>
             {
                 return new AnimationWindowState(
                     info.Window,
-                    listener,
+                    listener.Item1,
                     info.EnterAt * stateInfo.length,
                     info.ExitAt * stateInfo.length);
             }).ToArray();
