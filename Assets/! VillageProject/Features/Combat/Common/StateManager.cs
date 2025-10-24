@@ -7,6 +7,8 @@ using System.Linq;
 
 public class StateManager : IInitializable
 {
+    public const string DefaultStateId = "Default";
+
     class TransitionHandler
     {
         private CompositeDisposable _subsriptions;
@@ -34,7 +36,7 @@ public class StateManager : IInitializable
 
     public void Initialize()
     {
-        var initial = _container.ResolveAll<IState>().First();
+        var initial = _container.ResolveId<IState>(DefaultStateId);
         SetState(initial);
     }
 

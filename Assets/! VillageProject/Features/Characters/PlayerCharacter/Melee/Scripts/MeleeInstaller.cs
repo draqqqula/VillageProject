@@ -24,6 +24,7 @@ public class MeleeInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<SlashSeriesCounter>().AsSingle();
         Container.BindInterfacesAndSelfTo<AttackInput>().FromInstance(new AttackInput(_attack)).AsSingle();
         Container.BindInterfacesAndSelfTo<IdleState>().AsTransient();
+        Container.Bind<IState>().WithId(StateManager.DefaultStateId).To<IdleState>().FromResolve().AsTransient();
         Container.BindInterfacesAndSelfTo<SlashState>().AsTransient();
         Container.BindInterfacesAndSelfTo<SwingState>().AsTransient();
         Container.BindInterfacesAndSelfTo<ThrustState>().AsTransient();
