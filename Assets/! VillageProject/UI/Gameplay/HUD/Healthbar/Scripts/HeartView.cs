@@ -22,18 +22,20 @@ public class HeartView : MonoBehaviour
 
     public void SetWoundedHeart()
     {
-        _image.sprite = _woundedHealth;
+        _animator.SetInteger("State", 1);
         _image.enabled = true;
     }
 
     public void SetNormalHeart()
     {
+        _animator.SetInteger("State", 0);
         _image.sprite = _normalHealth;
         _image.enabled = true;
     }
     
     public void DisableHeart()
     {
+        _animator.SetInteger("State", 1);
         _animator.SetTrigger("IsDisable");
     }
 }
