@@ -1,11 +1,17 @@
+using UnityEngine;
 using Zenject;
 
 public class BattleCrySignalInstaller : MonoInstaller
 {
+    [SerializeField] private BattleCry _battleCry;
+    
     public override void InstallBindings()
     {
-        Container.DeclareSignal<BattleCry.BattleCryPerformedSignal>();
-        Container.DeclareSignal<BattleCry.BattleCryCooldownFinishedSignal>();
-        Container.DeclareSignal<BattleCry.BattleCryFinishedSignal>();
+        Container.Bind<BattleCry>().FromInstance(_battleCry).AsSingle();
+        Container.BindInterfacesAndSelfTo<BattleCrySignalInvoker>().AsSingle();
+        
+        Container.DeclareSignal<BattleCrySignalInvoker.BattleCryStartedSignal>();
+        Container.DeclareSignal<BattleCrySignalInvoker.BattleCryCooldownFinishedSignal>();
+        Container.DeclareSignal<BattleCrySignalInvoker.BattleCryFinishedSignal>();
     }
 }

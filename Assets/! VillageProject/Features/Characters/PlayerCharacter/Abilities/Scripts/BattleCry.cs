@@ -6,9 +6,11 @@ using Zenject;
 
 public class BattleCry : InputListener
 {
-    private const float ABILITY_DURATION = 5f;
+    [Header("Ability Parameters")]
+    [SerializeField] private float _abilityDuration = 5f;
     [SerializeField] private float _cooldown;
     
+    [Header("Adrenaline Parameters")]
     [SerializeField] private float _adrenalineValue;
     [SerializeField] private float _adrenalineCooldown;
     [SerializeField] private Adrenaline _adrenaline;
@@ -17,74 +19,58 @@ public class BattleCry : InputListener
     
     [SerializeField] private TriggerTargetDetection _battleCryHitboxPrefab;
     private Target _playerTarget;
-    
     private Camera _camera;
-    
     private Coroutine _coroutine;
+    private IInstantiator _instantiator;
     
     private bool _isOnCooldown = false;
-    private SignalBus _signalBus;
+
+    public event Action OnStarted;
+    public event Action OnFinished;
+    public event Action OnFinishedCooldown;
 
     [Inject]
-    private void Construct(SignalBus signalBus)
+    private void Construct(IInstantiator instatiator)
     {
-        _signalBus = signalBus;
-    }
-
-    public class BattleCryPerformedSignal
-    {
-        
-    }
-
-    public class BattleCryFinishedSignal
-    {
-        
-    }
-
-    public class BattleCryCooldownFinishedSignal
-    {
-        
-    }
-    
-    private void Awake()
-    {
+        _instantiator = instatiator;
         _playerTarget = GetComponent<Target>();
         _camera = Camera.main;
     }
     
     private void OnEnable()
     {
-        _battleCry.action.performed += PerformBattleCry;
+        _battleCry.action.performed += ActivateBattleCry;
     }
 
     private void OnDisable()
     {
-        _battleCry.action.performed -= PerformBattleCry;
+        _battleCry.action.performed -= ActivateBattleCry;
     }
 
-    private void PerformBattleCry(InputAction.CallbackContext context)
+    private void ActivateBattleCry(InputAction.CallbackContext context)
     {
         if (_coroutine != null || _isOnCooldown) return;
-        _signalBus.Fire(new BattleCryPerformedSignal());
         _coroutine = StartCoroutine(BattleCryRoutine());
     }
 
     private IEnumerator BattleCryRoutine()
     {
-        var battleCryHitbox = Instantiate(_battleCryHitboxPrefab, transform.position, Quaternion.identity, null);
-        battleCryHitbox.SetTarget(_playerTarget);
-        battleCryHitbox.transform.rotation = Quaternion.Euler(new Vector3(0, _camera.transform.rotation.eulerAngles.y, _camera.transform.rotation.eulerAngles.z));
+        var battleCryHitbox = _instantiator.InstantiatePrefabForComponent<TriggerTargetDetection>(_battleCryHitboxPrefab,
+            transform.position, Quaternion.identity, null);
         
-        var rangeView = battleCryHitbox.GetComponentInChildren<BattleCryRangeView>(includeInactive: true);
-        rangeView.ActivateView();
+        battleCryHitbox.transform.SetParent(null);
+        battleCryHitbox.SetTarget(_playerTarget);
+        battleCryHitbox.transform.rotation = Quaternion.Euler(new Vector3(0, _camera.transform.rotation.eulerAngles.y, 
+            _camera.transform.rotation.eulerAngles.z));
         
         _adrenaline.Gain(_adrenalineValue, _adrenalineCooldown);
+        OnStarted?.Invoke();
         
-        yield return new WaitForSeconds(ABILITY_DURATION);
+        yield return new WaitForSeconds(_abilityDuration);
         
         Destroy(battleCryHitbox.gameObject);
         _coroutine = null;
-        _signalBus.Fire(new BattleCryFinishedSignal());
+        OnFinished?.Invoke();
         
         StartCoroutine(CooldownRoutine());
     }
@@ -94,6 +80,6 @@ public class BattleCry : InputListener
         _isOnCooldown = true;
         yield return new WaitForSeconds(_cooldown);
         _isOnCooldown = false;
-        _signalBus.Fire(new BattleCryCooldownFinishedSignal());
+        OnFinishedCooldown?.Invoke();
     }
 }
