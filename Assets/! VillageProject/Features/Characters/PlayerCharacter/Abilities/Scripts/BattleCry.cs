@@ -9,7 +9,8 @@ public class BattleCry : InputListener
     [Header("Ability Parameters")]
     [SerializeField] private float _abilityDuration = 5f;
     [SerializeField] private float _cooldown;
-    
+    [SerializeField] private float _vfxDelay;
+
     [Header("Adrenaline Parameters")]
     [SerializeField] private float _adrenalineValue;
     [SerializeField] private float _adrenalineCooldown;
@@ -55,6 +56,10 @@ public class BattleCry : InputListener
 
     private IEnumerator BattleCryRoutine()
     {
+        OnStarted?.Invoke();
+
+        yield return new WaitForSeconds(_vfxDelay);
+
         var battleCryHitbox = _instantiator.InstantiatePrefabForComponent<TriggerTargetDetection>(_battleCryHitboxPrefab,
             transform.position, Quaternion.identity, null);
         
@@ -64,7 +69,6 @@ public class BattleCry : InputListener
             _camera.transform.rotation.eulerAngles.z));
         
         _adrenaline.Gain(_adrenalineValue, _adrenalineCooldown);
-        OnStarted?.Invoke();
         
         yield return new WaitForSeconds(_abilityDuration);
         

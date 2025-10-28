@@ -32,6 +32,11 @@ public class BattleCryRangeView : MonoBehaviour
         _meshRenderer.enabled = false;
     }
 
+    private void Start()
+    {
+        ActivateView();
+    }
+
     private void OnDestroy()
     {
         _signalBus.Unsubscribe<BattleCrySignalInvoker.BattleCryStartedSignal>(ActivateView);
