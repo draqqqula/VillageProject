@@ -711,11 +711,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2336bd4311047c79dcc21142337b579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _zoomOutDuration: 0.75
-  _zoomInDuration: 0.3
-  _zoomToOriginalDuration: 0.5
-  zoomOutFOV: 90
-  zoomInFOV: 40
+  _zoomOutDuration: 0.2
+  _zoomInDuration: 0.1
+  _zoomToOriginalDuration: 0.35
+  zoomOutFOV: 65
+  zoomInFOV: 55
 --- !u!1 &9006005799577284954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,10 +1165,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActionsAsset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  _abilityDuration: 5
-  _cooldown: 10
-  _adrenalineValue: 50
-  _adrenalineCooldown: 4
+  _abilityDuration: 1
+  _cooldown: 7
+  _vfxDelay: 0.24
+  _adrenalineValue: 15
+  _adrenalineCooldown: 3
   _adrenaline: {fileID: 504136180198640169}
   _battleCry: {fileID: 1421634217961154004, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   _battleCryHitboxPrefab: {fileID: 5362130456691808376, guid: 156d55e5d09784a9386e48583b0baea1, type: 3}
