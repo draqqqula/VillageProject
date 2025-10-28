@@ -14,10 +14,11 @@ public class Health : MonoBehaviour
 
     [field: SerializeField] public DamageData Data { get; private set; }
     [field: SerializeField] public float Amount { get; private set; }
+    [field: SerializeField] public float MaxAmount { get; private set; }
+    
     public IServiceProvider ComponentProvider { get; private set; }
     public ReadOnlyReactiveProperty<float> AmountReactive => _amount;
-
-
+    
     public bool Deal(DamageSource damage)
     {
         using var scopeA = damage.ComponentProvider.CreateScope();
