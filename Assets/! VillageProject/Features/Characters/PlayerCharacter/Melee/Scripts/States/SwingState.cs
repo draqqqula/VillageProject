@@ -15,6 +15,7 @@ public class SwingState : StateBase<SwingState>
     }
 
     private const string AttackTrigger = "Attack";
+    public override StateType StateType => StateType.Swing;
 
     [Inject] private Stamina _stamina;
     [Inject] private SwingConfiguration _config;

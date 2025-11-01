@@ -5,6 +5,8 @@ using Zenject;
 
 public class SlashState : AnimationState<SlashState>
 {
+    public override StateType StateType => StateType.Slash;
+    
     [Inject] private Stamina _stamina;
     [Inject] private SlashSeriesCounter _slashSeriesCounter;
     [Inject] private SlashConfiguration _slashConfiguration;

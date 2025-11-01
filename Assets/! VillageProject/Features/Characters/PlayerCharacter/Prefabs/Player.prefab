@@ -385,7 +385,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4311318984696472513}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0.03, z: 0}
 --- !u!20 &478462058324333241
 Camera:
   m_ObjectHideFlags: 0
@@ -521,6 +521,7 @@ GameObject:
   - component: {fileID: 6456155590894910178}
   - component: {fileID: 7215489218417643894}
   - component: {fileID: 8646980538808329007}
+  - component: {fileID: 4951268381112114763}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -698,6 +699,23 @@ MonoBehaviour:
   _offset: {fileID: 4311318984696472513}
   _targetVelocity: 0.2
   _isShakeWithOffset: 1
+--- !u!114 &4951268381112114763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7951516284585155374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2336bd4311047c79dcc21142337b579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _zoomOutDuration: 0.2
+  _zoomInDuration: 0.1
+  _zoomToOriginalDuration: 0.35
+  zoomOutFOV: 65
+  zoomInFOV: 55
 --- !u!1 &9006005799577284954
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,6 +744,7 @@ GameObject:
   - component: {fileID: 5999979005556004557}
   - component: {fileID: 3722188603448179419}
   - component: {fileID: 1029320349194626736}
+  - component: {fileID: 2277441776575355399}
   m_Layer: 0
   m_Name: Player
   m_TagString: damageable
@@ -941,6 +960,7 @@ MonoBehaviour:
     Conditions: []
     Effects: []
   <Amount>k__BackingField: 10
+  <MaxAmount>k__BackingField: 10
   references:
     version: 2
     RefIds:
@@ -1132,6 +1152,27 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ae118c43f4aacc54faba97b6327ea540, type: 2}
   - {fileID: 11400000, guid: 94e7ff9902ad03c44a8c426ee59d356d, type: 2}
   - {fileID: 11400000, guid: 38548730ab9f7674fb18b84d9d610007, type: 2}
+--- !u!114 &2277441776575355399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006005799577284954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a7978d6df45461caffb605df9635b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputActionsAsset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+  _abilityDuration: 1
+  _cooldown: 7
+  _vfxDelay: 0.24
+  _adrenalineValue: 15
+  _adrenalineCooldown: 3
+  _adrenaline: {fileID: 504136180198640169}
+  _battleCry: {fileID: 1421634217961154004, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+  _battleCryHitboxPrefab: {fileID: 5362130456691808376, guid: 156d55e5d09784a9386e48583b0baea1, type: 3}
 --- !u!1001 &9171624299505158174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1228,6 +1269,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 670ac2f0c4f7e354dacb497a4295c35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &504136180198640169 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8770525641623798327, guid: fef138d58de98394b9f6d67bf149f777, type: 3}
+  m_PrefabInstance: {fileID: 9171624299505158174}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957278229721415284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440d3e456d447f34ba34f0ad5ed09814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1957278229721415284 stripped
