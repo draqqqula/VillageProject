@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Zenject;
 
+[RequireComponent(typeof(MeshRenderer))]
 public class BattleCryRangeView : MonoBehaviour
 {
     [SerializeField] private float _rangeLifetime;
@@ -12,36 +13,22 @@ public class BattleCryRangeView : MonoBehaviour
     [Header("Curves")]
     [SerializeField] private AnimationCurve _curveOppacityByTime = AnimationCurve.Linear(0, 1, 1, 0); 
     [SerializeField] private AnimationCurve _curveSizeByTime = AnimationCurve.Linear(0, 0, 1, 1); 
-    [SerializeField] private bool _isAutoFixCurves;
+    [SerializeField] private bool _isAutoFixLifetime;
     
     private MeshRenderer _meshRenderer;
     private Material _material;
     private Coroutine _coroutine;
     
-    private SignalBus _signalBus;
-
-    [Inject]
-    public void Construct(SignalBus signalBus)
+    private void Start()
     {
-        _signalBus = signalBus;
-        _signalBus.Subscribe<BattleCrySignalInvoker.BattleCryStartedSignal>(ActivateView);
-        
         _meshRenderer = GetComponent<MeshRenderer>();
         _material = new Material(_meshRenderer.material);
         _meshRenderer.material = _material;
         _meshRenderer.enabled = false;
-    }
-
-    private void Start()
-    {
+        
         ActivateView();
     }
-
-    private void OnDestroy()
-    {
-        _signalBus.Unsubscribe<BattleCrySignalInvoker.BattleCryStartedSignal>(ActivateView);
-    }
-
+    
     public void ActivateView()
     {
         if (_coroutine != null) StopCoroutine(_coroutine);
@@ -78,16 +65,17 @@ public class BattleCryRangeView : MonoBehaviour
     
     private void OnValidate()
     {
-        if (!_isAutoFixCurves) return;
-        UpdateCurves();
+        if (!_isAutoFixLifetime) return;
+        
+        _rangeLifetime = Mathf.Max(_curveOppacityByTime[_curveOppacityByTime.length - 1].time,
+            _curveSizeByTime[_curveSizeByTime.length - 1].time);
     }
     
     [ContextMenu("Update Curves")]
     public void UpdateCurves()
     {
-        _curveSizeByTime.MoveKey(_curveSizeByTime.keys.Length - 1, new Keyframe(_rangeLifetime, Mathf.Max(transform.localScale.x, transform.localScale.z)));
-        _curveOppacityByTime.MoveKey(_curveOppacityByTime.keys.Length - 1, new Keyframe(_rangeLifetime, _curveOppacityByTime.keys[_curveOppacityByTime.keys.Length - 1].value));
+        _curveSizeByTime.MoveKey(_curveSizeByTime.keys.Length - 1,
+            new Keyframe(_curveSizeByTime[_curveSizeByTime.length - 1].time, Mathf.Max(transform.localScale.x, transform.localScale.z)));
     }
-    
     #endif
 }

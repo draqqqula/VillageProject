@@ -5,6 +5,7 @@ using Zenject;
 public class ThrustState : AnimationState<ThrustState>
 {
     private const string ThrustTrigger = "Thrust";
+    public override StateType StateType => StateType.Thrust;
 
     [Inject] private Animator _animator;
     [Inject] private SlashConfiguration _slashConfiguration;
