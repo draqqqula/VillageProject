@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 [Serializable]
-public abstract class DamageAttributeBase : MonoBehaviour
+public abstract class DamageAttributeBase
 {
     public abstract void AddServices(IServiceCollection services);
 }

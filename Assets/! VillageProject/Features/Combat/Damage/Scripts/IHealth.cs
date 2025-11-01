@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-public interface IDamageEffect
+public interface IHealth
 {
-    public void TryExecute(DamageInteractionContext context);
+    public float Amount { get; set; }
 }

@@ -9,7 +9,7 @@ public class DamagingHitbox : MonoBehaviour
 {
     private const string DamageableTag = "damageable";
 
-    [SerializeField] private DamageSource _damageSource;
+    [SerializeField] private DamageInteractable _source;
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag(DamageableTag))
@@ -17,10 +17,7 @@ public class DamagingHitbox : MonoBehaviour
             return;
         }
 
-        var health = other.GetComponent<Health>();
-        if (health != null && health.isActiveAndEnabled)
-        {
-            health.Deal(_damageSource);
-        }
+        var target = other.GetComponent<IDamageInteractable>();
+        DamageInteraction.Interact(target, _source);
     }
 }

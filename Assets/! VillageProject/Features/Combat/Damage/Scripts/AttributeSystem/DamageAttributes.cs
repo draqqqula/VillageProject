@@ -8,9 +8,9 @@ using UnityEngine;
     fileName = "New Damage Attributes",
     menuName = "Damage Attributes",
     order = 99)]
-public class DamageAttributes : MonoBehaviour
+public class DamageAttributes : ScriptableObject
 {
-    [SerializeReference, SubclassSelector] private List<DamageAttributeBase> Attributes;
+    [SerializeReference, SubclassSelector] public List<DamageAttributeBase> Attributes;
 
     public void AddServices(IServiceCollection services)
     {

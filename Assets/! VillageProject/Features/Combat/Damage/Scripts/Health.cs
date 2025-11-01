@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IHealth
 {
     private IDamageComponentProviderFactory _factory = new DefaultDamageComponentProviderFactory();
     private ReactiveProperty<float> _amount = new ReactiveProperty<float>();
@@ -13,7 +13,18 @@ public class Health : MonoBehaviour
     public event Action<float> OnDamageDealt;
 
     [field: SerializeField] public DamageData Data { get; private set; }
-    [field: SerializeField] public float Amount { get; private set; }
+    public float Amount
+    {
+        get
+        {
+            return _amount.Value;
+        }
+        set
+        {
+            _amount.Value = value;
+        }
+    }
+
     [field: SerializeField] public float MaxAmount { get; private set; }
     
     public IServiceProvider ComponentProvider { get; private set; }
@@ -51,6 +62,6 @@ public class Health : MonoBehaviour
         var serviceCollection = new ServiceCollection();
         Data.RegisterTo(serviceCollection);
         ComponentProvider = serviceCollection.BuildServiceProvider();
-        _amount.Value = Amount;
+        _amount.Value = MaxAmount;
     }
 }
