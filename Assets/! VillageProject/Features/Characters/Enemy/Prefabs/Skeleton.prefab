@@ -183,6 +183,7 @@ MonoBehaviour:
     - rid: 8889540975359426942
     - rid: 8889540975359426943
     - rid: 8889540975359426946
+    - rid: 97553103338602613
     Conditions:
     - rid: 8889540975359426944
     - rid: 8889540975359426945
@@ -192,6 +193,10 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 97553103338602613
+      type: {class: BlockableDamageComponent, ns: , asm: Assembly-CSharp}
+      data:
+        stateOfAttack: {fileID: 5730530943946996982}
     - rid: 8889540975359426942
       type: {class: KeyComponent, ns: , asm: Assembly-CSharp}
       data:
@@ -1283,6 +1288,10 @@ PrefabInstance:
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: 'managedReferences[97553103338602605]'
+      value: Assembly-CSharp BlockableDamageComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: 'managedReferences[5239169683046007232]'
       value: Assembly-CSharp StunDamageComponent
       objectReference: {fileID: 0}
@@ -1367,9 +1376,17 @@ PrefabInstance:
       value: 6348562074853441643
       objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: '<Data>k__BackingField.Components.Array.data[7]'
+      value: 97553103338602605
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: managedReferences[5239169683046007232]._vfxRoot
       value: 
       objectReference: {fileID: 4426178179523956494}
+    - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      propertyPath: managedReferences[97553103338602605]._blockFlag
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4640968921910481281, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       propertyPath: managedReferences[8889540938514301051].Transform
       value: 
@@ -1494,6 +1511,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1346228245960298043, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1816175352867323460}
+    - targetCorrespondingSourceObject: {fileID: 1346228245960298043, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5730530943946996982}
   m_SourcePrefab: {fileID: 100100000, guid: e016442de3910e543b2a333955bf7ccd, type: 3}
 --- !u!114 &2199204399707505556 stripped
 MonoBehaviour:
@@ -1524,6 +1544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _originPoint: {fileID: 8198918740422486638}
+  stateOfAttack: {fileID: 0}
 --- !u!114 &7159240231132442957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1768,6 +1789,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 4426178179531186410}
+--- !u!114 &5730530943946996982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4011959546620064136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fc7af4a10ad43419f6ad30b41850749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsBlocking>k__BackingField: 0
 --- !u!114 &6177989388953775670 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8124269545049411973, guid: e016442de3910e543b2a333955bf7ccd, type: 3}

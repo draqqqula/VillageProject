@@ -1,13 +1,12 @@
-﻿using R3;
-using System.Collections;
+using R3;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class AttackInput : IAttackInput, IInitializable
+public class BlockInput : IBlockInput, IInitializable
 {
     private InputWithHolding _inputWithHolding;
 
-    public AttackInput(InputActionReference inputAction)
+    public BlockInput(InputActionReference inputAction)
     {
         _inputWithHolding = new InputWithHolding(inputAction);
     }
