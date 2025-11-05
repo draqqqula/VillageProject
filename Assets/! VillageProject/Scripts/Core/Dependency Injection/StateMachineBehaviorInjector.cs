@@ -9,6 +9,7 @@ public class StateMachineBehaviorInjector : MonoInstaller
     {
         foreach (var behavior in _animator.GetBehaviours<StateMachineBehaviour>())
         {
+            Debug.Log("queued for inject");
             Container.QueueForInject(behavior);
         }
     }

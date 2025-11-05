@@ -86,5 +86,4 @@ public static class ServiceCollectionExtensions
     {
         AddTransientInjectable(services, typeof(TService), typeof(TService));
     }
-
 }

@@ -7,13 +7,13 @@ using Zenject;
 [Serializable]
 public class HealthAttribute : DamageAttributeBase
 {
-    public class Service
+    public class Service : IHealthAttribute
     {
         [Inject] public IHealth Health { get; private set; }
     }
 
     public override void AddServices(IServiceCollection services)
     {
-        services.AddSingletonInjectable<Service, Service>();
+        services.AddSingletonInjectable<IHealthAttribute, Service>();
     }
 }

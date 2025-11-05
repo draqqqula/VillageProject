@@ -12,7 +12,7 @@ public class BaseDamageAmountAttribute : DamageAttributeBase
         public float Amount { get; set; }
         public bool TryExecute(DamageInteractionContext context)
         {
-            if (context.TargetAttributes.TryGetService<HealthAttribute.Service>(out var data))
+            if (context.TargetAttributes.TryGetService<IHealthAttribute>(out var data))
             {
                 data.Health.Amount -= Amount;
             }

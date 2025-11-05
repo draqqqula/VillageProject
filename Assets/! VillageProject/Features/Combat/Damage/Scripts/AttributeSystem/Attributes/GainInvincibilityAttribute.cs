@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class GainInvincibilityAttribute : DamageAttributeBase
 {
-    [SerializeField] private float _durationFactor;
+    [SerializeField] private float _durationFactor = 1;
 
     public class Effect : IDamageExecutable
     {
@@ -18,8 +18,8 @@ public class GainInvincibilityAttribute : DamageAttributeBase
         public float DurationFactor { get; private set; }
         public bool TryExecute(DamageInteractionContext context)
         {
-            if (context.SourceAttributes.TryGetService<InvincibilityHandlerAttribute.Storage>(out var storage)
-                && context.SourceAttributes.TryGetService<KeyAttribute>(out var key))
+            if (context.TargetAttributes.TryGetService<InvincibilityHandlerAttribute.Storage>(out var storage)
+                && context.SourceAttributes.TryGetService<IKeyAttribute>(out var key))
             {
                 storage.SetKey(key.Key, DurationFactor);
             }

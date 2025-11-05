@@ -11,9 +11,9 @@ public class InvincibilityHandlerAttribute : DamageAttributeBase
     {
         public bool TryExecute(DamageInteractionContext context)
         {
-            if (context.SourceAttributes.TryGetService<Storage>(out var storage)
-                && context.SourceAttributes.TryGetService<KeyAttribute>(out var key)
-                && storage.IsKeyActive(key.Key))
+            if (context.TargetAttributes.TryGetService<Storage>(out var storage)
+                && context.SourceAttributes.TryGetService<IKeyAttribute>(out var keyAttribute)
+                && storage.IsKeyActive(keyAttribute.Key))
             {
                 return false;
             }
@@ -28,16 +28,16 @@ public class InvincibilityHandlerAttribute : DamageAttributeBase
             DefaultDuration = defaultDuration;
         }
 
-        private Dictionary<string, float> _expireStamps = new Dictionary<string, float>();
+        private Dictionary<object, float> _expireStamps = new Dictionary<object, float>();
 
         public float DefaultDuration { get; private set; }
 
-        public void SetKey(string key, float durationFactor)
+        public void SetKey(object key, float durationFactor)
         {
             _expireStamps[key] = Time.time + DefaultDuration * durationFactor;
         }
 
-        public bool IsKeyActive(string key)
+        public bool IsKeyActive(object key)
         {
             if (_expireStamps.TryGetValue(key, out var expiration))
             {

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 using Zenject;
 
 public class AnimationWindowActivatorState : StateMachineBehaviour
@@ -71,12 +70,11 @@ public class AnimationWindowActivatorState : StateMachineBehaviour
     }
 
     [SerializeField] private List<AnimationWindowInfo> _windows;
-    private List<(IAnimationWindowController, AnimationWindow)> _listeners;
+    private List<(IAnimationWindowController, AnimationWindow)> _listeners = new List<(IAnimationWindowController, AnimationWindow)>();
 
     [Inject]
     public void Construct(DiContainer container)
     {
-        _listeners = new List<(IAnimationWindowController, AnimationWindow)>();
         foreach (var window in _windows)
         {
             var listener = container.TryResolveId<IAnimationWindowController>(window.Window);
@@ -85,15 +83,29 @@ public class AnimationWindowActivatorState : StateMachineBehaviour
                 _listeners.Add((listener, window.Window));
             }
         }
+
+        _states = _windows.Join(_listeners, it => it.Window, it => it.Item2, (info, listener) =>
+        {
+            return new AnimationWindowState(
+                info.Window,
+                listener.Item1,
+                info.EnterAt,
+                info.ExitAt);
+        }).ToArray();
     }
 
     private AnimationWindowState[] _states;
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (_states == null)
+        {
+            return;
+        }
+
         foreach (var state in _states)
         {
-            state.IsActive = stateInfo.normalizedTime >= state.StartNormalized 
+            state.IsActive = stateInfo.normalizedTime >= state.StartNormalized
                 && stateInfo.normalizedTime < state.ExitNormalized;
             if (state.IsActive)
             {
@@ -105,19 +117,6 @@ public class AnimationWindowActivatorState : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-        
-
-        if (_states == null)
-        {
-            _states = _windows.Join(_listeners, it => it.Window, it => it.Item2, (info, listener) =>
-            {
-                return new AnimationWindowState(
-                    info.Window,
-                    listener.Item1,
-                    info.EnterAt * stateInfo.length,
-                    info.ExitAt * stateInfo.length);
-            }).ToArray();
-        }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

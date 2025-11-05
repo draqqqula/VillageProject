@@ -18,6 +18,8 @@ public class DamageInteractable : MonoBehaviour, IDamageInteractable
     {
         _services = new ServiceCollection();
         _services.AddSingleton(_container);
+        _services.AddSingleton(gameObject);
+        _services.AddSingleton(transform);
         Attributes.AddServices(_services);
         AttributeProvider = _services.BuildServiceProvider();
     }

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 3243616142365726578}
   - component: {fileID: 4640968921910481281}
   - component: {fileID: 8236837215715823226}
+  - component: {fileID: 7200134689312580180}
   m_Layer: 19
   m_Name: Enemy
   m_TagString: damageable
@@ -384,7 +385,7 @@ MonoBehaviour:
     Components: []
     Conditions: []
     Effects: []
-  <Amount>k__BackingField: 15
+  <MaxAmount>k__BackingField: 0
   references:
     version: 2
     RefIds: []
@@ -401,6 +402,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 0.49
+--- !u!114 &7200134689312580180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b6b2abd27e7b143bec99c7cf17abd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Attributes>k__BackingField: {fileID: 11400000, guid: a9da8334f95a85145b01c48141471888, type: 2}
+  <Role>k__BackingField: 1
 --- !u!1 &2406375740862976146
 GameObject:
   m_ObjectHideFlags: 0

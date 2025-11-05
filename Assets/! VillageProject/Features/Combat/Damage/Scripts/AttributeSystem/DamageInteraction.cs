@@ -9,9 +9,9 @@ public static class DamageInteraction
 {
     public static void Interact(IServiceProvider target, IServiceProvider source)
     {
-        var effects = target.GetServices<IDamageExecutable>().Concat(source.GetServices<IDamageExecutable>());
         using var targetScope = target.CreateScope();
         using var sourceScope = source.CreateScope();
+        var effects = targetScope.ServiceProvider.GetServices<IDamageExecutable>().Concat(sourceScope.ServiceProvider.GetServices<IDamageExecutable>());
 
         var context = new DamageInteractionContext(targetScope.ServiceProvider, sourceScope.ServiceProvider);
 
