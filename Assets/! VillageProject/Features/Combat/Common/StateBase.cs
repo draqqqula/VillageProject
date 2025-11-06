@@ -6,6 +6,7 @@ using Zenject;
 public abstract class StateBase<T> : CompositeDisposableBase, IState where T : StateBase<T>
 {
     [Inject] private DiContainer _container;
+    public abstract StateType StateType { get; }
 
     public IEnumerable<ITransition> GetTransitions()
     {

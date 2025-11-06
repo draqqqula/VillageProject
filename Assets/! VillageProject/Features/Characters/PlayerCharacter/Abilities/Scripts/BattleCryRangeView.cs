@@ -1,0 +1,81 @@
+using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.PlayerLoop;
+using Zenject;
+
+[RequireComponent(typeof(MeshRenderer))]
+public class BattleCryRangeView : MonoBehaviour
+{
+    [SerializeField] private float _rangeLifetime;
+    [SerializeField] private Vector3 _scaleRatio = Vector3.one;
+    
+    [Header("Curves")]
+    [SerializeField] private AnimationCurve _curveOppacityByTime = AnimationCurve.Linear(0, 1, 1, 0); 
+    [SerializeField] private AnimationCurve _curveSizeByTime = AnimationCurve.Linear(0, 0, 1, 1); 
+    [SerializeField] private bool _isAutoFixLifetime;
+    
+    private MeshRenderer _meshRenderer;
+    private Material _material;
+    private Coroutine _coroutine;
+    
+    private void Start()
+    {
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _material = new Material(_meshRenderer.material);
+        _meshRenderer.material = _material;
+        _meshRenderer.enabled = false;
+        
+        ActivateView();
+    }
+    
+    public void ActivateView()
+    {
+        if (_coroutine != null) StopCoroutine(_coroutine);
+        _meshRenderer.enabled = true;
+        _coroutine = StartCoroutine(RangeRoutine());
+    }
+
+    private IEnumerator RangeRoutine()
+    {
+        var progress = 0f;
+        while (progress < _rangeLifetime)
+        {
+            progress += Time.deltaTime;
+            
+            var size = _scaleRatio * _curveSizeByTime.Evaluate(progress);
+            var oppacity = _curveOppacityByTime.Evaluate(progress);
+
+            transform.localScale = size;
+            _material.SetFloat("_Alpha", oppacity);
+            yield return null;
+        }
+        
+        var endSize = _scaleRatio * _curveSizeByTime.Evaluate(progress);
+        transform.localScale = endSize;
+        var endOppacity = _curveOppacityByTime.Evaluate(progress);
+        _material.SetFloat("_Alpha", endOppacity);
+        
+        _meshRenderer.enabled = false;
+        _material.SetFloat("_Alpha", 1);
+        _coroutine = null;
+    }
+
+    #if UNITY_EDITOR
+    
+    private void OnValidate()
+    {
+        if (!_isAutoFixLifetime) return;
+        
+        _rangeLifetime = Mathf.Max(_curveOppacityByTime[_curveOppacityByTime.length - 1].time,
+            _curveSizeByTime[_curveSizeByTime.length - 1].time);
+    }
+    
+    [ContextMenu("Update Curves")]
+    public void UpdateCurves()
+    {
+        _curveSizeByTime.MoveKey(_curveSizeByTime.keys.Length - 1,
+            new Keyframe(_curveSizeByTime[_curveSizeByTime.length - 1].time, Mathf.Max(transform.localScale.x, transform.localScale.z)));
+    }
+    #endif
+}
