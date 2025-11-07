@@ -10,7 +10,7 @@ using UnityEngine;
     order = 99)]
 public class DamageAttributes : ScriptableObject
 {
-    [SerializeReference, SubclassSelector] public List<DamageAttributeBase> Attributes;
+    [SerializeReference, SubclassSelector] public List<DamageAttributeBase> Attributes = new List<DamageAttributeBase>();
 
     public void AddServices(IServiceCollection services)
     {
