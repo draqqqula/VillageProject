@@ -10,7 +10,7 @@ using UnityEditor;
 
 
 [Serializable]
-public class GenericDamageAttribute<T> : DamageAttributeBase where T : class, IDamageExecutable
+public class GenericDamageAttribute<T> : DamageAttributeBase where T : class
 {
     [SerializeReference, SubclassSelector]
     public List<SerializedPropertyValueBase> PropertyValues = new();

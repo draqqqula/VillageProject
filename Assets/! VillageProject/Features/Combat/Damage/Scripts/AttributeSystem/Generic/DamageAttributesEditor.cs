@@ -20,7 +20,6 @@ public class DamageAttributesEditor : Editor
             .Where(t =>
                 t.IsClass &&
                 !t.IsAbstract &&
-                typeof(IDamageExecutable).IsAssignableFrom(t) &&
                 t.GetCustomAttribute<GenerateDamageAttributeAttribute>() != null)
             .ToList();
 
