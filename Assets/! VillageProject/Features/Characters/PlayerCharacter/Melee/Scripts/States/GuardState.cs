@@ -27,8 +27,6 @@ public sealed class GuardState : AnimationState<GuardState>
     public override void OnEnter()
     {
         _registrar = new HitboxHitRegistrar(_shieldHitboxEvent);
-        _registrar.Deactivate();
-        _registrar.Activate();
         
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
         _animator.SetTrigger(BlockParam);
@@ -73,14 +71,15 @@ public sealed class GuardState : AnimationState<GuardState>
 
     private void OnShieldValueChanged()
     {
-        if (ShieldValue.Value < 0.2) RemoveHitbox();
-        else if (ShieldValue.Value > 0.2) AddHitbox();
+        if (ShieldValue.Value < 0.1) RemoveHitbox();
+        else if (ShieldValue.Value > 0.1) AddHitbox();
     }
 
     private void AddHitbox()
     {
         if (_isShieldActive) return;
         
+        _registrar.Activate();
         _registrar.OnHit += OnHit;
         _isShieldActive = true;
     }
