@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 [Serializable]
 public class MultiArrowSpawner : ProjectileSpawner
@@ -11,11 +12,11 @@ public class MultiArrowSpawner : ProjectileSpawner
     [SerializeField] private float _spread;
     [SerializeField] private AnimationCurve _spreadCurve;
 
-    public override float Spawn(Transform target, Transform origin)
+    public override float Spawn(DiContainer container, Transform target, Transform origin)
     {
         for (int i = 0; i < _amount; i++)
         {
-            var arrow = GameObject.Instantiate(_prefab, origin);
+            var arrow = container.InstantiatePrefab(_prefab, origin);
             var projectile = arrow.GetComponent<StraightLineProjectile>();
             projectile.transform.LookAt(target);
             var angle = UnityEngine.Random.Range(0.0f, 360.0f);

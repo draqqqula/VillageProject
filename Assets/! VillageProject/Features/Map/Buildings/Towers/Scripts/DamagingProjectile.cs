@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class DamagingProjectile : MonoBehaviour
 {
-    [SerializeField] private DamageSource _damage;
+    [SerializeField] private DamageInteractable _source;
     [SerializeField] private TravellingProjectile _traveling;
     
     public void Deal()
     {
-        var health = _traveling.Destination.GetComponent<Health>();
-        if (health != null)
+        var target = _traveling.Destination.GetComponent<IDamageInteractable>();
+        if (target != null)
         {
-            health.Deal(_damage);
+            DamageInteraction.Interact(target, _source);
         }
     }
 }

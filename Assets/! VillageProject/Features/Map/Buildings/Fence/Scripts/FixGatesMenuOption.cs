@@ -12,27 +12,14 @@ public class FixGatesMenuOption : BuildingMenuItemBase<FixGatesMenuOption.FixGat
 
     [SerializeField] private Health _health;
     [SerializeField] private PriceReference _price;
-    [SerializeField] private DamageSource _healing;
     [SerializeField] private GateState _gateState;
-
-    private float MaxHealth
-    {
-        get
-        {
-            if (_health.ComponentProvider.TryGetComponent<MaxHealthComponent>(out var maxHealth))
-            {
-                return maxHealth.MaxHealth;
-            }
-            return 0;
-        }
-    }
 
     public override ReadOnlyReactiveProperty<FixGatesData> Data => _health.AmountReactive.Select(it =>
     {
         return new FixGatesData()
         {
             PriceToFix = _price.Value,
-            IsFullHealth = it == MaxHealth
+            IsFullHealth = it == _health.MaxAmount
         };
     })
         .ToReadOnlyReactiveProperty();
@@ -49,11 +36,11 @@ public class FixGatesMenuOption : BuildingMenuItemBase<FixGatesMenuOption.FixGat
 
     public override bool TryPerform()
     {
-        if (_health.Amount < MaxHealth && _price.Value.TryPay())
+        if (_health.Amount < _health.MaxAmount && _price.Value.TryPay())
         {
             _health.enabled = true;
             _health.gameObject.SetActive(true);
-            _health.Deal(_healing);
+            _health.Amount = _health.MaxAmount;
             _gateState.Fix();
             return true;
         }

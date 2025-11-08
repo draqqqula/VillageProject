@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 2424175965668319041}
   m_Layer: 7
   m_Name: Door
-  m_TagString: damageable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -556,10 +556,9 @@ GameObject:
   - component: {fileID: 2705789490830106555}
   - component: {fileID: 5346194551346715880}
   - component: {fileID: 4594150172894078841}
-  - component: {fileID: 948848763175444669}
   - component: {fileID: 8128482272931895168}
-  - component: {fileID: 4771904073367987077}
   - component: {fileID: 8017849101043197322}
+  - component: {fileID: 4350018480712178463}
   m_Layer: 7
   m_Name: Hurtbox
   m_TagString: damageable
@@ -628,35 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98505cab4c1a3b24db4107f815ee059b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Data>k__BackingField:
-    Components:
-    - rid: 8889541055079776361
-    - rid: 8889541055079776362
-    - rid: 6306945575159595130
-    Conditions: []
-    Effects:
-    - rid: 8889541077617082467
-  <Amount>k__BackingField: 15
-  references:
-    version: 2
-    RefIds:
-    - rid: 6306945575159595130
-      type: {class: MaxHealthComponent, ns: , asm: Assembly-CSharp}
-      data:
-        <MaxHealth>k__BackingField: 15
-    - rid: 8889541055079776361
-      type: {class: InvincibilityComponent, ns: , asm: Assembly-CSharp}
-      data:
-        DefaultDuration: 0.3
-    - rid: 8889541055079776362
-      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Member: {fileID: 948848763175444669}
-    - rid: 8889541077617082467
-      type: {class: TriggerAnimatorEffect, ns: , asm: Assembly-CSharp}
-      data:
-        Animator: {fileID: 2806308279671874773}
-        Trigger: Damage
+  <MaxAmount>k__BackingField: 15
 --- !u!114 &5346194551346715880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,19 +695,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &948848763175444669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4892622090762266247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbbe0a24668bd3e4dbf9a89428f5a1a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Team>k__BackingField: {fileID: 11400000, guid: 298386bd74f26414f970c4761992fd76, type: 2}
 --- !u!114 &8128482272931895168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,26 +715,6 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
---- !u!114 &4771904073367987077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4892622090762266247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Data>k__BackingField:
-    Components: []
-    Conditions: []
-    Effects: []
-  <Info>k__BackingField: {fileID: 11400000, guid: d1c79d24735ecaf48832c19f557f8f6d, type: 2}
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &8017849101043197322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -804,7 +742,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2806308279671874773}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: Damage
+          m_BoolArgument: 0
+        m_CallState: 2
   _health: {fileID: 2705789490830106555}
+--- !u!114 &4350018480712178463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4892622090762266247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b6b2abd27e7b143bec99c7cf17abd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Attributes>k__BackingField: {fileID: 11400000, guid: d2a7878be664f1c469b55dfb69360451, type: 2}
+  <Role>k__BackingField: 1
 --- !u!1 &5690219174216110753
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,7 +1194,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: {fileID: 2705789490830106555}
   _price: {fileID: 11400000, guid: 34c47749c6f195745a082c05010d9182, type: 2}
-  _healing: {fileID: 4771904073367987077}
   _gateState: {fileID: 7192404346196671724}
 --- !u!114 &5585753674597020949
 MonoBehaviour:

@@ -41,7 +41,7 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
     {
         if (Price.Value.TryPay())
         {
-            var building = Instantiate(BuildingPrefab, _slot.transform);
+            var building = _container.InstantiatePrefab(BuildingPrefab, _slot.transform);
             _container.InjectGameObject(building);
             _slot.Substitute(building);
             return true;

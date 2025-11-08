@@ -4,8 +4,19 @@ public class TriggerTargetDetection : MonoBehaviour
 {
     [SerializeField] private Target _target;
 
+    public void SetTarget(Target target)
+    {
+        if (_target == null) _target = target;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        if (_target == null)
+        {
+            Debug.LogError("Target is null!");
+            return;
+        }
+        
         var searcher = other.GetComponent<SearchForTarget>();
         if (searcher != null)
         {
@@ -15,6 +26,12 @@ public class TriggerTargetDetection : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (_target == null)
+        {
+            Debug.LogError("Target is null!");
+            return;
+        }
+        
         var searcher = other.GetComponent<SearchForTarget>();
         if (searcher != null)
         {

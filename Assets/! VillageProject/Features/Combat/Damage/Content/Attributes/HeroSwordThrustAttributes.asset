@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c6b08b72b4977347a067e9b979b6130, type: 3}
+  m_Name: HeroSwordThrustAttributes
+  m_EditorClassIdentifier: 
+  Attributes:
+  - rid: 3346214206461444249
+  - rid: 3346214228869513366
+  - rid: 3346214206461444240
+  - rid: 3346214206461444241
+  - rid: 3346214206461444242
+  - rid: 3346214206461444243
+  - rid: 3346214206461444246
+  - rid: 3346214206461444244
+  - rid: 3346214206461444245
+  - rid: 3346214206461444316
+  - rid: 3346214206461444238
+  - rid: 3346214206461444338
+  references:
+    version: 2
+    RefIds:
+    - rid: 3346214206461444238
+      type: {class: BaseDamageAmountAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _amount: 4
+    - rid: 3346214206461444240
+      type: {class: TransformDamageAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214206461444241
+      type: {class: TeamMemberAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214206461444242
+      type: {class: HitVFXDamageAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _prefab: {fileID: 1570927096764274, guid: 643639841fb531e4ba8097fed4eb9ac7, type: 3}
+    - rid: 3346214206461444243
+      type: {class: GainInvincibilityAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _durationFactor: 1
+    - rid: 3346214206461444244
+      type: {class: ApplyDamageTiltAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214206461444245
+      type: {class: CriticalHitAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _modifier: 5
+    - rid: 3346214206461444246
+      type: {class: RaycastOriginAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _maxDistance: 0
+    - rid: 3346214206461444249
+      type: {class: TeamConditionAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214206461444316
+      type: {class: GainInvincibilityAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _durationFactor: 1
+    - rid: 3346214206461444338
+      type: {class: GainAdrenalineAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214228869513366
+      type: {class: GameObjectKeyAttribute, ns: , asm: Assembly-CSharp}
+      data: 

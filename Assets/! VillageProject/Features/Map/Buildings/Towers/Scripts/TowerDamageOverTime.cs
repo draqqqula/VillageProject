@@ -4,9 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class TowerDamageOverTime : TowerIntervalAction
 {
+    [Inject] private DiContainer _container;
     public event Action ProjectileFired;
     [SerializeField] private float _defaultInterval;
     public ProjectileSpawner Spawner { get; set; }
@@ -27,7 +29,7 @@ public class TowerDamageOverTime : TowerIntervalAction
 
         if (closest != null && Spawner != null)
         {
-            var projectile = Spawner.Spawn(closest.transform, transform);
+            var projectile = Spawner.Spawn(_container, closest.transform, transform);
             ProjectileFired?.Invoke();
             return projectile;
         }

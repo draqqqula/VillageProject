@@ -34,15 +34,24 @@ public class Stamina : MonoBehaviour
         }
     }
 
-    [SerializeField] private float _rate;
-    [SerializeField] private float _border;
-    [field: SerializeField] public float MaxValue { get; private set; }
-    [field: SerializeField] public float CooldownDuration { get; private set; }
-
     private float _rateModifier = 1;
     private int _zeroModifiers = 0;
-    private ReactiveProperty<float> _value = new ReactiveProperty<float>();
+    private ReactiveProperty<float> _value;
+    private ReactiveProperty<float> _hoverAmount;
+    [SerializeField] private float _rate;
+    [SerializeField] private float _border;
+
+    public Stamina()
+    {
+        _value = new ReactiveProperty<float>();
+        _hoverAmount = new ReactiveProperty<float>();
+        IsOnCooldown = _value.Select(it => it == 0).ToReadOnlyReactiveProperty();
+    }
+
+    [field: SerializeField] public float MaxValue { get; private set; }
+    [field: SerializeField] public float CooldownDuration { get; private set; }
     public ReadOnlyReactiveProperty<float> Value => _value;
+    public ReactiveProperty<float> HoverAmount => _hoverAmount;
     public ReadOnlyReactiveProperty<bool> IsOnCooldown { get; private set; }
 
 
@@ -84,12 +93,6 @@ public class Stamina : MonoBehaviour
         var modifier = ModifyRate(0);
         yield return new WaitForSeconds(CooldownDuration);
         modifier.Dispose();
-    }
-
-
-    private void Awake()
-    {
-        IsOnCooldown = _value.Select(it => it == 0).ToReadOnlyReactiveProperty();
     }
 
     private void FixedUpdate()
