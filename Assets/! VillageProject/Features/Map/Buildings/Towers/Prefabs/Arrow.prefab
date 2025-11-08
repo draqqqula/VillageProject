@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4313737582182067609}
   - component: {fileID: 8257328852735017819}
-  - component: {fileID: 670902638927328873}
   - component: {fileID: 3938190265022249069}
   - component: {fileID: 6099484905878034266}
   - component: {fileID: 5683293508219481640}
   - component: {fileID: 6236400959978826394}
   - component: {fileID: 9191432750880202387}
+  - component: {fileID: 4885169462548066848}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -121,41 +121,6 @@ MonoBehaviour:
   _speed: 25
   <Source>k__BackingField: {fileID: 0}
   <Destination>k__BackingField: {fileID: 0}
---- !u!114 &670902638927328873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 822112668561322717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Data>k__BackingField:
-    Components:
-    - rid: 8889540975359426976
-    - rid: 8889540975359426977
-    - rid: 8889540975359426978
-    Conditions: []
-    Effects: []
-  <Info>k__BackingField: {fileID: 11400000, guid: 4f32253853fa3bb4ebd8ef477ead481b, type: 2}
-  references:
-    version: 2
-    RefIds:
-    - rid: 8889540975359426976
-      type: {class: TransformDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Transform: {fileID: 4313737582182067609}
-    - rid: 8889540975359426977
-      type: {class: KeyComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Key: {fileID: 670902638927328873}
-    - rid: 8889540975359426978
-      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Member: {fileID: 5683293508219481640}
 --- !u!114 &3938190265022249069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e026bf2492efe2c4dba8a8e21ff41b68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: {fileID: 670902638927328873}
+  _source: {fileID: 4885169462548066848}
   _traveling: {fileID: 8257328852735017819}
 --- !u!114 &6099484905878034266
 MonoBehaviour:
@@ -244,6 +209,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _delay: 10
+--- !u!114 &4885169462548066848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822112668561322717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b6b2abd27e7b143bec99c7cf17abd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Attributes>k__BackingField: {fileID: 11400000, guid: 6bd5307ee11154440a1e7d5de9e1f284, type: 2}
+  <Role>k__BackingField: 0
 --- !u!1 &2882498587141435572
 GameObject:
   m_ObjectHideFlags: 0

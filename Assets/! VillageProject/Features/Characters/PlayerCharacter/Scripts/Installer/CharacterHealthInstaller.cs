@@ -8,8 +8,7 @@ public class CharacterHealthInstaller : MonoInstaller
     [SerializeField] private DeathEvent _deathEvent;
     public override void InstallBindings()
     {
-        Container.BindInstance(_health).AsSingle();
+        Container.BindInterfacesAndSelfTo<Health>().FromInstance(_health).AsSingle();
         Container.BindInstance(_deathEvent).AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerHealthSignalInvoker>().AsSingle();
     }
 }

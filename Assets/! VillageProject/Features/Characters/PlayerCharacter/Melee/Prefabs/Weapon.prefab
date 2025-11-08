@@ -44,7 +44,6 @@ GameObject:
   m_Component:
   - component: {fileID: 198713884524778797}
   - component: {fileID: 5042521895234135601}
-  - component: {fileID: 4941780909574640563}
   - component: {fileID: 3234421236207589236}
   m_Layer: 0
   m_Name: SlashHitbox
@@ -91,35 +90,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4941780909574640563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2865954099798946647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Data>k__BackingField:
-    Components:
-    - rid: -2
-    - rid: -2
-    - rid: -2
-    Conditions:
-    - rid: -2
-    - rid: -2
-    Effects:
-    - rid: -2
-    - rid: -2
-  <Info>k__BackingField: {fileID: 11400000, guid: c588542dc7191ef44bae3edc42211219, type: 2}
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!114 &3234421236207589236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9063dcde14ecb488565dd7870c88fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageSource: {fileID: 4941780909574640563}
+  _source: {fileID: 0}
 --- !u!1 &3188816294859762828
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +113,6 @@ GameObject:
   m_Component:
   - component: {fileID: 780774422370043814}
   - component: {fileID: 7270165503765979805}
-  - component: {fileID: 1316553162650983737}
   - component: {fileID: 113751721865034739}
   m_Layer: 0
   m_Name: ThrustHitbox
@@ -190,35 +159,6 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1316553162650983737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3188816294859762828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Data>k__BackingField:
-    Components:
-    - rid: -2
-    - rid: -2
-    - rid: -2
-    Conditions:
-    - rid: -2
-    - rid: -2
-    Effects:
-    - rid: -2
-    - rid: -2
-  <Info>k__BackingField: {fileID: 11400000, guid: c588542dc7191ef44bae3edc42211219, type: 2}
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!114 &113751721865034739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9063dcde14ecb488565dd7870c88fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageSource: {fileID: 1316553162650983737}
+  _source: {fileID: 0}
 --- !u!1001 &8997682766682572084
 PrefabInstance:
   m_ObjectHideFlags: 0

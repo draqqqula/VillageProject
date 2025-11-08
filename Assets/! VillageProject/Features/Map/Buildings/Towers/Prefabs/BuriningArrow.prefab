@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1276663770972339155}
   - component: {fileID: 6912708082587792530}
-  - component: {fileID: 2474421744716367835}
   - component: {fileID: 6449884573968867977}
+  - component: {fileID: 1919119803225796376}
   m_Layer: 0
   m_Name: Hurtbox
   m_TagString: Untagged
@@ -55,36 +55,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2474421744716367835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8470988521733601639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c94160ccdddcb43bd24389ca26c3ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Data>k__BackingField:
-    Components:
-    - rid: 5239169707325784178
-    - rid: 5239169707325784180
-    Conditions: []
-    Effects: []
-  <Info>k__BackingField: {fileID: 11400000, guid: 48443f4741c981c4085486e7fb79f523, type: 2}
-  references:
-    version: 2
-    RefIds:
-    - rid: 5239169707325784178
-      type: {class: TransformDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Transform: {fileID: 5951615948935570923}
-    - rid: 5239169707325784180
-      type: {class: TeamDamageComponent, ns: , asm: Assembly-CSharp}
-      data:
-        Member: {fileID: 2853601012291790426}
 --- !u!114 &6449884573968867977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,8 +67,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1312d281a2c194eb797808d390b4e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: {fileID: 2474421744716367835}
+  _source: {fileID: 1919119803225796376}
   _interval: 0.11
+--- !u!114 &1919119803225796376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8470988521733601639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b6b2abd27e7b143bec99c7cf17abd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Attributes>k__BackingField: {fileID: 11400000, guid: ae208b63bf11def4fa4cb4008e063df2, type: 2}
+  <Role>k__BackingField: 0
 --- !u!1001 &760284255055296594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -347,6 +331,7 @@ PrefabInstance:
     - {fileID: 670902638927328873, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
     - {fileID: 3938190265022249069, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
     - {fileID: 8257328852735017819, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
+    - {fileID: 4885169462548066848, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4313737582182067609, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
@@ -369,17 +354,6 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a3e6992d10a0e34098be07875bc209a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2853601012291790426 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5683293508219481640, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
-  m_PrefabInstance: {fileID: 7585498103976577138}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7074487921304042159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbbe0a24668bd3e4dbf9a89428f5a1a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &5951615948935570923 stripped

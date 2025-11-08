@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class DamageOverTimeHurtbox : MonoBehaviour
 {
-    [SerializeField] private DamageSource _damage;
+    [SerializeField] private DamageInteractable _source;
     [SerializeField] private float _interval;
     private HashSet<Collider> _colliders = new HashSet<Collider>();
-    private HashSet<Health> _activeCoroutines = new HashSet<Health>();
+    private HashSet<IDamageInteractable> _activeCoroutines = new HashSet<IDamageInteractable>();
 
     private void OnTriggerEnter(Collider other)
     {
-        var health = other.GetComponent<Health>();
-        if (health != null)
+        var target = other.GetComponent<IDamageInteractable>();
+        if (target != null)
         {
             _colliders.Add(other);
-            if (!_activeCoroutines.Contains(health))
+            if (!_activeCoroutines.Contains(target))
             {
-                StartCoroutine(DealOverTime(other, health));
+                StartCoroutine(DealOverTime(other, target));
             }
         }
     }
@@ -27,14 +27,14 @@ public class DamageOverTimeHurtbox : MonoBehaviour
         _colliders.Remove(other);
     }
 
-    private IEnumerator DealOverTime(Collider collider, Health health)
+    private IEnumerator DealOverTime(Collider collider, IDamageInteractable target)
     {
-        _activeCoroutines.Add(health);
+        _activeCoroutines.Add(target);
         while (_colliders.Contains(collider))
         {
-            health.Deal(_damage);
+            DamageInteraction.Interact(target, _source);
             yield return new WaitForSeconds(_interval);
         }
-        _activeCoroutines.Remove(health);
+        _activeCoroutines.Remove(target);
     }
 }

@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c6b08b72b4977347a067e9b979b6130, type: 3}
+  m_Name: DefaultArrow
+  m_EditorClassIdentifier: 
+  Attributes:
+  - rid: 3346214228869513347
+  - rid: 3346214228869513348
+  - rid: 3346214228869513351
+  - rid: 3346214228869513350
+  - rid: 3346214228869513352
+  - rid: 3346214228869513368
+  - rid: 3346214228869513373
+  references:
+    version: 2
+    RefIds:
+    - rid: 3346214228869513347
+      type: {class: GainInvincibilityAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _durationFactor: 1
+    - rid: 3346214228869513348
+      type: {class: TeamConditionAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214228869513350
+      type: {class: BaseDamageAmountAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _amount: 3
+    - rid: 3346214228869513351
+      type: {class: ApplyDamageTiltAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214228869513352
+      type: {class: TransformDamageAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214228869513368
+      type: {class: GameObjectKeyAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214228869513373
+      type: {class: DefaultTeamAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _team: {fileID: 11400000, guid: 298386bd74f26414f970c4761992fd76, type: 2}
