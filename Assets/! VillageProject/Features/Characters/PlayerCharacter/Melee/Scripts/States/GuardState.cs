@@ -4,8 +4,8 @@ using Zenject;
 
 public sealed class GuardState : AnimationState<GuardState>
 {
-    private const string BLOCK_PARAM = "Block";
-    private const string HIT_PARAM = "Hit";
+    private const string BlockParam = "Block";
+    private const string HitParam = "Hit";
     
     public override StateType StateType => StateType.Guard;
     [Inject] private GuardConfiguration _guardConfiguration;
@@ -30,13 +30,13 @@ public sealed class GuardState : AnimationState<GuardState>
         _registrar.Activate();
         
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
-        _animator.SetBool(BLOCK_PARAM, true);
+        _animator.SetBool(BlockParam, true);
     }
 
     public override void OnExit()
     {
         _addHitboxWindowListener.OnEnter -= OnAddingHitboxWindow;
-        _animator.SetBool(BLOCK_PARAM, false);
+        _animator.SetBool(BlockParam, false);
     }
 
     private void OnAddingHitboxWindow()
@@ -55,6 +55,6 @@ public sealed class GuardState : AnimationState<GuardState>
     
     private void OnHit()
     {
-        _animator.SetTrigger(HIT_PARAM);
+        _animator.SetTrigger(HitParam);
     }
 }
