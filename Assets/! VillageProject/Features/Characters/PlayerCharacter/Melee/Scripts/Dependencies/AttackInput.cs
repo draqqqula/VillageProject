@@ -1,9 +1,11 @@
-﻿using R3;
+﻿using System;
+using R3;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class AttackInput : IAttackInput, IInitializable
+public class AttackInput : IAttackInput, IInitializable, IDisposable
 {
     private InputWithHolding _inputWithHolding;
 
@@ -19,6 +21,11 @@ public class AttackInput : IAttackInput, IInitializable
     public void Initialize()
     {
         _inputWithHolding.Initialize();
+    }
+
+    public void Dispose()
+    {
+        _inputWithHolding.Dispose();
     }
     
     public float GetUnscaledTimeSinceLastStarted()

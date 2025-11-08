@@ -14,7 +14,6 @@ public class BlockableDamageAttribute : DamageAttributeBase
         
         public void Apply()
         {
-            Debug.Log("Apply");
             StateOfAttack.IsBlocking = true;
         }
     }

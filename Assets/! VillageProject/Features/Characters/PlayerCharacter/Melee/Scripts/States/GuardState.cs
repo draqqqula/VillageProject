@@ -1,3 +1,4 @@
+using System.Collections;
 using R3;
 using UnityEngine;
 using Zenject;
@@ -8,14 +9,17 @@ public sealed class GuardState : AnimationState<GuardState>
     private const string HitParam = "Hit";
     
     public override StateType StateType => StateType.Guard;
-    [Inject] private GuardConfiguration _guardConfiguration;
     protected override AnimationWindow Window => _guardConfiguration.Window;
-
-    [Inject(Id = "AddGuardHitbox")] private IAnimationWindowListener _addHitboxWindowListener;
-    [Inject(Id = "RemoveGuardHitbox")] private IAnimationWindowListener _removeHitboxWindowListener;
-
+    
+    public ReactiveProperty<float> ShieldValue { get; private set; }
+    private bool _isShieldActive;
+    private Coroutine _coroutine;
+    
+    [Inject] private GuardConfiguration _guardConfiguration;
+    [Inject] private CoroutineHandler _coroutineHandler;
     [Inject] private Animator _animator;
     [Inject] private Stamina _stamina;
+    [Inject] private IBlockInput _blockInput;
     
     [Inject] private HitboxEvent _shieldHitboxEvent;
     private HitRegistrar _registrar;
@@ -24,31 +28,70 @@ public sealed class GuardState : AnimationState<GuardState>
     {
         _registrar = new HitboxHitRegistrar(_shieldHitboxEvent);
         _registrar.Deactivate();
-        
-        _addHitboxWindowListener.OnEnter += OnAddingHitboxWindow;
-        _removeHitboxWindowListener.OnEnter += OnRemovingHitboxWindow;
         _registrar.Activate();
         
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
-        _animator.SetBool(BlockParam, true);
-    }
-
-    public override void OnExit()
-    {
-        _addHitboxWindowListener.OnEnter -= OnAddingHitboxWindow;
-        _animator.SetBool(BlockParam, false);
-    }
-
-    private void OnAddingHitboxWindow()
-    {
-        _registrar.OnHit += OnHit;
-    }
-
-    private void OnRemovingHitboxWindow()
-    {
-        _registrar.OnHit -= OnHit;
-        _removeHitboxWindowListener.OnEnter -= OnRemovingHitboxWindow;
+        _animator.SetTrigger(BlockParam);
         
+        ShieldValue = new ReactiveProperty<float>(0f);
+        _blockInput.CurrentHoldTime.Subscribe(UpdateShieldValue).AddTo(this);
+        _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
+    }
+    
+    public void UpdateShieldValue(float holdingTime)
+    {
+        ShieldValue.Value = Mathf.Clamp(holdingTime, 0, _guardConfiguration.MaxHoldingTime) / _guardConfiguration.MaxHoldingTime;
+        _animator.SetFloat("Shield", ShieldValue.Value);
+        OnShieldValueChanged();
+    }
+    
+    private void ReleaseShieldValue()
+    {
+        if (!_blockInput.IsHolding.CurrentValue)
+        {
+            if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
+            float duration = ShieldValue.Value * _guardConfiguration.MaxHoldingTime;
+            _coroutine = _coroutineHandler.StartCoroutine(Lerp(duration, 0, duration));
+        }
+    }
+    
+    private IEnumerator Lerp(float from, float to, float duration)
+    {
+        var progress = 0f;
+        
+        while (progress < duration)
+        {
+            progress += Time.fixedDeltaTime / duration;
+            var value = Mathf.Lerp(from, to, progress);
+            UpdateShieldValue(value);
+            
+            if (ShieldValue.Value == 0) break;
+            yield return null;
+        }
+        UpdateShieldValue(to);
+    }
+
+    private void OnShieldValueChanged()
+    {
+        if (ShieldValue.Value < 0.2) RemoveHitbox();
+        else if (ShieldValue.Value > 0.2) AddHitbox();
+    }
+
+    private void AddHitbox()
+    {
+        if (_isShieldActive) return;
+        
+        _registrar.OnHit += OnHit;
+        _isShieldActive = true;
+    }
+
+    private void RemoveHitbox()
+    {
+        if (!_isShieldActive) return;
+        
+        _registrar.OnHit -= OnHit;
+
+        _isShieldActive = false;
         _registrar.Deactivate();
         _registrar.Dispose();
     }

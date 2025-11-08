@@ -1,18 +1,21 @@
+using System.Collections;
 using R3;
+using UnityEngine;
 using Zenject;
 
 public class GuardToIdleTransition : TransitionBase<GuardState>
 {
-    [Inject] private IBlockInput _blockInput;
-
+    private GuardState _guardState;
+    
     public override void Construct(GuardState currentState)
     {
-        _blockInput.IsHolding.Subscribe(_ => HandleReleased()).AddTo(this);
+        _guardState = currentState;
+        _guardState.ShieldValue.Subscribe(HandleReleased).AddTo(this);
     }
-
-    private void HandleReleased()
+    
+    private void HandleReleased(float value)
     {
-        if (!_blockInput.IsHolding.CurrentValue)
+        if (value == 0)
         {
             Activate<IdleState>();
         }
