@@ -3,13 +3,12 @@ using R3;
 using UnityEngine;
 using Zenject;
 
-public sealed class GuardState : AnimationState<GuardState>
+public sealed class GuardState : StateBase<GuardState>
 {
-    private const string BlockParam = "Block";
     private const string HitParam = "Hit";
+    private const string ShieldParam = "Shield";
     
     public override StateType StateType => StateType.Guard;
-    protected override AnimationWindow Window => _guardConfiguration.Window;
     
     public ReactiveProperty<float> ShieldValue { get; private set; }
     private bool _isShieldActive;
@@ -29,17 +28,18 @@ public sealed class GuardState : AnimationState<GuardState>
         _registrar = new HitboxHitRegistrar(_shieldHitboxEvent);
         
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
-        _animator.SetTrigger(BlockParam);
         
         ShieldValue = new ReactiveProperty<float>(0f);
         _blockInput.CurrentHoldTime.Subscribe(UpdateShieldValue).AddTo(this);
         _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
     }
-    
+
+    public override void OnExit() { }
+
     public void UpdateShieldValue(float holdingTime)
     {
         ShieldValue.Value = Mathf.Clamp(holdingTime, 0, _guardConfiguration.MaxHoldingTime) / _guardConfiguration.MaxHoldingTime;
-        _animator.SetFloat("Shield", ShieldValue.Value);
+        _animator.SetFloat(ShieldParam, ShieldValue.Value);
         OnShieldValueChanged();
     }
     
