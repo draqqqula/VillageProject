@@ -1,12 +1,22 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using UnityEngine;
 
 [Serializable]
-public class GuardableDamageCondition : DamageConditionBase
+public class GuardableDamageCondition : DamageAttributeBase
 {
-    public override bool IsSatisfied(DamageContext context)
+    public class Condition : IDamageExecutable
     {
-        return context.Source.TryGetService<BlockableDamageComponent>(out var blockableDamage)
-               && !blockableDamage.IsBlocking;
+        public bool TryExecute(DamageInteractionContext context)
+        {
+            return context.SourceAttributes.TryGetService<BlockableDamageAttribute.Data>(out var blockableDamage)
+                   && !blockableDamage.IsBlocking;
+        }
+    }
+    
+    public override void AddServices(IServiceCollection services)
+    {
+        services.AddSingleton<Condition>();
+        services.AddSingleton<IDamageExecutable>(provider => provider.GetService<Condition>());
     }
 }

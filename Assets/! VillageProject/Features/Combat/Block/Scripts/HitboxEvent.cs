@@ -9,6 +9,7 @@ public class HitboxEvent : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<DamagingHitbox>(out var hitbox))
         {
+            Debug.Log("OnHit");
             OnHit?.Invoke();
         }
     }

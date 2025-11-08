@@ -18,7 +18,7 @@ public class EnemyInstaller : MonoInstaller
     public override void InstallBindings()
     {
         BindOrigin();
-        BindBlockFlag();
+        BindStateOfAttack();
     }
 
     private void BindOrigin()
@@ -28,7 +28,7 @@ public class EnemyInstaller : MonoInstaller
         Container.Bind<Origin>().FromInstance(Origin).AsSingle();
     }
 
-    private void BindBlockFlag()
+    private void BindStateOfAttack()
     {
         Container.Bind<StateOfAttack>().FromInstance(stateOfAttack).AsSingle();
     }

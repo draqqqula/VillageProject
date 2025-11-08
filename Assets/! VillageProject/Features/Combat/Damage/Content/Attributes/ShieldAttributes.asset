@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f399fc55b8faa4f9ea1670fa37db52, type: 3}
-  m_Name: Shield
+  m_Script: {fileID: 11500000, guid: 0c6b08b72b4977347a067e9b979b6130, type: 3}
+  m_Name: ShieldAttributes
   m_EditorClassIdentifier: 
-  <Data>k__BackingField:
-    Components: []
-    Conditions: []
-    Effects: []
-  <BaseAmount>k__BackingField: 0
+  Attributes:
+  - rid: 97553103338602620
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 97553103338602620
+      type: {class: GuardEffectAttribute, ns: , asm: Assembly-CSharp}
+      data: 

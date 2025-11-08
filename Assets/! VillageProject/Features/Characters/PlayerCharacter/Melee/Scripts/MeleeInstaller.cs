@@ -18,11 +18,13 @@ public class MeleeInstaller : MonoInstaller
     [SerializeField] private CoroutineHandler _coroutineHandler;
     [SerializeField] private HitboxEvent _shieldHitboxEvent;
 
+
     public override void InstallBindings()
     {
         Container.BindInstance(_animator);
         Container.BindInstance(_coroutineHandler);
-        Container.BindInstance(_shieldHitboxEvent);
+        Container.BindInstance(_shieldHitboxEvent).AsSingle();
+
         Container.BindInstance(_swingConfiguration).AsSingle();
         Container.BindInstance(_slashConfiguration).AsSingle();
         Container.BindInstance(_guardConfiguration).AsSingle();
