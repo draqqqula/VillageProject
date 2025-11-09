@@ -11,7 +11,7 @@ public abstract class TransitionBase<T> : CompositeDisposableBase, ITransition w
     [Inject] private DiContainer _container;
     private Subject<IState> _onActivated = new Subject<IState>();
     public Observable<IState> OnActivated => _onActivated;
-
+    
     protected void Activate<TNext>()
     {
         var state = (IState)_container.Resolve<TNext>();

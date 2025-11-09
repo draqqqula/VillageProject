@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 using R3;
@@ -33,6 +34,9 @@ public class StateManager : IInitializable
     private ReactiveProperty<IState> _current = new ReactiveProperty<IState>();
     
     public ReadOnlyReactiveProperty<IState> Current => _current;
+    
+    private ReactiveProperty<bool> _isTransitionSubscribed = new ReactiveProperty<bool>(false);
+    public ReadOnlyReactiveProperty<bool> IsTransitionSubscribed => _isTransitionSubscribed;
 
     public void Initialize()
     {
@@ -42,6 +46,7 @@ public class StateManager : IInitializable
 
     private void SetState(IState state)
     {
+        _isTransitionSubscribed.Value = false;
         _current.Value?.OnExit();
         _current.Value?.Dispose();
         _current.Value = state;
@@ -56,5 +61,6 @@ public class StateManager : IInitializable
             subscriptions.Add(transition.OnActivated.Subscribe(handler.Activate));
             subscriptions.Add(transition);
         }
+        _isTransitionSubscribed.Value = true;
     }
 }

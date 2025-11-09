@@ -1,51 +1,40 @@
-﻿using R3;
+﻿using System;
+using R3;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class AttackInput : IAttackInput, IInitializable
+public class AttackInput : IAttackInput, IInitializable, IDisposable
 {
-    private ReactiveProperty<bool> _isHolding = new ReactiveProperty<bool>(false);
-    private ReactiveProperty<float> _lastStarted = new ReactiveProperty<float>(0f);
-    private ReactiveProperty<float> _lastEnded = new ReactiveProperty<float>(0f);
-    public InputActionReference _inputAction;
+    private InputWithHolding _inputWithHolding;
 
     public AttackInput(InputActionReference inputAction)
     {
-        _inputAction = inputAction;
+        _inputWithHolding = new InputWithHolding(inputAction);
     }
 
-    public ReadOnlyReactiveProperty<bool> IsHolding => _isHolding;
-    public ReadOnlyReactiveProperty<float> LastStarted => _lastStarted;
-    public ReadOnlyReactiveProperty<float> LastEnded => _lastEnded;
+    public ReadOnlyReactiveProperty<bool> IsHolding => _inputWithHolding.IsHolding;
+    public ReadOnlyReactiveProperty<float> LastStarted => _inputWithHolding.LastStarted;
+    public ReadOnlyReactiveProperty<float> LastEnded => _inputWithHolding.LastEnded;
 
     public void Initialize()
     {
-        _inputAction.action.started += _ => HandleStarted();
-        _inputAction.action.canceled += _ => HandleCancelled();
-        _isHolding.Value = _inputAction.action.phase == InputActionPhase.Started;
+        _inputWithHolding.Initialize();
     }
 
-    private void HandleStarted()
+    public void Dispose()
     {
-        _lastStarted.Value = Time.unscaledTime;
-        _isHolding.Value = true;
+        _inputWithHolding.Dispose();
     }
-
-    private void HandleCancelled()
-    {
-        _lastEnded.Value = Time.unscaledTime;
-        _isHolding.Value = false;
-    }
-
+    
     public float GetUnscaledTimeSinceLastStarted()
     {
-        return Time.unscaledTime - _lastStarted.Value;
+        return _inputWithHolding.GetUnscaledTimeSinceLastStarted();
     }
 
     public float GetUnscaledTimeSinceLastEnded()
     {
-        return Time.unscaledTime - _lastEnded.Value;
+        return _inputWithHolding.GetUnscaledTimeSinceLastEnded();
     }
 }
