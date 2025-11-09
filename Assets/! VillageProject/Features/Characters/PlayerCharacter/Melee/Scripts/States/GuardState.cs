@@ -78,8 +78,8 @@ public sealed class GuardState : StateBase<GuardState>
         
         while (progress < duration)
         {
-            progress += Time.deltaTime / duration;
-            var value = Mathf.Lerp(from, to, progress);
+            progress += Time.deltaTime;
+            var value = Mathf.Lerp(from, to, progress / duration);
             UpdateShieldValue(value);
             
             yield return null;

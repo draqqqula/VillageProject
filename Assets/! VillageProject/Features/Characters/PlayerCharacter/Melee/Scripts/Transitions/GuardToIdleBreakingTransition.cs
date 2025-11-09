@@ -18,6 +18,8 @@ public class GuardToIdleBreakingTransition : TransitionBase<GuardState>, IDispos
 
     private void HandleReleased(float value)
     {
+        if (!_stateManager.IsTransitionSubscribed.CurrentValue) return;
+        
         if (value == 0 && _stateManager.Current.CurrentValue is GuardState)
         {
             _animator.SetTrigger("Break");
