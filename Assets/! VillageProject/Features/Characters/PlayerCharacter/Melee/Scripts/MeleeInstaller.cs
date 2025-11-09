@@ -31,6 +31,7 @@ public class MeleeInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<SlashSeriesCounter>().AsSingle();
         Container.BindInterfacesAndSelfTo<AttackInput>().FromInstance(new AttackInput(_attack)).AsSingle();
         Container.BindInterfacesAndSelfTo<BlockInput>().FromInstance(new BlockInput(_guard)).AsSingle();
+        Container.BindInterfacesAndSelfTo<ShiftInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<IdleState>().AsTransient();
         Container.Bind<IState>().WithId(StateManager.DefaultStateId).To<IdleState>().FromResolve().AsTransient();
         Container.BindInterfacesAndSelfTo<SlashState>().AsTransient();
@@ -39,7 +40,7 @@ public class MeleeInstaller : MonoInstaller
         Container.Bind<GuardState>().AsTransient();
         Container.Bind<TransitionBase<IdleState>>().To<IdleToSwingTransition>().AsTransient();
         Container.Bind<TransitionBase<SwingState>>().To<SwingToSlashTransition>().AsTransient();
-        Container.Bind<TransitionBase<SwingState>>().To<SwingToThrustTransition>().AsTransient();
+        //Container.Bind<TransitionBase<SwingState>>().To<SwingToThrustTransition>().AsTransient();
         Container.Bind<TransitionBase<SlashState>>().To<EndingToSwingTransitionA<SlashState>>().AsTransient();
         Container.Bind<TransitionBase<SlashState>>().To<EndingToIdleTransition<SlashState>>().AsTransient();
         Container.Bind<TransitionBase<ThrustState>>().To<EndingToSwingTransitionB<ThrustState>>().AsTransient();
