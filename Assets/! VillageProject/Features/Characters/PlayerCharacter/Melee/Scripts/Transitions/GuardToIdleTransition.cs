@@ -6,6 +6,7 @@ using Zenject;
 public class GuardToIdleTransition : TransitionBase<GuardState>
 {
     private GuardState _guardState;
+    [Inject] StateManager _stateManager;
     
     public override void Construct(GuardState currentState)
     {
@@ -17,6 +18,7 @@ public class GuardToIdleTransition : TransitionBase<GuardState>
     {
         if (value == 0)
         {
+            if (!_stateManager.IsTransitionSubscribed.CurrentValue || _stateManager.Current.CurrentValue is IdleState) return;
             Activate<IdleState>();
         }
     }

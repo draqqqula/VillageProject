@@ -13,22 +13,14 @@ public class IdleToGuardTransition : TransitionBase<IdleState>
     {
         _blockInput.IsHolding.Subscribe(ctx => HandleStartHolding()).AddTo(this);
         _stateManager.IsTransitionSubscribed.Subscribe(ctx => HandleStartHolding()).AddTo(this);
-        _blockInput.IsHolding.Subscribe(ctx => Release()).AddTo(this);
     }
     
     private void HandleStartHolding()
     {
-        if (_isActivated) return;
-        
         if (_blockInput.IsHolding.CurrentValue && _stateManager.IsTransitionSubscribed.CurrentValue)
         {
-            _isActivated = true;
+            if (_stateManager.Current.CurrentValue is GuardState) return;
             Activate<GuardState>();
         }
-    }
-
-    private void Release()
-    {
-        if (!_blockInput.IsHolding.CurrentValue) _isActivated = false;
     }
 }

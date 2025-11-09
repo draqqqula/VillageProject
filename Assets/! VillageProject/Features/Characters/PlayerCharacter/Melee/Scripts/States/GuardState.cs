@@ -9,6 +9,12 @@ public sealed class GuardState : StateBase<GuardState>
     private const string ShieldParam = "Shield";
     
     public override StateType StateType => StateType.Guard;
+    public GuardStateType GuardType {get; private set;}
+    
+    public enum GuardStateType
+    {
+        Guarding, Idle
+    }
     
     public ReactiveProperty<float> ShieldValue { get; private set; }
     private bool _isShieldActive;
@@ -30,17 +36,30 @@ public sealed class GuardState : StateBase<GuardState>
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
         
         ShieldValue = new ReactiveProperty<float>(0f);
-        _blockInput.CurrentHoldTime.Subscribe(UpdateShieldValue).AddTo(this);
+        _blockInput.IsHolding.Subscribe(ctx => RaiseShieldValue()).AddTo(this);
         _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
     }
 
-    public override void OnExit() { }
+    public override void OnExit()
+    {
+        if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
+        UpdateShieldValue(0);
+    }
 
     public void UpdateShieldValue(float holdingTime)
     {
         ShieldValue.Value = Mathf.Clamp(holdingTime, 0, _guardConfiguration.MaxHoldingTime) / _guardConfiguration.MaxHoldingTime;
         _animator.SetFloat(ShieldParam, ShieldValue.Value);
         OnShieldValueChanged();
+    }
+
+    private void RaiseShieldValue()
+    {
+        if (_blockInput.IsHolding.CurrentValue)
+        {
+            if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
+            _coroutine = _coroutineHandler.StartCoroutine(Lerp(0, _guardConfiguration.MaxHoldingTime, _guardConfiguration.MaxHoldingTime));
+        }
     }
     
     private void ReleaseShieldValue()
@@ -59,11 +78,10 @@ public sealed class GuardState : StateBase<GuardState>
         
         while (progress < duration)
         {
-            progress += Time.fixedDeltaTime / duration;
+            progress += Time.deltaTime / duration;
             var value = Mathf.Lerp(from, to, progress);
             UpdateShieldValue(value);
             
-            if (ShieldValue.Value == 0) break;
             yield return null;
         }
         UpdateShieldValue(to);
@@ -78,7 +96,8 @@ public sealed class GuardState : StateBase<GuardState>
     private void AddHitbox()
     {
         if (_isShieldActive) return;
-        
+
+        GuardType = GuardStateType.Guarding;
         _registrar.Activate();
         _registrar.OnHit += OnHit;
         _isShieldActive = true;
@@ -88,6 +107,7 @@ public sealed class GuardState : StateBase<GuardState>
     {
         if (!_isShieldActive) return;
         
+        GuardType = GuardStateType.Idle;
         _registrar.OnHit -= OnHit;
 
         _isShieldActive = false;
