@@ -14,5 +14,6 @@ public enum StateType
     Idle,
     Slash,
     Swing,
-    Thrust
+    Thrust,
+    Guard
 }

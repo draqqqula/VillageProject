@@ -1,15 +1,14 @@
-﻿using System;
+using System;
 using R3;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class AttackInput : IAttackInput, IInitializable, IDisposable
+public class BlockInput : IBlockInput, IInitializable, IDisposable
 {
     private InputWithHolding _inputWithHolding;
 
-    public AttackInput(InputActionReference inputAction)
+    public BlockInput(InputActionReference inputAction)
     {
         _inputWithHolding = new InputWithHolding(inputAction);
     }
@@ -17,12 +16,13 @@ public class AttackInput : IAttackInput, IInitializable, IDisposable
     public ReadOnlyReactiveProperty<bool> IsHolding => _inputWithHolding.IsHolding;
     public ReadOnlyReactiveProperty<float> LastStarted => _inputWithHolding.LastStarted;
     public ReadOnlyReactiveProperty<float> LastEnded => _inputWithHolding.LastEnded;
+    public ReactiveProperty<float> CurrentHoldTime => _inputWithHolding.CurrentHoldTime;
 
     public void Initialize()
     {
         _inputWithHolding.Initialize();
     }
-
+    
     public void Dispose()
     {
         _inputWithHolding.Dispose();
