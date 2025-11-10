@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 [Serializable]
@@ -10,7 +12,9 @@ public abstract class SerializedPropertyValueBase
 
     public abstract object Value { get; }
 
+#if UNITY_EDITOR
     public abstract void DrawGUI();
+#endif
 }
 
 [Serializable]
@@ -19,10 +23,12 @@ public class SerializedPropertyStringValue : SerializedPropertyValueBase
     [SerializeField] private string _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = EditorGUILayout.TextField(ObjectNames.NicifyVariableName(Name), _value);
     }
+#endif
 }
 
 [Serializable]
@@ -31,10 +37,12 @@ public class SerializedPropertyIntValue : SerializedPropertyValueBase
     [SerializeField] private int _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = EditorGUILayout.IntField(ObjectNames.NicifyVariableName(Name), _value);
     }
+#endif
 }
 
 [Serializable]
@@ -43,10 +51,12 @@ public class SerializedPropertyFloatValue : SerializedPropertyValueBase
     [SerializeField] private float _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = EditorGUILayout.FloatField(ObjectNames.NicifyVariableName(Name), _value);
     }
+#endif
 }
 
 [Serializable]
@@ -55,10 +65,12 @@ public class SerializedPropertyBoolValue : SerializedPropertyValueBase
     [SerializeField] private bool _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = EditorGUILayout.Toggle(ObjectNames.NicifyVariableName(Name), _value);
     }
+#endif
 }
 
 [Serializable]
@@ -67,10 +79,12 @@ public class SerializedPropertyVector2Value : SerializedPropertyValueBase
     [SerializeField] private Vector2 _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = EditorGUILayout.Vector2Field(ObjectNames.NicifyVariableName(Name), _value);
     }
+#endif
 }
 
 [Serializable]
@@ -79,10 +93,12 @@ public class SerializedPropertyVector3Value : SerializedPropertyValueBase
     [SerializeField] private Vector3 _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = EditorGUILayout.Vector3Field(ObjectNames.NicifyVariableName(Name), _value);
     }
+#endif
 }
 
 [Serializable]
@@ -91,10 +107,12 @@ public class SerializedPropertyColorValue : SerializedPropertyValueBase
     [SerializeField] private Color _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = EditorGUILayout.ColorField(ObjectNames.NicifyVariableName(Name), _value);
     }
+#endif
 }
 
 [Serializable]
@@ -103,10 +121,12 @@ public class SerializedPropertyGameObjectValue : SerializedPropertyValueBase
     [SerializeField] private GameObject _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = (GameObject)EditorGUILayout.ObjectField(ObjectNames.NicifyVariableName(Name), _value, typeof(GameObject), false);
     }
+#endif
 }
 
 [Serializable]
@@ -115,10 +135,12 @@ public class SerializedPropertySpriteValue : SerializedPropertyValueBase
     [SerializeField] private Sprite _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = (Sprite)EditorGUILayout.ObjectField(ObjectNames.NicifyVariableName(Name), _value, typeof(Sprite), false);
     }
+#endif
 }
 
 [Serializable]
@@ -127,10 +149,12 @@ public class SerializedPropertyMaterialValue : SerializedPropertyValueBase
     [SerializeField] private Material _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = (Material)EditorGUILayout.ObjectField(ObjectNames.NicifyVariableName(Name), _value, typeof(Material), false);
     }
+#endif
 }
 
 [Serializable]
@@ -139,10 +163,12 @@ public class SerializedPropertyObjectReferenceValue : SerializedPropertyValueBas
     [SerializeField] private UnityEngine.Object _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = EditorGUILayout.ObjectField(ObjectNames.NicifyVariableName(Name), _value, typeof(UnityEngine.Object), false);
     }
+#endif
 }
 
 [Serializable]
@@ -151,10 +177,12 @@ public class SerializedPropertyEnumValue<T> : SerializedPropertyValueBase where 
     [SerializeField] private T _value;
     public override object Value => _value;
 
+#if UNITY_EDITOR
     public override void DrawGUI()
     {
         _value = (T)EditorGUILayout.EnumPopup(ObjectNames.NicifyVariableName(Name), _value);
     }
+#endif
 }
 
 public class AttributeEditorExtensions

@@ -1,3 +1,6 @@
+
+#if UNITY_EDITOR
+
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -5,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+
 
 [CustomEditor(typeof(DamageAttributes))]
 public class DamageAttributesEditor : Editor
@@ -165,3 +169,5 @@ public class DamageAttributesEditor : Editor
         }
     }
 }
+
+#endif
