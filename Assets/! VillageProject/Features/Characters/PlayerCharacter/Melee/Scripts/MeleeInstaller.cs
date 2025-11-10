@@ -41,9 +41,8 @@ public class MeleeInstaller : MonoInstaller
         Container.Bind<TransitionBase<IdleState>>().To<IdleToSwingTransition>().AsTransient();
         Container.Bind<TransitionBase<SwingState>>().To<SwingToSlashTransition>().AsTransient();
         //Container.Bind<TransitionBase<SwingState>>().To<SwingToThrustTransition>().AsTransient();
-        Container.Bind<TransitionBase<SlashState>>().To<EndingToSwingTransitionA<SlashState>>().AsTransient();
+        Container.Bind<TransitionBase<SlashState>>().To<SlashToSwingTransition>().AsTransient();
         Container.Bind<TransitionBase<SlashState>>().To<EndingToIdleTransition<SlashState>>().AsTransient();
-        Container.Bind<TransitionBase<ThrustState>>().To<EndingToSwingTransitionB<ThrustState>>().AsTransient();
         Container.Bind<TransitionBase<ThrustState>>().To<EndingToIdleTransition<ThrustState>>().AsTransient();
         Container.Bind<TransitionBase<IdleState>>().To<IdleToGuardTransition>().AsTransient();
         Container.Bind<TransitionBase<GuardState>>().To<GuardToIdleTransition>().AsTransient();

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class EndingToSwingTransitionA<T> : EndingToSwingTransitionBase<T> where T : EndingState<T>
 {
