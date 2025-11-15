@@ -1,8 +1,9 @@
+using R3;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static UnityEngine.UI.Image;
 
 public sealed class IndicatorController : MonoBehaviour
 {
@@ -17,8 +18,6 @@ public sealed class IndicatorController : MonoBehaviour
     
     [Tooltip("График зависимости порога дистанции до курсора от дистанции до камеры")]
     [SerializeField] private AnimationCurve _curve = AnimationCurve.Linear(0, 0, 1, 1);
-    [Tooltip("Перерисовывать ли график при изменении длины осей?")]
-    [SerializeField] private bool _isAutoRedrawCurve = true;
 
     [Header("Multipliers")]
     [Tooltip("Множитель веса расстояния до камеры")]
@@ -35,8 +34,13 @@ public sealed class IndicatorController : MonoBehaviour
     private const float ANGLE_THRESHOLD = 90f;
     
     [SerializeField] private GameObject _indicatorObject;
+
+    private ReactiveProperty<Vector2> _vectorToCursor = new ReactiveProperty<Vector2>(Vector2.zero);
     private IndicatorActivator _indicatorActivator;
     private List<Origin> _origins = new List<Origin>();
+
+    public ReadOnlyReactiveProperty<Vector2> VectorToCursor => _vectorToCursor;
+
     
     private void Awake()
     {
@@ -56,7 +60,8 @@ public sealed class IndicatorController : MonoBehaviour
     
     private void Update()
     {
-        Origin origin = GetLockedOrigin();
+        Origin origin = GetLockedOrigin(out var vectorToCursor);
+        _vectorToCursor.Value = vectorToCursor;
         
         if (origin != null) _indicatorActivator.ActivateIndicator(origin);
         else _indicatorActivator.DeactivateIndicator();
@@ -64,45 +69,54 @@ public sealed class IndicatorController : MonoBehaviour
         _indicatorActivator.UpdateIndicator();
     }
     
-    private Origin GetLockedOrigin()
+    private Origin GetLockedOrigin(out Vector2 vectorToCursor)
     {
-        if (_isLockIndicator && _indicatorActivator.LockedOrigin != null) return _indicatorActivator.LockedOrigin;
-        
+        if (_isLockIndicator && _indicatorActivator.LockedOrigin != null)
+        {
+            var point = _indicatorActivator.LockedOrigin.OriginPoint.position;
+            GetDistanceToCameraAndVectorToCursor(point, out var distanceToCamera, out vectorToCursor);
+            return _indicatorActivator.LockedOrigin;
+        }
+
         var maxWeight = float.MinValue;
+        var resultingVectorToCursor = Vector2.zero;
         Origin result = null;
 
         foreach (var origin in _origins)
         {
-            if (!IsCameraLooking(origin.OriginPoint.position) || IsHaveObstacles(origin)) continue;
-            
-            var distanceToCamera = GetDistanceToCamera(origin.OriginPoint.position);
-            var distanceToCursor = GetDistanceToCursor(origin.OriginPoint.position);
-            
-            var weightToCamera = Mathf.InverseLerp(_thresholdToCamera, 0, distanceToCamera) * _cameraWeightMultiplier;
-            float weightToCursor = 0;
+            var point = origin.OriginPoint.position;
+            if (!IsCameraLooking(point) || IsHaveObstacles(point)) continue;
 
-            if (_curve != null && _isConsiderCurve)
-            {
-                weightToCursor = Mathf.InverseLerp(0, _thresholdToCursor * _curve.Evaluate(distanceToCamera), distanceToCursor) * _cursorWeightMultiplier;
-            }
-            else weightToCursor = Mathf.InverseLerp(0, _thresholdToCursor, distanceToCursor) * _cursorWeightMultiplier;
+            GetDistanceToCameraAndVectorToCursor(point, out var distanceToCamera, out var normalizedVectorToCursor);
+
+            var weightToCamera = Mathf.InverseLerp(_thresholdToCamera, 0, distanceToCamera) * _cameraWeightMultiplier;
+            var weightToCursor = (1 - normalizedVectorToCursor.magnitude) * _cursorWeightMultiplier;
             
             var weight = weightToCursor + weightToCamera;
             
             if (weight > maxWeight)
             {
+                resultingVectorToCursor = normalizedVectorToCursor;
                 maxWeight = weight;
                 result = origin;
             }
         }
-        
+
+        vectorToCursor = resultingVectorToCursor;
         return result;
     }
 
-    private bool IsHaveObstacles(Origin origin)
+    private void GetDistanceToCameraAndVectorToCursor(Vector3 point, out float distanceToCamera, out Vector2 vectorToCursor)
     {
-        var direction = (origin.OriginPoint.position - _targetCamera.transform.position).normalized;
-        var distance = GetDistanceToCamera(origin.OriginPoint.position);
+        distanceToCamera = GetDistanceToCamera(point);
+        var thresholdToCursor = GetThresholdToCursor(distanceToCamera);
+        vectorToCursor = GetNormalizedVectorToCursor(point, thresholdToCursor);
+    }
+
+    private bool IsHaveObstacles(Vector3 point)
+    {
+        var direction = (point - _targetCamera.transform.position).normalized;
+        var distance = GetDistanceToCamera(point);
         
         if (Physics.Raycast(_targetCamera.transform.position, direction, out var hit, distance,
                 ~LayerMask.GetMask("Enemy", "Bodies", "TargetDetector", "Ignore Raycast")))
@@ -148,47 +162,26 @@ public sealed class IndicatorController : MonoBehaviour
         return Mathf.Clamp(viewportPoint.z, 0, _thresholdToCamera);
     }
 
-#if UNITY_EDITOR
-    private void OnValidate()
+    private Vector2 GetVectorToCursor(Vector3 point)
     {
-        if (_curve.length < 2) Debug.LogError("Curve has less than 2 keys!");
-        _curve.MoveKey(0, new Keyframe(0, _curve[0].value));
-        
-        if (_curve[_curve.length - 1].time < _thresholdToCamera)
-            _curve.MoveKey(_curve.length - 1, new Keyframe(_thresholdToCamera, _curve[_curve.length - 1].value));
-        
-        if (!_isAutoRedrawCurve || Mathf.Approximately(_lastThresholdToCamera, _thresholdToCamera)) return;
-        if (_lastThresholdToCamera == -1)
-        {
-            _lastThresholdToCamera = _thresholdToCamera;
-            return;
-        }
-        
-        RedrawCurveWithNewParams();
-        _lastThresholdToCamera = _thresholdToCamera;
+        Vector3 viewportPoint = _targetCamera.WorldToViewportPoint(point);
+
+        return new Vector2(viewportPoint.x, viewportPoint.y) - new Vector2(0.5f, 0.5f);
     }
 
-    [ContextMenu("Redraw Curve")]
-    private void RedrawCurveWithNewParams()
+    private Vector2 GetNormalizedVectorToCursor(Vector3 point, float thresholdToCursor)
     {
-        var lastCurve = _curve;
-        _curve = AnimationCurve.Linear(0, _curve[0].value, _thresholdToCamera, _curve[_curve.length - 1].value);
-        
-        if (lastCurve != null)
-        {
-            int count = 0;
-            foreach (var oldKey in lastCurve.keys)
-            {
-                if (Mathf.Approximately(oldKey.value, _curve[_curve.length - 1].value)) continue;
-                
-                var newKey = new Keyframe(oldKey.time / _lastThresholdToCamera * _thresholdToCamera, 
-                    oldKey.value, oldKey.outTangent, oldKey.inTangent);
-                
-                if (_curve.length >= count) _curve.AddKey(newKey);
-                else _curve.MoveKey(count, newKey);
-                count++;
-            }
-        }
+        var unclamped = GetVectorToCursor(point) / thresholdToCursor;
+        return Vector2.ClampMagnitude(unclamped, 1);
     }
-    #endif
+
+    private float GetThresholdToCursor(float distanceToCamera)
+    {
+        if (!_isConsiderCurve)
+        {
+            return _thresholdToCursor;
+        }
+        var normalizedDistanceToCamera = Mathf.InverseLerp(0, _thresholdToCamera, distanceToCamera);
+        return _thresholdToCursor * _curve.Evaluate(normalizedDistanceToCamera);
+    }
 }
