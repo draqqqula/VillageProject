@@ -9,5 +9,8 @@ public class SwingConfiguration : ScriptableObject
     [field: SerializeField] public float StaminaCost { get; private set; }
     [field: SerializeField] public float InputBufferADuration { get; private set; }
     [field: SerializeField] public float InputBufferBThreshold { get; private set; }
+    [field: SerializeField] public float BlendingSpeed { get; private set; }
+    [field: SerializeField] public float ThrustBorder { get; private set; }
+    [field: SerializeField] public float MaxDeltaMagnitude { get; private set; }
     [field: SerializeField] public InputActionReference ShiftInput { get; private set; }
 }

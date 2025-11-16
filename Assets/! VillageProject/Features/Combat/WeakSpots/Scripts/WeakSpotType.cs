@@ -1,5 +1,6 @@
 public enum WeakSpotType
 {
-    Common = 1,
-    Test = 2,
+    Thrust = 1,
+    Left = 2,
+    Right = 3
 }

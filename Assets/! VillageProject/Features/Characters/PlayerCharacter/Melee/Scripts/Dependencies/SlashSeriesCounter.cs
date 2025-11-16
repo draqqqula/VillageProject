@@ -1,14 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
 public class SlashSeriesCounter
 {
     private const float MaxSeries = 1;
-    private const string SeriesVariable = "Series";
 
     private int _successiveCounter = 0;
-    [Inject] private Animator _animator;
 
     public int SuccessiveCounter => _successiveCounter;
 
@@ -22,6 +21,10 @@ public class SlashSeriesCounter
         {
             _successiveCounter = 0;
         }
-        _animator.SetInteger(SeriesVariable, _successiveCounter);
+    }
+
+    public AttackDirection GetDirection()
+    {
+        return (AttackDirection)_successiveCounter;
     }
 }

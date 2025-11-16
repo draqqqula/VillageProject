@@ -29,7 +29,7 @@ public sealed class IndicatorController : MonoBehaviour
 
     [Header("Additive settings")] 
     [Tooltip("Переключает на режим строгого закрепления индикатора")]
-    [SerializeField] private bool _isLockIndicator = false;
+    [SerializeField] public bool IsLockIndicator = false;
     
     private const float ANGLE_THRESHOLD = 90f;
     
@@ -71,7 +71,7 @@ public sealed class IndicatorController : MonoBehaviour
     
     private Origin GetLockedOrigin(out Vector2 vectorToCursor)
     {
-        if (_isLockIndicator && _indicatorActivator.LockedOrigin != null)
+        if (IsLockIndicator && _indicatorActivator.LockedOrigin != null)
         {
             var point = _indicatorActivator.LockedOrigin.OriginPoint.position;
             GetDistanceToCameraAndVectorToCursor(point, out var distanceToCamera, out vectorToCursor);

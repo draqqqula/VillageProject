@@ -18,10 +18,11 @@ MonoBehaviour:
   - rid: 3346214206461444233
   - rid: 3346214206461444234
   - rid: 3346214206461444235
+  - rid: 3346214454910255277
   - rid: 3346214206461444236
   - rid: 3346214206461444237
   - rid: 3346214135769071793
-  - rid: 3346214206461444337
+  - rid: 3346214454910255316
   references:
     version: 2
     RefIds:
@@ -49,9 +50,18 @@ MonoBehaviour:
     - rid: 3346214206461444248
       type: {class: TeamConditionAttribute, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 3346214206461444337
-      type: {class: GainAdrenalineAttribute, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 3346214228869513367
       type: {class: GameObjectKeyAttribute, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 3346214454910255277
+      type: {class: 'GenericDamageAttribute`1[[AttackDirectionReader, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        PropertyValues: []
+        ServiceLifetime: 0
+        Injectable: 1
+    - rid: 3346214454910255316
+      type: {class: 'GenericDamageAttribute`1[[GainAdrenaline, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        PropertyValues: []
+        ServiceLifetime: 0
+        Injectable: 1

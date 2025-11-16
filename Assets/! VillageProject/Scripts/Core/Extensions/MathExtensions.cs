@@ -16,6 +16,108 @@ public static class MathExtensions
         return new Vector2(vector3.x, vector3.z);
     }
 
+    public static Vector2 AxisAnglesBetweenEuler(this Vector3 eulerA, Vector3 eulerB)
+    {
+        float deltaX = Mathf.DeltaAngle(eulerA.x, eulerB.x);
+        float deltaY = Mathf.DeltaAngle(eulerA.y, eulerB.y);
+
+        return new Vector2(deltaX, deltaY);
+    }
+
+    public static Vector3 MoveEulerProjected(Vector3 eulerA, Vector3 eulerB, float delta)
+    {
+        float dx = Mathf.DeltaAngle(eulerA.x, eulerB.x);
+        float dy = Mathf.DeltaAngle(eulerA.y, eulerB.y);
+
+        float dist = Mathf.Sqrt(dx * dx + dy * dy);
+
+        if (dist < 0.0001f)
+            return eulerB;
+
+        if (delta >= dist)
+            return new Vector3(eulerB.x, eulerB.y, eulerA.z);
+
+        float nx = dx / dist;
+        float ny = dy / dist;
+
+        float newX = eulerA.x + nx * delta;
+        float newY = eulerA.y + ny * delta;
+
+        newX = Mathf.Repeat(newX, 360f);
+        newY = Mathf.Repeat(newY, 360f);
+
+        return new Vector3(newX, newY, eulerA.z);
+    }
+
+    public static Vector3 LerpEulerProjected(Vector3 eulerA, Vector3 eulerB, float t)
+    {
+        t = Mathf.Clamp01(t);
+
+        float dx = Mathf.DeltaAngle(eulerA.x, eulerB.x);
+        float dy = Mathf.DeltaAngle(eulerA.y, eulerB.y);
+
+        float totalDist = Mathf.Sqrt(dx * dx + dy * dy);
+
+        float delta = totalDist * t;
+
+        return MoveEulerProjected(eulerA, eulerB, delta);
+    }
+
+    public static Vector3 SmoothDampEulerProjected(
+    Vector3 current,
+    Vector3 target,
+    ref Vector3 velocity,
+    float smoothTime)
+    {
+        float dx = Mathf.DeltaAngle(current.x, target.x);
+        float dy = Mathf.DeltaAngle(current.y, target.y);
+
+        Vector2 dir = new Vector2(dx, dy);
+        float dist = dir.magnitude;
+
+        if (dist < 0.0001f)
+            return target;
+
+        dir /= dist;
+
+        float distVel = 0;
+        float newDist = Mathf.SmoothDamp(dist, 0, ref distVel, smoothTime);
+
+        float deltaDist = dist - newDist;
+
+        return MoveEulerProjected(current, target, deltaDist);
+    }
+
+    public static Vector3 GetTriangleColor(Vector2[] edges, Vector2 point)
+    {
+        Vector2 v0 = edges[0];
+        Vector2 v1 = edges[1];
+        Vector2 v2 = edges[2];
+
+        // Векторные направления
+        Vector2 v0v1 = v1 - v0;
+        Vector2 v0v2 = v2 - v0;
+        Vector2 v0p = point - v0;
+
+        // Площадные коэффициенты (через двойные площади)
+        float d00 = Vector2.Dot(v0v1, v0v1);
+        float d01 = Vector2.Dot(v0v1, v0v2);
+        float d11 = Vector2.Dot(v0v2, v0v2);
+        float d20 = Vector2.Dot(v0p, v0v1);
+        float d21 = Vector2.Dot(v0p, v0v2);
+
+        float denom = d00 * d11 - d01 * d01;
+        if (Mathf.Abs(denom) < 1e-6f)
+            return Vector3.zero; // Вырожденный треугольник
+
+        // barycentric: g = v, b = w, r = u
+        float g = (d11 * d20 - d01 * d21) / denom;
+        float b = (d00 * d21 - d01 * d20) / denom;
+        float r = 1f - g - b;
+
+        return new Vector3(r, g, b);
+    }
+
     public static string ToRoman(int number)
     {
         if (number < 1) return string.Empty;
