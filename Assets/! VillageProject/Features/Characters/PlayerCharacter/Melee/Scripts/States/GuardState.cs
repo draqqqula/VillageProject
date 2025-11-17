@@ -10,6 +10,8 @@ public sealed class GuardState : StateBase<GuardState>
     
     public override StateType StateType => StateType.Guard;
     public GuardStateType GuardType {get; private set;}
+
+    [Inject(Id = "TakeHit")] private IAnimationWindowListener _hitWindow;
     
     public enum GuardStateType
     {
@@ -29,20 +31,32 @@ public sealed class GuardState : StateBase<GuardState>
     [Inject] private HitboxEvent _shieldHitboxEvent;
     private HitRegistrar _registrar;
     
+    private bool _isHit;
+    
     public override void OnEnter()
     {
         _registrar = new HitboxHitRegistrar(_shieldHitboxEvent);
+        _registrar.OnHit += OnHit;
         
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
         
         ShieldValue = new ReactiveProperty<float>(0f);
+        
         _blockInput.IsHolding.Subscribe(ctx => RaiseShieldValue()).AddTo(this);
         _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
+        _hitWindow.OnExit += OnExitHit;
     }
 
     public override void OnExit()
     {
         if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
+        
+        if (_isHit) OnExitHit();
+        _hitWindow.OnExit -= OnExitHit;
+        _registrar.OnHit -= OnHit;
+        
+        _registrar.Dispose();
+        
         UpdateShieldValue(0);
     }
 
@@ -50,7 +64,16 @@ public sealed class GuardState : StateBase<GuardState>
     {
         ShieldValue.Value = Mathf.Clamp(holdingTime, 0, _guardConfiguration.MaxHoldingTime) / _guardConfiguration.MaxHoldingTime;
         _animator.SetFloat(ShieldParam, ShieldValue.Value);
+        ControlShieldAnimation();
         OnShieldValueChanged();
+    }
+
+    private void ControlShieldAnimation()
+    {
+        if (_isHit) return;
+        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Shield Blend Tree")) return;
+        
+        _animator.Play("Shield Blend Tree", 0, ShieldValue.Value);
     }
 
     private void RaiseShieldValue()
@@ -58,7 +81,7 @@ public sealed class GuardState : StateBase<GuardState>
         if (_blockInput.IsHolding.CurrentValue)
         {
             if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
-            _coroutine = _coroutineHandler.StartCoroutine(Lerp(0, _guardConfiguration.MaxHoldingTime, _guardConfiguration.MaxHoldingTime));
+            _coroutine = _coroutineHandler.StartCoroutine(Lerp(ShieldValue.Value, _guardConfiguration.MaxHoldingTime, _guardConfiguration.MaxHoldingTime));
         }
     }
     
@@ -99,7 +122,6 @@ public sealed class GuardState : StateBase<GuardState>
 
         GuardType = GuardStateType.Guarding;
         _registrar.Activate();
-        _registrar.OnHit += OnHit;
         _isShieldActive = true;
     }
 
@@ -108,15 +130,19 @@ public sealed class GuardState : StateBase<GuardState>
         if (!_isShieldActive) return;
         
         GuardType = GuardStateType.Idle;
-        _registrar.OnHit -= OnHit;
 
         _isShieldActive = false;
         _registrar.Deactivate();
-        _registrar.Dispose();
     }
     
     private void OnHit()
     {
-        _animator.SetTrigger(HitParam);
+       _isHit = true;
+       _animator.SetTrigger(HitParam);
+    }
+
+    private void OnExitHit()
+    {
+        _isHit = false;
     }
 }

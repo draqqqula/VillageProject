@@ -280,6 +280,22 @@ MonoBehaviour:
   - <Window>k__BackingField: {fileID: 11400000, guid: 07f89e2cbc25bec4da73c2a81388947b, type: 2}
     <EnterAt>k__BackingField: 0
     <Duration>k__BackingField: 1
+--- !u!114 &-3373817995990405703
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d6814a9c955724caeb14e68a809f2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _windows:
+  - <Window>k__BackingField: {fileID: 11400000, guid: b668b1550f58a4301a56fec179027624, type: 2}
+    <EnterAt>k__BackingField: 0
+    <Duration>k__BackingField: 0.75
 --- !u!114 &-3221319062169224864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -535,7 +551,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 4946794566324807423}
   - {fileID: -4884677318863028265}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -3373817995990405703}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -728,12 +745,6 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: Hit
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
-  - m_Name: Block
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1190,11 +1201,11 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -1335,7 +1346,7 @@ AnimatorStateTransition:
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 1
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
