@@ -102,7 +102,7 @@ public class AnimationWindowActivatorState : StateMachineBehaviour
         {
             return;
         }
-
+        
         foreach (var state in _states)
         {
             state.IsActive = stateInfo.normalizedTime >= state.StartNormalized

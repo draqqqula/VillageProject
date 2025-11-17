@@ -10,8 +10,6 @@ public sealed class GuardState : StateBase<GuardState>
     
     public override StateType StateType => StateType.Guard;
     public GuardStateType GuardType {get; private set;}
-
-    [Inject(Id = "TakeHit")] private IAnimationWindowListener _hitWindow;
     
     public enum GuardStateType
     {
@@ -31,7 +29,8 @@ public sealed class GuardState : StateBase<GuardState>
     [Inject] private HitboxEvent _shieldHitboxEvent;
     private HitRegistrar _registrar;
     
-    private bool _isHit;
+    private ReactiveProperty<bool> _canInterrupt = new ReactiveProperty<bool>(true);
+    public ReadOnlyReactiveProperty<bool> CanInterrupt => _canInterrupt;
     
     public override void OnEnter()
     {
@@ -41,20 +40,14 @@ public sealed class GuardState : StateBase<GuardState>
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
         
         ShieldValue = new ReactiveProperty<float>(0f);
-        
         _blockInput.IsHolding.Subscribe(ctx => RaiseShieldValue()).AddTo(this);
         _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
-        _hitWindow.OnExit += OnExitHit;
     }
 
     public override void OnExit()
     {
         if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
-        
-        if (_isHit) OnExitHit();
-        _hitWindow.OnExit -= OnExitHit;
         _registrar.OnHit -= OnHit;
-        
         _registrar.Dispose();
         
         UpdateShieldValue(0);
@@ -64,18 +57,9 @@ public sealed class GuardState : StateBase<GuardState>
     {
         ShieldValue.Value = Mathf.Clamp(holdingTime, 0, _guardConfiguration.MaxHoldingTime) / _guardConfiguration.MaxHoldingTime;
         _animator.SetFloat(ShieldParam, ShieldValue.Value);
-        ControlShieldAnimation();
         OnShieldValueChanged();
     }
-
-    private void ControlShieldAnimation()
-    {
-        if (_isHit) return;
-        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Shield Blend Tree")) return;
-        
-        _animator.Play("Shield Blend Tree", 0, ShieldValue.Value);
-    }
-
+    
     private void RaiseShieldValue()
     {
         if (_blockInput.IsHolding.CurrentValue)
@@ -114,6 +98,9 @@ public sealed class GuardState : StateBase<GuardState>
     {
         if (ShieldValue.Value < 0.1) RemoveHitbox();
         else if (ShieldValue.Value > 0.1) AddHitbox();
+        
+        if (ShieldValue.Value > 0.2f && ShieldValue.Value < 0.7f) _canInterrupt.Value = false;
+        else _canInterrupt.Value = true;
     }
 
     private void AddHitbox()
@@ -137,12 +124,6 @@ public sealed class GuardState : StateBase<GuardState>
     
     private void OnHit()
     {
-       _isHit = true;
        _animator.SetTrigger(HitParam);
-    }
-
-    private void OnExitHit()
-    {
-        _isHit = false;
     }
 }
