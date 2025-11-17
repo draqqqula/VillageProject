@@ -12,5 +12,6 @@ public class SwingConfiguration : ScriptableObject
     [field: SerializeField] public float BlendingSpeed { get; private set; }
     [field: SerializeField] public float ThrustBorder { get; private set; }
     [field: SerializeField] public float MaxDeltaMagnitude { get; private set; }
+    [field: SerializeField] public float WeightToBlendRatio { get; private set; }
     [field: SerializeField] public InputActionReference ShiftInput { get; private set; }
 }

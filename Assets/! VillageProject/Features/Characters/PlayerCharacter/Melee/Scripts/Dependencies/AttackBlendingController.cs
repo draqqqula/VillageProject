@@ -16,9 +16,12 @@ public class AttackBlendingController : IInitializable, ITickable
     private Vector2[] _positions;
     private Vector2 _defaultPoint;
     private Vector2 _blendingPoint;
+    private Vector2 _weightPoint;
+    private bool _useWeights = false;
 
     public ReactiveProperty<AttackDirection> Direction { get; private set; } = new ReactiveProperty<AttackDirection>();
-    
+    private Vector2 AveragePoint => Vector2.Lerp(_blendingPoint, _weightPoint, _swingConfiguration.WeightToBlendRatio);
+
     public void Initialize()
     {
         _positions = new Vector2[3]
@@ -34,11 +37,32 @@ public class AttackBlendingController : IInitializable, ITickable
     public void ForceSnap()
     {
         _blendingPoint = GetTargetPosition();
+        _weightPoint = _blendingPoint;
+    }
+
+    public void SetWeights(Vector3 weights)
+    {
+        _useWeights = true;
+        _weightPoint = MathExtensions.GetTrianglePositionFromColor(_positions, weights);
+    }
+
+    public void TransformWeights()
+    {
+        _blendingPoint = AveragePoint;
+        _useWeights = false;
     }
 
     private void UpdateParameters()
     {
-        var colors = MathExtensions.GetTriangleColor(_positions, _blendingPoint);
+        Vector3 colors;
+        if (_useWeights)
+        {
+            colors = MathExtensions.GetTriangleColor(_positions, AveragePoint);
+        }
+        else
+        {
+            colors = MathExtensions.GetTriangleColor(_positions, _blendingPoint);
+        }
         SetBlendParameter(AttackDirection.LeftSwing, colors.x);
         SetBlendParameter(AttackDirection.RightSwing, colors.y);
         SetBlendParameter(AttackDirection.Thrust, colors.z);
@@ -96,7 +120,7 @@ public class AttackBlendingController : IInitializable, ITickable
         }
         _blendingPoint = Vector2.MoveTowards(
             _blendingPoint,
-            GetTargetPosition(), 
+            GetTargetPosition(),
             Time.deltaTime * _swingConfiguration.BlendingSpeed);
         UpdateParameters();
     }

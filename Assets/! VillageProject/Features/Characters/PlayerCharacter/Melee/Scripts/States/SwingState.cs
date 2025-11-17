@@ -88,17 +88,35 @@ public class SwingState : StateBase<SwingState>
     {
         var border = _config.ThrustBorder;
         var intensity = 0f;
-        if (Mathf.Abs(vector.magnitude) <= border)
+
+        var thrustValue = Mathf.Clamp01(1 - (vector.magnitude / (border * 2)));
+        var leftValue = Mathf.Clamp01(-Mathf.Min(vector.y, 0) / (border * 2));
+        var rightValue = Mathf.Clamp01(Mathf.Max(vector.y, 0) / (border * 2));
+
+        var sum = thrustValue + leftValue + rightValue;
+
+        if (sum == 0)
+        {
+            return;
+        }
+
+        var leftShare = leftValue / sum;
+        var rightShare = rightValue / sum;
+        var thrustShare = thrustValue / sum;
+
+        _attackBlendingController.SetWeights(new Vector3(leftShare, rightShare, thrustShare));
+
+        if (thrustShare > Mathf.Max(leftShare, rightShare))
         {
             SetDirection(AttackDirection.Thrust);
             intensity = 1 - (vector.magnitude / border);
         }
-        else if (vector.y < 0)
+        else if (leftShare > Mathf.Max(rightShare, thrustShare))
         {
             SetDirection(AttackDirection.LeftSwing);
             intensity = Mathf.Clamp01((Math.Abs(vector.y) - border) / (_config.MaxDeltaMagnitude - border));
         }
-        else if (vector.y > 0)
+        else if (rightShare > Mathf.Max(leftShare, thrustShare))
         {
             SetDirection(AttackDirection.RightSwing);
             intensity = Mathf.Clamp01((Math.Abs(vector.y) - border) / (_config.MaxDeltaMagnitude - border));
@@ -129,7 +147,13 @@ public class SwingState : StateBase<SwingState>
             var deltaHandler = _container.Resolve<CursorDeltaHandler>();
             deltaHandler.AddTo(_shiftSubscription);
             deltaHandler.Velocity.Subscribe(HandleAttackVector).AddTo(_shiftSubscription);
-            Disposable.Create(() => _signalBus.Fire(new ShowAttackDirectionSignal(false))).AddTo(_shiftSubscription);
+            Disposable.Create(() =>
+            {
+                _signalBus.Fire(new ShowAttackDirectionSignal(false));
+                _attackBlendingController.TransformWeights();
+            })
+            .AddTo(_shiftSubscription);
+
 
             _signalBus.Fire(new ShowAttackDirectionSignal(true));
         }

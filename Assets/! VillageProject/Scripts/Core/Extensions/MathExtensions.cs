@@ -118,6 +118,29 @@ public static class MathExtensions
         return new Vector3(r, g, b);
     }
 
+    public static Vector2 GetTrianglePositionFromColor(Vector2[] edges, Vector3 color)
+    {
+        Vector2 a = edges[0];
+        Vector2 b = edges[1];
+        Vector2 c = edges[2];
+
+        float r = color.x;
+        float g = color.y;
+        float bW = color.z;
+
+        float sum = r + g + bW;
+        if (sum != 1f && sum > 1e-6f)
+        {
+            // Нормализация (на случай погрешностей)
+            r /= sum;
+            g /= sum;
+            bW /= sum;
+        }
+
+        // Линейная комбинация вершин по барицентрическим весам
+        return a * r + b * g + c * bW;
+    }
+
     public static string ToRoman(int number)
     {
         if (number < 1) return string.Empty;
