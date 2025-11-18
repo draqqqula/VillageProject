@@ -29,6 +29,7 @@ public class SwingState : StateBase<SwingState>
     [Inject] private IAttackInput _attackInput;
     [Inject] private IShiftInput _shiftInput;
     [Inject] private SlashSeriesCounter _slashSeriesCounter;
+    [Inject] private FirstPersonController _firstPersonController;
     [Inject(Id = "Holding")] private IAnimationWindowListener _holdingWindowListener;
     [Inject(Id = "SlashAttack")] private IAnimationWindowListener _strikeWindowListener;
     private ReactiveProperty<Phase> _currentPhase = new ReactiveProperty<Phase>(Phase.Rise);
@@ -147,6 +148,11 @@ public class SwingState : StateBase<SwingState>
             var deltaHandler = _container.Resolve<CursorDeltaHandler>();
             deltaHandler.AddTo(_shiftSubscription);
             deltaHandler.Velocity.Subscribe(HandleAttackVector).AddTo(_shiftSubscription);
+
+            _firstPersonController.Sensitivity
+                .AddMultiplier(_config.ShiftSensitivityMultiplier)
+                .AddTo(_shiftSubscription);
+
             Disposable.Create(() =>
             {
                 _signalBus.Fire(new ShowAttackDirectionSignal(false));
