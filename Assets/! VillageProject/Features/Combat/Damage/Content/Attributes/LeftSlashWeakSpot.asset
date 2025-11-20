@@ -18,6 +18,7 @@ MonoBehaviour:
   - rid: 3346214454910255270
   - rid: 3346214454910255282
   - rid: 3346214454910255310
+  - rid: 3346214572566512022
   references:
     version: 2
     RefIds:
@@ -50,7 +51,7 @@ MonoBehaviour:
       type: {class: 'SerializedPropertyEnumValue`1[[AttackDirection, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
         Name: Required
-        _value: 1
+        _value: 0
     - rid: 3346214454910255310
       type: {class: 'GenericDamageAttribute`1[[AdrenalineAmount, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
       data:
@@ -69,3 +70,9 @@ MonoBehaviour:
       data:
         Name: Cooldown
         _value: 1
+    - rid: 3346214572566512022
+      type: {class: 'GenericDamageAttribute`1[[DestroyWeakSpot, Assembly-CSharp]]', ns: , asm: Assembly-CSharp}
+      data:
+        PropertyValues: []
+        ServiceLifetime: 0
+        Injectable: 1
