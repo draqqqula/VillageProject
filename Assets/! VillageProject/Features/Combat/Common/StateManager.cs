@@ -50,6 +50,7 @@ public class StateManager : IInitializable
         _current.Value?.OnExit();
         _current.Value?.Dispose();
         _current.Value = state;
+        Debug.Log($"Enter {state}");
         state.OnEnter();
 
         var transitions = state.GetTransitions();

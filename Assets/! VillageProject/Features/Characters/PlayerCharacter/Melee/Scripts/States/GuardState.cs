@@ -29,9 +29,13 @@ public sealed class GuardState : StateBase<GuardState>
     [Inject] private HitboxEvent _shieldHitboxEvent;
     private HitRegistrar _registrar;
     
+    private ReactiveProperty<bool> _canInterrupt = new ReactiveProperty<bool>(true);
+    public ReadOnlyReactiveProperty<bool> CanInterrupt => _canInterrupt;
+    
     public override void OnEnter()
     {
         _registrar = new HitboxHitRegistrar(_shieldHitboxEvent);
+        _registrar.OnHit += OnHit;
         
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
         
@@ -43,6 +47,10 @@ public sealed class GuardState : StateBase<GuardState>
     public override void OnExit()
     {
         if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
+        _registrar.OnHit -= OnHit;
+        _registrar.Dispose();
+        _animator.ResetTrigger(HitParam);
+        
         UpdateShieldValue(0);
     }
 
@@ -52,13 +60,13 @@ public sealed class GuardState : StateBase<GuardState>
         _animator.SetFloat(ShieldParam, ShieldValue.Value);
         OnShieldValueChanged();
     }
-
+    
     private void RaiseShieldValue()
     {
         if (_blockInput.IsHolding.CurrentValue)
         {
             if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
-            _coroutine = _coroutineHandler.StartCoroutine(Lerp(0, _guardConfiguration.MaxHoldingTime, _guardConfiguration.MaxHoldingTime));
+            _coroutine = _coroutineHandler.StartCoroutine(Lerp(ShieldValue.Value, _guardConfiguration.MaxHoldingTime, _guardConfiguration.MaxHoldingTime));
         }
     }
     
@@ -91,6 +99,9 @@ public sealed class GuardState : StateBase<GuardState>
     {
         if (ShieldValue.Value < 0.1) RemoveHitbox();
         else if (ShieldValue.Value > 0.1) AddHitbox();
+        
+        if (ShieldValue.Value > 0.2f && ShieldValue.Value < 0.7f) _canInterrupt.Value = false;
+        else _canInterrupt.Value = true;
     }
 
     private void AddHitbox()
@@ -99,7 +110,6 @@ public sealed class GuardState : StateBase<GuardState>
 
         GuardType = GuardStateType.Guarding;
         _registrar.Activate();
-        _registrar.OnHit += OnHit;
         _isShieldActive = true;
     }
 
@@ -108,15 +118,13 @@ public sealed class GuardState : StateBase<GuardState>
         if (!_isShieldActive) return;
         
         GuardType = GuardStateType.Idle;
-        _registrar.OnHit -= OnHit;
 
         _isShieldActive = false;
         _registrar.Deactivate();
-        _registrar.Dispose();
     }
     
     private void OnHit()
     {
-        _animator.SetTrigger(HitParam);
+       _animator.SetTrigger(HitParam);
     }
 }
