@@ -1,5 +1,6 @@
 using System;
 using R3;
+using UnityEngine;
 using Zenject;
 
 public class SlashToGuardTransition : TransitionBase<SlashState>

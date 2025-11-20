@@ -25,8 +25,8 @@ public class InputWithHolding : IDisposable
     
     public void Initialize()
     {
-        _inputAction.action.started += _ => HandleStarted();
-        _inputAction.action.canceled += _ => HandleCancelled();
+        _inputAction.action.started += HandleStarted;
+        _inputAction.action.canceled += HandleCancelled;
         _isHolding.Value = _inputAction.action.phase == InputActionPhase.Started;
         
         Observable.EveryUpdate()
@@ -37,18 +37,24 @@ public class InputWithHolding : IDisposable
 
     public void Dispose()
     {
+        _inputAction.action.started -= HandleStarted;
+        _inputAction.action.canceled -= HandleCancelled;
         _disposables.Dispose();
     }
 
-    private void HandleStarted()
+    private void HandleStarted(InputAction.CallbackContext context)
     {
+        if (_isHolding.Value) return;
+        
         _lastStarted.Value = Time.unscaledTime;
         _currentHoldTime.Value = 0f;
         _isHolding.Value = true;
     }
     
-    private void HandleCancelled()
+    private void HandleCancelled(InputAction.CallbackContext context)
     {
+        if (!_isHolding.Value) return;
+        
         _lastEnded.Value = Time.unscaledTime;
         _isHolding.Value = false;
     }

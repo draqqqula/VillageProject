@@ -49,6 +49,7 @@ public sealed class GuardState : StateBase<GuardState>
         if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
         _registrar.OnHit -= OnHit;
         _registrar.Dispose();
+        _animator.ResetTrigger(HitParam);
         
         UpdateShieldValue(0);
     }
