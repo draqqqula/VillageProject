@@ -8,6 +8,9 @@ public class StaminaDisplayV2 : SignalListener<StaminaSignalInvoker.StaminaHover
 {
     private const float FILLING_TIME = 0.2f;
     private const string VAR_NAME = "_FillAmount";
+    private float _prevFillAmount;
+    
+    private bool _isHoverChanged;
     
     [SerializeField] private Image _firstPlanDisplay;
     [SerializeField] private Image _secondPlanDisplay;
@@ -35,11 +38,18 @@ public class StaminaDisplayV2 : SignalListener<StaminaSignalInvoker.StaminaHover
 
     protected override void OnSignal(StaminaSignalInvoker.StaminaHoverSignal value)
     {
-        if (value.Amount == 0) return;
+        if (value.Amount == 0 && _isHoverChanged)
+        {
+            _isHoverChanged = false;
+            ChangeFrontPlansDisplays(_prevFillAmount);
+        }
+        
         var fillAmount = _secondDisplayMaterial.GetFloat(VAR_NAME);
+        _prevFillAmount = fillAmount;
         
         ChangeFrontPlansDisplays(fillAmount - value.Amount);
         _firstDisplayMaterial.SetInt("_WithEdge", 0);
+        _isHoverChanged = true;
     }
     
     protected override void OnSignal(StaminaSignalInvoker.StaminaChangedSignal value)
