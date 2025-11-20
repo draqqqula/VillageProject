@@ -12,19 +12,12 @@ public abstract class TransitionBase<T> : CompositeDisposableBase, ITransition w
     private Subject<IState> _onActivated = new Subject<IState>();
     public Observable<IState> OnActivated => _onActivated;
     
-    protected void Activate<TNext>()
+    protected TNext Activate<TNext>() where TNext : IState
     {
-        var state = (IState)_container.Resolve<TNext>();
+        var state = _container.Resolve<TNext>();
         _onActivated.OnNext(state);
+        return state;
     }
 
     public abstract void Construct(T currentState);
-}
-
-public abstract class TransitionBase<A, B> : TransitionBase<A> where A : IState
-{
-    protected void Activate()
-    {
-        Activate<B>();
-    }
 }

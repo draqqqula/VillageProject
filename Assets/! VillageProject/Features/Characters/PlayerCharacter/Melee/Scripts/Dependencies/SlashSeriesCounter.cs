@@ -5,26 +5,21 @@ using Zenject;
 
 public class SlashSeriesCounter
 {
-    private const float MaxSeries = 1;
+    private AttackDirection _nextDirection;
 
-    private int _successiveCounter = 0;
-
-    public int SuccessiveCounter => _successiveCounter;
-
-    public void SetNextAttack()
+    public void SetNextAttack(AttackDirection direction)
     {
-        if (_successiveCounter < MaxSeries)
+        switch (direction)
         {
-            _successiveCounter++;
-        }
-        else
-        {
-            _successiveCounter = 0;
+            case AttackDirection.LeftSwing:
+                _nextDirection = AttackDirection.RightSwing; break;
+            case AttackDirection.RightSwing:
+                _nextDirection = AttackDirection.LeftSwing; break;
         }
     }
 
     public AttackDirection GetDirection()
     {
-        return (AttackDirection)_successiveCounter;
+        return _nextDirection;
     }
 }
