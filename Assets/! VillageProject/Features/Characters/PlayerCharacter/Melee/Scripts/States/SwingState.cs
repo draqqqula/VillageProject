@@ -91,8 +91,8 @@ public class SwingState : StateBase<SwingState>
         var intensity = 0f;
 
         var thrustValue = Mathf.Clamp01(1 - (vector.magnitude / (border * 2)));
-        var leftValue = Mathf.Clamp01(-Mathf.Min(vector.y, 0) / (border * 2));
-        var rightValue = Mathf.Clamp01(Mathf.Max(vector.y, 0) / (border * 2));
+        var leftValue = Mathf.Clamp01(-Mathf.Min(vector.x, 0) / (border * 2));
+        var rightValue = Mathf.Clamp01(Mathf.Max(vector.x, 0) / (border * 2));
 
         var sum = thrustValue + leftValue + rightValue;
 
@@ -115,12 +115,12 @@ public class SwingState : StateBase<SwingState>
         else if (leftShare > Mathf.Max(rightShare, thrustShare))
         {
             SetDirection(AttackDirection.LeftSwing);
-            intensity = Mathf.Clamp01((Math.Abs(vector.y) - border) / (_config.MaxDeltaMagnitude - border));
+            intensity = Mathf.Clamp01((Math.Abs(vector.x) - border) / (_config.MaxDeltaMagnitude - border));
         }
         else if (rightShare > Mathf.Max(leftShare, thrustShare))
         {
             SetDirection(AttackDirection.RightSwing);
-            intensity = Mathf.Clamp01((Math.Abs(vector.y) - border) / (_config.MaxDeltaMagnitude - border));
+            intensity = Mathf.Clamp01((Math.Abs(vector.x) - border) / (_config.MaxDeltaMagnitude - border));
         }
         _signalBus.Fire(new AttackDirectionIntensitySignal(intensity));
     }
