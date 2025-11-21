@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 public static class MathExtensions
@@ -159,4 +160,11 @@ public static class MathExtensions
         if (number >= 1) return "I" + ToRoman(number - 1);
         return string.Empty;
     }
+
+
+    public static Color WithAlpha(this Color color, float a)
+    {
+        return new Color(color.r, color.g, color.b, a);
+    }
+
 }
