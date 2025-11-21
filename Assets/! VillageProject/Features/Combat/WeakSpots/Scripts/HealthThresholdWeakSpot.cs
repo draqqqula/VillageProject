@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using UnityEngine;
 public class HealthThresholdWeakSpot : MonoBehaviour
 {
     [SerializeField] private float _threshold;
+    [SerializeField] private float _delay = 0.3f;
     [SerializeField] private Health _health;
     [SerializeField] private WeakSpotController _bodyRoot;
 
@@ -25,8 +27,15 @@ public class HealthThresholdWeakSpot : MonoBehaviour
     {
         if (!_bodyRoot.IsOpened && _health.Amount <= _threshold)
         {
-            _bodyRoot.Open();
-            enabled = false;
+            StartCoroutine(SpawnWeakSpotWithDelay());
         }
+    }
+
+    private IEnumerator SpawnWeakSpotWithDelay()
+    {
+        yield return new WaitForSeconds(_delay);
+        _bodyRoot.Open();
+        enabled = false;
+        StopAllCoroutines();
     }
 }
