@@ -39,7 +39,6 @@ public class CursorDeltaHandler : IDisposable
             currentPosition = currentPosition + delta;
             delayedPosition = Vector2.SmoothDamp(delayedPosition, currentPosition, ref velocity, _configuration.CursorSmoothTime);
             _velocity.Value = currentPosition - delayedPosition;
-            Debug.Log(_velocity.Value);
             yield return new WaitForEndOfFrame();
         }
     }

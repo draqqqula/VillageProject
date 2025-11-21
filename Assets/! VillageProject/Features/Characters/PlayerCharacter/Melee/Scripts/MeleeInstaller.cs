@@ -28,7 +28,7 @@ public class MeleeInstaller : MonoInstaller
         Container.BindInstance(_swingConfiguration).AsSingle();
         Container.BindInstance(_slashConfiguration).AsSingle();
         Container.BindInstance(_guardConfiguration).AsSingle();
-        Container.BindInterfacesAndSelfTo<CursorDeltaHandler>().AsTransient().OnInstantiated<CursorDeltaHandler>((context, it) => it.Initialize());
+        Container.Bind<CursorDeltaHandler>().AsTransient().OnInstantiated<CursorDeltaHandler>((context, it) => it.Initialize());
         Container.BindInterfacesAndSelfTo<SlashSeriesCounter>().AsSingle();
         Container.BindInterfacesAndSelfTo<AttackBlendingController>().AsSingle();
         Container.BindInterfacesAndSelfTo<AttackInput>().FromInstance(new AttackInput(_attack)).AsSingle();
