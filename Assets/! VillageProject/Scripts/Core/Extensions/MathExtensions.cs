@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 public static class MathExtensions

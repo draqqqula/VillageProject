@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+
+using System;
 using TMPro;
 using TMPro.EditorUtilities;
 using UnityEditor;
@@ -48,3 +50,5 @@ public class FontAssetSaveDisabler : TMP_FontAssetEditor
         }
     }
 }
+
+#endif
