@@ -3,20 +3,18 @@ using R3;
 using UnityEngine;
 using Zenject;
 
-public class SwingToGuardTransition : TransitionBase<SwingState>
+public class AnyToGuardTransitionA<T> : TransitionBase<T>  where T : IState
 {
-    [Inject(Id ="NotInterruptable")] private IAnimationWindowListener _interruptableWindow;
     [Inject] private IBlockInput _blockInput;
-    [Inject] private Stamina _stamina;
     [Inject] private CoroutineHandler _coroutineHandler;
-    private InterruptToGuardTransitionChecker _interruptToGuardTransitionChecker;
+    [Inject] private InterruptToGuardTransitionChecker _interruptToGuardTransitionChecker;
     
     private bool _isBlockedInSwingState = false;
     
-    public override void Construct(SwingState currentState)
+    public override void Construct(T currentState)
     {
+        _interruptToGuardTransitionChecker.AddTo(this);
         _blockInput.IsHolding.Skip(1).Subscribe(OnBlockPressed).AddTo(this);
-        _interruptToGuardTransitionChecker = new InterruptToGuardTransitionChecker(_interruptableWindow, _blockInput,  _stamina);
         _interruptToGuardTransitionChecker.CanInterrupt.Subscribe(TryInterrupt).AddTo(this);
     }
 

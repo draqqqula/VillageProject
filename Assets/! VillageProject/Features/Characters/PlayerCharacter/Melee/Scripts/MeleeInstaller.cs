@@ -29,6 +29,7 @@ public class MeleeInstaller : MonoInstaller
         Container.BindInstance(_slashConfiguration).AsSingle();
         Container.BindInstance(_guardConfiguration).AsSingle();
         Container.Bind<CursorDeltaHandler>().AsTransient().OnInstantiated<CursorDeltaHandler>((context, it) => it.Initialize());
+        Container.Bind<InterruptToGuardTransitionChecker>().AsTransient().OnInstantiated<InterruptToGuardTransitionChecker>((context, it) => it.Initialize());
         Container.BindInterfacesAndSelfTo<SlashSeriesCounter>().AsSingle();
         Container.BindInterfacesAndSelfTo<AttackBlendingController>().AsSingle();
         Container.BindInterfacesAndSelfTo<AttackInput>().FromInstance(new AttackInput(_attack)).AsSingle();
@@ -51,9 +52,8 @@ public class MeleeInstaller : MonoInstaller
         Container.Bind<TransitionBase<GuardState>>().To<GuardToIdleBreakingTransition>().AsTransient();
         
         Container.Bind<TransitionBase<GuardState>>().To<GuardToSwingTransition>().AsTransient();
-        Container.Bind<TransitionBase<SwingState>>().To<SwingToGuardTransition>().AsTransient();
-        Container.Bind<TransitionBase<SlashState>>().To<SlashToGuardTransition>().AsTransient();
-        Container.Bind<TransitionBase<ThrustState>>().To<ThrustToGuardTransition>().AsTransient();
+        Container.Bind<TransitionBase<SwingState>>().To<AnyToGuardTransitionA<SwingState>>().AsTransient();
+        Container.Bind<TransitionBase<SlashState>>().To<AnyToGuardTransitionB>().AsTransient();
         
         Container.BindInterfacesAndSelfTo<StateManager>().AsSingle();
     }
