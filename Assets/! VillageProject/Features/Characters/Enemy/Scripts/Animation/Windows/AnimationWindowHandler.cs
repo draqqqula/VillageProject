@@ -19,7 +19,6 @@ public class AnimationWindowHandler : IAnimationWindowController, IAnimationWind
         _window = window;
     }
 
-    public float Progress { get; set; } = 0f;
     public bool Active
     {
         get

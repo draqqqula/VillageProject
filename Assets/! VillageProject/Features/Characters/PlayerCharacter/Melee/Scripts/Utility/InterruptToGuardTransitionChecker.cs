@@ -31,7 +31,6 @@ public class InterruptToGuardTransitionChecker : CompositeDisposableBase
     private void TryInterrupt(bool _)
     {
         CanInterrupt.Value = CanAttack() && IsInput();
-        Debug.Log("TryInterrupt Window:" + (!_notInterruptableWindow.IsActive.CurrentValue).ToString() + " Stamina:"+ (!_stamina.IsOnCooldown.CurrentValue).ToString() + " Input:" + _blockInput.IsHolding.CurrentValue.ToString());
     }
 
     public override void Dispose()
