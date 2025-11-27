@@ -8,10 +8,12 @@ public class Adrenaline : MonoBehaviour
 {
     [SerializeField] private float _defaultRate;
     [SerializeField] private AnimationCurve _decreaseSpeedOverValue;
+    private Subject<float> _onGainedUnclamped = new Subject<float>();
     private ReactiveProperty<float> _value = new ReactiveProperty<float>(0);
     private ReactiveProperty<bool> _isOnCooldown = new ReactiveProperty<bool>(false);
 
     [field: SerializeField] public float MaxValue { get; private set; }
+    public Observable<float> OnGainedUnclamped => _onGainedUnclamped;
     public ReadOnlyReactiveProperty<float> Value => _value;
     public ReadOnlyReactiveProperty<bool> IsOnCooldown => _isOnCooldown;
 
@@ -28,6 +30,7 @@ public class Adrenaline : MonoBehaviour
     public void Gain(float amount, float cooldown)
     {
         _value.Value = Math.Min(_value.Value + amount, MaxValue);
+        _onGainedUnclamped.OnNext(amount);
         StartCoroutine(WaitForCooldown(cooldown));
     }
 

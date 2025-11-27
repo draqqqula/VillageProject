@@ -12,5 +12,6 @@ public class StaminaSignalInstaller : MonoInstaller
         Container.DeclareSignal<StaminaSignalInvoker.FatigueSignal>();
         Container.DeclareSignal<StaminaSignalInvoker.StaminaHoverSignal>();
         Container.DeclareSignal<StaminaSignalInvoker.AdrenalineStageChangedSignal>();
+        Container.DeclareSignal<StaminaSignalInvoker.AdrenalineGainedUnclampedSignal>();
     }
 }
