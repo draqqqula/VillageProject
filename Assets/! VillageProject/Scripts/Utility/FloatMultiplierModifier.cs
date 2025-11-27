@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class FloatMultiplierModifier : ValueModifier<float>
 {
-    private float _multiplier;
+    public float Multiplier;
     public FloatMultiplierModifier(float multiplier)
     {
-        _multiplier = multiplier;
+        Multiplier = multiplier;
     }
 
     public override float Apply(float value)
     {
-        return _multiplier * value;
+        return Multiplier * value;
     }
 }
 

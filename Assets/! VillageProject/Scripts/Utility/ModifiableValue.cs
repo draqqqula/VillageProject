@@ -63,7 +63,7 @@ public class ModifiableValue<T>
         });
     }
 
-    private void UpdateValue()
+    public void UpdateValue()
     {
         _value.Value = CalculateValue();
     }

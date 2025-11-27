@@ -13,6 +13,8 @@ public class HorizontalMovement : InputListener
     private float _speed = 0;
     private Vector3 _direction = Vector3.zero;
 
+    public ModifiableValue<float> SpeedModifier { get; private set; } = new ModifiableValue<float>(1f);
+
     private void Reset()
     {
         _velocity = GetComponent<CharacterVelocity>();
@@ -34,6 +36,6 @@ public class HorizontalMovement : InputListener
         }
 
         _direction = Vector3.MoveTowards(_direction, input, _movingDelta);
-        _velocity.Add(_direction * _speed);
+        _velocity.Add(_direction * _speed * SpeedModifier.Value.CurrentValue);
     }
 }
