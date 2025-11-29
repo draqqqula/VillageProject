@@ -7,30 +7,31 @@ public sealed class GuardState : StateBase<GuardState>
 {
     private const string HitParam = "Hit";
     private const string ShieldParam = "Shield";
+    private const string BlockParam = "Block";
     
     public override StateType StateType => StateType.Guard;
-    public GuardStateType GuardType {get; private set;}
-    
-    public enum GuardStateType
-    {
-        Guarding, Idle
-    }
     
     public ReactiveProperty<float> ShieldValue { get; private set; }
     private bool _isShieldActive;
-    private Coroutine _coroutine;
     
     [Inject] private GuardConfiguration _guardConfiguration;
+    
     [Inject] private CoroutineHandler _coroutineHandler;
+    private Coroutine _coroutine;
+    
     [Inject] private Animator _animator;
     [Inject] private Stamina _stamina;
     [Inject] private IBlockInput _blockInput;
+    
+    [Inject] private HorizontalMovement _horizontalMovement;
+    private FloatMultiplierModifier _floatModifier;
     
     [Inject] private HitboxEvent _shieldHitboxEvent;
     private HitRegistrar _registrar;
     
     private ReactiveProperty<bool> _canInterrupt = new ReactiveProperty<bool>(true);
     public ReadOnlyReactiveProperty<bool> CanInterrupt => _canInterrupt;
+    public bool IsReleaseShieldAfterExit {private get; set; }
     
     public override void OnEnter()
     {
@@ -38,8 +39,14 @@ public sealed class GuardState : StateBase<GuardState>
         _registrar.OnHit += OnHit;
         
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
+        _animator.SetBool(BlockParam, true);
         
         ShieldValue = new ReactiveProperty<float>(0f);
+        IsReleaseShieldAfterExit = true;
+        
+        _floatModifier = new FloatMultiplierModifier(_guardConfiguration.SlowdownCurve.Evaluate(ShieldValue.Value));
+        _horizontalMovement.SpeedModifier.AddModifier(_floatModifier, 0).AddTo(this);
+        
         _blockInput.IsHolding.Subscribe(ctx => RaiseShieldValue()).AddTo(this);
         _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
     }
@@ -47,13 +54,16 @@ public sealed class GuardState : StateBase<GuardState>
     public override void OnExit()
     {
         if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
+        
+        RemoveHitbox();
         _registrar.OnHit -= OnHit;
         _registrar.Dispose();
-        _animator.ResetTrigger(HitParam);
         
-        UpdateShieldValue(0);
+        _animator.ResetTrigger(HitParam);
+        if (IsReleaseShieldAfterExit) UpdateShieldValue(0);
+        _animator.SetBool(BlockParam, false);
     }
-
+    
     public void UpdateShieldValue(float holdingTime)
     {
         ShieldValue.Value = Mathf.Clamp(holdingTime, 0, _guardConfiguration.MaxHoldingTime) / _guardConfiguration.MaxHoldingTime;
@@ -102,13 +112,15 @@ public sealed class GuardState : StateBase<GuardState>
         
         if (ShieldValue.Value > 0.2f && ShieldValue.Value < 0.7f) _canInterrupt.Value = false;
         else _canInterrupt.Value = true;
+        
+        _floatModifier.Multiplier = _guardConfiguration.SlowdownCurve.Evaluate(ShieldValue.Value);
+        _horizontalMovement.SpeedModifier.UpdateValue();
     }
 
     private void AddHitbox()
     {
         if (_isShieldActive) return;
-
-        GuardType = GuardStateType.Guarding;
+        
         _registrar.Activate();
         _isShieldActive = true;
     }
@@ -117,8 +129,6 @@ public sealed class GuardState : StateBase<GuardState>
     {
         if (!_isShieldActive) return;
         
-        GuardType = GuardStateType.Idle;
-
         _isShieldActive = false;
         _registrar.Deactivate();
     }
