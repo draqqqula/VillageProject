@@ -117,9 +117,7 @@ public sealed class GuardState : StateBase<GuardState>
         if (ShieldValue.Value < 0.1) RemoveHitbox();
         else if (ShieldValue.Value > 0.1) AddHitbox();
         
-        if (ShieldValue.Value > 0.2f && ShieldValue.Value < 0.7f) _canInterrupt.Value = false;
-        else _canInterrupt.Value = true;
-
+        _canInterrupt.Value = true;
         _parryingUpdater.UpdateParryingByShieldParam(ShieldValue.Value, _guardConfiguration.MaxShieldUpTime, _isRisedShieldValue);
         
         _floatModifier.Multiplier = _guardConfiguration.SlowdownCurve.Evaluate(ShieldValue.Value);
