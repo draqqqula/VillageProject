@@ -43,7 +43,7 @@ public sealed class GuardState : StateBase<GuardState>
         _registrar.OnHit += OnHit;
         
         _stamina.ModifyRate(_guardConfiguration.StaminaFillModifier).AddTo(this);
-        _animator.SetBool(BlockParam, true);
+        _animator.SetTrigger(BlockParam);
         
         ShieldValue = new ReactiveProperty<float>(0f);
         IsReleaseShieldAfterExit = true;
@@ -65,7 +65,6 @@ public sealed class GuardState : StateBase<GuardState>
         
         _animator.ResetTrigger(HitParam);
         if (IsReleaseShieldAfterExit) UpdateShieldValue(0);
-        _animator.SetBool(BlockParam, false);
     }
     
     private void UpdateShieldValue(float shieldValue)
