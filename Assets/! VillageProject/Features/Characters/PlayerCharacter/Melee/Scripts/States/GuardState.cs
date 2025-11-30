@@ -51,7 +51,7 @@ public sealed class GuardState : StateBase<GuardState>
         _floatModifier = new FloatMultiplierModifier(_guardConfiguration.SlowdownCurve.Evaluate(ShieldValue.Value));
         _horizontalMovement.SpeedModifier.AddModifier(_floatModifier, 0).AddTo(this);
         
-        _blockInput.IsHolding.Skip(1).Subscribe(ctx => RaiseShieldValue()).AddTo(this);
+        _blockInput.IsHolding.Subscribe(ctx => RaiseShieldValue()).AddTo(this);
         _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
     }
 
