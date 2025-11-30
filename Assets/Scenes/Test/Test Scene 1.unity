@@ -2593,6 +2593,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 727473222903927407, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: _parryringFlag
+      value: 
+      objectReference: {fileID: 1197318910}
+    - target: {fileID: 727473222903927407, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: parryingUpdater
+      value: 
+      objectReference: {fileID: 1197318910}
+    - target: {fileID: 727473222903927407, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: parryringUpdater
+      value: 
+      objectReference: {fileID: 1197318910}
+    - target: {fileID: 727473222903927407, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: parryingConfiguration
+      value: 
+      objectReference: {fileID: 11400000, guid: d3ab0ad5c321b4639aafd3968fe1517f, type: 2}
+    - target: {fileID: 727473222903927407, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: _parryringConfiguration
+      value: 
+      objectReference: {fileID: 11400000, guid: d3ab0ad5c321b4639aafd3968fe1517f, type: 2}
     - target: {fileID: 5061269798451310176, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.42
@@ -2633,6 +2653,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7605457000035176319, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: _parryringFlag
+      value: 
+      objectReference: {fileID: 1197318910}
+    - target: {fileID: 7605457000035176319, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: _parryringConfiguration
+      value: 
+      objectReference: {fileID: 11400000, guid: d3ab0ad5c321b4639aafd3968fe1517f, type: 2}
     - target: {fileID: 9006005799577284954, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2640,7 +2668,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1705527742520136083, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1197318910}
   m_SourcePrefab: {fileID: 100100000, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
 --- !u!1 &140915349 stripped
 GameObject:
@@ -19509,6 +19540,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79abb4331ecfda1429f9b216b4dbac9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1197318908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1705527742520136083, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+  m_PrefabInstance: {fileID: 140915347}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1197318910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197318908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b953d26d9d964266b372c13e8b2574b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Parrying>k__BackingField: 0
+  _countParryingInRow: 0
 --- !u!1 &1217863473
 GameObject:
   m_ObjectHideFlags: 0

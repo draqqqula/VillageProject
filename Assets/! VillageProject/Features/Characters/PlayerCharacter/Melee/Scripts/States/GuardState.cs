@@ -15,6 +15,7 @@ public sealed class GuardState : StateBase<GuardState>
     private bool _isShieldActive;
     
     [Inject] private GuardConfiguration _guardConfiguration;
+    [Inject] private ParryingConfiguration _parryingConfiguration;
     
     [Inject] private CoroutineHandler _coroutineHandler;
     private Coroutine _coroutine;
@@ -22,6 +23,7 @@ public sealed class GuardState : StateBase<GuardState>
     [Inject] private Animator _animator;
     [Inject] private Stamina _stamina;
     [Inject] private IBlockInput _blockInput;
+    [Inject] private ParryingUpdater _parryingUpdater;
     
     [Inject] private HorizontalMovement _horizontalMovement;
     private FloatMultiplierModifier _floatModifier;
@@ -32,6 +34,8 @@ public sealed class GuardState : StateBase<GuardState>
     private ReactiveProperty<bool> _canInterrupt = new ReactiveProperty<bool>(true);
     public ReadOnlyReactiveProperty<bool> CanInterrupt => _canInterrupt;
     public bool IsReleaseShieldAfterExit {private get; set; }
+
+    private bool _isRisedShieldValue = false;
     
     public override void OnEnter()
     {
@@ -47,7 +51,7 @@ public sealed class GuardState : StateBase<GuardState>
         _floatModifier = new FloatMultiplierModifier(_guardConfiguration.SlowdownCurve.Evaluate(ShieldValue.Value));
         _horizontalMovement.SpeedModifier.AddModifier(_floatModifier, 0).AddTo(this);
         
-        _blockInput.IsHolding.Subscribe(ctx => RaiseShieldValue()).AddTo(this);
+        _blockInput.IsHolding.Skip(1).Subscribe(ctx => RaiseShieldValue()).AddTo(this);
         _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
     }
 
@@ -64,9 +68,9 @@ public sealed class GuardState : StateBase<GuardState>
         _animator.SetBool(BlockParam, false);
     }
     
-    public void UpdateShieldValue(float holdingTime)
+    private void UpdateShieldValue(float shieldValue)
     {
-        ShieldValue.Value = Mathf.Clamp(holdingTime, 0, _guardConfiguration.MaxHoldingTime) / _guardConfiguration.MaxHoldingTime;
+        ShieldValue.Value = Mathf.Clamp(shieldValue, 0, 1);
         _animator.SetFloat(ShieldParam, ShieldValue.Value);
         OnShieldValueChanged();
     }
@@ -75,8 +79,10 @@ public sealed class GuardState : StateBase<GuardState>
     {
         if (_blockInput.IsHolding.CurrentValue)
         {
+            _isRisedShieldValue = true;
             if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
-            _coroutine = _coroutineHandler.StartCoroutine(Lerp(ShieldValue.Value, _guardConfiguration.MaxHoldingTime, _guardConfiguration.MaxHoldingTime));
+            _coroutine = _coroutineHandler.StartCoroutine(Lerp(ShieldValue.Value, 1, 
+                _guardConfiguration.MaxShieldUpTime - (ShieldValue.Value * _guardConfiguration.MaxShieldUpTime)));
         }
     }
     
@@ -84,9 +90,10 @@ public sealed class GuardState : StateBase<GuardState>
     {
         if (!_blockInput.IsHolding.CurrentValue)
         {
+            _isRisedShieldValue = false;
             if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
-            float duration = ShieldValue.Value * _guardConfiguration.MaxHoldingTime;
-            _coroutine = _coroutineHandler.StartCoroutine(Lerp(duration, 0, duration));
+            float duration = ShieldValue.Value * _guardConfiguration.MaxShieldUpTime;
+            _coroutine = _coroutineHandler.StartCoroutine(Lerp(ShieldValue.Value, 0, duration));
         }
     }
     
@@ -112,11 +119,13 @@ public sealed class GuardState : StateBase<GuardState>
         
         if (ShieldValue.Value > 0.2f && ShieldValue.Value < 0.7f) _canInterrupt.Value = false;
         else _canInterrupt.Value = true;
+
+        _parryingUpdater.UpdateParryingByShieldParam(ShieldValue.Value, _guardConfiguration.MaxShieldUpTime, _isRisedShieldValue);
         
         _floatModifier.Multiplier = _guardConfiguration.SlowdownCurve.Evaluate(ShieldValue.Value);
         _horizontalMovement.SpeedModifier.UpdateValue();
     }
-
+    
     private void AddHitbox()
     {
         if (_isShieldActive) return;
@@ -135,6 +144,6 @@ public sealed class GuardState : StateBase<GuardState>
     
     private void OnHit()
     {
-       _animator.SetTrigger(HitParam);
+       if (!_parryingUpdater.Parrying) _animator.SetTrigger(HitParam);
     }
 }
