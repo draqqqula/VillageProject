@@ -141,6 +141,6 @@ public sealed class GuardState : StateBase<GuardState>
     
     private void OnHit()
     {
-       if (!_parryingUpdater.Parrying) _animator.SetTrigger(HitParam);
+       if (!_parryingUpdater.Parrying.CurrentValue) _animator.SetTrigger(HitParam);
     }
 }

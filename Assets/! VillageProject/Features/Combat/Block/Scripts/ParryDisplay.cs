@@ -9,11 +9,11 @@ public class ParryDisplay : MonoBehaviour
 
     private void Update()
     {
-        if (_updater.Parrying && !_display.activeSelf)
+        if (_updater.Parrying.CurrentValue && !_display.activeSelf)
         {
             _display.SetActive(true);
         }
-        else if (!_updater.Parrying && _display.activeSelf)
+        else if (!_updater.Parrying.CurrentValue && _display.activeSelf)
         {
             _display.SetActive(false);
         }

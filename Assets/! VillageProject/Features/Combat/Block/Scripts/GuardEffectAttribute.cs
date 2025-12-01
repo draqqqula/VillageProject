@@ -16,7 +16,7 @@ public class GuardEffectAttribute : DamageAttributeBase
             if (context.SourceAttributes.TryGetService<BlockableDamageAttribute.Data>(out var blockableDamage)
                 && context.SourceAttributes.TryGetService<BaseDamageAmountAttribute.Effect>(out var baseDamageAmount))
             {
-                if (_parryingUpdater.Parrying || _stamina.TrySpend(_guardConfiguration.StaminaWasteModifier * baseDamageAmount.Amount))
+                if (_parryingUpdater.Parrying.CurrentValue || _stamina.TrySpend(_guardConfiguration.StaminaWasteModifier * baseDamageAmount.Amount))
                     blockableDamage.Apply();
             }
             return true;
