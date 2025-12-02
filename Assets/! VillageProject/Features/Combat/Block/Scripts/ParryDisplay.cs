@@ -1,21 +1,40 @@
-﻿using System.Collections;
+﻿using R3;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
 public class ParryDisplay : MonoBehaviour
 {
-    [Inject] private ParryingUpdater _updater;
-    [SerializeField] private GameObject _display;
+    private const string AnimationParameter = "t";
 
-    private void Update()
+    [Inject] private ParryingUpdater _updater;
+    [SerializeField] private Animator _display;
+
+    private void Awake()
     {
-        if (_updater.Parrying.CurrentValue && !_display.activeSelf)
+        _updater.Parrying.Subscribe(HandleParrying).AddTo(this);
+    }
+
+    private void HandleParrying(bool value)
+    {
+        if (value)
         {
-            _display.SetActive(true);
+            _display.gameObject.SetActive(true);
+            StartCoroutine(UpdateDisplay());
         }
-        else if (!_updater.Parrying.CurrentValue && _display.activeSelf)
+        else
         {
-            _display.SetActive(false);
+            StopAllCoroutines();
+            _display.gameObject.SetActive(false);
+        }
+    }
+
+    private IEnumerator UpdateDisplay()
+    {
+        while (true)
+        {
+            _display.SetFloat(AnimationParameter, _updater.GetCurrentParryingTime());
+            yield return new WaitForEndOfFrame();
         }
     }
 }
