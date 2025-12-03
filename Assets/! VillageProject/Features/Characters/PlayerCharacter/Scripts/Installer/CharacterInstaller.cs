@@ -8,6 +8,7 @@ public class CharacterInstaller : MonoInstaller
     [SerializeField] private Transform _raycastOrigin;
     [SerializeField] private HorizontalMovement _horizontalMovement;
     [SerializeField] private FirstPersonController _firstPersonController;
+    [SerializeField] private AudioSource _audioSource;
     
     public override void InstallBindings()
     {
@@ -17,6 +18,8 @@ public class CharacterInstaller : MonoInstaller
         Container.BindInstance(_horizontalMovement).AsSingle();
         Container.BindInstance(_raycastOrigin).WithId("Raycast").AsCached();
         Container.BindInterfacesAndSelfTo<PlayerHealthSignalInvoker>().AsSingle();
+        Container.BindInstance(_audioSource).AsSingle();
+        AudioPlayer<SwordCombatSounds>.InstallTo(Container);
     }
 
     private void Reset()
