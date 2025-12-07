@@ -14,6 +14,7 @@ public class CharacterInstaller : MonoInstaller
         Container.Bind<CharacterVelocity>().FromInstance(_characterVelocity).AsSingle();
         Container.BindInterfacesAndSelfTo<FirstPersonController>().FromInstance(_firstPersonController).AsSingle();
         Container.BindInstance(_teamMember).AsSingle();
+        Container.Bind<MoveParamUpdater>().FromNew().AsSingle();
         Container.BindInstance(_horizontalMovement).AsSingle();
         Container.BindInstance(_raycastOrigin).WithId("Raycast").AsCached();
         Container.BindInterfacesAndSelfTo<PlayerHealthSignalInvoker>().AsSingle();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class WalkingSounds : MonoBehaviour
 {
@@ -11,9 +12,15 @@ public class WalkingSounds : MonoBehaviour
     [SerializeField] private float _interval;
     private Coroutine _walkingSoundCoroutine;
 
+    [SerializeField, Range(0, 1)] private float _soundsStartTiming;
+    [SerializeField, Range(0, 1)] private float _soundsDuration;
+    
+    [Inject] private MoveParamUpdater _moveParamUpdater;
+
     void Update()
     {
-        if (_characterController.velocity.ToXZ().magnitude == 0 || !_characterController.isGrounded)
+        if (!_moveParamUpdater.IsParamOnRange(_soundsStartTiming, _soundsStartTiming + _soundsDuration, false) 
+            || !_characterController.isGrounded)
         {
             StopWalkingSounds();
         }
