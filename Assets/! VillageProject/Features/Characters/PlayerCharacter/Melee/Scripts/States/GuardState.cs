@@ -63,6 +63,7 @@ public sealed class GuardState : StateBase<GuardState>
         _registrar.OnHit -= OnHit;
         _registrar.Dispose();
         
+        _parryingUpdater.UpdateParrying(false);
         _animator.ResetTrigger(HitParam);
         if (IsReleaseShieldAfterExit) UpdateShieldValue(0);
     }
