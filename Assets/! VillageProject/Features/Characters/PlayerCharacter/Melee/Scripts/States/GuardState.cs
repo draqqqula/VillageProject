@@ -25,7 +25,7 @@ public sealed class GuardState : StateBase<GuardState>
     [Inject] private Animator _animator;
     [Inject] private Stamina _stamina;
     [Inject] private IBlockInput _blockInput;
-    
+    [Inject] private SignalBus _signalBus;
     [Inject] private HitboxEvent _shieldHitboxEvent;
     private HitRegistrar _registrar;
     
@@ -42,6 +42,8 @@ public sealed class GuardState : StateBase<GuardState>
         ShieldValue = new ReactiveProperty<float>(0f);
         _blockInput.IsHolding.Subscribe(ctx => RaiseShieldValue()).AddTo(this);
         _blockInput.IsHolding.Subscribe(ctx => ReleaseShieldValue()).AddTo(this);
+        
+        _signalBus.Fire(new PlayAudioSignal<SwordCombatSounds>(SwordCombatSounds.GuardUp));
     }
 
     public override void OnExit()
@@ -52,6 +54,8 @@ public sealed class GuardState : StateBase<GuardState>
         _animator.ResetTrigger(HitParam);
         
         UpdateShieldValue(0);
+        
+        _signalBus.Fire(new PlayAudioSignal<SwordCombatSounds>(SwordCombatSounds.GuardDown));
     }
 
     public void UpdateShieldValue(float holdingTime)

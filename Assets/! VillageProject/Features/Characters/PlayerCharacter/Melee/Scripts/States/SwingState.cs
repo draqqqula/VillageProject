@@ -35,6 +35,7 @@ public class SwingState : StateBase<SwingState>
     private ReactiveProperty<Phase> _currentPhase = new ReactiveProperty<Phase>(Phase.Rise);
     private CompositeDisposable _shiftSubscription;
     private AttackDirection _direction = AttackDirection.None;
+    private float _switchTimestamp = 0f;
 
     public ReadOnlyReactiveProperty<Phase> CurrentPhase => _currentPhase;
     public bool HoldingCancelled { get; private set; } = false;
@@ -129,8 +130,19 @@ public class SwingState : StateBase<SwingState>
     {
         if (_direction != direction)
         {
+            TryPlaySwitchSound();
             _attackBlendingController.Direction.Value = direction;
             _direction = direction;
+        }
+    }
+
+    private void TryPlaySwitchSound()
+    {
+        var time = Time.time;
+        if (time > _switchTimestamp + _config.SwitchSoundCooldown)
+        {
+            _signalBus.Fire(new PlayAudioSignal<SwordCombatSounds>(SwordCombatSounds.Switch));
+            _switchTimestamp = time;
         }
     }
 

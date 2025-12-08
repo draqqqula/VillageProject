@@ -9,5 +9,6 @@ public enum SwordCombatSounds
     Return,
     Switch,
     GuardUp,
-    GuardDown
+    GuardDown,
+    ThrustStrike
 }
