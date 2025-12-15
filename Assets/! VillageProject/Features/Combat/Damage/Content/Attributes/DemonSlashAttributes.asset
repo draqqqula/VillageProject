@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c6b08b72b4977347a067e9b979b6130, type: 3}
+  m_Name: DemonSlashAttributes
+  m_EditorClassIdentifier: 
+  Attributes:
+  - rid: 3346214135769071796
+  - rid: 3346214135769071797
+  - rid: 3346214206461444219
+  - rid: 3346214206461444222
+  - rid: 3346214206461444223
+  - rid: 1492728079575941218
+  references:
+    version: 2
+    RefIds:
+    - rid: 1492728079575941218
+      type: {class: BaseDamageAmountAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _amount: 2
+    - rid: 3346214135769071796
+      type: {class: HealthAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214135769071797
+      type: {class: InvincibilityHandlerAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        <DefaultDuration>k__BackingField: 0.3
+    - rid: 3346214206461444219
+      type: {class: DamageTiltableAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214206461444222
+      type: {class: TransformDamageAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3346214206461444223
+      type: {class: TeamMemberAttribute, ns: , asm: Assembly-CSharp}
+      data: 
