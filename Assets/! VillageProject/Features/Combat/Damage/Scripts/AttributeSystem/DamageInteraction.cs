@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public static class DamageInteraction
 {
@@ -14,11 +15,12 @@ public static class DamageInteraction
         var effects = targetScope.ServiceProvider.GetServices<IDamageExecutable>().Concat(sourceScope.ServiceProvider.GetServices<IDamageExecutable>());
 
         var context = new DamageInteractionContext(targetScope.ServiceProvider, sourceScope.ServiceProvider);
-
+        
         foreach (var effect in effects)
         {
             if (!effect.TryExecute(context))
             {
+                Debug.Log($"Effect {effect.GetType()} cannot be executed!");
                 break;
             }
         }

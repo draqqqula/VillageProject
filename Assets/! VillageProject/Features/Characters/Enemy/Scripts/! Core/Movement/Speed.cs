@@ -10,4 +10,9 @@ public class Speed : MonoBehaviour
     {
         Value.Value = _defaultSpeed;
     }
+
+    public void ReturnToDefault()
+    {
+        Value.Value = _defaultSpeed;
+    }
 }

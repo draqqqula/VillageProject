@@ -49,6 +49,7 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
             .AddTo(this);
         
         CanChangeDestination = true;
+        CanStop = true;
     }
 
     private void OnEnable()

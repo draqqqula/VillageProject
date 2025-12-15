@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Behavior;
 using UnityEngine;
 using Zenject;
@@ -8,43 +9,42 @@ public class Dash : MonoBehaviour
     [Inject(Id = "Stop")] IAnimationWindowListener _stopWindow;
     [SerializeField] private NavmeshMovementAgent _agent;
     
-    [SerializeField] private GameObject _player;
     [SerializeField] private Speed _speed;
+    private const float SpeedMultiplier = 6;
+    
     [SerializeField] private GameObject _hitbox;
+    private GameObject _player;
     
     private IWorkEventSource<WorkResult> _source;
-    private bool _isFinished = true;
+    private const float HitboxDelay = 0.2f;
+    private Coroutine _delayCoroutine;
     
-    public bool IsDashing {get; private set;}
+    private bool _isDashing;
     public bool IsCharging {get; private set;}
-    
-    private void Start()
+
+    [Inject]
+    private void Construct(FirstPersonController player)
     {
+        _player = player.gameObject;
         _dashWindow.OnEnter += UseDash;
         _stopWindow.OnEnter += Stop;
         _stopWindow.OnExit += Move;
     }
-
+    
     private void Stop()
     {
         IsCharging = true;
-        _agent.StopAgent();
-        _agent.CanStop = false;
-        _agent.CanChangeDestination = false;
     }
 
     private void Move()
     {
         IsCharging = false;
-        _agent.CanStop = true;
-        _agent.CanChangeDestination = true;
     }
 
     private void UseDash()
     {
-        if (IsDashing) return;
-        IsDashing = true;
-        Debug.Log("Dash");
+        if (_isDashing) return;
+
 
         _agent.TrySetInstructions(_player.transform.position, out var source);
         BindWork(source);
@@ -57,33 +57,39 @@ public class Dash : MonoBehaviour
     
     private void BindWork(IWorkEventSource<WorkResult> source)
     {
-        _isFinished = false;
+        _isDashing = true;
         _agent.CanStop = false;
         _agent.CanChangeDestination = false;
         
         _source = source;
         _source.OnFinished += HandleFinished;
         
-        _speed.Value.Value *= 6f;
+        _speed.Value.Value *= SpeedMultiplier;
         _hitbox.gameObject.SetActive(true);
     }
     
     private void UnbindWork()
     {
-        if (_isFinished) return;
-        Debug.Log("Unbind");
+        if (!_isDashing) return;
         
         _agent.CanStop = true;
         _agent.CanChangeDestination = true;
         
-        _hitbox.gameObject.SetActive(false);
-        _speed.Value.Value /= 6f;
+        if (_delayCoroutine != null) StopCoroutine(_delayCoroutine);
+        _delayCoroutine = StartCoroutine(DelayHitboxCoroutine());
         
+        _speed.ReturnToDefault();
         _source.OnFinished -= HandleFinished;
         
         _source = null;
-        _isFinished = true;
-        IsDashing = false;
+        _isDashing = false;
+    }
+
+    private IEnumerator DelayHitboxCoroutine()
+    {
+        yield return new WaitForSeconds(HitboxDelay);
+        _hitbox.gameObject.SetActive(false);
+        _delayCoroutine = null;
     }
 
     private void OnDestroy()
