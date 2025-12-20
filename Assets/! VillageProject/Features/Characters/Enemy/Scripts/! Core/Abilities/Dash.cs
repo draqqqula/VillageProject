@@ -18,9 +18,13 @@ public class Dash : MonoBehaviour
     private IWorkEventSource<WorkResult> _source;
     private const float HitboxDelay = 0.2f;
     private Coroutine _delayCoroutine;
+    private Coroutine _cooldownCoroutine;
     
-    private bool _isDashing;
+    [SerializeField] private Animator _animator;
+    
+    public bool IsDashing {get; private set;}
     public bool IsCharging {get; private set;}
+    public bool IsCooldown {get; private set;}
 
     [Inject]
     private void Construct(FirstPersonController player)
@@ -43,9 +47,8 @@ public class Dash : MonoBehaviour
 
     private void UseDash()
     {
-        if (_isDashing) return;
-
-
+        if (IsDashing) return;
+        
         _agent.TrySetInstructions(_player.transform.position, out var source);
         BindWork(source);
     }
@@ -57,7 +60,7 @@ public class Dash : MonoBehaviour
     
     private void BindWork(IWorkEventSource<WorkResult> source)
     {
-        _isDashing = true;
+        IsDashing = true;
         _agent.CanStop = false;
         _agent.CanChangeDestination = false;
         
@@ -70,26 +73,37 @@ public class Dash : MonoBehaviour
     
     private void UnbindWork()
     {
-        if (!_isDashing) return;
+        if (!IsDashing) return;
         
         _agent.CanStop = true;
         _agent.CanChangeDestination = true;
+        _animator.SetBool("Dash", false);
         
         if (_delayCoroutine != null) StopCoroutine(_delayCoroutine);
         _delayCoroutine = StartCoroutine(DelayHitboxCoroutine());
+        
+        if (_cooldownCoroutine != null) StopCoroutine(_cooldownCoroutine);
+        _cooldownCoroutine = StartCoroutine(CooldownCoroutine());
         
         _speed.ReturnToDefault();
         _source.OnFinished -= HandleFinished;
         
         _source = null;
-        _isDashing = false;
+        IsDashing = false;
     }
-
+    
     private IEnumerator DelayHitboxCoroutine()
     {
         yield return new WaitForSeconds(HitboxDelay);
         _hitbox.gameObject.SetActive(false);
         _delayCoroutine = null;
+    }
+
+    private IEnumerator CooldownCoroutine()
+    {
+        IsCooldown = true;
+        yield return null;
+        IsCooldown = false;
     }
 
     private void OnDestroy()
