@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using UnityEngine;
 using Zenject;
 
 [Serializable]
@@ -16,6 +17,12 @@ public class GuardEffectAttribute : DamageAttributeBase
             if (context.SourceAttributes.TryGetService<BlockableDamageAttribute.Data>(out var blockableDamage)
                 && context.SourceAttributes.TryGetService<BaseDamageAmountAttribute.Effect>(out var baseDamageAmount))
             {
+                if (_parryingUpdater.Parrying.CurrentValue
+                    && context.SourceAttributes.TryGetService<WeakSpotWhenParryingAttribute.Data>(out var weakSpotWhenParrying))
+                {
+                    weakSpotWhenParrying.Apply();
+                }
+
                 if (_parryingUpdater.Parrying.CurrentValue || _stamina.TrySpend(_guardConfiguration.StaminaWasteModifier * baseDamageAmount.Amount))
                     blockableDamage.Apply();
             }

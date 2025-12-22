@@ -9,7 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39d0938e09a8a3b45ad74341a44f2200, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c6b08b72b4977347a067e9b979b6130, type: 3}
   m_Name: DemonDashAttributes
   m_EditorClassIdentifier: 
-  <Key>k__BackingField: 
+  Attributes:
+  - rid: 1492728127867322718
+  - rid: 1492728127867323171
+  - rid: 1492728127867323172
+  - rid: 1492728127867323173
+  - rid: 1492728241339498900
+  references:
+    version: 2
+    RefIds:
+    - rid: 1492728127867322718
+      type: {class: BlockableDamageAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1492728127867323171
+      type: {class: BaseDamageAmountAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        _amount: 2
+    - rid: 1492728127867323172
+      type: {class: TeamConditionAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1492728127867323173
+      type: {class: TeamMemberAttribute, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1492728241339498900
+      type: {class: WeakSpotWhenParryingAttribute, ns: , asm: Assembly-CSharp}
+      data: 
