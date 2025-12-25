@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BattleCrySizeFitter : MonoBehaviour
+public class HitboxSizeFitter : MonoBehaviour
 {
     [SerializeField] private float _sizeMultiplier;
     [SerializeField] private bool _isAutoSize;
@@ -33,7 +33,7 @@ public class BattleCrySizeFitter : MonoBehaviour
         }
         
         _transform.localScale = _baseTransformSize * _sizeMultiplier;
-        var battleCryRange = _transform.GetComponent<BattleCryRangeView>();
+        var battleCryRange = _transform.GetComponent<RangeView>();
         battleCryRange.UpdateCurves();
     }
 

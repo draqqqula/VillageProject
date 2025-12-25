@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using R3;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -39,11 +40,12 @@ public class WeakSpotController : MonoBehaviour
         GetComponentsInChildren(_bodyPartsList);
     }
 
-    public bool IsOpened => _collider != null;
+    private ReactiveProperty<bool> _isOpened = new ReactiveProperty<bool>();
+    public ReadOnlyReactiveProperty<bool> IsOpened => _isOpened;
 
     public void Open()
     {
-        if (IsOpened)
+        if (IsOpened.CurrentValue)
         {
             return;
         }
@@ -56,21 +58,23 @@ public class WeakSpotController : MonoBehaviour
         if (spot == null) return;
         var effect = _weakSpotFactory.Create(weakSpotType, spot.transform.position, Quaternion.identity, spot.transform);
         _collider = effect?.GetComponent<Collider>();
+        _isOpened.Value = true;
     }
     
     public void Close()
     {
-        if (!IsOpened)
+        if (!IsOpened.CurrentValue)
         {
             return;
         }
         Destroy(_collider.gameObject);
         _collider = null;
+        _isOpened.Value = false;
     }
 
     public bool Raycast(Ray ray, float maxDistance)
     {
-        if (!IsOpened)
+        if (!IsOpened.CurrentValue)
         {
             return false;
         }

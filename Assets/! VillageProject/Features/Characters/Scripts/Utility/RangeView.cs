@@ -5,7 +5,7 @@ using UnityEngine.PlayerLoop;
 using Zenject;
 
 [RequireComponent(typeof(MeshRenderer))]
-public class BattleCryRangeView : MonoBehaviour
+public class RangeView : MonoBehaviour
 {
     [SerializeField] private float _rangeLifetime;
     [SerializeField] private Vector3 _scaleRatio = Vector3.one;

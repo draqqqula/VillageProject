@@ -12,7 +12,7 @@ public class WeakSpotWhenParryingAttribute : DamageAttributeBase
         
         public void Apply()
         {
-            if (!_weakSpotController.IsOpened) _weakSpotController.Open();    
+            if (!_weakSpotController.IsOpened.CurrentValue) _weakSpotController.Open();    
         }
     }
 
