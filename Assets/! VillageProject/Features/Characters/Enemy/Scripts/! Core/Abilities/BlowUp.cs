@@ -33,13 +33,13 @@ public class BlowUp : MonoBehaviour
     public void ActivateBlowUp()
     {
         if (_coroutine != null || IsBlowing) return;
-        _coroutine = StartCoroutine(BattleCryRoutine());
+        _coroutine = StartCoroutine(BlowUpRoutine());
     }
 
-    private IEnumerator BattleCryRoutine()
+    private IEnumerator BlowUpRoutine()
     {
-        OnStarted?.Invoke();
         IsBlowing = true;
+        OnStarted?.Invoke();
         
         yield return new WaitForSeconds(_chargingDuration);
         yield return new WaitForSeconds(_vfxDelay);

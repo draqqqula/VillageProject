@@ -6,14 +6,13 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "Stop Movement", story: "[Agent] stop movement", category: "Action/Movement", id: "fdadf68bc4206dc9c16c48d2ff597100")]
-public partial class StopMovementAction : Action
+[NodeDescription(name: "Stop NavMesh Movement", story: "[Agent] stop NavMesh movement", category: "Action", id: "fdadf68bc4206dc9c16c48d2ff597100")]
+public partial class StopNavMeshMovementAction : Action
 {
     [SerializeReference] public BlackboardVariable<NavmeshMovementAgent> Agent;
-
     protected override Status OnStart()
     {
-        if (Agent.Value.CurrentWork != null) Agent.Value.StopAgent();
+        Agent.Value.StopAgent();
         return Status.Success;
     }
 
@@ -22,4 +21,3 @@ public partial class StopMovementAction : Action
         return Status.Success;
     }
 }
-

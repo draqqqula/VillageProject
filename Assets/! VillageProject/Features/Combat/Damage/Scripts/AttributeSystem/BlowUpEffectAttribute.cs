@@ -12,21 +12,32 @@ public class BlowUpEffectAttribute : DamageAttributeBase
         [Inject] private BlowUp _blowUpAbilitiy;
         [Inject] private WeakSpotController _weakSpotController;
         
+        private bool _isInitialized = false;
+        
         public bool TryExecute(DamageInteractionContext context)
         {
-            if (context.SourceAttributes.TryGetService<BaseDamageAmountAttribute.Effect>(out var baseDamageAmount))
+            if (!_isInitialized)
             {
-                Debug.Log("Activate BlowUp Effect");
-                _blowUpAbilitiy.ActivateBlowUp();
-                _weakSpotController.Open();
-                _weakSpotController.IsOpened.Subscribe(TryInterrupt).AddTo(_weakSpotController.gameObject);
+                _isInitialized = true;
+                _weakSpotController.IsOpened.Subscribe(OnSpotChanged).AddTo(_weakSpotController.gameObject);
             }
             return true;
         }
 
-        private void TryInterrupt(bool value)
+        private void OnSpotChanged(bool isOpened)
         {
-            if (!value) _blowUpAbilitiy.Interrupt();
+            if (isOpened) ActivateEffect();
+            else Interrupt();
+        }
+        
+        private void ActivateEffect()
+        {
+            _blowUpAbilitiy.ActivateBlowUp();
+        }
+
+        private void Interrupt()
+        {
+            _blowUpAbilitiy.Interrupt();
         }
     }
 
