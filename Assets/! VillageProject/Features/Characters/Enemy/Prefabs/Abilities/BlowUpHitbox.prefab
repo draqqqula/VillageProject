@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3382980458595536466}
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rangeLifetime: 0.5
   _scaleRatio: {x: 1, y: 1, z: 1}
-  _curveOppacityByTime:
+  _curveOppacityByNormalizedTime:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -114,8 +114,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.8197037
     - serializedVersion: 3
-      time: 0.25
-      value: 1
+      time: 0.50180054
+      value: 1.0088844
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -123,8 +123,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.5
-      value: 0
+      time: 1.0011053
+      value: -0.00833652
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -134,21 +134,21 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _curveSizeByTime:
+  _curveSizeByNormilizedTime:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 11.52831
-      outSlope: 11.52831
+      inSlope: -0
+      outSlope: -0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.14337307
+      outWeight: 0.225
     - serializedVersion: 3
-      time: 2
-      value: 1
+      time: 1
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -214,7 +214,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &8194391787732581708
 CapsuleCollider:
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e022a3e1df476898ffebd7b8b9d4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sizeMultiplier: 1
+  _sizeMultiplier: 2
   _isAutoSize: 1
   _collider: {fileID: 7404168388619824959}
   _transform: {fileID: 5557962868949742096}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Zenject;
 
@@ -17,46 +18,72 @@ public class BlowUp : MonoBehaviour
     private Coroutine _coroutine;
     private IInstantiator _instantiator;
     
+    public bool IsCharging { get; private set; }
     public bool IsBlowing { get; private set; }
 
     public event Action OnStarted;
-    public event Action OnFinished;
-    public event Action OnFinishedCooldown;
+    public event Action OnBlowedUp;
+    public event Action OnHitboxDeleted;
+    public event Action OnInterrupted;
 
     [Inject]
     private void Construct(IInstantiator instatiator)
     {
         _instantiator = instatiator;
-        IsBlowing = false;
     }
     
-    public void ActivateBlowUp()
+    public void ActivateBlowUpWithCharging()
     {
-        if (_coroutine != null || IsBlowing) return;
+        if (IsBlowing || IsCharging) return;
+        _coroutine = StartCoroutine(ChargingRoutine());
+    }
+
+    public void ActivateBlowUpImmediately()
+    {
+        if (IsBlowing) return;
+
+        if (_coroutine != null && IsCharging)
+        {
+            IsCharging = false;
+            StopCoroutine(_coroutine);
+        }
+        
         _coroutine = StartCoroutine(BlowUpRoutine());
+    }
+    
+    private IEnumerator ChargingRoutine()
+    {
+        IsCharging = true;
+        OnStarted?.Invoke();
+        
+        yield return new WaitForSeconds(_chargingDuration);
+        yield return new WaitForSeconds(_vfxDelay);
+        
+        _coroutine = null;
+        IsCharging = false;
+        
+        ActivateBlowUpImmediately();
     }
 
     private IEnumerator BlowUpRoutine()
     {
         IsBlowing = true;
-        OnStarted?.Invoke();
-        
-        yield return new WaitForSeconds(_chargingDuration);
-        yield return new WaitForSeconds(_vfxDelay);
-
         _blowUpHitbox = _instantiator.InstantiatePrefab(_blowUpHitboxPrefab, transform.position, Quaternion.identity, null);
-
         _blowUpHitbox.transform.SetParent(null);
+        
+        OnBlowedUp?.Invoke();
         yield return new WaitForSeconds(_blowUpDuration);
         
         Destroy(_blowUpHitbox);
         _blowUpHitbox = null;
         _coroutine = null;
-        OnFinished?.Invoke();
+        
+        OnHitboxDeleted?.Invoke();
+        IsBlowing = false;
         
         Destroy(gameObject);
     }
-
+    
     public void Interrupt()
     {
         if (_coroutine != null)
@@ -67,7 +94,7 @@ public class BlowUp : MonoBehaviour
             {
                 Destroy(_blowUpHitbox);
                 _blowUpHitbox = null;
-                OnFinished?.Invoke();
+                OnInterrupted?.Invoke();
             }
         }
     }

@@ -14,7 +14,7 @@ public partial class BlowingUpStateSequence : BinaryStateSequenceBase
     {
         if (Self.Value.TryGetComponent<BlowUp>(out var blowUp))
         {
-            return blowUp.IsBlowing;
+            return blowUp.IsBlowing || blowUp.IsCharging;
         }
         return false;
     }

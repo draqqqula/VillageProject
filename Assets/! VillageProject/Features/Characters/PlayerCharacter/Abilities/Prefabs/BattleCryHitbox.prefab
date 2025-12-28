@@ -212,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rangeLifetime: 0.5
   _scaleRatio: {x: 1, y: 1, z: 1}
-  _curveOppacityByTime:
+  _curveOppacityByNormalizedTime:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -225,8 +225,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.8197037
     - serializedVersion: 3
-      time: 0.25
-      value: 1
+      time: 0.4986801
+      value: 1.0000018
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -234,8 +234,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.5
-      value: 0
+      time: 1.0060616
+      value: -0.00000947807
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -245,20 +245,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _curveSizeByTime:
+  _curveSizeByNormilizedTime:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 11.52831
-      outSlope: 11.52831
+      inSlope: 14.002944
+      outSlope: 14.002944
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.14337307
+      outWeight: 0.108215794
     - serializedVersion: 3
-      time: 0.5
+      time: 1.0045471
       value: 6
       inSlope: 0
       outSlope: 0
@@ -269,4 +269,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _isAutoFixCurves: 1
+  _isAutoFixLifetime: 0

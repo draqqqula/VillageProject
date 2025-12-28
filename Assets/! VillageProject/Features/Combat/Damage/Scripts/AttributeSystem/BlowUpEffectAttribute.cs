@@ -26,18 +26,8 @@ public class BlowUpEffectAttribute : DamageAttributeBase
 
         private void OnSpotChanged(bool isOpened)
         {
-            if (isOpened) ActivateEffect();
-            else Interrupt();
-        }
-        
-        private void ActivateEffect()
-        {
-            _blowUpAbilitiy.ActivateBlowUp();
-        }
-
-        private void Interrupt()
-        {
-            _blowUpAbilitiy.Interrupt();
+            if (isOpened) _blowUpAbilitiy.ActivateBlowUpWithCharging();
+            else _blowUpAbilitiy.Interrupt();
         }
     }
 
