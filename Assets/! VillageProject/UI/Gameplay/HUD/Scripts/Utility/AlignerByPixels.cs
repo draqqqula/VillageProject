@@ -86,8 +86,6 @@ public class AlignerByPixels : MonoBehaviour
         Vector2 pixelPerfectPosition = GetPixelPerfectVector(_scaledParent.InverseTransformPoint(rect.position), _scaledParent.lossyScale.x);
         rect.position = _scaledParent.TransformPoint(pixelPerfectPosition);
         ChangePivot(rect, pivot);
-        
-        Debug.Log($"Aligned {targetImage.gameObject.name} to: Pos={rect.anchoredPosition}");
     }
 
     private void ChangePivot(RectTransform rect, Vector2 newPivot)

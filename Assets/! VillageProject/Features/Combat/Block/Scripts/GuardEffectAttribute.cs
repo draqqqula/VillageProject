@@ -10,14 +10,21 @@ public class GuardEffectAttribute : DamageAttributeBase
     {
         [Inject] private Stamina _stamina;
         [Inject] private GuardConfiguration _guardConfiguration;
+        [Inject] private ParryingUpdater _parryingUpdater;
         
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.SourceAttributes.TryGetService<BlockableDamageAttribute.Data>(out var blockableDamage)
-                && context.SourceAttributes.TryGetService<BaseDamageAmountAttribute.Effect>(out var baseDamageAmount)
-                && _stamina.TrySpend(_guardConfiguration.StaminaWasteModifier * baseDamageAmount.Amount))
+                && context.SourceAttributes.TryGetService<BaseDamageAmountAttribute.Effect>(out var baseDamageAmount))
             {
-                blockableDamage.Apply();
+                if (_parryingUpdater.Parrying.CurrentValue
+                    && context.SourceAttributes.TryGetService<WeakSpotWhenParryingAttribute.Data>(out var weakSpotWhenParrying))
+                {
+                    weakSpotWhenParrying.Apply();
+                }
+
+                if (_parryingUpdater.Parrying.CurrentValue || _stamina.TrySpend(_guardConfiguration.StaminaWasteModifier * baseDamageAmount.Amount))
+                    blockableDamage.Apply();
             }
             return true;
         }

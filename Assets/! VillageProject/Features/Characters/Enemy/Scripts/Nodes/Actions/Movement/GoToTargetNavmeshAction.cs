@@ -14,4 +14,3 @@ public partial class GoToTargetNavmeshAction : StartMovementActionBase<NavmeshMo
     public override NavmeshMovementAgent InstructionsAcceptor => Agent;
     public override GameObject Instructions => Target;
 }
-
