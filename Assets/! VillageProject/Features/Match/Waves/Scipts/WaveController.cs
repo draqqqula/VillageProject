@@ -87,7 +87,7 @@ public class WaveController : MonoBehaviour
         var deathEvent = unit.GetComponent<DeathEvent>();
         if (deathEvent != null)
         {
-            deathEvent.Fired.AddListener(HandleUnitDied);
+            deathEvent.FiredEvent += HandleUnitDied;
         }
     }
 
