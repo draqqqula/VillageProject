@@ -15,13 +15,16 @@ public sealed class RangeEnemySpawner : EnemySpawner
     
     [SerializeField] private SphereCollider _collider;
     [SerializeField] private GameObject _spawnPointPrefab;
+    [SerializeField] private GameObject _smokePrefab;
     
     [SerializeField] private Transform[] _spawnPoints;
     
     protected override GameObject Spawn(GameObject unit, Transform transform = null)
     {
         var spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
-        return base.Spawn(unit, spawnPoint);
+        var spawnedUnit = base.Spawn(unit, spawnPoint);
+        Instantiate(_smokePrefab, spawnPoint.position, Quaternion.identity);
+        return spawnedUnit;
     }
 
     [ContextMenu("Generate Spawn Points")]

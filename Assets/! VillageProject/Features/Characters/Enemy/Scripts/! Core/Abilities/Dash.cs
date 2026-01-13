@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
 using Zenject;
@@ -7,20 +9,27 @@ public class Dash : MonoBehaviour
 {
     [Inject(Id = "Dash")] IAnimationWindowListener _dashWindow;
     [Inject(Id = "Stop")] IAnimationWindowListener _stopWindow;
-    [SerializeField] private NavmeshMovementAgent _agent;
+    
+    [SerializeField] private MovementSwitcher _switcher;
+    private MovementWorkerBase _prevMovementAgent;
+    private ManualVelocityMovementAgent _agent;
     
     [SerializeField] private Speed _speed;
-    private const float SpeedMultiplier = 6;
+    [SerializeField] private float _speedMultiplier = 2;
+    
+    [SerializeField] private float _dashTime;
+    [SerializeField] private AnimationCurve _velocityByTimeCurve;
     
     [SerializeField] private GameObject _hitbox;
+    private CollideHitboxEvent _hitboxEvent;
     private GameObject _player;
     
-    private IWorkEventSource<WorkResult> _source;
     private const float HitboxDelay = 0.2f;
     private Coroutine _delayCoroutine;
     private Coroutine _cooldownCoroutine;
     
     [SerializeField] private Animator _animator;
+    [SerializeField] private CharacterController _characterController;
     
     public bool IsDashing {get; private set;}
     public bool IsCharging {get; private set;}
@@ -33,6 +42,9 @@ public class Dash : MonoBehaviour
         _dashWindow.OnEnter += UseDash;
         _stopWindow.OnEnter += Stop;
         _stopWindow.OnExit += Move;
+        
+        _hitboxEvent = _hitbox.GetComponent<CollideHitboxEvent>();
+        _agent = new ManualVelocityMovementAgent(_velocityByTimeCurve, _dashTime, _characterController);
     }
     
     private void Stop()
@@ -45,38 +57,47 @@ public class Dash : MonoBehaviour
         IsCharging = false;
     }
 
+    private void Update()
+    {
+        _agent.Update();
+    }
+
     private void UseDash()
     {
         if (IsDashing) return;
         
-        _agent.TrySetInstructions(_player.transform.position, out var source);
-        BindWork(source);
-    }
-
-    private void HandleFinished(WorkResult result)
-    {
-        UnbindWork();
+        var agent = _switcher.GetWorkers().FirstOrDefault(ag => ag.enabled);
+        _prevMovementAgent = agent;
+        agent.enabled = false;
+        
+        _speed.Value.Value *= _speedMultiplier;
+        _agent.StartMovement(_player.transform.position, _speed.Value.Value);
+        BindWork();
     }
     
-    private void BindWork(IWorkEventSource<WorkResult> source)
+    private void BindWork()
     {
         IsDashing = true;
-        _agent.CanStop = false;
-        _agent.CanChangeDestination = false;
         
-        _source = source;
-        _source.OnFinished += HandleFinished;
-        
-        _speed.Value.Value *= SpeedMultiplier;
+        _agent.OnFinished += UnbindWork;
         _hitbox.gameObject.SetActive(true);
+        _hitboxEvent.OnHit += TryInterruptDash;
+    }
+
+    private void TryInterruptDash(GameObject hittedObj)
+    {
+        Debug.Log(hittedObj.name);
+        if (hittedObj.layer != LayerMask.NameToLayer("Player"))
+        {
+            _agent.StopMovement();
+            UnbindWork();
+        }
     }
     
     private void UnbindWork()
     {
         if (!IsDashing) return;
         
-        _agent.CanStop = true;
-        _agent.CanChangeDestination = true;
         _animator.SetBool("Dash", false);
         
         if (_delayCoroutine != null) StopCoroutine(_delayCoroutine);
@@ -86,9 +107,11 @@ public class Dash : MonoBehaviour
         _cooldownCoroutine = StartCoroutine(CooldownCoroutine());
         
         _speed.ReturnToDefault();
-        _source.OnFinished -= HandleFinished;
+        _agent.OnFinished -= UnbindWork;
         
-        _source = null;
+        _prevMovementAgent.enabled = true;
+        _prevMovementAgent = null;
+        
         IsDashing = false;
     }
     
@@ -96,6 +119,7 @@ public class Dash : MonoBehaviour
     {
         yield return new WaitForSeconds(HitboxDelay);
         _hitbox.gameObject.SetActive(false);
+        _hitboxEvent.OnHit -= TryInterruptDash;
         _delayCoroutine = null;
     }
 
@@ -108,6 +132,7 @@ public class Dash : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_hitbox.activeInHierarchy) _hitboxEvent.OnHit -= TryInterruptDash;
         _dashWindow.OnEnter -= UseDash;
         _stopWindow.OnEnter -= Stop;
         _stopWindow.OnExit -= Move;

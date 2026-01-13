@@ -38,6 +38,7 @@ public abstract class MovementWorkerBase<T> : MovementWorkerBase, IMovementInsru
 
     public void HandleWorkCompleted()
     {
+        if (CurrentWork == null) return;
         CurrentWork.Finish(WorkResult.Success);
         CurrentWork = null;
     }
