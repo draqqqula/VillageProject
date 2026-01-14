@@ -33,4 +33,18 @@ public class RagdollRoot : MonoBehaviour
             rigidbody.isKinematic = true;
         }
     }
+
+    private void OnDestroy()
+    {
+        foreach (var rigidbody in _rigidbodies)
+        {
+            rigidbody.isKinematic = false;
+        }
+    }
+
+    [ContextMenu("Fill")]
+    private void Fill()
+    {
+        GetComponentsInChildren(_rigidbodies);
+    }
 }
