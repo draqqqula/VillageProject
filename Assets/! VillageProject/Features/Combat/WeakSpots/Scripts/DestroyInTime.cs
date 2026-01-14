@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DestroyInTime : MonoBehaviour
 {
-    [SerializeField] private float _delay = 1f;
+    [SerializeField] public float _delay = 1f;
     void Start()
     {
         StartCoroutine(Delay());
