@@ -16,7 +16,7 @@ public class DamagingHitbox : MonoBehaviour
         {
             return;
         }
-
+        
         var target = other.GetComponent<IDamageInteractable>();
         DamageInteraction.Interact(target, _source);
     }
