@@ -10,12 +10,19 @@ public class BlowUp : MonoBehaviour
     [Header("Ability Parameters")]
     [SerializeField] private float _chargingDuration = 3f;
     [SerializeField] private float _blowUpDuration = 2f;
-    [SerializeField] private float _vfxDelay;
     
     [SerializeField] private GameObject _blowUpHitboxPrefab;
     private GameObject _blowUpHitbox;
+
+    [SerializeField] private RagdollRoot _ragdollRoot;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private CapsuleCollider _collider;
+
+    [SerializeField] private SkinnedMeshRenderer _meshRenderer;
+    [SerializeField] private float _blinkFrequency;
     
     private Coroutine _coroutine;
+    private Coroutine _blinkCoroutine;
     private IInstantiator _instantiator;
     
     public bool IsCharging { get; private set; }
@@ -35,6 +42,9 @@ public class BlowUp : MonoBehaviour
     public void ActivateBlowUpWithCharging()
     {
         if (IsBlowing || IsCharging) return;
+        _animator.enabled = false;
+        _ragdollRoot.enabled = true;
+        _collider.enabled = false;
         _coroutine = StartCoroutine(ChargingRoutine());
     }
 
@@ -55,14 +65,35 @@ public class BlowUp : MonoBehaviour
     {
         IsCharging = true;
         OnStarted?.Invoke();
-        
+
+        if (_blinkCoroutine != null)
+        {
+            StopCoroutine(_blinkCoroutine);
+            _blinkCoroutine = null;
+        }
+
+        _blinkCoroutine = StartCoroutine(Blink());
         yield return new WaitForSeconds(_chargingDuration);
-        yield return new WaitForSeconds(_vfxDelay);
         
         _coroutine = null;
         IsCharging = false;
-        
         ActivateBlowUpImmediately();
+    }
+
+    private IEnumerator Blink()
+    {
+        var material = new Material(_meshRenderer.material);
+        var color = material.color;
+        _meshRenderer.material = material;
+        
+        while (IsCharging)
+        {
+            yield return new WaitForSeconds(_blinkFrequency);
+            material.color = material.color == color ? Color.black : color;
+            Debug.Log("Change Color!");
+        }
+        
+        _blinkCoroutine = null;
     }
 
     private IEnumerator BlowUpRoutine()

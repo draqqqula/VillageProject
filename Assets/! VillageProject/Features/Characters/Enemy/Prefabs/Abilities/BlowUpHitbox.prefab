@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3382980458595536466}
@@ -148,7 +148,7 @@ MonoBehaviour:
       outWeight: 0.225
     - serializedVersion: 3
       time: 1
-      value: 2
+      value: 1.2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -214,7 +214,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &8194391787732581708
 CapsuleCollider:
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e022a3e1df476898ffebd7b8b9d4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sizeMultiplier: 2
+  _sizeMultiplier: 1.2
   _isAutoSize: 1
   _collider: {fileID: 7404168388619824959}
   _transform: {fileID: 5557962868949742096}
@@ -269,4 +269,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef076040e9d641739cb02a2d72ede48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedMultiplier: 4
+  _speedMultiplier: 1.5
+  _speedAuraPrefab: {fileID: 3054338001518758941, guid: 0bd5c5012032b4f36b6db7ec53d03e24, type: 3}

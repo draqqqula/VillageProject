@@ -8,6 +8,8 @@ public class SpeedUpTrigger : MonoBehaviour
     private const float EFFECT_DURATION = 4f;
     
     private List<GameObject> _speededEnemies = new List<GameObject>();
+
+    [SerializeField] private GameObject _speedAuraPrefab;
     
     private void OnTriggerEnter(Collider other)
     {
@@ -18,17 +20,19 @@ public class SpeedUpTrigger : MonoBehaviour
             var speedComponent = other.GetComponent<Speed>();
             if (speedComponent != null)
             {
-                speedComponent.StartCoroutine(SpeedUpRoutine(speedComponent));
+                var aura = Instantiate(_speedAuraPrefab, other.transform.position, Quaternion.identity, other.transform);
+                speedComponent.StartCoroutine(SpeedUpRoutine(speedComponent, aura));
                 _speededEnemies.Add(other.gameObject);
             }
         }
     }
 
-    private IEnumerator SpeedUpRoutine(Speed speedComponent)
+    private IEnumerator SpeedUpRoutine(Speed speedComponent, GameObject aura)
     {
         speedComponent.Value.Value *= _speedMultiplier;
         yield return new WaitForSeconds(EFFECT_DURATION);
         speedComponent.ReturnToDefault();
         _speededEnemies.Remove(speedComponent.gameObject);
+        Destroy(aura);
     }
 }
