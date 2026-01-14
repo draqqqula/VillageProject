@@ -6,6 +6,8 @@ public class DetachObjects : MonoBehaviour
     private const string BodiesLayer = "Bodies";
 
     [SerializeField] private List<Transform> _objects;
+    [SerializeField] private float _destroyDelayMin = 10f;
+    [SerializeField] private float _destroyDelayMax = 15f;
 
     public void Detach()
     {
@@ -58,6 +60,8 @@ public class DetachObjects : MonoBehaviour
             }
 
             obj.gameObject.AddComponent<Rigidbody>();
+            var destroyInTime = obj.gameObject.AddComponent<DestroyInTime>();
+            destroyInTime._delay = Random.Range(_destroyDelayMin, _destroyDelayMax);
         }
     }
 }
