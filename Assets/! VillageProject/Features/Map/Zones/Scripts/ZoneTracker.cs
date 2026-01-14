@@ -55,7 +55,7 @@ public class ZoneTracker : MonoBehaviour
         if (other.CompareTag(ZoneTag))
         {
             var order = GetOrder(other.gameObject);
-            _zones.Add(order, other.gameObject);
+            _zones.TryAdd(order, other.gameObject);
             if (IsHighestPriority(order))
             {
                 ActiveZone = other.gameObject;
