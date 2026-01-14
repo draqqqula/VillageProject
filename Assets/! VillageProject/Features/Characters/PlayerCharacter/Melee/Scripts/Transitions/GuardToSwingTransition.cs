@@ -1,3 +1,4 @@
+using System.Collections;
 using R3;
 using UnityEngine;
 using Zenject;
@@ -8,6 +9,10 @@ public class GuardToSwingTransition : TransitionBase<GuardState>
     [Inject] private Stamina _stamina;
     [Inject] protected SwingConfiguration _slashConfiguration;
     [Inject] private StateManager _stateManager;
+    
+    [Inject] private Animator _animator;
+    [Inject] private CoroutineHandler _coroutineHandler;
+    private Coroutine _coroutine;
     
     private bool _isSwinged;
     private bool _isAttackedInGuardState;
@@ -45,10 +50,20 @@ public class GuardToSwingTransition : TransitionBase<GuardState>
         if (CanAttack() && IsAttackInput() && _isAttackedInGuardState)
         {
             _isSwinged = true;
+            if (_coroutine != null) _coroutineHandler.StopCoroutine(_coroutine);
+            _coroutine = _coroutineHandler.StartCoroutine(ReleaseShieldParamRoutine());
+            
             Activate<SwingState>();
         }
     }
-
+    
+    private IEnumerator ReleaseShieldParamRoutine() // Для плавного прерывания в SwingState
+    {
+        _guardState.IsReleaseShieldAfterExit = false;
+        yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName("Hold"));
+        _animator.SetFloat("Shield", 0);
+    }
+    
     public override void Dispose()
     {
         base.Dispose();

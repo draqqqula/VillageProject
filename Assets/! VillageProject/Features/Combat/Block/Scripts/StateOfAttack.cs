@@ -6,20 +6,20 @@ public class StateOfAttack : MonoBehaviour
     [field: SerializeField] public bool IsBlocking { get; set; }
     [Inject(Id = "SlashAttack")]  private IAnimationWindowListener _slashAttackWindow;
 
-    private void Start()
+    protected virtual void Start()
     {
-        _slashAttackWindow.OnEnter += OnSlashAttack;
-        _slashAttackWindow.OnExit += OnSlashAttack;
+        _slashAttackWindow.OnEnter += OnAttack;
+        _slashAttackWindow.OnExit += OnAttack;
     }
     
-    private void OnSlashAttack()
+    protected void OnAttack()
     {
         IsBlocking = false;
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
-        _slashAttackWindow.OnEnter -= OnSlashAttack;
-        _slashAttackWindow.OnExit -= OnSlashAttack;
+        _slashAttackWindow.OnEnter -= OnAttack;
+        _slashAttackWindow.OnExit -= OnAttack;
     }
 }

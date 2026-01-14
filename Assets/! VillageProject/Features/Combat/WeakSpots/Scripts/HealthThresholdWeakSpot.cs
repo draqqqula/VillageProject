@@ -25,7 +25,7 @@ public class HealthThresholdWeakSpot : MonoBehaviour
 
     public void HandleDamageDealt(float amount)
     {
-        if (!_bodyRoot.IsOpened && _health.Amount <= _threshold)
+        if (!_bodyRoot.IsOpened.CurrentValue && _health.Amount <= _threshold)
         {
             StartCoroutine(SpawnWeakSpotWithDelay());
         }

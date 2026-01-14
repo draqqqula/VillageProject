@@ -1,29 +1,30 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 public class DeathEvent : MonoBehaviour
 {
     public Action FiredEvent;
     public UnityEvent Fired;
-    [SerializeField] private Health _health;
+    [SerializeField] protected Health _health;
 
     private void Reset()
     {
         _health = GetComponent<Health>();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _health.OnDamageDealt += HandleDamageDealt;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _health.OnDamageDealt -= HandleDamageDealt;
     }
 
-    private void HandleDamageDealt(float amount)
+    protected virtual void HandleDamageDealt(float amount)
     {
         if (_health.Amount <= 0)
         {

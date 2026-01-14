@@ -22,6 +22,8 @@ public class BezierCurveMovementAgent : MovementWorkerBase<BezierPathWithStart>,
     [SerializeField] private float _accuracy = 0.01f;
     private float _velocity;
 
+    private bool _isStopped;
+
     public override float GetProgress()
     {
         return _progressDistance / _spline.length;
@@ -46,14 +48,23 @@ public class BezierCurveMovementAgent : MovementWorkerBase<BezierPathWithStart>,
 
     protected override bool TryAcceptInstructions(BezierPathWithStart path)
     {
+        _isStopped = false;
         _spline = path.Spline;
         _progressDistance = _spline.length * path.InitialProgress;
 
         return true;
     }
 
+    public void StopAgent()
+    {
+        _velocity = 0;
+        _isStopped = true;
+    }
+
     private void FixedUpdate()
     {
+        if (_isStopped) return;
+        
         _progressDistance = Mathf.Clamp(_progressDistance + _speed.Value.CurrentValue * _speedModifier, 0, _spline.length);
         var progress = GetProgress();
         var pointInSpline = _spline.GetPoint(progress);

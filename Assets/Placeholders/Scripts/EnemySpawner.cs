@@ -33,8 +33,10 @@ public class EnemySpawner : MonoBehaviour
         agent.enabled = true;
     }
 
-    private GameObject Spawn(GameObject unit)
+    protected virtual GameObject Spawn(GameObject unit, Transform transform = null)
     {
+        if (transform == null) transform = this.transform;
+        
         var enemy = _container.InstantiatePrefab(unit, transform.position, transform.rotation, null);
         var ai = enemy.GetComponent<BehaviorGraphAgent>();
         ai.enabled = false;

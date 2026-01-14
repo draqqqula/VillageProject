@@ -18,6 +18,9 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
     private Vector3 _cachedDestination;
     private float _distance;
 
+    public bool CanStop {private get; set;}
+    public bool CanChangeDestination {private get; set;}
+    
     public override float GetProgress()
     {
         return _navMeshAgent.remainingDistance / _distance;
@@ -44,6 +47,9 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
         _speed.Value
             .Subscribe(HandleSpeedChanged)
             .AddTo(this);
+        
+        CanChangeDestination = true;
+        CanStop = true;
     }
 
     private void OnEnable()
@@ -71,6 +77,7 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
                 && TryAcceptInstructions(path))
             {
                 _cachedDestination = _destination.GetPosition();
+                _navMeshAgent.isStopped = false;
             }
         }
 
@@ -85,6 +92,17 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
         return _navMeshAgent.velocity.magnitude;
     }
 
+    public void StopAgent()
+    {
+        if (!CanStop) return;
+        
+        _cachedDestination = Vector3.zero;
+        _destination = null;
+        
+        _navMeshAgent.isStopped = true;
+        HandleWorkCompleted();
+    }
+
     private void ConnectToNavmesh()
     {
         _navMeshAgent.enabled = true;
@@ -97,12 +115,24 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
 
     public bool TrySetInstructions(Vector3 instructions, out IWorkEventSource<WorkResult> source)
     {
+        if (!CanChangeDestination)
+        {
+            source = null;
+            return false;
+        }
+
         _destination = new Vector3Destination(instructions);
         return TryBuildPathToDestination(out source);
     }
 
     public bool TrySetInstructions(GameObject instructions, out IWorkEventSource<WorkResult> source)
     {
+        if (!CanChangeDestination)
+        {
+            source = null;
+            return false;
+        }
+        
         _destination = new TransformDestination(instructions.transform);
         return TryBuildPathToDestination(out source);
     }
