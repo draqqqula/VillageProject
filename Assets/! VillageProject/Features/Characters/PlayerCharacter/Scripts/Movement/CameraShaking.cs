@@ -19,40 +19,42 @@ public class CameraShaking : MonoBehaviour
     
     [Space]
     [SerializeField] private Transform _offset;
-    [SerializeField] private float _targetVelocity = 0.2f;
-    private Vector3 _velocity;
+    private float _moveParam;
     
     [Space]
     [SerializeField] private bool _isShakeWithOffset;
     private float _shakeTime = 0f;
 
+    private MoveParamUpdater _moveParamUpdater;
+    
     [Inject]
-    private void Construct(CharacterVelocity characterVelocity)
+    private void Construct(MoveParamUpdater moveParamUpdater)
     {
-        characterVelocity.Velocity.Subscribe(OnVelocityChanged).AddTo(this);
+        _moveParamUpdater = moveParamUpdater;
+        moveParamUpdater.MoveParameter.Subscribe(OnMoveParamChanged).AddTo(this);
     }
 
-    private void OnVelocityChanged(Vector3 velocity) => _velocity = new Vector3(velocity.x, 0, velocity.z);
+    private void OnMoveParamChanged(float moveParam) => _moveParam = moveParam;
     
     private void FixedUpdate()
     {
-        Shake(_velocity.magnitude);
+        Shake(_moveParam);
     }
 
-    public void Shake() => Shake(1);
+    public void Shake() => Shake(0);
     
-    public void Shake(float velocity)
+    public void Shake(float moveParam)
     {
-        var offsetX = CalculateShakeOffset(velocity, _amplitudeMultiplyerX, _frequencyX, _xCurve) * velocity / _targetVelocity;
-        var offsetY = CalculateShakeOffset(velocity, _amplitudeMultiplyerY, _frequencyY, _yCurve) * velocity / _targetVelocity;
+        var offsetX = CalculateShakeOffset(moveParam, _amplitudeMultiplyerX, _frequencyX, _xCurve) * moveParam;
+        var offsetY = CalculateShakeOffset(moveParam, _amplitudeMultiplyerY, _frequencyY, _yCurve) * moveParam;
         
         if (_isShakeWithOffset) _offset.localPosition = new Vector3(offsetX, offsetY, 0);
         else transform.localPosition = new Vector3(offsetX, offsetY, 0);
     }
 
-    private float CalculateShakeOffset(float velocity, float amplitude, float frequency, AnimationCurve curve)
+    private float CalculateShakeOffset(float moveParam, float amplitude, float frequency, AnimationCurve curve)
     {
-        _shakeTime += Time.fixedDeltaTime * frequency * velocity;
+        if (!_moveParamUpdater.IsDecreasing) _shakeTime = frequency * moveParam;
         return amplitude * curve.Evaluate(_shakeTime);
     }
 
