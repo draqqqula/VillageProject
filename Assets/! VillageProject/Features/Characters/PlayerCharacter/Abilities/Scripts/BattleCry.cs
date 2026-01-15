@@ -29,6 +29,8 @@ public class BattleCry : InputListener
 
     public event Action OnStarted;
     public event Action OnFinished;
+    public event Action OnCooldownStarted;
+    public event Action<float> OnCooldownProgress;
     public event Action OnFinishedCooldown;
 
     [Inject]
@@ -82,8 +84,17 @@ public class BattleCry : InputListener
 
     private IEnumerator CooldownRoutine()
     {
+        OnCooldownStarted?.Invoke();
         _isOnCooldown = true;
-        yield return new WaitForSeconds(_cooldown);
+        var currentTime = 0f;
+
+        while (currentTime < _cooldown)
+        {
+            currentTime += Time.deltaTime;
+            OnCooldownProgress?.Invoke(currentTime / _cooldown);
+            yield return null;
+        }
+        
         _isOnCooldown = false;
         OnFinishedCooldown?.Invoke();
     }
