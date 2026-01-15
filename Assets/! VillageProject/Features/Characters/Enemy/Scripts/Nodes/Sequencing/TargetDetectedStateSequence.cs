@@ -14,6 +14,14 @@ public partial class TargetDetectedStateSequence : BinaryStateSequenceBase
 
     protected override bool GetValue()
     {
+        //if (True.CurrentStatus != Status.Uninitialized)
+        //{
+        //    EndNode(True);
+        //}
+        //else if (False.CurrentStatus != Status.Uninitialized)
+        //{
+        //    EndNode(False);
+        //}
         Target.Value = Agent.Value.MainTarget;
         return Agent.Value.MainTarget != null;
     }

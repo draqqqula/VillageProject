@@ -21,6 +21,10 @@ public class EnemySpawner : MonoBehaviour
             for (var i = 0; i < group.Amount; i++)
             {
                 var unit = Spawn(group.Unit);
+                if (i == group.Amount - 1)
+                {
+                    continue;
+                }
                 yield return new WaitForSeconds(group.Interval);
             }
         }

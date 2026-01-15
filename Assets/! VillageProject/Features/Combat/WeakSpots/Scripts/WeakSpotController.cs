@@ -18,6 +18,9 @@ public class WeakSpotController : MonoBehaviour
     private WeakSpotFactory _weakSpotFactory;
     private CommonRandomizer _randomizer;
 
+    public bool _onlyOneWeakSpotType = false;
+    public WeakSpotType _oneWeakSpotType = WeakSpotType.Thrust;
+
     [Serializable]
     private class BodyPart
     {
@@ -50,10 +53,19 @@ public class WeakSpotController : MonoBehaviour
             return;
         }
 
-        var weakSpotType = _randomizer.RandomValueWithProbability(_enemyWeakSpotsDataInstance.ProbabilityInfos).Type;
+        WeakSpotType weakSpotType;
+        if (_onlyOneWeakSpotType)
+        {
+            weakSpotType = _oneWeakSpotType;
+        }
+        else
+        {
+            weakSpotType = _randomizer.RandomValueWithProbability(_enemyWeakSpotsDataInstance.ProbabilityInfos).Type;
+        }
         var spot = _randomizer.RandomValue(_bodyPartsList
             .Where(bodyPart => bodyPart.ConnectedWeakSpot.Contains(weakSpotType))
             .ToArray())?.BodyObject;
+
         
         if (spot == null) return;
         var effect = _weakSpotFactory.Create(weakSpotType, spot.transform.position, Quaternion.identity, spot.transform);

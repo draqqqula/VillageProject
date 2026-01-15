@@ -41,6 +41,7 @@ public class SearchForTarget : MonoBehaviour
 
     public void Detect(Target target)
     {
+        Debug.Log($"Detected target {target.gameObject.name}");
         if (!target.isActiveAndEnabled)
         {
             return;

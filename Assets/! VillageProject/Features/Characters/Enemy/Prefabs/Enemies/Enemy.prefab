@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 4640968921910481281}
   - component: {fileID: 8236837215715823226}
   - component: {fileID: 7200134689312580180}
+  - component: {fileID: 929324572349078201}
+  - component: {fileID: 1543548647679210747}
   m_Layer: 19
   m_Name: Enemy
   m_TagString: damageable
@@ -409,6 +411,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Attributes>k__BackingField: {fileID: 11400000, guid: a9da8334f95a85145b01c48141471888, type: 2}
   <Role>k__BackingField: 1
+--- !u!114 &929324572349078201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f24060e215590341bef04ed1e2d06e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _marker: {fileID: 8255001650271699889, guid: e5989442eb6d01e42a05661f9347d66d, type: 3}
+--- !u!114 &1543548647679210747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cafc7c799c4ecd4d87a690e02484a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tracker: {fileID: 929324572349078201}
 --- !u!1 &2406375740862976146
 GameObject:
   m_ObjectHideFlags: 0

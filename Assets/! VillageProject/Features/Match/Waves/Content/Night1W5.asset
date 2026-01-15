@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: Night1W5
   m_EditorClassIdentifier: 
   Spawns:
-  - SpawnpointIndex: 0
+  - SpawnpointIndex: 2
     Groups:
-    - Unit: {fileID: 4878975267479091666, guid: 7552346b532464c43957b336492514ec, type: 3}
+    - Unit: {fileID: 4011959546620064136, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
       Amount: 2
+      RelaxTime: 2
+      Interval: 1
+  - SpawnpointIndex: 3
+    Groups:
+    - Unit: {fileID: 4011959546620064136, guid: 5dda62e5595294bd39eb777f5884e6ac, type: 3}
+      Amount: 1
       RelaxTime: 0
-      Interval: 6
+      Interval: 0
