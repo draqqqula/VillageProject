@@ -11,6 +11,7 @@ public class BattleCrySignalInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<BattleCrySignalInvoker>().AsSingle();
         
         Container.DeclareSignal<BattleCrySignalInvoker.BattleCryStartedSignal>();
+        Container.DeclareSignal<BattleCrySignalInvoker.BattleCryStartCooldownSignal>();
         Container.DeclareSignal<BattleCrySignalInvoker.BattleCryCooldownFinishedSignal>();
         Container.DeclareSignal<BattleCrySignalInvoker.BattleCryFinishedSignal>();
     }

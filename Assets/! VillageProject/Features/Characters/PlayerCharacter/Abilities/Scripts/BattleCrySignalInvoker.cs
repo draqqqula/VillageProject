@@ -6,7 +6,7 @@ public class BattleCrySignalInvoker : IInitializable, IDisposable
 {
     private SignalBus _signalBus;
     private BattleCry _battleCry;
-
+    
     [Inject]
     private void Construct(SignalBus signalBus, BattleCry battleCry)
     {
@@ -23,6 +23,11 @@ public class BattleCrySignalInvoker : IInitializable, IDisposable
     {
         
     }
+    
+    public class BattleCryStartCooldownSignal
+    {
+        public float Cooldown;
+    }
 
     public class BattleCryCooldownFinishedSignal
     {
@@ -33,6 +38,7 @@ public class BattleCrySignalInvoker : IInitializable, IDisposable
     {
         _battleCry.OnStarted += OnStartedDelegate;
         _battleCry.OnFinished += OnFinishedDelegate;
+        _battleCry.OnCooldownStarted += OnCooldownStartedDelegate;
         _battleCry.OnFinishedCooldown += OnCooldownDelegate;
     }
 
@@ -40,10 +46,12 @@ public class BattleCrySignalInvoker : IInitializable, IDisposable
     {
         _battleCry.OnStarted -= OnStartedDelegate;
         _battleCry.OnFinished -= OnFinishedDelegate;
+        _battleCry.OnCooldownStarted -= OnCooldownStartedDelegate;
         _battleCry.OnFinishedCooldown -= OnCooldownDelegate;
     }
     
     private void OnStartedDelegate() => _signalBus.Fire(new BattleCryStartedSignal());
     private void OnFinishedDelegate() => _signalBus.Fire(new BattleCryFinishedSignal());
+    private void OnCooldownStartedDelegate(float value) => _signalBus.Fire(new BattleCryStartCooldownSignal() {Cooldown = value});
     private void OnCooldownDelegate() => _signalBus.Fire(new BattleCryCooldownFinishedSignal());
 }
