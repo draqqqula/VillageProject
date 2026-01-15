@@ -18,6 +18,11 @@ public class BattleCrySignalInvoker : IInitializable, IDisposable
     {
         
     }
+    
+    public class BattleCryCooldownProgressSignal
+    {
+        public float Progress;
+    }
 
     public class BattleCryFinishedSignal
     {
@@ -26,7 +31,7 @@ public class BattleCrySignalInvoker : IInitializable, IDisposable
     
     public class BattleCryStartCooldownSignal
     {
-        public float Cooldown;
+
     }
 
     public class BattleCryCooldownFinishedSignal
@@ -39,6 +44,7 @@ public class BattleCrySignalInvoker : IInitializable, IDisposable
         _battleCry.OnStarted += OnStartedDelegate;
         _battleCry.OnFinished += OnFinishedDelegate;
         _battleCry.OnCooldownStarted += OnCooldownStartedDelegate;
+        _battleCry.OnCooldownProgress += OnCooldownProgressDelegate;
         _battleCry.OnFinishedCooldown += OnCooldownDelegate;
     }
 
@@ -47,11 +53,13 @@ public class BattleCrySignalInvoker : IInitializable, IDisposable
         _battleCry.OnStarted -= OnStartedDelegate;
         _battleCry.OnFinished -= OnFinishedDelegate;
         _battleCry.OnCooldownStarted -= OnCooldownStartedDelegate;
+        _battleCry.OnCooldownProgress -= OnCooldownProgressDelegate;
         _battleCry.OnFinishedCooldown -= OnCooldownDelegate;
     }
     
     private void OnStartedDelegate() => _signalBus.Fire(new BattleCryStartedSignal());
     private void OnFinishedDelegate() => _signalBus.Fire(new BattleCryFinishedSignal());
-    private void OnCooldownStartedDelegate(float value) => _signalBus.Fire(new BattleCryStartCooldownSignal() {Cooldown = value});
+    private void OnCooldownStartedDelegate() => _signalBus.Fire(new BattleCryStartCooldownSignal() {});
+    private void OnCooldownProgressDelegate(float value) => _signalBus.Fire(new BattleCryCooldownProgressSignal() {Progress = value});
     private void OnCooldownDelegate() => _signalBus.Fire(new BattleCryCooldownFinishedSignal());
 }
