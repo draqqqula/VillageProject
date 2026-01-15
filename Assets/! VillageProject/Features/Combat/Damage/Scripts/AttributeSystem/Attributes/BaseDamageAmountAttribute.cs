@@ -10,6 +10,12 @@ public class BaseDamageAmountAttribute : DamageAttributeBase
     public class Effect : IDamageExecutable
     {
         public float Amount { get; set; }
+
+        public int GetPriority()
+        {
+            return 20;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.TargetAttributes.TryGetService<IHealthAttribute>(out var data))

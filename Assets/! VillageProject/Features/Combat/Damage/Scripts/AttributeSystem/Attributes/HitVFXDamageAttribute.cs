@@ -14,6 +14,10 @@ public class HitVFXDamageAttribute : DamageAttributeBase
         {
             _prefab = prefab;
         }
+        public int GetPriority()
+        {
+            return 0;
+        }
 
         public bool TryExecute(DamageInteractionContext context)
         {

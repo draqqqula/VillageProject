@@ -12,7 +12,7 @@ public static class DamageInteraction
     {
         using var targetScope = target.CreateScope();
         using var sourceScope = source.CreateScope();
-        var effects = targetScope.ServiceProvider.GetServices<IDamageExecutable>().Concat(sourceScope.ServiceProvider.GetServices<IDamageExecutable>());
+        var effects = targetScope.ServiceProvider.GetServices<IDamageExecutable>().Concat(sourceScope.ServiceProvider.GetServices<IDamageExecutable>()).OrderBy(it => it.GetPriority());
 
         var context = new DamageInteractionContext(targetScope.ServiceProvider, sourceScope.ServiceProvider);
         

@@ -11,7 +11,11 @@ public class GuardEffectAttribute : DamageAttributeBase
         [Inject] private Stamina _stamina;
         [Inject] private GuardConfiguration _guardConfiguration;
         [Inject] private ParryingUpdater _parryingUpdater;
-        
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.SourceAttributes.TryGetService<BlockableDamageAttribute.Data>(out var blockableDamage)

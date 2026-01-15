@@ -14,6 +14,10 @@ public class GainInvincibilityAttribute : DamageAttributeBase
         {
             DurationFactor = durationFactor;
         }
+        public int GetPriority()
+        {
+            return 0;
+        }
 
         public float DurationFactor { get; private set; }
         public bool TryExecute(DamageInteractionContext context)

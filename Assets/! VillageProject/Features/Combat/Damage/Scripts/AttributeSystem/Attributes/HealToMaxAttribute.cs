@@ -8,6 +8,11 @@ public class HealToMaxAttribute : DamageAttributeBase
 {
     public class Effect : IDamageExecutable
     {
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.TargetAttributes.TryGetService<IHealth>(out var health))

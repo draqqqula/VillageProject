@@ -14,6 +14,10 @@ public class TestAttribute : IDamageExecutable
     {
         Debug.Log("Test attribute created");
     }
+    public int GetPriority()
+    {
+        return 0;
+    }
 
     public bool TryExecute(DamageInteractionContext context)
     {

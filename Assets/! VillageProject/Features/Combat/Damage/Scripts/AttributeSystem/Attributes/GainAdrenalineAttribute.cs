@@ -12,6 +12,11 @@ public class GainAdrenalineAttribute : DamageAttributeBase
     {
         [Inject] private Adrenaline _adrenaline;
 
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.TargetAttributes.TryGetService(out AdrenalineAmountAttribute.Data amount))

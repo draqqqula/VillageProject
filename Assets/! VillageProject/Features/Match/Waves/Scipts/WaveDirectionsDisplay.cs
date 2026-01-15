@@ -25,6 +25,10 @@ public class WaveDirectionDisplay : MonoBehaviour
         }
         foreach (var spawn in _waveController.CurrentWave.Spawns)
         {
+            if (spawn.SpawnpointIndex >= _displays.Count)
+            {
+                continue;
+            }
             _displays[spawn.SpawnpointIndex].SetActive(true);
         }
     }

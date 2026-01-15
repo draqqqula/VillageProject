@@ -14,6 +14,11 @@ public class BurningAttribute : DamageAttributeBase
             _vfx = vfx;
         }
 
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.TargetAttributes.TryGetService<TransformDamageAttribute.Data>(out var transform))

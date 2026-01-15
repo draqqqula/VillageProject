@@ -7,6 +7,10 @@ using Zenject;
 public class DestroyWeakSpot : IDamageExecutable
 {
     [Inject] private WeakSpotController _weakSpotController;
+    public int GetPriority()
+    {
+        return 0;
+    }
 
     public bool TryExecute(DamageInteractionContext context)
     {

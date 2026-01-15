@@ -13,7 +13,11 @@ public class BlowUpEffectAttribute : DamageAttributeBase
         [Inject] private WeakSpotController _weakSpotController;
         
         private bool _isInitialized = false;
-        
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (!_isInitialized)

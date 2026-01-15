@@ -8,6 +8,11 @@ public class TeamConditionAttribute : DamageAttributeBase
 {
     public class Condition : IDamageExecutable
     {
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.TargetAttributes.TryGetService<ITeamAttribute>(out var targetTeam)

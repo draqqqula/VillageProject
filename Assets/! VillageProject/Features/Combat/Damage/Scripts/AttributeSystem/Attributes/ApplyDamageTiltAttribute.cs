@@ -9,6 +9,11 @@ public class ApplyDamageTiltAttribute : DamageAttributeBase
 {
     public class Effect : IDamageExecutable
     {
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.SourceAttributes.TryGetService(out TransformDamageAttribute.Data sourceTransform)

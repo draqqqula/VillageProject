@@ -7,6 +7,11 @@ public class GuardableDamageCondition : DamageAttributeBase
 {
     public class Condition : IDamageExecutable
     {
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             return context.SourceAttributes.TryGetService<BlockableDamageAttribute.Data>(out var blockableDamage)

@@ -18,6 +18,12 @@ public class CriticalHitAttribute : DamageAttributeBase
 
         public bool Successful { get; private set; } = false;
         public float Modifier { get; private set; }
+
+        public int GetPriority()
+        {
+            return 0;
+        }
+
         public bool TryExecute(DamageInteractionContext context)
         {
             if (context.SourceAttributes.TryGetService(out RaycastOriginAttribute.Data raycastOrigin)

@@ -5,6 +5,12 @@ using UnityEngine;
 public class DamageMultiplier : IDamageExecutable
 {
     [FromDamageAttributeProperty] public float Multiplier;
+
+    public int GetPriority()
+    {
+        return 0;
+    }
+
     public bool TryExecute(DamageInteractionContext context)
     {
         if (context.SourceAttributes.TryGetService(out BaseDamageAmountAttribute.Effect baseDamage))
