@@ -45,7 +45,7 @@ public class WeakSpotController : MonoBehaviour
 
     private ReactiveProperty<bool> _isOpened = new ReactiveProperty<bool>();
     public ReadOnlyReactiveProperty<bool> IsOpened => _isOpened;
-
+    
     public void Open()
     {
         if (IsOpened.CurrentValue)

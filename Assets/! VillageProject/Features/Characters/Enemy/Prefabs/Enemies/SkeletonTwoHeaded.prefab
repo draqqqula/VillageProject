@@ -2265,7 +2265,7 @@ PrefabInstance:
       addedObject: {fileID: 653909846486368952}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6188efd200b620b4392162fe4e82e4c9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 189957826664172026}
+      addedObject: {fileID: 4128444051545103204}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6188efd200b620b4392162fe4e82e4c9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 361862390775257046}
@@ -2275,6 +2275,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6188efd200b620b4392162fe4e82e4c9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2817682763846100327}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6188efd200b620b4392162fe4e82e4c9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1391213301307213899}
     - targetCorrespondingSourceObject: {fileID: -948082980893321178, guid: 6188efd200b620b4392162fe4e82e4c9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7847631371377637631}
@@ -2814,17 +2817,7 @@ MonoBehaviour:
   _bodyPartsList:
   - <BodyObject>k__BackingField: {fileID: 4880568095445827167}
     <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
-  - <BodyObject>k__BackingField: {fileID: 1804917720826285227}
-    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
-  - <BodyObject>k__BackingField: {fileID: 5829232896536263075}
-    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
   - <BodyObject>k__BackingField: {fileID: 2044125817746083001}
-    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
-  - <BodyObject>k__BackingField: {fileID: 6136992859429231266}
-    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
-  - <BodyObject>k__BackingField: {fileID: 3844272537351183740}
-    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
-  - <BodyObject>k__BackingField: {fileID: 4241632348926964919}
     <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
   - <BodyObject>k__BackingField: {fileID: 4557676398299426230}
     <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
@@ -2834,7 +2827,9 @@ MonoBehaviour:
     <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
   - <BodyObject>k__BackingField: {fileID: 2523507940060591468}
     <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
---- !u!114 &189957826664172026
+  _onlyOneWeakSpotType: 0
+  _oneWeakSpotType: 1
+--- !u!114 &4128444051545103204
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2843,13 +2838,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 5205614068167162550}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17ce953ca6ea2474b988aaf9cae14ec8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d0d50e5e84464a4c8c3c54cabd1dd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _threshold: 15
-  _delay: 0.15
-  _health: {fileID: 1257438844967741032}
-  _bodyRoot: {fileID: 653909846486368952}
+  _enemySpotsData: {fileID: 11400000, guid: d3333a5fba2a1486793951c1e3d04d71, type: 2}
+  _bodyPartsList:
+  - <BodyObject>k__BackingField: {fileID: 1804917720826285227}
+    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
+  - <BodyObject>k__BackingField: {fileID: 5829232896536263075}
+    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
+  - <BodyObject>k__BackingField: {fileID: 6136992859429231266}
+    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
+  - <BodyObject>k__BackingField: {fileID: 3844272537351183740}
+    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
+  - <BodyObject>k__BackingField: {fileID: 4241632348926964919}
+    <ConnectedWeakSpot>k__BackingField: 010000000200000003000000
+  _onlyOneWeakSpotType: 0
+  _oneWeakSpotType: 1
 --- !u!114 &361862390775257046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2914,6 +2919,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _window: {fileID: 11400000, guid: 891ec3490c9f93a44a73dc02bfe5350e, type: 2}
   _object: {fileID: 4699164898350088105}
+--- !u!114 &1391213301307213899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5205614068167162550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0f7deb3c3543d4a031eaada14296dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _threshold: 30
+  _delay: 0.15
+  _health: {fileID: 1257438844967741032}
+  _bodyRoot: {fileID: 653909846486368952}
+  _threshold2: 0
+  _weakSpotController2: {fileID: 4128444051545103204}
 --- !u!4 &5247084448616785405 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 877643626764280346, guid: 6188efd200b620b4392162fe4e82e4c9, type: 3}
@@ -3391,6 +3414,10 @@ PrefabInstance:
     - target: {fileID: 7159240231132442957, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
       propertyPath: Fired.m_PersistentCalls.m_Calls.Array.data[11].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7308106497875193394, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
+      propertyPath: _maxHealth
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8266101195139516059, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}

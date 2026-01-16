@@ -8,10 +8,10 @@ using UnityEngine;
 
 public class HealthThresholdWeakSpot : MonoBehaviour
 {
-    [SerializeField] private float _threshold;
-    [SerializeField] private float _delay = 0.3f;
-    [SerializeField] private Health _health;
-    [SerializeField] private WeakSpotController _bodyRoot;
+    [SerializeField] protected float _threshold;
+    [SerializeField] protected float _delay = 0.3f;
+    [SerializeField] protected Health _health;
+    [SerializeField] protected WeakSpotController _bodyRoot;
 
     private void OnEnable()
     {
@@ -23,8 +23,10 @@ public class HealthThresholdWeakSpot : MonoBehaviour
         _health.OnDamageDealt -= HandleDamageDealt;
     }
 
-    public void HandleDamageDealt(float amount)
+    public virtual void HandleDamageDealt(float amount)
     {
+        if (_health.Amount <= 0) return;
+        
         if (!_bodyRoot.IsOpened.CurrentValue && _health.Amount <= _threshold)
         {
             StartCoroutine(SpawnWeakSpotWithDelay());
