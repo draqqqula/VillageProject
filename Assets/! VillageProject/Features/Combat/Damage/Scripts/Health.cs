@@ -40,7 +40,7 @@ public class Health : MonoBehaviour, IHealth
     
     public IServiceProvider ComponentProvider { get; private set; }
     public ReadOnlyReactiveProperty<float> AmountReactive => _amount;
-    public ReadOnlyReactiveProperty<float> MaxAmountReactive => _amount;
+    public ReadOnlyReactiveProperty<float> MaxAmountReactive => _maxAmountReactive;
 
     [ContextMenu("Print")]
     public void Print()

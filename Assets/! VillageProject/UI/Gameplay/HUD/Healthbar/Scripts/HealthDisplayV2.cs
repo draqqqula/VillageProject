@@ -4,7 +4,8 @@ using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(AlignerByPixels))]
-public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHealthChangedSignal, PlayerHealthSignalInvoker.PlayerInitializeHealthSignal>
+public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHealthChangedSignal, PlayerHealthSignalInvoker.PlayerInitializeHealthSignal,
+PlayerHealthSignalInvoker.PlayerResetMaxHealthSignal>
 {
     private List<HeartView> _healthsImages = new List<HeartView>();
 
@@ -48,7 +49,7 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
         
         var totalHeartsWidth = heartWidth * hearts.Count;
         var totalGapSpace = width - totalHeartsWidth;
-        var gapBetweenHearts = totalGapSpace / (hearts.Count - 1);
+        var gapBetweenHearts = hearts.Count > 1 ? totalGapSpace / (hearts.Count - 1) : 1;
         
         var counter = 0;
         foreach (var heart in hearts)
@@ -57,6 +58,8 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
                 heart.RectTransform.localPosition = new Vector2(_startPoint.localPosition.x, _endPoint.localPosition.y);
             else heart.RectTransform.localPosition = _startPoint.localPosition;
             
+            Debug.Log(heart.RectTransform.localPosition);
+            Debug.Log((heartWidth + gapBetweenHearts));
             heart.RectTransform.localPosition += Vector3.right * (heartWidth + gapBetweenHearts) * counter;
             counter++;
         }
@@ -66,6 +69,12 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
     
     protected override void OnSignal(PlayerHealthSignalInvoker.PlayerInitializeHealthSignal signal)
     {
+        RespawnHearts(signal.Value);
+    }
+    
+    protected override void OnSignal(PlayerHealthSignalInvoker.PlayerResetMaxHealthSignal signal)
+    {
+        Debug.Log("Reset Max Health");
         RespawnHearts(signal.Value);
     }
     

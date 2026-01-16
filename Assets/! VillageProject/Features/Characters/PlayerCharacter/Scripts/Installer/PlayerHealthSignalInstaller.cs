@@ -9,6 +9,7 @@ public class PlayerHealthSignalInstaller : MonoInstaller
         Container.DeclareSignal<PlayerHealthSignalInvoker.PlayerInitializeHealthSignal>();
         Container.DeclareSignal<PlayerHealthSignalInvoker.PlayerDeathSignal>();
         Container.DeclareSignal<PlayerHealthSignalInvoker.PlayerHurtSignal>();
+        Container.DeclareSignal<PlayerHealthSignalInvoker.PlayerResetMaxHealthSignal>();
         Container.DeclareSignal<PlayerHealthSignalInvoker.PlayerHealthChangedSignal>();
     }
 }
