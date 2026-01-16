@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -41,7 +42,13 @@ PlayerHealthSignalInvoker.PlayerResetMaxHealthSignal>
             _healthsImages.Add(heart);
         }
     }
-    
+
+    private IEnumerator AlignHeartsDelayed()
+    {
+        yield return new WaitForEndOfFrame();
+        AlignHearts(_healthsImages);
+    }
+
     private void AlignHearts(List<HeartView> hearts)
     {
         var width = _endPoint.localPosition.x - _startPoint.localPosition.x;

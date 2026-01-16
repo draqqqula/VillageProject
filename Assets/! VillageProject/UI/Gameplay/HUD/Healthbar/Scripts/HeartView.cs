@@ -4,8 +4,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Animator), typeof(Image))]
 public class HeartView : MonoBehaviour
 {
-    public RectTransform RectTransform { get; private set; }
-    
+    public RectTransform RectTransform => GetComponent<RectTransform>();
+
     private Animator _animator;
     private Image _image;
     
@@ -14,8 +14,6 @@ public class HeartView : MonoBehaviour
     
     public void Awake()
     {
-        RectTransform = GetComponent<RectTransform>();
-        
         _animator = GetComponent<Animator>();
         _image = GetComponent<Image>();
     }
