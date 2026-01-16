@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 8518335692079745331}
   - component: {fileID: 8610664489925195586}
   - component: {fileID: 4954752796978699342}
+  - component: {fileID: 3355903871757480084}
   m_Layer: 17
-  m_Name: Blacksmith
+  m_Name: Blacksmith1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123,7 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edac518a09de2214f91006041e1b427a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _options: []
+  _options:
+  - {fileID: 3355903871757480084}
   <Name>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2
@@ -136,6 +138,24 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &3355903871757480084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8518335692077750259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48c6ff0c72e805c48bc5ff8fa4319524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <BuildingPrefab>k__BackingField: {fileID: 5728260254127515078, guid: afc32b72fff99de4a831d31ae58d2b87, type: 3}
+  <PreviewPrefab>k__BackingField: {fileID: 4839599114992471925, guid: a41815b7586427441a686722cb6104dc, type: 3}
+  <Price>k__BackingField: {fileID: 11400000, guid: bb4a890e6e8e81d438a161ba433434f7, type: 2}
+  <Description>k__BackingField: "\u0423\u043B\u0443\u0447\u0448\u0438\u0442\u0435
+    \u043A\u0443\u0437\u043D\u0438\u0446\u0443 \u0447\u0442\u043E\u0431\u044B \u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0442\u044C
+    \u0443\u0440\u043E\u043D \u0441\u0432\u043E\u0435\u0433\u043E \u043C\u0435\u0447\u0430"
 --- !u!1001 &6064736226917418902
 PrefabInstance:
   m_ObjectHideFlags: 0
