@@ -19,7 +19,7 @@ public class FixGatesMenuOption : BuildingMenuItemBase<FixGatesMenuOption.FixGat
         return new FixGatesData()
         {
             PriceToFix = _price.Value,
-            IsFullHealth = it == _health.MaxAmount
+            IsFullHealth = it == _health.MaxHealth
         };
     })
         .ToReadOnlyReactiveProperty();
@@ -36,11 +36,11 @@ public class FixGatesMenuOption : BuildingMenuItemBase<FixGatesMenuOption.FixGat
 
     public override bool TryPerform()
     {
-        if (_health.Amount < _health.MaxAmount && _price.Value.TryPay())
+        if (_health.Amount < _health.MaxHealth && _price.Value.TryPay())
         {
             _health.enabled = true;
             _health.gameObject.SetActive(true);
-            _health.Amount = _health.MaxAmount;
+            _health.Amount = _health.MaxHealth;
             _gateState.Fix();
             return true;
         }

@@ -55,7 +55,7 @@ public class SwingState : StateBase<SwingState>
         _holdingWindowListener.OnEnter += HandleEnteredHolding;
         _strikeWindowListener.OnEnter += HandleExitedHolding;
 
-        _attackInput.IsHolding.Subscribe(SetAnimatorHolding).AddTo(this);
+        _attackInput.IsHolding.Subscribe(HandleInputHolding).AddTo(this);
     }
 
     public override void OnExit()
@@ -71,9 +71,14 @@ public class SwingState : StateBase<SwingState>
         SetDirection(AttackDirection.None);
     }
 
-    private void SetAnimatorHolding(bool isPressed)
+    private void HandleInputHolding(bool isPressed)
     {
         _animator.SetBool(HoldingBoolean, isPressed);
+        if (!isPressed)
+        {
+            _shiftSubscription?.Dispose();
+            _shiftSubscription = null;
+        }
     }
 
     private void HandleEnteredHolding()
@@ -110,16 +115,28 @@ public class SwingState : StateBase<SwingState>
 
         if (thrustShare > Mathf.Max(leftShare, rightShare))
         {
+            if (_direction != AttackDirection.Thrust)
+            {
+                TryPlaySwitchSound();
+            }
             SetDirection(AttackDirection.Thrust);
             intensity = 1 - (vector.magnitude / border);
         }
         else if (leftShare > Mathf.Max(rightShare, thrustShare))
         {
+            if (_direction != AttackDirection.LeftSwing)
+            {
+                TryPlaySwitchSound();
+            }
             SetDirection(AttackDirection.LeftSwing);
             intensity = Mathf.Clamp01((Math.Abs(vector.x) - border) / (_config.MaxDeltaMagnitude - border));
         }
         else if (rightShare > Mathf.Max(leftShare, thrustShare))
         {
+            if (_direction != AttackDirection.RightSwing)
+            {
+                TryPlaySwitchSound();
+            }
             SetDirection(AttackDirection.RightSwing);
             intensity = Mathf.Clamp01((Math.Abs(vector.x) - border) / (_config.MaxDeltaMagnitude - border));
         }
@@ -130,7 +147,6 @@ public class SwingState : StateBase<SwingState>
     {
         if (_direction != direction)
         {
-            TryPlaySwitchSound();
             _attackBlendingController.Direction.Value = direction;
             _direction = direction;
         }

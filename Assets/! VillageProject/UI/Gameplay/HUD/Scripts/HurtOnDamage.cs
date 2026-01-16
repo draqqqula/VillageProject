@@ -8,6 +8,10 @@ public class HurtOnDamage : SignalListener<PlayerHealthSignalInvoker.PlayerHurtS
 
     protected override void OnSignal(PlayerHealthSignalInvoker.PlayerHurtSignal amount)
     {
+        if (amount.Damage <= 0)
+        {
+            return;
+        }
         _hurt.Show();
     }
 }

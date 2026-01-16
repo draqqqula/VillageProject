@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 public interface IHealth
 {
     public float Amount { get; set; }
-    public float MaxAmount { get; }
+    public float MaxHealth { get; }
 }

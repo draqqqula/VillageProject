@@ -15,16 +15,21 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
     
     private AlignerByPixels _alignerByPixels;
     
-    private bool _isInitialized = false;
-    
-    private void Init(float amount)
+    private void RespawnHearts(float amount)
     {
-        if (_isInitialized) return;
-        
+        ClearHearts();
         _alignerByPixels = GetComponent<AlignerByPixels>();
         SpawnHearts(amount);
         AlignHearts(_healthsImages);
-        _isInitialized = true;
+    }
+
+    private void ClearHearts()
+    {
+        foreach (var image in _healthsImages)
+        {
+            Destroy(image.gameObject);
+        }
+        _healthsImages.Clear();
     }
     
     private void SpawnHearts(float amount)
@@ -61,7 +66,7 @@ public class HealthDisplayV2 : SignalListener<PlayerHealthSignalInvoker.PlayerHe
     
     protected override void OnSignal(PlayerHealthSignalInvoker.PlayerInitializeHealthSignal signal)
     {
-        Init(signal.Value);
+        RespawnHearts(signal.Value);
     }
     
     protected override void OnSignal(PlayerHealthSignalInvoker.PlayerHealthChangedSignal signal)

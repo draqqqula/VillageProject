@@ -2,10 +2,13 @@ using Microsoft.Extensions.DependencyInjection;
 using R3;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Health : MonoBehaviour, IHealth
 {
+    [SerializeField] private float _maxHealth;
     private ReactiveProperty<float> _amount = new ReactiveProperty<float>();
+    private ReactiveProperty<float> _maxAmountReactive;
 
     public event Action<float> OnDamageDealt;
 
@@ -17,18 +20,38 @@ public class Health : MonoBehaviour, IHealth
         }
         set
         {
+            var cached = _amount.Value;
             _amount.Value = value;
-            OnDamageDealt?.Invoke(_amount.Value - value);
+            OnDamageDealt?.Invoke(cached - _amount.Value);
         }
     }
 
-    [field: SerializeField] public float MaxAmount { get; private set; }
+    public float MaxHealth
+    {
+        get
+        {
+            return _maxHealth;
+        }
+        set
+        {
+            _maxAmountReactive.Value = value;
+        }
+    }
     
     public IServiceProvider ComponentProvider { get; private set; }
     public ReadOnlyReactiveProperty<float> AmountReactive => _amount;
+    public ReadOnlyReactiveProperty<float> MaxAmountReactive => _amount;
+
+    [ContextMenu("Print")]
+    public void Print()
+    {
+        Debug.Log(_amount.Value);
+    }
 
     private void Awake()
     {
-        _amount.Value = MaxAmount;
+        _amount.Value = MaxHealth;
+        _maxAmountReactive = new ReactiveProperty<float>(_maxHealth);
+        _maxAmountReactive.Subscribe(it => _maxHealth = it).AddTo(this);
     }
 }

@@ -58,17 +58,17 @@ public class Regen : MonoBehaviour
     private IEnumerator RegenLerpRoutine()
     {
         float progress = 0;
-        var duration = (_health.MaxAmount - _health.Amount) / _regenSpeed;
+        var duration = (_health.MaxHealth - _health.Amount) / _regenSpeed;
         var startHealth = _health.Amount;
 
         while (progress < duration)
         {
             progress += Time.fixedDeltaTime;
-            _health.Amount = Mathf.Lerp(startHealth, _health.MaxAmount, progress / duration);
+            _health.Amount = Mathf.Lerp(startHealth, _health.MaxHealth, progress / duration);
             yield return null;
         }
         
-        _health.Amount = _health.MaxAmount;
+        _health.Amount = _health.MaxHealth;
         _regenCoroutine = null;
     }
 }

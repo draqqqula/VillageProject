@@ -35,7 +35,6 @@ public class HeartView : MonoBehaviour
     
     public void DisableHeart()
     {
-        _animator.SetInteger("State", 1);
-        _animator.SetTrigger("IsDisable");
+        _animator.SetInteger("State", 2);
     }
 }

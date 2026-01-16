@@ -17,7 +17,7 @@ public class HealToMaxAttribute : DamageAttributeBase
         {
             if (context.TargetAttributes.TryGetService<IHealth>(out var health))
             {
-                health.Amount = health.MaxAmount;
+                health.Amount = health.MaxHealth;
             }
             return true;
         }
