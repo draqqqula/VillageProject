@@ -1603,7 +1603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98505cab4c1a3b24db4107f815ee059b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxAmount>k__BackingField: 20
+  _maxHealth: 0
 --- !u!65 &71103483
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30382,6 +30382,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4694010339570393599, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+      propertyPath: _inputListener
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4751677072625025296, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       propertyPath: _spawners.Array.size
       value: 8
@@ -30504,6 +30508,7 @@ PrefabInstance:
       objectReference: {fileID: 140915391}
     m_RemovedComponents:
     - {fileID: 7795023748135879106, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+    - {fileID: 4694010339570393599, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7391592566513121532, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
     m_AddedGameObjects: []
@@ -30840,7 +30845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98505cab4c1a3b24db4107f815ee059b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxAmount>k__BackingField: 20
+  _maxHealth: 0
 --- !u!65 &1666387690
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36597,7 +36602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98505cab4c1a3b24db4107f815ee059b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxAmount>k__BackingField: 20
+  _maxHealth: 0
 --- !u!65 &1940832656
 BoxCollider:
   m_ObjectHideFlags: 0
