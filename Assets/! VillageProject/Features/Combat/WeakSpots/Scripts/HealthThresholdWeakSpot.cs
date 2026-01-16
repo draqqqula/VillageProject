@@ -37,7 +37,5 @@ public class HealthThresholdWeakSpot : MonoBehaviour
     {
         yield return new WaitForSeconds(_delay);
         _bodyRoot.Open();
-        enabled = false;
-        StopAllCoroutines();
     }
 }
