@@ -58,8 +58,6 @@ PlayerHealthSignalInvoker.PlayerResetMaxHealthSignal>
                 heart.RectTransform.localPosition = new Vector2(_startPoint.localPosition.x, _endPoint.localPosition.y);
             else heart.RectTransform.localPosition = _startPoint.localPosition;
             
-            Debug.Log(heart.RectTransform.localPosition);
-            Debug.Log((heartWidth + gapBetweenHearts));
             heart.RectTransform.localPosition += Vector3.right * (heartWidth + gapBetweenHearts) * counter;
             counter++;
         }
@@ -74,7 +72,6 @@ PlayerHealthSignalInvoker.PlayerResetMaxHealthSignal>
     
     protected override void OnSignal(PlayerHealthSignalInvoker.PlayerResetMaxHealthSignal signal)
     {
-        Debug.Log("Reset Max Health");
         RespawnHearts(signal.Value);
     }
     

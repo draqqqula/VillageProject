@@ -20,7 +20,11 @@ public class BaseDamageAmountAttribute : DamageAttributeBase
         {
             if (context.TargetAttributes.TryGetService<IHealthAttribute>(out var data))
             {
-                data.Health.Amount -= Amount;
+                if (context.SourceAttributes.TryGetService<DamageMultiplierAttribute.Data>(out var damageMultiplier))
+                {
+                    data.Health.Amount -= Amount * damageMultiplier.MultiplyAmount;
+                }
+                else data.Health.Amount -= Amount;
             }
             return true;
         }
