@@ -7,6 +7,7 @@ public class AnchorMode : MonoBehaviour
     private ReactiveProperty<Anchor> _active = new ReactiveProperty<Anchor>(null);
     [SerializeField] private Anchor _defaultAnchor;
     public ReadOnlyReactiveProperty<Anchor> ActiveAnchor => _active;
+    public Anchor DefaultAnchor { private get => this._defaultAnchor; set => this._defaultAnchor = value; }
 
     private void OnEnable()
     {

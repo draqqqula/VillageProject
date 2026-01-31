@@ -4,10 +4,8 @@ using UnityEngine.InputSystem;
 public class EnterOnlyInputActiob : MonoBehaviour
 {
     [SerializeField] private InputActionReference _enter;
-    [SerializeField] private GameObject _target;
+    [SerializeField] protected GameObject _target;
     
-    public bool CanActivate { private get; set; }
-
     private void OnEnable()
     {
         _enter.action.performed += HandleEnter;
@@ -18,9 +16,9 @@ public class EnterOnlyInputActiob : MonoBehaviour
         _enter.action.performed -= HandleEnter;
     }
 
-    private void HandleEnter(InputAction.CallbackContext context)
+    protected virtual void HandleEnter(InputAction.CallbackContext context)
     {
-        if (!_target.activeSelf /*&& CanActivate*/)
+        if (!_target.activeSelf)
         {
             _enter.action.Reset();
             _target.SetActive(true);

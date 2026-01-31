@@ -38,4 +38,10 @@ public class FirstPersonController : InputListener, IInitializable
     {
         Sensitivity = new ModifiableValue<float>(_sensitivity);
     }
+
+    public void UpdateRotation(Vector3 transformRotation, Vector3 headRotation)
+    {
+        _xRotation = headRotation.x;
+        _yRotation = transformRotation.y;
+    }
 }
