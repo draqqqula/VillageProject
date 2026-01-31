@@ -18,6 +18,10 @@ public class SensitivitySettingModifier : MonoBehaviour
     private void HandleUpdated(int _)
     {
         _multiplier?.Dispose();
+        if (_firstPerson.Sensitivity == null)
+        {
+            return;
+        }
         _multiplier = _firstPerson.Sensitivity.AddMultiplier(_configuration.Sensitivity);
     }
 }
