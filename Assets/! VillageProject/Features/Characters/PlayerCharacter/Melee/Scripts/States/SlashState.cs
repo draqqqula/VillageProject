@@ -11,7 +11,7 @@ public class SlashState : AnimationState<SlashState>
     [Inject] private SlashSeriesCounter _slashSeriesCounter;
     [Inject] private SlashConfiguration _slashConfiguration;
     [Inject] private SwingConfiguration _swingConfiguration;
-
+    
     protected override AnimationWindow Window => _slashConfiguration.SlashWindow;
     public AttackDirection AttackDirection { get; set; }
 
@@ -20,7 +20,7 @@ public class SlashState : AnimationState<SlashState>
         base.OnEnter();
         _stamina.TrySpend(_swingConfiguration.StaminaCost);
     }
-
+    
     public override void OnExit()
     {
         base.OnExit();

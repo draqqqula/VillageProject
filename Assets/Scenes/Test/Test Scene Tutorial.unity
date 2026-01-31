@@ -2900,6 +2900,18 @@ PrefabInstance:
       propertyPath: _defaultRate
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 727473222903927407, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: _leftAction
+      value: 
+      objectReference: {fileID: 9038499163794935003, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+    - target: {fileID: 727473222903927407, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: _blockAction
+      value: 
+      objectReference: {fileID: -7471211009204490832, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+    - target: {fileID: 727473222903927407, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
+      propertyPath: _rightAction
+      value: 
+      objectReference: {fileID: 4665937767208134258, guid: 289c1b55c9541489481df5cc06664110, type: 3}
     - target: {fileID: 2519613670589227633, guid: 28386309c8205a04b8459a0ab34741c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -30632,6 +30644,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 708641310623330671, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1690458390}
+    - targetCorrespondingSourceObject: {fileID: 708641310623330671, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1690458395}
   m_SourcePrefab: {fileID: 100100000, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
 --- !u!1001 &1653978541
 PrefabInstance:
@@ -31498,6 +31513,20 @@ MonoBehaviour:
     Value: 0
   - Variable: {fileID: 11400000, guid: 82abc66d90a80144283ab6adf05c01f7, type: 2}
     Value: 0
+--- !u!114 &1690458395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690458385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e007d7c3e5445b2945ea2d93ce6d847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputActionMapName: PlayerAlternative
+  _asset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
 --- !u!1001 &1692055196
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,10 +7,16 @@ using Zenject;
 public class BlockInput : IBlockInput, IInitializable, IDisposable
 {
     private InputWithHolding _inputWithHolding;
+    private MeleeControlsPresetManager _preset;
+    
+    private CompositeDisposable _disposables = new CompositeDisposable();
+    private InputActionReference _action;
 
-    public BlockInput(InputActionReference inputAction)
+    public BlockInput(InputActionReference inputAction, MeleeControlsPresetManager presetManager)
     {
+        _action = inputAction;
         _inputWithHolding = new InputWithHolding(inputAction);
+        _preset = presetManager;
     }
 
     public ReadOnlyReactiveProperty<bool> IsHolding => _inputWithHolding.IsHolding;
@@ -21,6 +27,20 @@ public class BlockInput : IBlockInput, IInitializable, IDisposable
     public void Initialize()
     {
         _inputWithHolding.Initialize();
+        _preset.ChosenPreset.Subscribe(HandlePreset).AddTo(_disposables);
+    }
+    
+    private void HandlePreset(int count)
+    {
+        if (count == 1)
+        {
+            _action.action.ApplyBindingOverride(1, "<Keyboard>/leftShift");
+        }
+        else
+        {
+            Debug.Log(_action.action.bindings[1]);
+            _action.action.ApplyBindingOverride(1, "<Mouse>/rightButton");
+        }
     }
     
     public void Dispose()

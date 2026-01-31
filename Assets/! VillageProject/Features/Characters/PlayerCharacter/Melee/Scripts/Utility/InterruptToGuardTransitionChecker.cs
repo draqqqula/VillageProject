@@ -8,6 +8,8 @@ public class InterruptToGuardTransitionChecker : CompositeDisposableBase
     [Inject(Id = "NotInterruptable")] private IAnimationWindowListener _notInterruptableWindow;
     [Inject] private IBlockInput _blockInput;
     [Inject] private Stamina _stamina;
+    [Inject] private MeleeControlsPresetManager _controlsPreset;
+    [Inject] private MouseButtonsControlHandler _mouseButtonsControlHandler;
     
     public ReactiveProperty<bool> CanInterrupt {get; private set;}
 
@@ -15,7 +17,9 @@ public class InterruptToGuardTransitionChecker : CompositeDisposableBase
     {
         CanInterrupt = new ReactiveProperty<bool>(false);
         _notInterruptableWindow.IsActive.Subscribe(TryInterrupt).AddTo(this);
-        _blockInput.IsHolding.Subscribe(TryInterrupt).AddTo(this);
+        
+       if (_controlsPreset.ChosenPreset.CurrentValue == 0) _blockInput.IsHolding.Subscribe(TryInterrupt).AddTo(this);
+       else if (_controlsPreset.ChosenPreset.CurrentValue == 1) _mouseButtonsControlHandler.IsBlockHolding.Subscribe(TryInterrupt).AddTo(this);
     }
 
     private bool IsInput()

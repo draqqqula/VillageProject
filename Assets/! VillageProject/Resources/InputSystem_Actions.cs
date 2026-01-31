@@ -111,7 +111,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Attack"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""6c2ab1b8-8984-453a-af3d-a3c78ae1679a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -194,6 +194,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""SwapPreset"",
                     ""type"": ""Button"",
                     ""id"": ""58242776-0ea4-490f-bde4-f35f652ca8e7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LKM"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""392af907-ea3a-4744-a558-65030baaee29"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RKM"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""685b1921-9467-4b0e-b24a-52f6012ddf63"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -423,6 +441,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""d38e4e7e-6eb0-4c91-8e05-b223b43bace4"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""cbac6039-9c09-46a1-b5f2-4e5124ccb5ed"",
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
@@ -600,7 +629,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3d010d33-b8e7-4251-a1a4-22f94864fdaf"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -616,6 +645,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SwapPreset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9bb29326-1d74-4e8d-b660-cb8290fce5d4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LKM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e96fbb30-ad78-44d8-b708-5fd37422f865"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""RKM"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1156,6 +1207,54 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerAlternative"",
+            ""id"": ""64a11cd0-db7e-466d-a5e8-c2fae1fb434d"",
+            ""actions"": [
+                {
+                    ""name"": ""LKM"",
+                    ""type"": ""Button"",
+                    ""id"": ""e25f1089-991b-44d9-9f8e-5b19daf75772"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1E+30)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PKM"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2f8c0ff-7648-4d07-a8b1-5074503ca763"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1E+30)"",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1d7b851a-06e0-4c7b-93d9-0413c6eb019b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LKM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""467a1f2c-2f6c-4877-a636-40ba6a95ca1d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PKM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1235,6 +1334,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_BattleCry = m_Player.FindAction("BattleCry", throwIfNotFound: true);
         m_Player_SwapPreset = m_Player.FindAction("SwapPreset", throwIfNotFound: true);
+        m_Player_LKM = m_Player.FindAction("LKM", throwIfNotFound: true);
+        m_Player_RKM = m_Player.FindAction("RKM", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1248,12 +1349,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_E = m_UI.FindAction("E", throwIfNotFound: true);
+        // PlayerAlternative
+        m_PlayerAlternative = asset.FindActionMap("PlayerAlternative", throwIfNotFound: true);
+        m_PlayerAlternative_LKM = m_PlayerAlternative.FindAction("LKM", throwIfNotFound: true);
+        m_PlayerAlternative_PKM = m_PlayerAlternative.FindAction("PKM", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputSystem_Actions.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_PlayerAlternative.enabled, "This will cause a leak and performance issues, InputSystem_Actions.PlayerAlternative.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1341,6 +1447,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_BattleCry;
     private readonly InputAction m_Player_SwapPreset;
+    private readonly InputAction m_Player_LKM;
+    private readonly InputAction m_Player_RKM;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1400,6 +1508,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/SwapPreset".
         /// </summary>
         public InputAction @SwapPreset => m_Wrapper.m_Player_SwapPreset;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/LKM".
+        /// </summary>
+        public InputAction @LKM => m_Wrapper.m_Player_LKM;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/RKM".
+        /// </summary>
+        public InputAction @RKM => m_Wrapper.m_Player_RKM;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1462,6 +1578,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwapPreset.started += instance.OnSwapPreset;
             @SwapPreset.performed += instance.OnSwapPreset;
             @SwapPreset.canceled += instance.OnSwapPreset;
+            @LKM.started += instance.OnLKM;
+            @LKM.performed += instance.OnLKM;
+            @LKM.canceled += instance.OnLKM;
+            @RKM.started += instance.OnRKM;
+            @RKM.performed += instance.OnRKM;
+            @RKM.canceled += instance.OnRKM;
         }
 
         /// <summary>
@@ -1509,6 +1631,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwapPreset.started -= instance.OnSwapPreset;
             @SwapPreset.performed -= instance.OnSwapPreset;
             @SwapPreset.canceled -= instance.OnSwapPreset;
+            @LKM.started -= instance.OnLKM;
+            @LKM.performed -= instance.OnLKM;
+            @LKM.canceled -= instance.OnLKM;
+            @RKM.started -= instance.OnRKM;
+            @RKM.performed -= instance.OnRKM;
+            @RKM.canceled -= instance.OnRKM;
         }
 
         /// <summary>
@@ -1748,6 +1876,113 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
     public UIActions @UI => new UIActions(this);
+
+    // PlayerAlternative
+    private readonly InputActionMap m_PlayerAlternative;
+    private List<IPlayerAlternativeActions> m_PlayerAlternativeActionsCallbackInterfaces = new List<IPlayerAlternativeActions>();
+    private readonly InputAction m_PlayerAlternative_LKM;
+    private readonly InputAction m_PlayerAlternative_PKM;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "PlayerAlternative".
+    /// </summary>
+    public struct PlayerAlternativeActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public PlayerAlternativeActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerAlternative/LKM".
+        /// </summary>
+        public InputAction @LKM => m_Wrapper.m_PlayerAlternative_LKM;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerAlternative/PKM".
+        /// </summary>
+        public InputAction @PKM => m_Wrapper.m_PlayerAlternative_PKM;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_PlayerAlternative; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="PlayerAlternativeActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(PlayerAlternativeActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="PlayerAlternativeActions" />
+        public void AddCallbacks(IPlayerAlternativeActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerAlternativeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerAlternativeActionsCallbackInterfaces.Add(instance);
+            @LKM.started += instance.OnLKM;
+            @LKM.performed += instance.OnLKM;
+            @LKM.canceled += instance.OnLKM;
+            @PKM.started += instance.OnPKM;
+            @PKM.performed += instance.OnPKM;
+            @PKM.canceled += instance.OnPKM;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="PlayerAlternativeActions" />
+        private void UnregisterCallbacks(IPlayerAlternativeActions instance)
+        {
+            @LKM.started -= instance.OnLKM;
+            @LKM.performed -= instance.OnLKM;
+            @LKM.canceled -= instance.OnLKM;
+            @PKM.started -= instance.OnPKM;
+            @PKM.performed -= instance.OnPKM;
+            @PKM.canceled -= instance.OnPKM;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PlayerAlternativeActions.UnregisterCallbacks(IPlayerAlternativeActions)" />.
+        /// </summary>
+        /// <seealso cref="PlayerAlternativeActions.UnregisterCallbacks(IPlayerAlternativeActions)" />
+        public void RemoveCallbacks(IPlayerAlternativeActions instance)
+        {
+            if (m_Wrapper.m_PlayerAlternativeActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="PlayerAlternativeActions.AddCallbacks(IPlayerAlternativeActions)" />
+        /// <seealso cref="PlayerAlternativeActions.RemoveCallbacks(IPlayerAlternativeActions)" />
+        /// <seealso cref="PlayerAlternativeActions.UnregisterCallbacks(IPlayerAlternativeActions)" />
+        public void SetCallbacks(IPlayerAlternativeActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerAlternativeActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerAlternativeActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="PlayerAlternativeActions" /> instance referencing this action map.
+    /// </summary>
+    public PlayerAlternativeActions @PlayerAlternative => new PlayerAlternativeActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -1904,6 +2139,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwapPreset(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LKM" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLKM(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RKM" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRKM(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
@@ -1989,5 +2238,27 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnE(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerAlternative" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="PlayerAlternativeActions.AddCallbacks(IPlayerAlternativeActions)" />
+    /// <seealso cref="PlayerAlternativeActions.RemoveCallbacks(IPlayerAlternativeActions)" />
+    public interface IPlayerAlternativeActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "LKM" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLKM(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PKM" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPKM(InputAction.CallbackContext context);
     }
 }

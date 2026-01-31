@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Zenject;
 
 public class SwingState : StateBase<SwingState>
@@ -38,7 +39,9 @@ public class SwingState : StateBase<SwingState>
     private CompositeDisposable _shiftSubscription;
     private AttackDirection _direction = AttackDirection.None;
     private float _switchTimestamp = 0f;
-
+    
+    [Inject] MouseButtonsControlHandler _controlHandler;
+    
     public ReadOnlyReactiveProperty<Phase> CurrentPhase => _currentPhase;
     public bool HoldingCancelled { get; private set; } = false;
 
@@ -47,9 +50,14 @@ public class SwingState : StateBase<SwingState>
         _stamina.ModifyRate(0).AddTo(this);
         _stamina.HoverAmount.Value += _config.StaminaCost;
         _indicatorController.IsLockIndicator = true;
-
+        
         SetDirection(_slashSeriesCounter.GetDirection());
-        _shiftInput.IsHolding.Subscribe(HandleShift).AddTo(this);
+        if (_controlsPreset.ChosenPreset.CurrentValue == 0) _shiftInput.IsHolding.Subscribe(HandleShift).AddTo(this);
+        else if (_controlsPreset.ChosenPreset.CurrentValue == 1)
+        {
+            _controlHandler.OnAttack += HandleAttack;
+        }
+        
         _attackBlendingController.ForceSnap();
 
         _animator.SetTrigger(AttackTrigger);
@@ -57,7 +65,22 @@ public class SwingState : StateBase<SwingState>
         _holdingWindowListener.OnEnter += HandleEnteredHolding;
         _strikeWindowListener.OnEnter += HandleExitedHolding;
 
-        _attackInput.IsHolding.Subscribe(HandleInputHolding).AddTo(this);
+        if (_controlsPreset.ChosenPreset.CurrentValue == 0)
+        {
+            _attackInput.IsHolding.Subscribe(HandleInputHolding).AddTo(this);
+        }
+        else if (_controlsPreset.ChosenPreset.CurrentValue == 1)
+        {
+            _controlHandler.IsAttackHolding.Subscribe(HandleInputHolding).AddTo(this);
+        }
+    }
+
+    private void HandleAttack(Vector2 direction)
+    {
+        Debug.Log("Handle Attack " + direction);
+        if (direction == Vector2.zero) SetDirection(AttackDirection.Thrust);
+        if (direction == Vector2.left) SetDirection(AttackDirection.LeftSwing);
+        if (direction == Vector2.right) SetDirection(AttackDirection.RightSwing);
     }
 
     public override void OnExit()
@@ -66,6 +89,11 @@ public class SwingState : StateBase<SwingState>
         _animator.SetBool(HoldingBoolean, false);
         _animator.ResetTrigger(ThrustTrigger);
         _indicatorController.IsLockIndicator = false;
+
+        if (_controlsPreset.ChosenPreset.CurrentValue != 0)
+        {
+            _controlHandler.OnAttack -= HandleAttack;
+        }
 
         _holdingWindowListener.OnEnter -= HandleEnteredHolding;
         _strikeWindowListener.OnEnter -= HandleExitedHolding;
@@ -208,5 +236,83 @@ public class SwingState : StateBase<SwingState>
     private void DisplayDirection(AttackDirection direction)
     {
         _signalBus.Fire(new SetAttackDirectionSignal(direction));
+    }
+}
+
+public interface IControlHandler
+{
+    public ReadOnlyReactiveProperty<bool> IsAttackHolding { get; }
+    public ReadOnlyReactiveProperty<bool> IsBlockHolding { get; }
+    public event Action<Vector2> OnAttack;
+}
+
+public class MouseButtonsControlHandler : IControlHandler, IDisposable
+{
+    public ReadOnlyReactiveProperty<bool> IsAttackHolding => _isAttackHolding;
+    public ReadOnlyReactiveProperty<bool> IsBlockHolding => _isBlockHolding;
+
+    private ReactiveProperty<bool> _isAttackHolding;
+    private ReactiveProperty<bool> _isBlockHolding;
+    public event Action<Vector2> OnAttack;
+    
+    private InputWithHolding _blockInput;
+    private InputWithHolding _leftAttack;
+    private InputWithHolding _rightAttack;
+    
+    [Inject] private CoroutineHandler _coroutineHandler;
+    private CompositeDisposable _disposables = new CompositeDisposable();
+    
+    public MouseButtonsControlHandler(InputWithHolding leftAttack, InputWithHolding rightAttack, InputWithHolding blockInput)
+    {
+        _isAttackHolding = new ReactiveProperty<bool>();
+        _isBlockHolding = new ReactiveProperty<bool>();
+        
+        _blockInput = blockInput;
+        _blockInput.IsHolding.Skip(1).Subscribe(HandleBlock).AddTo(_disposables);
+        
+        _leftAttack = leftAttack;
+        _leftAttack.IsHolding.Skip(1).Subscribe(HandleLeftAttack).AddTo(_disposables);
+        
+        _rightAttack = rightAttack;
+        _rightAttack.IsHolding.Skip(1).Subscribe(HandleRightAttack).AddTo(_disposables);
+        Debug.Log("Subscribed");
+    }
+
+    private void HandleLeftAttack(bool value)
+    {
+        Debug.Log("Left attack");
+        HandleAttack(value);
+        if (value) _coroutineHandler.StartCoroutine(AttackDelay(Vector2.left));
+    }
+    
+    private void HandleRightAttack(bool value)
+    {
+        Debug.Log("Right attack");
+        HandleAttack(value);
+        if (value) _coroutineHandler.StartCoroutine(AttackDelay(Vector2.right));
+    }
+
+    private void HandleBlock(bool value)
+    {
+        _isBlockHolding.Value = value;
+    }
+
+    private void HandleAttack(bool value)
+    {
+        _isAttackHolding.Value = value;
+    }
+
+    private IEnumerator AttackDelay(Vector2 direction)
+    {
+        yield return null;
+        OnAttack?.Invoke(direction);
+        Debug.Log("Attack");
+        HandleAttack(false);
+    }
+
+    public void Dispose()
+    {
+        Debug.Log("Disposing");
+        _disposables.Dispose();
     }
 }

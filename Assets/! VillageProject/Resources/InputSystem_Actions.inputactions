@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "Attack",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "6c2ab1b8-8984-453a-af3d-a3c78ae1679a",
                     "expectedControlType": "",
                     "processors": "",
@@ -108,6 +108,24 @@
                     "name": "SwapPreset",
                     "type": "Button",
                     "id": "58242776-0ea4-490f-bde4-f35f652ca8e7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LKM",
+                    "type": "PassThrough",
+                    "id": "392af907-ea3a-4744-a558-65030baaee29",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RKM",
+                    "type": "PassThrough",
+                    "id": "685b1921-9467-4b0e-b24a-52f6012ddf63",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -337,6 +355,17 @@
                 },
                 {
                     "name": "",
+                    "id": "d38e4e7e-6eb0-4c91-8e05-b223b43bace4",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "cbac6039-9c09-46a1-b5f2-4e5124ccb5ed",
                     "path": "<Keyboard>/2",
                     "interactions": "",
@@ -514,7 +543,7 @@
                 {
                     "name": "",
                     "id": "3d010d33-b8e7-4251-a1a4-22f94864fdaf",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -530,6 +559,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "SwapPreset",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9bb29326-1d74-4e8d-b660-cb8290fce5d4",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LKM",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e96fbb30-ad78-44d8-b708-5fd37422f865",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "RKM",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1066,6 +1117,54 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "E",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PlayerAlternative",
+            "id": "64a11cd0-db7e-466d-a5e8-c2fae1fb434d",
+            "actions": [
+                {
+                    "name": "LKM",
+                    "type": "Button",
+                    "id": "e25f1089-991b-44d9-9f8e-5b19daf75772",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold(duration=1E+30)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PKM",
+                    "type": "Button",
+                    "id": "c2f8c0ff-7648-4d07-a8b1-5074503ca763",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold(duration=1E+30)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1d7b851a-06e0-4c7b-93d9-0413c6eb019b",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "LKM",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "467a1f2c-2f6c-4877-a636-40ba6a95ca1d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "PKM",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

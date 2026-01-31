@@ -44,6 +44,9 @@ public class InputWithHolding : IDisposable
 
     private void HandleStarted(InputAction.CallbackContext context)
     {
+        Debug.Log("Started");
+        Debug.Log(_inputAction.name);
+        
         if (_isHolding.Value) return;
         
         _lastStarted.Value = Time.unscaledTime;
