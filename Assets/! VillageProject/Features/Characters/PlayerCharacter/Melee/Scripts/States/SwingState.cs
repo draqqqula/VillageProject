@@ -58,6 +58,7 @@ public class SwingState : StateBase<SwingState>
         }
         else if (_controlsPreset.ChosenPreset.CurrentValue == 1)
         {
+            HandleAttack(_controlHandler.GetDirection());
             _controlHandler.OnAttack += HandleAttack;
         }
         
@@ -74,17 +75,18 @@ public class SwingState : StateBase<SwingState>
         }
         else if (_controlsPreset.ChosenPreset.CurrentValue == 1)
         {
-            _attackInput.IsHolding.Subscribe(HandleInputHolding).AddTo(this);
-            //_controlHandler.IsAttackHolding.Subscribe(HandleInputHolding).AddTo(this);
+            //_attackInput.IsHolding.Subscribe(HandleInputHolding).AddTo(this);
+            _controlHandler.IsAttackHolding.Subscribe(HandleInputHolding).AddTo(this);
         }
     }
 
     private void HandleAttack(Vector2 direction)
     {
-        Debug.Log("Handle Attack " + direction);
-        if (direction == Vector2.zero) SetDirection(AttackDirection.Thrust);
-        if (direction == Vector2.left) SetDirection(AttackDirection.LeftSwing);
-        if (direction == Vector2.right) SetDirection(AttackDirection.RightSwing);
+        var newDirection = _controlHandler.GetDirection();
+        Debug.Log("Handle Attack " + newDirection);
+        if (newDirection == Vector2.zero) SetDirection(AttackDirection.Thrust);
+        if (newDirection == Vector2.left) SetDirection(AttackDirection.LeftSwing);
+        if (newDirection == Vector2.right) SetDirection(AttackDirection.RightSwing);
     }
 
     public override void OnExit()
@@ -250,10 +252,12 @@ public interface IControlHandler
     public event Action<Vector2> OnAttack;
 }
 
-public class MouseButtonsControlHandler : IControlHandler, IDisposable
+public class MouseButtonsControlHandler : IDisposable
 {
-    public ReadOnlyReactiveProperty<bool> IsAttackHolding => _isAttackHolding;
+    //public ReadOnlyReactiveProperty<bool> IsAttackHolding => _isAttackHolding;
     public ReadOnlyReactiveProperty<bool> IsBlockHolding => _isBlockHolding;
+
+    public ReadOnlyReactiveProperty<bool> IsAttackHolding;
 
     private ReactiveProperty<bool> _isAttackHolding;
     private ReactiveProperty<bool> _isBlockHolding;
@@ -282,12 +286,15 @@ public class MouseButtonsControlHandler : IControlHandler, IDisposable
         Debug.Log("Subscribed");
 
         _coroutineHandler = coroutineHandler;
+
+        IsAttackHolding = _leftAttack.IsHolding.CombineLatest(_rightAttack.IsHolding, (a, b) => a || b).ToReadOnlyReactiveProperty();
     }
 
     private void HandleLeftAttack(bool value)
     {
         Debug.Log("Left attack");
         HandleAttack(value);
+        OnAttack?.Invoke(Vector2.left);
         if (value) _coroutineHandler.StartCoroutine(AttackDelay(Vector2.left));
     }
     
@@ -295,6 +302,7 @@ public class MouseButtonsControlHandler : IControlHandler, IDisposable
     {
         Debug.Log("Right attack");
         HandleAttack(value);
+        OnAttack?.Invoke(Vector2.right);
         if (value) _coroutineHandler.StartCoroutine(AttackDelay(Vector2.right));
     }
 
@@ -320,5 +328,10 @@ public class MouseButtonsControlHandler : IControlHandler, IDisposable
     {
         Debug.Log("Disposing");
         _disposables.Dispose();
+    }
+
+    public Vector2 GetDirection()
+    {
+        return (_leftAttack.IsHolding.CurrentValue ? Vector2.left : Vector2.zero) + (_rightAttack.IsHolding.CurrentValue ? Vector2.right : Vector2.zero);
     }
 }
