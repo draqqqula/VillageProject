@@ -67,7 +67,7 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
         ui.GetComponent<ShowDescription>().enabled = false;
     }
 
-    private void Start()
+    private void Awake()
     {
         _slot = GetComponentInParent<SingleInstance>();
         var name = BuildingPrefab.GetComponent<BuildingInfo>().Name.GetLocalizedString();
