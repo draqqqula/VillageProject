@@ -7,6 +7,9 @@ public class TutorialPortal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene(_nextScene);
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            SceneManager.LoadScene(_nextScene);
+        }
     }
 }
