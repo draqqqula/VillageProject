@@ -30,7 +30,7 @@ public class MeleeInstaller : MonoInstaller
     [Inject]
     private void Construct(MeleeControlsPresetManager presetManager)
     {
-        _preset = presetManager;   
+        _preset = presetManager;
     }
     
     public override void InstallBindings()
@@ -81,6 +81,11 @@ public class MeleeInstaller : MonoInstaller
         var leftAttack = new InputWithHolding(_leftAction);
         var rightAttack = new InputWithHolding(_rightAction);
         var holdingAction = new InputWithHolding(_blockAction);
-        Container.BindInterfacesAndSelfTo<MouseButtonsControlHandler>().AsSingle().WithArguments(new object[]{leftAttack, rightAttack, holdingAction});
+        leftAttack.Initialize();
+        rightAttack.Initialize();
+        holdingAction.Initialize();
+
+        Container.BindInstance(new MouseButtonsControlHandler(leftAttack, rightAttack, holdingAction, _coroutineHandler)).AsSingle();
+        //Container.BindInterfacesAndSelfTo<MouseButtonsControlHandler>().AsSingle().WithArguments(new object[] { leftAttack, rightAttack, holdingAction });
     }
 }

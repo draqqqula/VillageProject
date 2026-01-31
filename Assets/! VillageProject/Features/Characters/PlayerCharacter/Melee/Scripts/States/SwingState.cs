@@ -51,8 +51,11 @@ public class SwingState : StateBase<SwingState>
         _stamina.HoverAmount.Value += _config.StaminaCost;
         _indicatorController.IsLockIndicator = true;
         
-        SetDirection(_slashSeriesCounter.GetDirection());
-        if (_controlsPreset.ChosenPreset.CurrentValue == 0) _shiftInput.IsHolding.Subscribe(HandleShift).AddTo(this);
+        if (_controlsPreset.ChosenPreset.CurrentValue == 0)
+        {
+            _shiftInput.IsHolding.Subscribe(HandleShift).AddTo(this);
+            SetDirection(_slashSeriesCounter.GetDirection());
+        }
         else if (_controlsPreset.ChosenPreset.CurrentValue == 1)
         {
             _controlHandler.OnAttack += HandleAttack;
@@ -71,7 +74,8 @@ public class SwingState : StateBase<SwingState>
         }
         else if (_controlsPreset.ChosenPreset.CurrentValue == 1)
         {
-            _controlHandler.IsAttackHolding.Subscribe(HandleInputHolding).AddTo(this);
+            _attackInput.IsHolding.Subscribe(HandleInputHolding).AddTo(this);
+            //_controlHandler.IsAttackHolding.Subscribe(HandleInputHolding).AddTo(this);
         }
     }
 
@@ -259,10 +263,10 @@ public class MouseButtonsControlHandler : IControlHandler, IDisposable
     private InputWithHolding _leftAttack;
     private InputWithHolding _rightAttack;
     
-    [Inject] private CoroutineHandler _coroutineHandler;
+    private CoroutineHandler _coroutineHandler;
     private CompositeDisposable _disposables = new CompositeDisposable();
     
-    public MouseButtonsControlHandler(InputWithHolding leftAttack, InputWithHolding rightAttack, InputWithHolding blockInput)
+    public MouseButtonsControlHandler(InputWithHolding leftAttack, InputWithHolding rightAttack, InputWithHolding blockInput, CoroutineHandler coroutineHandler)
     {
         _isAttackHolding = new ReactiveProperty<bool>();
         _isBlockHolding = new ReactiveProperty<bool>();
@@ -276,6 +280,8 @@ public class MouseButtonsControlHandler : IControlHandler, IDisposable
         _rightAttack = rightAttack;
         _rightAttack.IsHolding.Skip(1).Subscribe(HandleRightAttack).AddTo(_disposables);
         Debug.Log("Subscribed");
+
+        _coroutineHandler = coroutineHandler;
     }
 
     private void HandleLeftAttack(bool value)

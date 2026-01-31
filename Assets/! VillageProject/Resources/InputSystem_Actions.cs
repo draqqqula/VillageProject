@@ -1214,7 +1214,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""LKM"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""e25f1089-991b-44d9-9f8e-5b19daf75772"",
                     ""expectedControlType"": """",
                     ""processors"": """",
