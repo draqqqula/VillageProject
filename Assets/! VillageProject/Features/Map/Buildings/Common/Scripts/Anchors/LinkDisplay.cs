@@ -8,6 +8,7 @@ public class LinkDisplay : MonoBehaviour
     [SerializeField] private Anchor _anchor;
     [SerializeField] public GameObject Prefab;
     [SerializeField] private List<GameObject> _generated;
+    [SerializeField] private Vector3 _offset;
 
     private void Reset()
     {
@@ -36,8 +37,8 @@ public class LinkDisplay : MonoBehaviour
             var line = obj.GetComponent<LineRenderer>();
             obj.layer = gameObject.layer;
             line.positionCount = 2;
-            line.SetPosition(0, _anchor.transform.position);
-            line.SetPosition(1, link.Anchor.transform.position);
+            line.SetPosition(0, _anchor.transform.position + _offset);
+            line.SetPosition(1, link.Anchor.transform.position + _offset);
             _generated.Add(obj);
         }
     }
