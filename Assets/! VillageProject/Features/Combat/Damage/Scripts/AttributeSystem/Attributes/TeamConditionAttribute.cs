@@ -10,7 +10,7 @@ public class TeamConditionAttribute : DamageAttributeBase
     {
         public int GetPriority()
         {
-            return 0;
+            return -1;
         }
 
         public bool TryExecute(DamageInteractionContext context)

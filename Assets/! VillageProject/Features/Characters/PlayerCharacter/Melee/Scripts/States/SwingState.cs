@@ -30,6 +30,8 @@ public class SwingState : StateBase<SwingState>
     [Inject] private IShiftInput _shiftInput;
     [Inject] private SlashSeriesCounter _slashSeriesCounter;
     [Inject] private FirstPersonController _firstPersonController;
+    [Inject] private MeleeControlsPresetManager _controlsPreset;
+    [Inject] private MovementConfiguration _movementConfig;
     [Inject(Id = "Holding")] private IAnimationWindowListener _holdingWindowListener;
     [Inject(Id = "SlashAttack")] private IAnimationWindowListener _strikeWindowListener;
     private ReactiveProperty<Phase> _currentPhase = new ReactiveProperty<Phase>(Phase.Rise);
@@ -111,7 +113,10 @@ public class SwingState : StateBase<SwingState>
         var rightShare = rightValue / sum;
         var thrustShare = thrustValue / sum;
 
-        _attackBlendingController.SetWeights(new Vector3(leftShare, rightShare, thrustShare));
+        _attackBlendingController.SetWeights(new Vector3(
+            _movementConfig.Invert? rightShare : leftShare, 
+            _movementConfig.Invert ? leftShare : rightShare, 
+            thrustShare));
 
         if (thrustShare > Mathf.Max(leftShare, rightShare))
         {
@@ -124,20 +129,22 @@ public class SwingState : StateBase<SwingState>
         }
         else if (leftShare > Mathf.Max(rightShare, thrustShare))
         {
-            if (_direction != AttackDirection.LeftSwing)
+            var targetDirection = _movementConfig.Invert ? AttackDirection.RightSwing : AttackDirection.LeftSwing;
+            if (_direction != targetDirection)
             {
                 TryPlaySwitchSound();
             }
-            SetDirection(AttackDirection.LeftSwing);
+            SetDirection(targetDirection);
             intensity = Mathf.Clamp01((Math.Abs(vector.x) - border) / (_config.MaxDeltaMagnitude - border));
         }
         else if (rightShare > Mathf.Max(leftShare, thrustShare))
         {
-            if (_direction != AttackDirection.RightSwing)
+            var targetDirection = _movementConfig.Invert ? AttackDirection.LeftSwing : AttackDirection.RightSwing;
+            if (_direction != targetDirection)
             {
                 TryPlaySwitchSound();
             }
-            SetDirection(AttackDirection.RightSwing);
+            SetDirection(targetDirection);
             intensity = Mathf.Clamp01((Math.Abs(vector.x) - border) / (_config.MaxDeltaMagnitude - border));
         }
         _signalBus.Fire(new AttackDirectionIntensitySignal(intensity));
