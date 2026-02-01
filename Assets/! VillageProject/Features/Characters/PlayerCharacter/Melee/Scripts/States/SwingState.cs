@@ -75,15 +75,14 @@ public class SwingState : StateBase<SwingState>
         }
         else if (_controlsPreset.ChosenPreset.CurrentValue == 1)
         {
-            //_attackInput.IsHolding.Subscribe(HandleInputHolding).AddTo(this);
             _controlHandler.IsAttackHolding.Subscribe(HandleInputHolding).AddTo(this);
         }
     }
 
     private void HandleAttack(Vector2 direction)
     {
-        var newDirection = _controlHandler.GetDirection();
-        Debug.Log("Handle Attack " + newDirection);
+        var newDirection = direction;
+        //var newDirection = _controlHandler.GetDirection();
         if (newDirection == Vector2.zero) SetDirection(AttackDirection.Thrust);
         if (newDirection == Vector2.left) SetDirection(AttackDirection.LeftSwing);
         if (newDirection == Vector2.right) SetDirection(AttackDirection.RightSwing);
@@ -267,8 +266,10 @@ public class MouseButtonsControlHandler : IDisposable
     private InputWithHolding _leftAttack;
     private InputWithHolding _rightAttack;
     
-    private CoroutineHandler _coroutineHandler;
     private CompositeDisposable _disposables = new CompositeDisposable();
+    private CoroutineHandler _coroutineHandler;
+
+    private Vector2 _lastDirection = Vector2.zero;
     
     public MouseButtonsControlHandler(InputWithHolding leftAttack, InputWithHolding rightAttack, InputWithHolding blockInput, CoroutineHandler coroutineHandler)
     {
@@ -283,27 +284,56 @@ public class MouseButtonsControlHandler : IDisposable
         
         _rightAttack = rightAttack;
         _rightAttack.IsHolding.Skip(1).Subscribe(HandleRightAttack).AddTo(_disposables);
-        Debug.Log("Subscribed");
-
+        
         _coroutineHandler = coroutineHandler;
-
+        
         IsAttackHolding = _leftAttack.IsHolding.CombineLatest(_rightAttack.IsHolding, (a, b) => a || b).ToReadOnlyReactiveProperty();
     }
 
     private void HandleLeftAttack(bool value)
     {
-        Debug.Log("Left attack");
         HandleAttack(value);
-        OnAttack?.Invoke(Vector2.left);
-        if (value) _coroutineHandler.StartCoroutine(AttackDelay(Vector2.left));
+        if (value)
+        {
+            _lastDirection = GetDirection();
+            OnAttack?.Invoke(_lastDirection);
+        }
+        else
+        {
+            _coroutineHandler.StartCoroutine(ReleaseWithDelay());
+        }
     }
     
     private void HandleRightAttack(bool value)
     {
-        Debug.Log("Right attack");
         HandleAttack(value);
-        OnAttack?.Invoke(Vector2.right);
-        if (value) _coroutineHandler.StartCoroutine(AttackDelay(Vector2.right));
+        if (value)
+        {
+            _lastDirection = GetDirection();
+            OnAttack?.Invoke(_lastDirection);
+        }
+        else
+        {
+            _coroutineHandler.StartCoroutine(ReleaseWithDelay());
+        }
+    }
+
+    private IEnumerator ReleaseWithDelay()
+    {
+        if (_lastDirection == Vector2.zero)
+        {
+            yield return new WaitForSeconds(0.1f);
+            if (_leftAttack.IsHolding.CurrentValue || _rightAttack.IsHolding.CurrentValue)
+            {
+                _lastDirection = GetDirection();
+                OnAttack?.Invoke(_lastDirection);
+            }
+            else OnAttack?.Invoke(Vector2.zero);
+        }
+        else
+        {
+            if (!_leftAttack.IsHolding.CurrentValue && !_rightAttack.IsHolding.CurrentValue) OnAttack?.Invoke(_lastDirection);
+        }
     }
 
     private void HandleBlock(bool value)
@@ -315,18 +345,9 @@ public class MouseButtonsControlHandler : IDisposable
     {
         _isAttackHolding.Value = value;
     }
-
-    private IEnumerator AttackDelay(Vector2 direction)
-    {
-        yield return null;
-        OnAttack?.Invoke(direction);
-        Debug.Log("Attack");
-        HandleAttack(false);
-    }
-
+    
     public void Dispose()
     {
-        Debug.Log("Disposing");
         _disposables.Dispose();
     }
 

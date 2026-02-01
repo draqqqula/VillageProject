@@ -85,7 +85,7 @@ public class MeleeInstaller : MonoInstaller
         rightAttack.Initialize();
         holdingAction.Initialize();
 
-        Container.BindInstance(new MouseButtonsControlHandler(leftAttack, rightAttack, holdingAction, _coroutineHandler)).AsSingle();
+        Container.BindInstance(new MouseButtonsControlHandler(leftAttack, rightAttack, holdingAction, _coroutineHandler )).AsSingle();
         //Container.BindInterfacesAndSelfTo<MouseButtonsControlHandler>().AsSingle().WithArguments(new object[] { leftAttack, rightAttack, holdingAction });
     }
 }
