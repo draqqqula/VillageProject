@@ -1143,6 +1143,24 @@
                     "processors": "",
                     "interactions": "Hold(duration=1E+30)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "LeftAttack",
+                    "type": "Button",
+                    "id": "418606ca-35e8-42e5-8045-b6df33e47b21",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightAttack",
+                    "type": "Button",
+                    "id": "a607647f-19de-4e35-8e12-d3c3940e01be",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1165,6 +1183,50 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "PKM",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4343706-b4e9-49c8-b5a3-1b93befef1d2",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a0c8426-1d89-4699-aa3e-94c78d169e22",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "Press(pressPoint=0.1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bff4b7c1-3937-49bb-8b30-724e4f26fbda",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b50e65d-1b8a-42e0-9bf0-3e2cc74a2c8c",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "Press(pressPoint=0.1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

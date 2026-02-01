@@ -1229,6 +1229,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=1E+30)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""418606ca-35e8-42e5-8045-b6df33e47b21"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""a607647f-19de-4e35-8e12-d3c3940e01be"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1251,6 +1269,50 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""PKM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4343706-b4e9-49c8-b5a3-1b93befef1d2"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a0c8426-1d89-4699-aa3e-94c78d169e22"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": ""Press(pressPoint=0.1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bff4b7c1-3937-49bb-8b30-724e4f26fbda"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b50e65d-1b8a-42e0-9bf0-3e2cc74a2c8c"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": ""Press(pressPoint=0.1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1353,6 +1415,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_PlayerAlternative = asset.FindActionMap("PlayerAlternative", throwIfNotFound: true);
         m_PlayerAlternative_LKM = m_PlayerAlternative.FindAction("LKM", throwIfNotFound: true);
         m_PlayerAlternative_PKM = m_PlayerAlternative.FindAction("PKM", throwIfNotFound: true);
+        m_PlayerAlternative_LeftAttack = m_PlayerAlternative.FindAction("LeftAttack", throwIfNotFound: true);
+        m_PlayerAlternative_RightAttack = m_PlayerAlternative.FindAction("RightAttack", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1882,6 +1946,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IPlayerAlternativeActions> m_PlayerAlternativeActionsCallbackInterfaces = new List<IPlayerAlternativeActions>();
     private readonly InputAction m_PlayerAlternative_LKM;
     private readonly InputAction m_PlayerAlternative_PKM;
+    private readonly InputAction m_PlayerAlternative_LeftAttack;
+    private readonly InputAction m_PlayerAlternative_RightAttack;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerAlternative".
     /// </summary>
@@ -1901,6 +1967,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerAlternative/PKM".
         /// </summary>
         public InputAction @PKM => m_Wrapper.m_PlayerAlternative_PKM;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerAlternative/LeftAttack".
+        /// </summary>
+        public InputAction @LeftAttack => m_Wrapper.m_PlayerAlternative_LeftAttack;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerAlternative/RightAttack".
+        /// </summary>
+        public InputAction @RightAttack => m_Wrapper.m_PlayerAlternative_RightAttack;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1933,6 +2007,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PKM.started += instance.OnPKM;
             @PKM.performed += instance.OnPKM;
             @PKM.canceled += instance.OnPKM;
+            @LeftAttack.started += instance.OnLeftAttack;
+            @LeftAttack.performed += instance.OnLeftAttack;
+            @LeftAttack.canceled += instance.OnLeftAttack;
+            @RightAttack.started += instance.OnRightAttack;
+            @RightAttack.performed += instance.OnRightAttack;
+            @RightAttack.canceled += instance.OnRightAttack;
         }
 
         /// <summary>
@@ -1950,6 +2030,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PKM.started -= instance.OnPKM;
             @PKM.performed -= instance.OnPKM;
             @PKM.canceled -= instance.OnPKM;
+            @LeftAttack.started -= instance.OnLeftAttack;
+            @LeftAttack.performed -= instance.OnLeftAttack;
+            @LeftAttack.canceled -= instance.OnLeftAttack;
+            @RightAttack.started -= instance.OnRightAttack;
+            @RightAttack.performed -= instance.OnRightAttack;
+            @RightAttack.canceled -= instance.OnRightAttack;
         }
 
         /// <summary>
@@ -2260,5 +2346,19 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPKM(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LeftAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLeftAttack(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RightAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRightAttack(InputAction.CallbackContext context);
     }
 }

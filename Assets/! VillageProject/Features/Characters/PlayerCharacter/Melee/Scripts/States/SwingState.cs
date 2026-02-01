@@ -41,6 +41,8 @@ public class SwingState : StateBase<SwingState>
     private float _switchTimestamp = 0f;
     
     [Inject] MouseButtonsControlHandler _controlHandler;
+    private InputWithHolding _leftInput;
+    private InputWithHolding _rightInput;
     
     public ReadOnlyReactiveProperty<Phase> CurrentPhase => _currentPhase;
     public bool HoldingCancelled { get; private set; } = false;
@@ -61,7 +63,25 @@ public class SwingState : StateBase<SwingState>
             HandleAttack(_controlHandler.GetDirection());
             _controlHandler.OnAttack += HandleAttack;
         }
-        
+        else if (_controlsPreset.ChosenPreset.CurrentValue == 2)
+        {
+            _shiftInput.IsHolding.Subscribe(HandleShift2).AddTo(this);
+            _leftInput = new InputWithHolding(_movementConfig.LeftAttack);
+            _rightInput = new InputWithHolding(_movementConfig.RightAttack);
+            _leftInput.Initialize();
+            _rightInput.Initialize();
+            _leftInput.IsHolding.Subscribe(HandleLeftInput).AddTo(this);
+            _rightInput.IsHolding.Subscribe(HandleRightInput).AddTo(this);
+            if (_shiftInput.IsHolding.CurrentValue)
+            {
+                SetDirection(AttackDirection.Thrust);
+            }
+            else
+            {
+                SetDirection(_slashSeriesCounter.GetDirection());
+            }
+        }
+
         _attackBlendingController.ForceSnap();
 
         _animator.SetTrigger(AttackTrigger);
@@ -76,6 +96,10 @@ public class SwingState : StateBase<SwingState>
         else if (_controlsPreset.ChosenPreset.CurrentValue == 1)
         {
             _controlHandler.IsAttackHolding.Subscribe(HandleInputHolding).AddTo(this);
+        }
+        else if (_controlsPreset.ChosenPreset.CurrentValue == 2)
+        {
+            _attackInput.IsHolding.Subscribe(HandleInputHolding).AddTo(this);
         }
     }
 
@@ -99,6 +123,8 @@ public class SwingState : StateBase<SwingState>
         {
             _controlHandler.OnAttack -= HandleAttack;
         }
+        _leftInput?.Dispose();
+        _rightInput?.Dispose();
 
         _holdingWindowListener.OnEnter -= HandleEnteredHolding;
         _strikeWindowListener.OnEnter -= HandleExitedHolding;
@@ -199,6 +225,30 @@ public class SwingState : StateBase<SwingState>
         {
             _signalBus.Fire(new PlayAudioSignal<SwordCombatSounds>(SwordCombatSounds.Switch));
             _switchTimestamp = time;
+        }
+    }
+
+    private void HandleShift2(bool value)
+    {
+        if (value)
+        {
+            SetDirection(AttackDirection.Thrust);
+        }
+    }
+
+    private void HandleLeftInput(bool value)
+    {
+        if (value)
+        {
+            SetDirection(_movementConfig.Invert ? AttackDirection.RightSwing : AttackDirection.LeftSwing);
+        }
+    }
+
+    private void HandleRightInput(bool value)
+    {
+        if (value)
+        {
+            SetDirection(_movementConfig.Invert ? AttackDirection.LeftSwing : AttackDirection.RightSwing);
         }
     }
 
