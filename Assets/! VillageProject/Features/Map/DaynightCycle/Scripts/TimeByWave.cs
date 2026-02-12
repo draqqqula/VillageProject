@@ -14,7 +14,7 @@ public class TimeByWave : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(StartDelayed());
+        //StartCoroutine(StartDelayed());
     }
 
     private IEnumerator StartDelayed()

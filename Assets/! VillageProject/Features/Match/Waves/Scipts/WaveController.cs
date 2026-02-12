@@ -59,6 +59,7 @@ public class WaveController : MonoBehaviour
 
     private void InvokeWave()
     {
+        Debug.Log("Invoking wave");
         OnWaveStarted?.Invoke(_wavesSequence.Current.Item2);
         var wave = _wavesSequence.Current.Item1.Wave;
         _unitsRemaining = 0;

@@ -2100,6 +2100,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6151611454082138780, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: _shoppingZone
+      value: 
+      objectReference: {fileID: 377306216}
     - target: {fileID: 8638632888674053106, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: m_Name
       value: Wooden_Gate
@@ -8350,6 +8354,17 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &377306216 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7064952016025986709, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+  m_PrefabInstance: {fileID: 1646114854}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9e625c49d8143488dfe90b3583f029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &378971782
 GameObject:
   m_ObjectHideFlags: 0
@@ -11131,6 +11146,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6151611454082138780, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: _shoppingZone
+      value: 
+      objectReference: {fileID: 377306216}
     - target: {fileID: 8638632888674053106, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: m_Name
       value: Wooden_Gate
@@ -28531,6 +28550,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4080039908702095607, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4785530286210580575, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -28571,6 +28594,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6151611454082138780, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: _shoppingZone
+      value: 
+      objectReference: {fileID: 377306216}
     - target: {fileID: 8638632888674053106, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: m_Name
       value: Wooden_Gate
@@ -30211,6 +30238,8 @@ GameObject:
   - component: {fileID: 1565272552}
   - component: {fileID: 1565272553}
   - component: {fileID: 1565272554}
+  - component: {fileID: 1565272555}
+  - component: {fileID: 1565272556}
   m_Layer: 0
   m_Name: DayNightSystem
   m_TagString: Untagged
@@ -30865,6 +30894,38 @@ MonoBehaviour:
   _speed: 0.3
   _t: 0
   _day: 0
+--- !u!114 &1565272555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565272546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43b1fe19437445cdb7496321475eaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ticksPerHour: 30
+  _realSecondsPerTick: 0.1
+  _startHour: 18
+  _hoursOffset: 2
+  _cycleFromTime: {fileID: 1565272550}
+--- !u!114 &1565272556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565272546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c76856a59e4f9192dca3b4a63db1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameTimer: {fileID: 1565272555}
+  _startWaveHours: 140000000000000004000000
+  _waveController: {fileID: 215345272}
 --- !u!114 &1565796890 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1589865477453413275, guid: 7be02e863bcb03143857e8fa30a8b6e6, type: 3}
@@ -34269,6 +34330,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 118.583
       objectReference: {fileID: 0}
+    - target: {fileID: 510198163814672573, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 510198163814672573, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_Color.g
+      value: 0.85882354
+      objectReference: {fileID: 0}
+    - target: {fileID: 510198163814672573, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_Color.r
+      value: 0.68235296
+      objectReference: {fileID: 0}
     - target: {fileID: 513191503966910133, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_LocalPosition.x
       value: 60.22209
@@ -35535,19 +35608,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3099971575547972147, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.13004205
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3099971575547972147, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.83519864
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3099971575547972147, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.08220915
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3099971575547972147, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5279906
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3099971575547972147, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -40644,6 +40717,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6151611454082138780, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: _shoppingZone
+      value: 
+      objectReference: {fileID: 377306216}
     - target: {fileID: 8638632888674053106, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: m_Name
       value: Wooden_Gate
