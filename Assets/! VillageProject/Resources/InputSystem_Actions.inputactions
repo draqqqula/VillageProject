@@ -114,6 +114,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "StartWave",
+                    "type": "Button",
+                    "id": "7e08cb63-ee43-4ea2-953e-768ea3d10e3b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LKM",
                     "type": "PassThrough",
                     "id": "392af907-ea3a-4744-a558-65030baaee29",
@@ -581,6 +590,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "RKM",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "daed5a79-382e-4699-a7e0-6dd9751a33f8",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "StartWave",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

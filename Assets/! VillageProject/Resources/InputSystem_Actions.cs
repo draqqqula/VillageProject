@@ -200,6 +200,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""StartWave"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e08cb63-ee43-4ea2-953e-768ea3d10e3b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LKM"",
                     ""type"": ""PassThrough"",
                     ""id"": ""392af907-ea3a-4744-a558-65030baaee29"",
@@ -667,6 +676,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""RKM"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""daed5a79-382e-4699-a7e0-6dd9751a33f8"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""StartWave"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1396,6 +1416,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_BattleCry = m_Player.FindAction("BattleCry", throwIfNotFound: true);
         m_Player_SwapPreset = m_Player.FindAction("SwapPreset", throwIfNotFound: true);
+        m_Player_StartWave = m_Player.FindAction("StartWave", throwIfNotFound: true);
         m_Player_LKM = m_Player.FindAction("LKM", throwIfNotFound: true);
         m_Player_RKM = m_Player.FindAction("RKM", throwIfNotFound: true);
         // UI
@@ -1511,6 +1532,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_BattleCry;
     private readonly InputAction m_Player_SwapPreset;
+    private readonly InputAction m_Player_StartWave;
     private readonly InputAction m_Player_LKM;
     private readonly InputAction m_Player_RKM;
     /// <summary>
@@ -1572,6 +1594,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/SwapPreset".
         /// </summary>
         public InputAction @SwapPreset => m_Wrapper.m_Player_SwapPreset;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/StartWave".
+        /// </summary>
+        public InputAction @StartWave => m_Wrapper.m_Player_StartWave;
         /// <summary>
         /// Provides access to the underlying input action "Player/LKM".
         /// </summary>
@@ -1642,6 +1668,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwapPreset.started += instance.OnSwapPreset;
             @SwapPreset.performed += instance.OnSwapPreset;
             @SwapPreset.canceled += instance.OnSwapPreset;
+            @StartWave.started += instance.OnStartWave;
+            @StartWave.performed += instance.OnStartWave;
+            @StartWave.canceled += instance.OnStartWave;
             @LKM.started += instance.OnLKM;
             @LKM.performed += instance.OnLKM;
             @LKM.canceled += instance.OnLKM;
@@ -1695,6 +1724,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwapPreset.started -= instance.OnSwapPreset;
             @SwapPreset.performed -= instance.OnSwapPreset;
             @SwapPreset.canceled -= instance.OnSwapPreset;
+            @StartWave.started -= instance.OnStartWave;
+            @StartWave.performed -= instance.OnStartWave;
+            @StartWave.canceled -= instance.OnStartWave;
             @LKM.started -= instance.OnLKM;
             @LKM.performed -= instance.OnLKM;
             @LKM.canceled -= instance.OnLKM;
@@ -2225,6 +2257,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwapPreset(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "StartWave" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnStartWave(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "LKM" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

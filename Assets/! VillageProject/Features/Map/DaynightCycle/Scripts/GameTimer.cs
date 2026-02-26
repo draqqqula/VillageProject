@@ -4,17 +4,18 @@ using UnityEngine;
 public class GameTimer : MonoBehaviour
 {
     private const int HoursPerDay = 24;
-    
+
     [SerializeField] private int _ticksPerHour;
     [SerializeField] private float _realSecondsPerTick = 0.1f;
+    private float _startRealSecondsPerTick;
 
     [SerializeField] private int _startHour;
     [SerializeField] private int _hoursOffset;
-    
+
     private int _startTicks;
     private int _ticksOffset;
     private int _realTicks;
-    
+
     private float _timer;
     private int _currentTick;
 
@@ -22,8 +23,9 @@ public class GameTimer : MonoBehaviour
     public int CurrentDay { get; private set; }
     public int CurrentHour { get; private set; }
     public int CurrentMinute { get; private set; }
-    
+
     [SerializeField] private CycleFromTime _cycleFromTime;
+    [SerializeField] private TimeView _timeView;
 
     public event Action<int> OnHourChanged;
     public event Action<int> OnDayChanged;
@@ -35,6 +37,7 @@ public class GameTimer : MonoBehaviour
         _startTicks = _startHour * _ticksPerHour;
         _ticksOffset = _hoursOffset * _ticksPerHour;
         _currentTick  = _startTicks;
+        _startRealSecondsPerTick = _realSecondsPerTick;
     }
     
     private void Update()
@@ -49,7 +52,7 @@ public class GameTimer : MonoBehaviour
             AddTick();
         }
         
-        Debug.Log(GetFormattedTime());
+        _timeView.UpdateTime();
     }
     
     public void AddTick()
@@ -83,12 +86,7 @@ public class GameTimer : MonoBehaviour
 
         CurrentMinute = newMinute;
     }
-
-    public string GetFormattedTime()
-    {
-        return $"Day {CurrentDay} {CurrentHour:00}:{CurrentMinute:00}";
-    }
-
+    
     public void Pause()
     {
         _isPaused = true;
@@ -97,5 +95,20 @@ public class GameTimer : MonoBehaviour
     public void Resume()
     {
         _isPaused = false;
+    }
+    
+    public void IncreaseTickSpeed(float multiplier)
+    {
+        _realSecondsPerTick *= (1/multiplier);
+    }
+
+    public void DecreaseTickSpeed(float multiplier)
+    {
+        _realSecondsPerTick *= multiplier;
+    }
+
+    public void ReturnTickSpeed()
+    {
+        _realSecondsPerTick = _startRealSecondsPerTick;
     }
 }

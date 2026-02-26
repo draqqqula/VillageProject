@@ -16,6 +16,7 @@ public class MeleeInstaller : MonoInstaller
     [Header("Dependency")]
     [SerializeField] private InputActionReference _attack;
     [SerializeField] private InputActionReference _guard;
+    [SerializeField] private InputActionReference _startWave;
     [SerializeField] private Animator _animator;
     [SerializeField] private CoroutineHandler _coroutineHandler;
     [SerializeField] private HitboxEvent _shieldHitboxEvent;
@@ -52,8 +53,7 @@ public class MeleeInstaller : MonoInstaller
         
         Container.BindInterfacesAndSelfTo<AttackInput>().FromInstance(new AttackInput(_attack, _preset)).AsSingle();
         Container.BindInterfacesAndSelfTo<BlockInput>().FromInstance(new BlockInput(_guard, _preset)).AsSingle();
-        
-        
+        Container.BindInterfacesAndSelfTo<StartWaveInput>().FromInstance(new StartWaveInput(_startWave)).AsSingle();
         Container.BindInterfacesAndSelfTo<ShiftInput>().AsSingle();
         
         Container.BindInterfacesAndSelfTo<IdleState>().AsTransient();
