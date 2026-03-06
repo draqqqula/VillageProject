@@ -10,14 +10,12 @@ public class CycleFromTime : MonoBehaviour
 
     public void SetTime(float value)
     {
-        Debug.Log("SetTime");
         Time = Mathf.Repeat(value, 1);
         UpdateControllers();
     }
 
     private void UpdateControllers()
     {
-        Debug.Log("UpdateControllers");
         var t = Time * _scale;
         _dayNight.SetTime(t);
         _sun.SetTime(t);
@@ -25,7 +23,6 @@ public class CycleFromTime : MonoBehaviour
 
     private void OnValidate()
     {
-        Debug.Log("OnValidate");
         UpdateControllers();
     }
 }

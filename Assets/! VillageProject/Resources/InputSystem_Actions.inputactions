@@ -708,6 +708,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DebugMode",
+                    "type": "Button",
+                    "id": "f84e7fea-4e0f-491d-85b4-e71dfe73479f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1137,6 +1146,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "E",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "56e1dcac-af83-4ec8-a0f6-1cae5a42c769",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "DebugMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
