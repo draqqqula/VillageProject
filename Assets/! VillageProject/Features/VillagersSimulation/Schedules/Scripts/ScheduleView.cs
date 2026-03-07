@@ -13,6 +13,9 @@ public class ScheduleView : MonoBehaviour
     [SerializeField] private ScheduleRawView _scheduleRawPrefab;
     [SerializeField] private Transform _schedulesParent;
     private List<ScheduleRawView> _schedulesRaws;
+
+    public event Action<string> OnSavedSchedule;
+    public event Action<string, int, ActivityColorData> OnPeriodChanged;
     
     public void UpdateAllView(List<Schedule> schedules)
     {
@@ -21,8 +24,22 @@ public class ScheduleView : MonoBehaviour
         foreach (var schedule in schedules)
         {
             var raw = Instantiate(_scheduleRawPrefab, _schedulesParent);
+            raw.Init(_activitiesColorsView);
+            raw.OnPeriodChanged += InvokePeriodChangedEvent;
+            raw.OnSavedSchedule += InvokeSavedScheduleEvent;
+                
             UpdateView(raw, schedule);
         }
+    }
+
+    private void InvokePeriodChangedEvent(string villagerKey, int periodHour, ActivityColorData activityData)
+    {
+        OnPeriodChanged?.Invoke(villagerKey, periodHour, activityData);
+    }
+
+    private void InvokeSavedScheduleEvent(string scheduleKey)
+    {
+        OnSavedSchedule?.Invoke(scheduleKey);
     }
 
     private void UpdateView(ScheduleRawView scheduleRaw, Schedule schedule)
@@ -30,26 +47,30 @@ public class ScheduleView : MonoBehaviour
         scheduleRaw.VillagerText.text = schedule.VillagerKey;
         foreach (var period in schedule.SchedulePeriods)
         {
-            int endTime = period.EndTime;
-            int startTime = period.StartTime;
-
-            var periodLength = endTime - startTime;
-            if (endTime < startTime) periodLength = 24 - startTime + endTime;
-            
+            var periodLength = period.Length;
             for (var i = 0; i < periodLength; i++)
             {
-                var time = (startTime + i) % 24;
+                var time = (period.StartTime + i) % 24;
                 var periodImage = scheduleRaw.PeriodImage[time];
                 var color = _activitiesColorsView.ActivityColors.First(c => c.ActivityType == period.ActivityType).Color;
-                periodImage.color = color;
+                periodImage.Image.color = color;
             }
         }
     }
 
+    private void OnDestroy()
+    {
+        DestroySchedules();
+    }
+
     private void DestroySchedules()
     {
+        if (_schedulesRaws == null) return;
+        
         foreach (var scheduleRaw in _schedulesRaws)
         {
+            scheduleRaw.OnPeriodChanged -= InvokePeriodChangedEvent;
+            scheduleRaw.OnSavedSchedule -= InvokeSavedScheduleEvent;
             Destroy(scheduleRaw.gameObject);
         }
         _schedulesRaws.Clear();

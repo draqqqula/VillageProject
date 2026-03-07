@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Villager : MonoBehaviour
 {
-    [field:SerializeField] public VillagerData VillagerData {get; private set;}
+    [SerializeField] private VillagerData _villagerData;
+    [SerializeField] private ActivityType _currentActivity;
+    public VillagerData VillagerData {get; private set;}
 
     private void Awake()
     {
-        VillagerData = new VillagerData();
+        VillagerData = ScriptableObject.Instantiate(_villagerData);
     }
     
     public void ChangeActivity(ActivityType activity)
@@ -14,6 +16,7 @@ public class Villager : MonoBehaviour
         if (VillagerData.ActivityType == activity) return;
         
         VillagerData.ActivityType = activity;
+        _currentActivity = VillagerData.ActivityType;
         Debug.Log($"Villager {gameObject.name} change to {activity}");
     }
 }
