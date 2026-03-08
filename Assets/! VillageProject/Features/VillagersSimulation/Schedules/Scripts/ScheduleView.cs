@@ -12,14 +12,22 @@ public class ScheduleView : MonoBehaviour
 
     [SerializeField] private ScheduleRawView _scheduleRawPrefab;
     [SerializeField] private Transform _schedulesParent;
-    private List<ScheduleRawView> _schedulesRaws;
+    [SerializeField] private Slider _timeSlider;
+    
+    private List<ScheduleRawView> _schedulesRaws = new List<ScheduleRawView>();
 
     public event Action<string> OnSavedSchedule;
     public event Action<string, int, ActivityColorData> OnPeriodChanged;
-    
-    public void UpdateAllView(List<Schedule> schedules)
+
+    private void Awake()
     {
-        if (_schedulesRaws != null) DestroySchedules();
+        UpdateTimeView(_gameTimer.CurrentHour);
+        _gameTimer.OnHourChanged += UpdateTimeView;
+    }
+    
+    public void UpdateAllSchedulesView(List<Schedule> schedules)
+    {
+        if (_schedulesRaws != null && _schedulesRaws.Count > 0) DestroySchedules();
         
         foreach (var schedule in schedules)
         {
@@ -27,9 +35,16 @@ public class ScheduleView : MonoBehaviour
             raw.Init(_activitiesColorsView);
             raw.OnPeriodChanged += InvokePeriodChangedEvent;
             raw.OnSavedSchedule += InvokeSavedScheduleEvent;
-                
+            
             UpdateView(raw, schedule);
+            _schedulesRaws.Add(raw);
         }
+    }
+
+    public void UpdateView(Schedule schedule)
+    {
+        var raw = _schedulesRaws.FirstOrDefault(x => x.VillagerText.text == schedule.VillagerKey);
+        UpdateView(raw, schedule);
     }
 
     private void InvokePeriodChangedEvent(string villagerKey, int periodHour, ActivityColorData activityData)
@@ -58,8 +73,14 @@ public class ScheduleView : MonoBehaviour
         }
     }
 
+    private void UpdateTimeView(int hour)
+    {
+        _timeSlider.value = hour;
+    }
+
     private void OnDestroy()
     {
+        _gameTimer.OnHourChanged -= UpdateTimeView;
         DestroySchedules();
     }
 

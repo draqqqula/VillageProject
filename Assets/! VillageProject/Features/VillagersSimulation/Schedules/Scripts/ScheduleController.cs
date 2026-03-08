@@ -35,7 +35,7 @@ public class ScheduleController : MonoBehaviour
     
     private void Start()
     {
-        _scheduleView.UpdateAllView(_schedulesInstances);
+        _scheduleView.UpdateAllSchedulesView(_schedulesInstances);
         UpdateActivitiesByHour(_gameTimer.CurrentHour);
     }
     
@@ -70,14 +70,32 @@ public class ScheduleController : MonoBehaviour
         }
     }
 
+    public void UpdateActivity(string villagerKey, ActivityType activityType, int startTime, int endTime)
+    {
+        var schedule = _schedulesInstances.FirstOrDefault(schedule => schedule.VillagerKey == villagerKey);
+        if (schedule == null) return;
+
+        var length = endTime != startTime ? (endTime - startTime + 24) % 24 : 24;
+
+        for (int i = 0; i < length; i += 1)
+        {
+            ChangePeriod(schedule, ConvertToHoursFormat(startTime + i), activityType);
+        }
+        _scheduleView.UpdateView(schedule);
+    }
+
     private void OnPeriodChanged(string villagerKey, int period, ActivityColorData data)
     {
         var schedule = _schedulesInstances.FirstOrDefault(schedule => schedule.VillagerKey == villagerKey);
         if (schedule == null) return;
-        
+        ChangePeriod(schedule, period, data.ActivityType);
+    }
+
+    private void ChangePeriod(Schedule schedule, int period, ActivityType activityType)
+    {
         var foundedPeriod = schedule.GetPeriod(period);
         SplitPeriod(foundedPeriod, period, schedule);
-        schedule.SchedulePeriods.Add(new SchedulePeriod() {ActivityType = data.ActivityType, StartTime = period, 
+        schedule.SchedulePeriods.Add(new SchedulePeriod() {ActivityType = activityType, StartTime = period, 
             EndTime = ConvertToHoursFormat(period + 1)});
         
         schedule.MergePeriods();
