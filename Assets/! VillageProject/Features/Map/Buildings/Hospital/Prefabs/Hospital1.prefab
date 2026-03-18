@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7219903307448898160
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6465316718415837717}
+  m_Layer: 0
+  m_Name: EnterPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6465316718415837717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7219903307448898160}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -4.6566123e-10, w: 1}
+  m_LocalPosition: {x: -2.2020001, y: 0.011999924, z: 6.8646674}
+  m_LocalScale: {x: 0.6666667, y: 0.66666657, z: 0.6666667}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5795120550244162702}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5824026733932255958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163,10 +194,16 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 969109496631838108, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
       insertIndex: 9
       addedObject: {fileID: 9028643470932011212}
+    - targetCorrespondingSourceObject: {fileID: 969109496631838108, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6465316718415837717}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3362685765486524907, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1544903261301902783}
+    - targetCorrespondingSourceObject: {fileID: 3362685765486524907, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7133629799827248813}
   m_SourcePrefab: {fileID: 100100000, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
 --- !u!4 &5795120550244162702 stripped
 Transform:
@@ -197,3 +234,26 @@ MonoBehaviour:
     \u0433\u043E\u0441\u043F\u0438\u0442\u0430\u043B\u044C, \u0447\u0442\u043E\u0431\u044B
     \u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0442\u044C \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435
     \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u0435 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0430"
+--- !u!114 &7133629799827248813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8337350929153679609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04a53dc35cc4dd39e1c7b711e9a21f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Data>k__BackingField:
+    rid: 601279076003217514
+  references:
+    version: 2
+    RefIds:
+    - rid: 601279076003217514
+      type: {class: BuildingData, ns: , asm: Assembly-CSharp}
+      data:
+        <Type>k__BackingField: 4
+        <CurrentState>k__BackingField: 1
+        <EnterPoint>k__BackingField: {fileID: 6465316718415837717}

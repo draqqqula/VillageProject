@@ -72,6 +72,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Range: {fileID: 8412005407044101625}
   _defaultInterval: 1.5
+  _building:
+    <Type>k__BackingField: 0
+    <CurrentState>k__BackingField: 0
+    <EnterPoint>k__BackingField: {fileID: 0}
 --- !u!114 &5666561135211183262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +170,68 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &6423021309124081076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4923763293729174658}
+  m_Layer: 0
+  m_Name: ArcherPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4923763293729174658
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6423021309124081076}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.12, y: 6.28, z: 0.14}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1074966483338026673}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7455329206300629629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6713678102663328653}
+  m_Layer: 0
+  m_Name: EnterPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6713678102663328653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7455329206300629629}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.08, y: 0, z: 4.37}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1074966483338026673}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8862546195155982014
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,6 +246,7 @@ GameObject:
   - component: {fileID: 7051679656386904011}
   - component: {fileID: 7852453036323750667}
   - component: {fileID: 5603848785068465648}
+  - component: {fileID: 1127533435628739290}
   m_Layer: 0
   m_Name: Archer Tower
   m_TagString: Untagged
@@ -203,6 +270,8 @@ Transform:
   - {fileID: 2737962316734052035}
   - {fileID: 6225998389631564696}
   - {fileID: 9084115816428758927}
+  - {fileID: 6713678102663328653}
+  - {fileID: 4923763293729174658}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4226481529840161161
@@ -289,6 +358,30 @@ MonoBehaviour:
     Icon: {fileID: 7051679656386904011}
   - Resource: {fileID: 11400000, guid: 82abc66d90a80144283ab6adf05c01f7, type: 2}
     Icon: {fileID: 7852453036323750667}
+--- !u!114 &1127533435628739290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862546195155982014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04a53dc35cc4dd39e1c7b711e9a21f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Data>k__BackingField:
+    rid: 601279076003217516
+  references:
+    version: 2
+    RefIds:
+    - rid: 601279076003217516
+      type: {class: ArcherTowerData, ns: , asm: Assembly-CSharp}
+      data:
+        <Type>k__BackingField: 1
+        <CurrentState>k__BackingField: 0
+        <EnterPoint>k__BackingField: {fileID: 6713678102663328653}
+        <ArcherPoint>k__BackingField: {fileID: 4923763293729174658}
 --- !u!1001 &3844507480357149237
 PrefabInstance:
   m_ObjectHideFlags: 0

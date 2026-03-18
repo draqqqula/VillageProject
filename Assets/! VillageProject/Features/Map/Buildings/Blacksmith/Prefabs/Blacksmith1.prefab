@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8610664489925195586}
   - component: {fileID: 4954752796978699342}
   - component: {fileID: 3355903871757480084}
+  - component: {fileID: 6463681765556946897}
   m_Layer: 17
   m_Name: Blacksmith1
   m_TagString: Untagged
@@ -35,6 +36,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 277448257281070757}
+  - {fileID: 5812576925309149552}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8518335692078615539
@@ -156,6 +158,60 @@ MonoBehaviour:
   <Description>k__BackingField: "\u0423\u043B\u0443\u0447\u0448\u0438\u0442\u0435
     \u043A\u0443\u0437\u043D\u0438\u0446\u0443 \u0447\u0442\u043E\u0431\u044B \u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0442\u044C
     \u0443\u0440\u043E\u043D \u0441\u0432\u043E\u0435\u0433\u043E \u043C\u0435\u0447\u0430"
+--- !u!114 &6463681765556946897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8518335692077750259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04a53dc35cc4dd39e1c7b711e9a21f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Data>k__BackingField:
+    rid: 601279076003217512
+  references:
+    version: 2
+    RefIds:
+    - rid: 601279076003217512
+      type: {class: BuildingData, ns: , asm: Assembly-CSharp}
+      data:
+        <Type>k__BackingField: 3
+        <CurrentState>k__BackingField: 1
+        <EnterPoint>k__BackingField: {fileID: 5812576925309149552}
+--- !u!1 &8852036058575551740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5812576925309149552}
+  m_Layer: 17
+  m_Name: EnterPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5812576925309149552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852036058575551740}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.75, y: 0.238, z: 3.582}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8518335692077845459}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6064736226917418902
 PrefabInstance:
   m_ObjectHideFlags: 0

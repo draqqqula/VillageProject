@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 [RequireComponent(typeof(NavmeshMovementAgent))]
 public class Villager : MonoBehaviour
@@ -11,18 +12,17 @@ public class Villager : MonoBehaviour
     
     [SerializeField] private NavmeshMovementAgent _navmeshAgent;
     private VillagerStateMachine _stateMachine;
+    
+    [Inject] private BuildingStorage _buildingStorage;
 
-    public void Init(ProfessionService professionService, HomeService homeService)
+    public void Init(HomeService homeService)
     {
         VillagerData = ScriptableObject.Instantiate(_villagerData);
         
-        var profession = professionService.GetProfession(VillagerData.ProfessionType);
-        VillagerData.Profession = profession;
-
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
         
-        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent);
+        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _buildingStorage);
     }
     
     public void ChangeActivity(ActivityType activity)

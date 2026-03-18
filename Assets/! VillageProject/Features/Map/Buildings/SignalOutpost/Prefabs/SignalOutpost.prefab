@@ -247,6 +247,37 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &5632658301678048346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7075053074409593128}
+  m_Layer: 0
+  m_Name: EnterPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7075053074409593128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5632658301678048346}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.008, y: 0, z: -2.542}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7727301533067048263}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6585943900527090621
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +289,7 @@ GameObject:
   - component: {fileID: 7727301533067048263}
   - component: {fileID: 192600809439884859}
   - component: {fileID: 2465482060695656421}
+  - component: {fileID: 9187088991798956131}
   m_Layer: 0
   m_Name: SignalOutpost
   m_TagString: Untagged
@@ -280,6 +312,7 @@ Transform:
   m_Children:
   - {fileID: 4771072104918107248}
   - {fileID: 8384365981946958360}
+  - {fileID: 7075053074409593128}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &192600809439884859
@@ -321,6 +354,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Team>k__BackingField: {fileID: 11400000, guid: 298386bd74f26414f970c4761992fd76, type: 2}
+--- !u!114 &9187088991798956131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6585943900527090621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04a53dc35cc4dd39e1c7b711e9a21f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Data>k__BackingField:
+    rid: 601279076003217517
+  references:
+    version: 2
+    RefIds:
+    - rid: 601279076003217517
+      type: {class: BuildingData, ns: , asm: Assembly-CSharp}
+      data:
+        <Type>k__BackingField: 2
+        <CurrentState>k__BackingField: 1
+        <EnterPoint>k__BackingField: {fileID: 0}
 --- !u!1001 &4149600209917705695
 PrefabInstance:
   m_ObjectHideFlags: 0

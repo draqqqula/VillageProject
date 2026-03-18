@@ -1,6 +1,5 @@
 ﻿using R3;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +35,9 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
     public override ReadOnlyReactiveProperty<NewBuildingData> Data => _data;
 
     public override ReadOnlyReactiveProperty<bool> Available => Price.Available;
-
+    
+    [Inject] private BuildingStorage _storage;
+    
     public override bool TryPerform()
     {
         if (Price.Value.TryPay())
@@ -44,6 +45,7 @@ public class NewBuildingOption : BuildingMenuItemBase<NewBuildingData>
             var building = _container.InstantiatePrefab(BuildingPrefab, _slot.transform);
             _container.InjectGameObject(building);
             _slot.Substitute(building);
+            _storage.Add(building.GetComponent<Building>());
             return true;
         }
         return false;

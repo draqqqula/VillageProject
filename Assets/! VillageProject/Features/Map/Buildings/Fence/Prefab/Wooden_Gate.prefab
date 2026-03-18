@@ -370,6 +370,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2633666400576462535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2157348303118233034}
+  m_Layer: 7
+  m_Name: EnterPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2157348303118233034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633666400576462535}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.229, z: 2.11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4785530286210580575}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3486985049297388179
 GameObject:
   m_ObjectHideFlags: 0
@@ -1150,6 +1181,7 @@ GameObject:
   - component: {fileID: 6151611454082138780}
   - component: {fileID: 6471504788037814132}
   - component: {fileID: 7656479964756077699}
+  - component: {fileID: 2335694269204215771}
   m_Layer: 7
   m_Name: Wooden_Gate
   m_TagString: Untagged
@@ -1185,6 +1217,7 @@ Transform:
   - {fileID: 3184915172690418007}
   - {fileID: 1635729794037881645}
   - {fileID: 6352239838807317976}
+  - {fileID: 2157348303118233034}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2806308279671874773
@@ -1475,6 +1508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _trigger: {fileID: 206594735013729784}
   _collider: {fileID: 2424175965668319041}
+  _shoppingZone: {fileID: 0}
 --- !u!114 &6471504788037814132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1503,6 +1537,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gateTrigger: {fileID: 2829704062475048607}
   _zoneTrigger: {fileID: 723167084150956911}
+--- !u!114 &2335694269204215771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638632888674053106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04a53dc35cc4dd39e1c7b711e9a21f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Data>k__BackingField:
+    rid: 601279076003217511
+  references:
+    version: 2
+    RefIds:
+    - rid: 601279076003217511
+      type: {class: BuildingData, ns: , asm: Assembly-CSharp}
+      data:
+        <Type>k__BackingField: 0
+        <CurrentState>k__BackingField: 1
+        <EnterPoint>k__BackingField: {fileID: 2157348303118233034}
 --- !u!1001 &820771011363523468
 PrefabInstance:
   m_ObjectHideFlags: 0

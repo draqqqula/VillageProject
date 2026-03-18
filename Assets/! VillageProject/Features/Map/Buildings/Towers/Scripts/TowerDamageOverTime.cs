@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class TowerDamageOverTime : TowerIntervalAction
@@ -12,9 +13,13 @@ public class TowerDamageOverTime : TowerIntervalAction
     public event Action ProjectileFired;
     [SerializeField] private float _defaultInterval;
     public ProjectileSpawner Spawner { get; set; }
+    
+    [SerializeField] private BuildingData _building;
 
     protected override float Perform()
     {
+        if (_building.CurrentState == BuildingData.State.Wait) return _defaultInterval;
+        
         var min = float.MaxValue;
         Health closest = null;
         foreach (var target in Range.Targets.Values)
