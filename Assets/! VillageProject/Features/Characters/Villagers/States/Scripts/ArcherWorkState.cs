@@ -22,7 +22,7 @@ public class ArcherWorkState : WorkVillagerState
         _archerTower.Data.CurrentState = BuildingData.State.Ready;
         
         _navmeshAgent = navmeshAgent;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, _archerTower.Data.EnterPoint);
+        _movementHandler = new VillagerMovementHandler(navmeshAgent, _archerTower.Data.EnterPoint.position);
         
         _isInited = true;
     }

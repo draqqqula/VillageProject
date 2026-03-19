@@ -15223,6 +15223,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 705236816}
   - {fileID: 443665197}
   - {fileID: 1890133069}
   - {fileID: 2137532970}
@@ -16961,6 +16962,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8337350929153679609, guid: bbbf715b66bcc414a8215bcaccbe680d, type: 3}
   m_PrefabInstance: {fileID: 1833586548}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &705236813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 705236816}
+  m_Layer: 2
+  m_Name: VillageCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &705236816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705236813}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.04, y: 4.53, z: 0.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 606812145}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &713687661
 GameObject:
   m_ObjectHideFlags: 0
@@ -45774,6 +45806,7 @@ MonoBehaviour:
   - {fileID: 1824135769954071020}
   - {fileID: 759158303}
   _homeService: {fileID: 1681076768}
+  _villageCenter: {fileID: 705236816}
 --- !u!4 &1777354101
 Transform:
   m_ObjectHideFlags: 0
@@ -55183,6 +55216,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1738121367800785482, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _defaultSpeed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3049801893293441889, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.009

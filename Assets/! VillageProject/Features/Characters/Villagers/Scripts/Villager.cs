@@ -15,14 +15,14 @@ public class Villager : MonoBehaviour
     
     [Inject] private BuildingStorage _buildingStorage;
 
-    public void Init(HomeService homeService)
+    public void Init(HomeService homeService, Transform villagerCenter)
     {
         VillagerData = ScriptableObject.Instantiate(_villagerData);
         
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
         
-        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _buildingStorage);
+        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _buildingStorage, villagerCenter);
     }
     
     public void ChangeActivity(ActivityType activity)

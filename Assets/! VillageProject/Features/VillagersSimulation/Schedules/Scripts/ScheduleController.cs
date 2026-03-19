@@ -50,24 +50,32 @@ public class ScheduleController : MonoBehaviour
         {
             foreach (var period in schedule.SchedulePeriods)
             {
-                if (period.EndTime < period.StartTime)
+                if (period.EndTime == period.StartTime)
+                {
+                    UpdateActivity(schedule, period);
+                }
+                else if (period.EndTime < period.StartTime)
                 {
                     if ((period.StartTime <= hour && hour < 24) || (hour >= 0 && hour < period.EndTime))
                     {
-                        var villager = _villagerSystem.GetVillager(schedule.VillagerKey);
-                        if (villager != null) villager.ChangeActivity(period.ActivityType);
+                        UpdateActivity(schedule, period);
                     }
                 }
                 else
                 {
                     if (period.StartTime <= hour && hour < period.EndTime)
                     {
-                        var villager = _villagerSystem.GetVillager(schedule.VillagerKey);
-                        if (villager != null) villager.ChangeActivity(period.ActivityType);
+                        UpdateActivity(schedule, period);
                     } 
                 }
             }
         }
+    }
+
+    private void UpdateActivity(Schedule schedule, SchedulePeriod period)
+    {
+        var villager = _villagerSystem.GetVillager(schedule.VillagerKey);
+        if (villager != null) villager.ChangeActivity(period.ActivityType);
     }
 
     public void UpdateActivity(string villagerKey, ActivityType activityType, int startTime, int endTime)

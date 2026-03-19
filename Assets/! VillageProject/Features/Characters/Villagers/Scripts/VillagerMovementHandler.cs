@@ -4,20 +4,25 @@ using UnityEngine;
 public class VillagerMovementHandler : IDisposable
 {
     private NavmeshMovementAgent _navmeshAgent;
-    Transform _target;
+    Vector3 _targetPos;
     
     private IWorkEventSource<WorkResult> _source; 
     private Action<WorkResult> _movementCallback;
     
-    public VillagerMovementHandler(NavmeshMovementAgent navmeshAgent, Transform target)
+    public VillagerMovementHandler(NavmeshMovementAgent navmeshAgent, Vector3 targetPos)
     {
         _navmeshAgent = navmeshAgent;
-        _target = target;
+        SetTargetPos(targetPos);
+    }
+
+    public void SetTargetPos(Vector3 targetPos)
+    {
+        _targetPos = targetPos;
     }
     
     public void ActivateMovement(Action<WorkResult> callback = null)
     {
-        _navmeshAgent.TrySetInstructions(_target.gameObject, out _source);
+        _navmeshAgent.TrySetInstructions(_targetPos, out _source);
         
         _movementCallback = callback;
         if (_movementCallback != null)

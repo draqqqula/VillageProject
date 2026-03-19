@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class VillagerStateMachine : IDisposable
@@ -11,19 +12,22 @@ public class VillagerStateMachine : IDisposable
     
     private VillagerStateFactory _stateFactory;
     private BuildingStorage _buildingStorage;
+    private Transform _villageCenter;
 
-    public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, BuildingStorage buildingStorage)
+    public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, BuildingStorage buildingStorage, 
+        Transform villageCenter)
     {
         _navmeshAgent = navmeshAgent;
         _stateFactory = new VillagerStateFactory();
         _buildingStorage = buildingStorage;
+        _villageCenter = villageCenter;
         
         SetStates(villagerData);
     }
 
     public void SetStates(VillagerData villagerData)
     {
-        _stateFactory.SetParams(_navmeshAgent, villagerData, _buildingStorage);
+        _stateFactory.SetParams(_navmeshAgent, villagerData, _buildingStorage, _villageCenter);
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());
         _states.Add(ActivityType.Work, _stateFactory.CreateWorkState());

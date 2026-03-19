@@ -5,7 +5,7 @@ public class ArmorerWorkState : WorkVillagerState
     public ArmorerWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage)
     {
         var hospital = buildingStorage.Get(BuildingType.Hospital);
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, hospital.Data.EnterPoint);
+        _movementHandler = new VillagerMovementHandler(navmeshAgent, hospital.Data.EnterPoint.position);
     }
     
     public override void EnterState()

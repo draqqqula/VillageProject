@@ -20,13 +20,6 @@ public abstract class WorkVillagerState : VillagerState
     }
 }
 
-public class DefenderWorkState : WorkVillagerState
-{
-    public DefenderWorkState(NavmeshMovementAgent navmeshAgent, Profession profession)
-    {
-    }
-}
-
 public class BuilderWorkState : WorkVillagerState
 {
     public BuilderWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage)

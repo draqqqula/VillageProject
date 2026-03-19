@@ -1,16 +1,20 @@
 using System;
+using UnityEngine;
 
 public class VillagerStateFactory
 {
     private NavmeshMovementAgent _navmeshAgent;
     private VillagerData _villagerData;
     private BuildingStorage _buildingStorage;
+    private Transform _villageCenter;
     
-    public void SetParams(NavmeshMovementAgent navmeshAgent, VillagerData villagerData, BuildingStorage buildingStorage)
+    public void SetParams(NavmeshMovementAgent navmeshAgent, VillagerData villagerData, BuildingStorage buildingStorage,
+        Transform villageCenter)
     {
         _navmeshAgent = navmeshAgent;
         _villagerData = villagerData;
         _buildingStorage = buildingStorage;
+        _villageCenter = villageCenter;
     }
     
     public SleepVillagerState CreateSleepState()
@@ -41,7 +45,7 @@ public class VillagerStateFactory
             case (ProfessionType.Archer):
                 return new ArcherWorkState(_navmeshAgent, _villagerData.Profession, _buildingStorage);
             case (ProfessionType.Defender):
-                return new DefenderWorkState(_navmeshAgent, _villagerData.Profession);
+                return new DefenderWorkState(_navmeshAgent, _villagerData.Profession, _villageCenter);
             default:
                 throw new ArgumentException($"{_villagerData.Profession.Type} is not a valid profession!");
         }

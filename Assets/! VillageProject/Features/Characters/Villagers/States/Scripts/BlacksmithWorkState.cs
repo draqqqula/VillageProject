@@ -5,7 +5,7 @@ public class BlacksmithWorkState : WorkVillagerState
     public BlacksmithWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage)
     {
         var blacksmith = buildingStorage.Get(BuildingType.Blacksmith);
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, blacksmith.Data.EnterPoint);
+        _movementHandler = new VillagerMovementHandler(navmeshAgent, blacksmith.Data.EnterPoint.position);
     }
     
     public override void EnterState()

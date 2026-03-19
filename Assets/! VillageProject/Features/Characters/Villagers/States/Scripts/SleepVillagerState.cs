@@ -10,7 +10,7 @@ public sealed class SleepVillagerState : VillagerState
     public SleepVillagerState(NavmeshMovementAgent navmeshAgent, Transform homePoint)
     {
         _navmeshAgent = navmeshAgent;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, homePoint);
+        _movementHandler = new VillagerMovementHandler(navmeshAgent, homePoint.position);
     }
     
     public override void EnterState()

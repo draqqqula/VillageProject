@@ -8,7 +8,7 @@ public sealed class RelaxVillagerState : VillagerState
 
     public RelaxVillagerState(NavmeshMovementAgent navmeshAgent, Transform relaxPoint)
     {
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, relaxPoint);
+        _movementHandler = new VillagerMovementHandler(navmeshAgent, relaxPoint.position);
     }
     
     public override void EnterState()
