@@ -22,8 +22,10 @@ GameObject:
   - component: {fileID: 4640968921910481281}
   - component: {fileID: 8236837215715823226}
   - component: {fileID: 7200134689312580180}
+  - component: {fileID: 2730157558767308762}
   - component: {fileID: 929324572349078201}
   - component: {fileID: 1543548647679210747}
+  - component: {fileID: 1889535531351251945}
   m_Layer: 19
   m_Name: Enemy
   m_TagString: damageable
@@ -46,6 +48,7 @@ Transform:
   m_Children:
   - {fileID: 3409763160259454159}
   - {fileID: 6110256187786515933}
+  - {fileID: 6236908315975361147}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2263654953684510127
@@ -411,6 +414,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Attributes>k__BackingField: {fileID: 11400000, guid: a9da8334f95a85145b01c48141471888, type: 2}
   <Role>k__BackingField: 1
+--- !u!114 &2730157558767308762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbbe0a24668bd3e4dbf9a89428f5a1a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Team>k__BackingField: {fileID: 11400000, guid: ba2852fb48d2ba04c83c59f79a4d3323, type: 2}
 --- !u!114 &929324572349078201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +453,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tracker: {fileID: 929324572349078201}
+--- !u!114 &1889535531351251945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346228245960298043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e51e9959ff8352b4883c3c6442821af3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Priority>k__BackingField: 0
 --- !u!1 &2406375740862976146
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,6 +497,80 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4990850150768041798}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2884255309187528701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6236908315975361147}
+  - component: {fileID: 1413698259346051523}
+  - component: {fileID: 923258345629016584}
+  m_Layer: 0
+  m_Name: DiscoveryRadius
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6236908315975361147
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2884255309187528701}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4990850150768041798}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1413698259346051523
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2884255309187528701}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 50
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &923258345629016584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2884255309187528701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d2c631871e445b48b79f47e984c641b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sphere: {fileID: 1413698259346051523}
+  _checkInterval: 0.5
+  _timeToForget: 5
+  _target: {fileID: 1889535531351251945}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 640
+  _teamMember: {fileID: 2730157558767308762}
 --- !u!1 &7504935579471775331
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +647,7 @@ MonoBehaviour:
   OnDistanceToTargetUpdated:
     m_PersistentCalls:
       m_Calls: []
+  <TeamMember>k__BackingField: {fileID: 0}
 --- !u!54 &5575988609196395877
 Rigidbody:
   m_ObjectHideFlags: 0

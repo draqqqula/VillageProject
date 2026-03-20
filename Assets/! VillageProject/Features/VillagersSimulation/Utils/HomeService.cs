@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using R3;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -33,7 +34,9 @@ public class HomePoint
     [field: SerializeField] public Transform Point {get; private set;}
     [field: SerializeField] public bool IsBusy { get; set; }
     
-
+    public ReactiveProperty<bool> IsAttacked {get => _isAttacked; private set => _isAttacked = value;}
+    private ReactiveProperty<bool> _isAttacked = new ReactiveProperty<bool>(false);
+    
     public Transform DoorPoint { get; set; }
     public Transform RelaxPoint { get; set; }
 }

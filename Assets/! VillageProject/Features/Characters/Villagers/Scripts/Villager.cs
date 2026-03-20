@@ -13,6 +13,9 @@ public class Villager : MonoBehaviour
     [SerializeField] private NavmeshMovementAgent _navmeshAgent;
     private VillagerStateMachine _stateMachine;
     
+    [SerializeField] private SearchForTarget _searchForTarget;
+    [SerializeField] private Animator _animator;
+    
     [Inject] private BuildingStorage _buildingStorage;
 
     public void Init(HomeService homeService, Transform villagerCenter)
@@ -22,9 +25,15 @@ public class Villager : MonoBehaviour
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
         
-        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _buildingStorage, villagerCenter);
+        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _buildingStorage, villagerCenter, 
+            _searchForTarget, _animator);
     }
-    
+
+    private void Update()
+    {
+        _stateMachine?.Update();
+    }
+
     public void ChangeActivity(ActivityType activity)
     {
         if (VillagerData.ActivityType == activity) return;

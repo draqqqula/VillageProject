@@ -13,21 +13,27 @@ public class VillagerStateMachine : IDisposable
     private VillagerStateFactory _stateFactory;
     private BuildingStorage _buildingStorage;
     private Transform _villageCenter;
+    
+    private SearchForTarget _searchForTarget;
+    private Animator _animator;
 
     public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, BuildingStorage buildingStorage, 
-        Transform villageCenter)
+        Transform villageCenter, SearchForTarget searchForTarget, Animator animator)
     {
         _navmeshAgent = navmeshAgent;
         _stateFactory = new VillagerStateFactory();
         _buildingStorage = buildingStorage;
         _villageCenter = villageCenter;
         
+        _searchForTarget = searchForTarget;
+        _animator = animator;
+        
         SetStates(villagerData);
     }
 
     public void SetStates(VillagerData villagerData)
     {
-        _stateFactory.SetParams(_navmeshAgent, villagerData, _buildingStorage, _villageCenter);
+        _stateFactory.SetParams(_navmeshAgent, villagerData, _buildingStorage, _villageCenter, _searchForTarget, _animator);
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());
         _states.Add(ActivityType.Work, _stateFactory.CreateWorkState());
@@ -40,6 +46,11 @@ public class VillagerStateMachine : IDisposable
         CurrentState?.ExitState();
         CurrentState = _states[activityType];
         CurrentState.EnterState();
+    }
+
+    public void Update()
+    {
+        if (CurrentState is IUpdatableState updatableState) updatableState.Update();
     }
 
     public void Dispose()

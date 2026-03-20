@@ -7,19 +7,23 @@ public class VillagerStateFactory
     private VillagerData _villagerData;
     private BuildingStorage _buildingStorage;
     private Transform _villageCenter;
+    private SearchForTarget _searchForTarget;
+    private Animator _animator;
     
     public void SetParams(NavmeshMovementAgent navmeshAgent, VillagerData villagerData, BuildingStorage buildingStorage,
-        Transform villageCenter)
+        Transform villageCenter, SearchForTarget searchForTarget, Animator animator)
     {
         _navmeshAgent = navmeshAgent;
         _villagerData = villagerData;
         _buildingStorage = buildingStorage;
         _villageCenter = villageCenter;
+        _searchForTarget = searchForTarget;
+        _animator = animator;
     }
     
     public SleepVillagerState CreateSleepState()
     {
-        return new SleepVillagerState(_navmeshAgent, _villagerData.HomePoint.DoorPoint);
+        return new SleepVillagerState(_navmeshAgent, _villagerData.HomePoint.DoorPoint, _villagerData);
     }
 
     public RelaxVillagerState CreateRelaxState()
@@ -29,7 +33,14 @@ public class VillagerStateFactory
 
     public GuardVillagerState CreateGuardState()
     {
-        return new GuardVillagerState();
+        if (_villagerData.Profession.Type == ProfessionType.Defender)
+        {
+            return new DefenderVillagerGuardState(_navmeshAgent, _searchForTarget, _animator);
+        }
+        else
+        {
+            return new PeacefulVillagerGuardState(_navmeshAgent, _villageCenter, _villagerData);
+        }
     }
 
     public WorkVillagerState CreateWorkState()

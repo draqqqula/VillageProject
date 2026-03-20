@@ -10,6 +10,7 @@ public class LineOfSightTargetDetection : MonoBehaviour
     [SerializeField] private float _timeToForget;
     [SerializeField] private Target _target;
     [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private TeamMember _teamMember;
 
     private IDictionary<Collider, Coroutine> _losChecks = new KeyValidReferenceDictionary<Collider, Coroutine>();
     private IDictionary<Collider, float> _forgetTimers = new KeyValidReferenceDictionary<Collider, float>();
@@ -27,7 +28,7 @@ public class LineOfSightTargetDetection : MonoBehaviour
             return;
         }
         var searcher = other.GetComponent<SearchForTarget>();
-        if (searcher != null)
+        if (searcher != null && searcher.TeamMember.Team.IsEnemiesWith(_teamMember.Team))
         {
             var coroutine = StartCoroutine(EstablishContact(other, searcher));
             if (coroutine != null)

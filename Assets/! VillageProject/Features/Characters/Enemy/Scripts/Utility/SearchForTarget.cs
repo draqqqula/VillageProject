@@ -39,6 +39,8 @@ public class SearchForTarget : MonoBehaviour
         }
     }
 
+    [field: SerializeField] public TeamMember TeamMember { get; private set; }
+
     public void Detect(Target target)
     {
         Debug.Log($"Detected target {target.gameObject.name}");

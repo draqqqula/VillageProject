@@ -8,6 +8,7 @@ public class VillagerData : ScriptableObject
     [field: SerializeField] public ActivityType ActivityType {get; set;}
     [field: SerializeField] public Profession Profession {get; set;}
     
+    public bool IsOnHome { get; set; }
     public HomePoint HomePoint {get; set;}
 }
 

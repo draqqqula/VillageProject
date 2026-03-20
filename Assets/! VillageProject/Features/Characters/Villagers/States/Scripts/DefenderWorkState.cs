@@ -8,7 +8,6 @@ public class DefenderWorkState : WorkVillagerState
 {
     private const float MaxRadius = 50;
     private const float MinRadius = 40;
-    private const int MaxPointAttempts = 10;
     private const float StandDuration = 2f;
 
     private NavmeshMovementAgent _navmeshAgent;
@@ -32,12 +31,8 @@ public class DefenderWorkState : WorkVillagerState
     
     private void OnMovementEnded(WorkResult result)
     {
-        if (_coroutine != null)
-        {
-            _navmeshAgent.StopCoroutine(_coroutine);
-            _coroutine = null;
-        }
-        else _coroutine = _navmeshAgent.StartCoroutine(StandRoutine(ActivateMovement));
+        if (_coroutine != null) _navmeshAgent.StopCoroutine(_coroutine);
+        _coroutine = _navmeshAgent.StartCoroutine(StandRoutine(ActivateMovement));
     }
 
     private IEnumerator StandRoutine(Action callback)
@@ -60,41 +55,7 @@ public class DefenderWorkState : WorkVillagerState
     
     private void ActivateMovement()
     {
-        var pos = GetMovePos();
-        var go = new GameObject("DefenderTarget");
-        go.transform.position = pos;
-        
-        _movementHandler.SetTargetPos(pos);
-        _movementHandler.ActivateMovement(OnMovementEnded);
-    }
-    
-    private Vector3 GetMovePos()
-    {
-        for (int i = 0; i < MaxPointAttempts; i++)
-        {
-            var dir2D = Random.insideUnitCircle.normalized;
-            var dir = new Vector3(dir2D.x, 0, dir2D.y);
-            
-            var distance = Random.Range(MinRadius, MaxRadius);
-            var pos = _villageCenter.position + dir * distance;
-            
-            if (IsOnStreet(pos)) return pos;
-        }
-        return _navmeshAgent.transform.position;
-    }
-    
-    private bool IsOnStreet(Vector3 pos)
-    {
-        float rayDistance = 10;
-        var rayOrigin = new Vector3(pos.x, _villageCenter.position.y + rayDistance / 2, pos.z);
-        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, rayDistance))
-        {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Low"))
-            {
-                return true;
-            }
-        }
-        return false;
+        _movementHandler.ActivateMovementWithPosInCircle(_villageCenter, MaxRadius, MinRadius, OnMovementEnded);
     }
     
     public override void Dispose()
