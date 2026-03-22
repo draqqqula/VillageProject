@@ -5,20 +5,29 @@ public class VillagerStateFactory
 {
     private NavmeshMovementAgent _navmeshAgent;
     private VillagerData _villagerData;
-    private BuildingStorage _buildingStorage;
-    private Transform _villageCenter;
     private SearchForTarget _searchForTarget;
     private Animator _animator;
     
-    public void SetParams(NavmeshMovementAgent navmeshAgent, VillagerData villagerData, BuildingStorage buildingStorage,
-        Transform villageCenter, SearchForTarget searchForTarget, Animator animator)
+    private BuildingStorage _buildingStorage;
+    private BuildingPlanner _buildingPlanner;
+    
+    private Transform _villageCenter;
+    private GameTimer _gameTimer;
+
+    
+    public void SetParams(NavmeshMovementAgent navmeshAgent, VillagerData villagerData, SearchForTarget searchForTarget, Animator animator,
+        BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, Transform villageCenter, GameTimer gameTimer)
     {
         _navmeshAgent = navmeshAgent;
         _villagerData = villagerData;
-        _buildingStorage = buildingStorage;
-        _villageCenter = villageCenter;
         _searchForTarget = searchForTarget;
         _animator = animator;
+        
+        _buildingStorage = buildingStorage;
+        _buildingPlanner = buildingPlanner;
+        
+        _villageCenter = villageCenter;
+        _gameTimer = gameTimer;
     }
     
     public SleepVillagerState CreateSleepState()
@@ -50,7 +59,7 @@ public class VillagerStateFactory
             case (ProfessionType.Blacksmith):
                 return new BlacksmithWorkState(_navmeshAgent, _villagerData.Profession, _buildingStorage);
             case (ProfessionType.Builder):
-                return new BuilderWorkState(_navmeshAgent, _villagerData.Profession, _buildingStorage);
+                return new BuilderWorkState(_navmeshAgent, _villagerData.Profession, _buildingStorage, _buildingPlanner, _gameTimer);
             case (ProfessionType.Armorer):
                 return new ArmorerWorkState(_navmeshAgent, _villagerData.Profession, _buildingStorage);
             case (ProfessionType.Archer):

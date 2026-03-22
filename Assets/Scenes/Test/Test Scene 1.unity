@@ -16215,6 +16215,81 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3420009077780514494, guid: 650c9d2acaeb28c45827bbc148b24f63, type: 3}
   m_PrefabInstance: {fileID: 664813710}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &668889929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 668889931}
+  - component: {fileID: 668889930}
+  m_Layer: 0
+  m_Name: BuildingPlanner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &668889930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668889929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d79800651973475aa117c9922926d2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _allBuildingPlans:
+  - <BuildingAnchor>k__BackingField: {fileID: 1757963017}
+    <BuildingPrefab>k__BackingField: {fileID: 1127533435628739290, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+    <BuildingPreviewPrefab>k__BackingField: {fileID: 1759150226254289534, guid: 5e171b5ce10262742a3793fe42dbd6e4, type: 3}
+    <HoursDuration>k__BackingField: 6
+    <BuildingProgress>k__BackingField: 0
+  - <BuildingAnchor>k__BackingField: {fileID: 1553083310}
+    <BuildingPrefab>k__BackingField: {fileID: 1127533435628739290, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+    <BuildingPreviewPrefab>k__BackingField: {fileID: 1759150226254289534, guid: 5e171b5ce10262742a3793fe42dbd6e4, type: 3}
+    <HoursDuration>k__BackingField: 6
+    <BuildingProgress>k__BackingField: 0
+  - <BuildingAnchor>k__BackingField: {fileID: 1420839528}
+    <BuildingPrefab>k__BackingField: {fileID: 1127533435628739290, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+    <BuildingPreviewPrefab>k__BackingField: {fileID: 1759150226254289534, guid: 5e171b5ce10262742a3793fe42dbd6e4, type: 3}
+    <HoursDuration>k__BackingField: 6
+    <BuildingProgress>k__BackingField: 0
+  - <BuildingAnchor>k__BackingField: {fileID: 1149559743}
+    <BuildingPrefab>k__BackingField: {fileID: 1127533435628739290, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+    <BuildingPreviewPrefab>k__BackingField: {fileID: 1759150226254289534, guid: 5e171b5ce10262742a3793fe42dbd6e4, type: 3}
+    <HoursDuration>k__BackingField: 6
+    <BuildingProgress>k__BackingField: 0
+  - <BuildingAnchor>k__BackingField: {fileID: 1627090326}
+    <BuildingPrefab>k__BackingField: {fileID: 9187088991798956131, guid: f9fa5aed95d3bd647bad7b75825c75b0, type: 3}
+    <BuildingPreviewPrefab>k__BackingField: {fileID: 3216826508160290848, guid: d06de02d4d3cef34c82559fae164b2e7, type: 3}
+    <HoursDuration>k__BackingField: 3
+    <BuildingProgress>k__BackingField: 0
+  - <BuildingAnchor>k__BackingField: {fileID: 2007634599}
+    <BuildingPrefab>k__BackingField: {fileID: 9187088991798956131, guid: f9fa5aed95d3bd647bad7b75825c75b0, type: 3}
+    <BuildingPreviewPrefab>k__BackingField: {fileID: 3216826508160290848, guid: d06de02d4d3cef34c82559fae164b2e7, type: 3}
+    <HoursDuration>k__BackingField: 3
+    <BuildingProgress>k__BackingField: 0
+--- !u!4 &668889931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668889929}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -46.175293, y: 20.438564, z: -15.826778}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &675993096 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2918706629226330874, guid: 7be02e863bcb03143857e8fa30a8b6e6, type: 3}
@@ -32645,6 +32720,7 @@ MonoBehaviour:
   - {fileID: 759158303}
   _homeService: {fileID: 1681076768}
   _villageCenter: {fileID: 705236816}
+  _gameTimer: {fileID: 1565272555}
 --- !u!114 &1469070018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37099,6 +37175,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5613189445702629130, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+      propertyPath: _buildingPlanner
+      value: 
+      objectReference: {fileID: 668889930}
     - target: {fileID: 5682320389420687457, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -55470,3 +55550,4 @@ SceneRoots:
   - {fileID: 1681076769}
   - {fileID: 606812145}
   - {fileID: 1836476404}
+  - {fileID: 668889931}

@@ -17,16 +17,17 @@ public class Villager : MonoBehaviour
     [SerializeField] private Animator _animator;
     
     [Inject] private BuildingStorage _buildingStorage;
+    [Inject] private BuildingPlanner _buildingPlanner;
 
-    public void Init(HomeService homeService, Transform villagerCenter)
+    public void Init(HomeService homeService, Transform villagerCenter, GameTimer gameTimer)
     {
         VillagerData = ScriptableObject.Instantiate(_villagerData);
         
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
         
-        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _buildingStorage, villagerCenter, 
-            _searchForTarget, _animator);
+        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _searchForTarget, _animator, _buildingStorage, _buildingPlanner,
+            villagerCenter, gameTimer);
     }
 
     private void Update()

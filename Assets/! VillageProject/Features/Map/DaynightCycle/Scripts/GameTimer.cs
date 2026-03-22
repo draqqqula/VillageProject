@@ -27,6 +27,7 @@ public class GameTimer : MonoBehaviour
     [SerializeField] private CycleFromTime _cycleFromTime;
     [SerializeField] private TimeView _timeView;
 
+    public event Action<int> OnTick;
     public event Action<int> OnHourChanged;
     public event Action<int> OnDayChanged;
     
@@ -36,7 +37,7 @@ public class GameTimer : MonoBehaviour
     {
         _startTicks = _startHour * _ticksPerHour;
         _ticksOffset = _hoursOffset * _ticksPerHour;
-        _currentTick  = _startTicks;
+        _currentTick = _startTicks;
         _startRealSecondsPerTick = _realSecondsPerTick;
     }
     
@@ -72,6 +73,8 @@ public class GameTimer : MonoBehaviour
         int ticksIntoHour = _currentTick % _ticksPerHour;
         int newMinute = (int)((float)ticksIntoHour / _ticksPerHour * 60f);
 
+        OnTick?.Invoke(_currentTick);
+        
         if (newHour != CurrentHour)
         {
             CurrentHour = newHour;
@@ -110,5 +113,10 @@ public class GameTimer : MonoBehaviour
     public void ReturnTickSpeed()
     {
         _realSecondsPerTick = _startRealSecondsPerTick;
+    }
+
+    public int ConvertHoursToTick(float hours)
+    {
+        return (int)Mathf.Ceil(hours * _ticksPerHour);
     }
 }

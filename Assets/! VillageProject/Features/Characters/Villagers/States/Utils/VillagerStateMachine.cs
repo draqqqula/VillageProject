@@ -7,33 +7,39 @@ public class VillagerStateMachine : IDisposable
 {
     public VillagerState CurrentState { get; private set; }
     private NavmeshMovementAgent _navmeshAgent;
+    private SearchForTarget _searchForTarget;
+    private Animator _animator;
 
     private Dictionary<ActivityType, VillagerState> _states = new Dictionary<ActivityType, VillagerState>();
     
     private VillagerStateFactory _stateFactory;
     private BuildingStorage _buildingStorage;
-    private Transform _villageCenter;
+    private BuildingPlanner _buildingPlanner;
     
-    private SearchForTarget _searchForTarget;
-    private Animator _animator;
+    private Transform _villageCenter;
+    private GameTimer _gameTimer;
 
-    public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, BuildingStorage buildingStorage, 
-        Transform villageCenter, SearchForTarget searchForTarget, Animator animator)
+    public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, Animator animator,
+        BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, Transform villageCenter, GameTimer gameTimer)
     {
         _navmeshAgent = navmeshAgent;
-        _stateFactory = new VillagerStateFactory();
-        _buildingStorage = buildingStorage;
-        _villageCenter = villageCenter;
-        
         _searchForTarget = searchForTarget;
         _animator = animator;
+        _stateFactory = new VillagerStateFactory();
+        
+        _buildingStorage = buildingStorage;
+        _buildingPlanner = buildingPlanner;
+        
+        _villageCenter = villageCenter;
+        _gameTimer = gameTimer;
         
         SetStates(villagerData);
     }
 
     public void SetStates(VillagerData villagerData)
     {
-        _stateFactory.SetParams(_navmeshAgent, villagerData, _buildingStorage, _villageCenter, _searchForTarget, _animator);
+        _stateFactory.SetParams(_navmeshAgent, villagerData,  _searchForTarget, _animator, _buildingStorage, _buildingPlanner,
+            _villageCenter, _gameTimer);
         _states.Clear();
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());
