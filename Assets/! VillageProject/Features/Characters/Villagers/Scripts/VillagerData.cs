@@ -15,7 +15,7 @@ public class VillagerData : ScriptableObject
 [Serializable]
 public class Profession
 {
-    [field: SerializeField] public ProfessionType Type {get; private set;}
+    [field: SerializeField] public ProfessionType Type {get; set;}
 }
 
 public enum ProfessionType

@@ -34,6 +34,7 @@ public class VillagerStateMachine : IDisposable
     public void SetStates(VillagerData villagerData)
     {
         _stateFactory.SetParams(_navmeshAgent, villagerData, _buildingStorage, _villageCenter, _searchForTarget, _animator);
+        _states.Clear();
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());
         _states.Add(ActivityType.Work, _stateFactory.CreateWorkState());

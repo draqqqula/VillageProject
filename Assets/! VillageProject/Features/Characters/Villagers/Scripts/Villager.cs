@@ -45,6 +45,14 @@ public class Villager : MonoBehaviour
         Debug.Log($"Villager {gameObject.name} change to {activity}");
     }
 
+    public void SwitchProfession(ProfessionType profession)
+    {
+        VillagerData.Profession = new Profession() {Type = profession};
+        _stateMachine.SetStates(VillagerData);
+        _stateMachine.UpdateCurrentState(VillagerData.ActivityType);
+        Debug.Log($"Villager {gameObject.name} profession change to {profession}");
+    }
+
     private void OnDestroy()
     {
         _stateMachine.Dispose();

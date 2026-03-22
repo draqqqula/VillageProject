@@ -9,10 +9,10 @@ public class ScheduleController : MonoBehaviour
 {
     [SerializeField] private Schedule[] _schedules;
     private List<Schedule> _schedulesInstances;
-    
+
     [SerializeField] private GameTimer _gameTimer;
     [SerializeField] private VillagerSystem _villagerSystem;
-    
+
     [SerializeField] private ScheduleView _scheduleView;
 
     private void Awake()
@@ -32,13 +32,13 @@ public class ScheduleController : MonoBehaviour
             _schedulesInstances.Add(instance);
         }
     }
-    
-    private void Start()
+
+    public void Init()
     {
-        _scheduleView.UpdateAllSchedulesView(_schedulesInstances);
+        _scheduleView.Init(_schedulesInstances, _villagerSystem);
         UpdateActivitiesByHour(_gameTimer.CurrentHour);
     }
-    
+
     private void OnHourChanged(int hour)
     {
         UpdateActivitiesByHour(hour);
@@ -66,7 +66,7 @@ public class ScheduleController : MonoBehaviour
                     if (period.StartTime <= hour && hour < period.EndTime)
                     {
                         UpdateActivity(schedule, period);
-                    } 
+                    }
                 }
             }
         }
@@ -78,7 +78,7 @@ public class ScheduleController : MonoBehaviour
         if (villager != null) villager.ChangeActivity(period.ActivityType);
     }
 
-    public void UpdateActivity(string villagerKey, ActivityType activityType, int startTime, int endTime)
+    public void UpdatePeriods(string villagerKey, ActivityType activityType, int startTime, int endTime)
     {
         var schedule = _schedulesInstances.FirstOrDefault(schedule => schedule.VillagerKey == villagerKey);
         if (schedule == null) return;
@@ -89,9 +89,10 @@ public class ScheduleController : MonoBehaviour
         {
             ChangePeriod(schedule, ConvertToHoursFormat(startTime + i), activityType);
         }
+
         _scheduleView.UpdateView(schedule);
     }
-
+    
     private void OnPeriodChanged(string villagerKey, int period, ActivityColorData data)
     {
         var schedule = _schedulesInstances.FirstOrDefault(schedule => schedule.VillagerKey == villagerKey);

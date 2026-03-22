@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using ModestTree;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,12 +10,15 @@ public class ScheduleRawView : MonoBehaviour
 {
     [field: SerializeField] public ClickableImage[] PeriodImage { get; private set;}
     [field: SerializeField] public TextMeshProUGUI VillagerText { get; private set;}
+    [field: SerializeField] public ProfessionMenu ProfessionMenu {get; private set;}
+    
     [SerializeField] private Button _saveScheduleButton;
     
     private ActivityColorView _activityColorView;
     
     public event Action<string> OnSavedSchedule;
     public event Action<string, int, ActivityColorData> OnPeriodChanged;
+    public ReadOnlyReactiveProperty<ProfessionType> CurrentProfession => ProfessionMenu.CurrentProfession;
 
     public void Init(ActivityColorView activityColorView)
     {

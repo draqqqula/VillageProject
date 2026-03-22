@@ -8,7 +8,7 @@ public class VillagerSystem : MonoBehaviour
     [SerializeField] private HomeService _homeService;
     [SerializeField] private Transform _villageCenter;
 
-    private void Awake()
+    public void Init()
     {
         foreach (var villager in Villagers)
         {
