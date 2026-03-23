@@ -10,7 +10,7 @@ public class BuilderWorkState : WorkVillagerState
     private GameTimer _gameTimer;
     
     private int _builtTicks;
-    private int _lastTick;
+    private int _lastTick = -1;
     private BuildingPlan _plan;
     
     public BuilderWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage,

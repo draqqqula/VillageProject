@@ -12500,6 +12500,18 @@ PrefabInstance:
       propertyPath: _shoppingZone
       value: 
       objectReference: {fileID: 377306216}
+    - target: {fileID: 6526453028491930590, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: m_Carve
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526453028491930590, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526453028491930590, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: m_CarveOnlyStationary
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8638632888674053106, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: m_Name
       value: Wooden_Gate
@@ -12968,7 +12980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7762858282298559673, guid: 650c9d2acaeb28c45827bbc148b24f63, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.091
       objectReference: {fileID: 0}
     - target: {fileID: 7762858282298559673, guid: 650c9d2acaeb28c45827bbc148b24f63, type: 3}
       propertyPath: m_LocalPosition.z
@@ -17814,6 +17826,10 @@ PrefabInstance:
       value: Villager (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _agent
+      value: 
+      objectReference: {fileID: 957617854}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: _villagerData
       value: 
       objectReference: {fileID: 11400000, guid: a97cd335694464ffd90407fe0336f74c, type: 2}
@@ -21471,6 +21487,11 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!195 &957617854 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 5101881813333376730, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+  m_PrefabInstance: {fileID: 759158302}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &974274364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33198,10 +33219,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4080039908702095607, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4785530286210580575, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -34616,7 +34633,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1548620879013740014, guid: 7be02e863bcb03143857e8fa30a8b6e6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.96
       objectReference: {fileID: 0}
     - target: {fileID: 1548620879013740014, guid: 7be02e863bcb03143857e8fa30a8b6e6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -45104,7 +45121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1548620879013740014, guid: 7be02e863bcb03143857e8fa30a8b6e6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.76
       objectReference: {fileID: 0}
     - target: {fileID: 1548620879013740014, guid: 7be02e863bcb03143857e8fa30a8b6e6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -46211,6 +46228,10 @@ PrefabInstance:
     - target: {fileID: 4785530286210580575, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882480478438838315, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
+      propertyPath: m_Area
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6151611454082138780, guid: 658bea210e138c54d8dce4a96cc7f59a, type: 3}
       propertyPath: _shoppingZone
@@ -47374,7 +47395,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011959546620064136, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6935714135886979317, guid: 2c1b5fdc17e50084da168062c214ec86, type: 3}
       propertyPath: m_LocalPosition.x
@@ -51703,8 +51724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4142fa395e34d3c943f0907018b6be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transform: {fileID: 0}
-  _target: {fileID: 0}
 --- !u!1 &2006612581
 GameObject:
   m_ObjectHideFlags: 0
@@ -55400,6 +55419,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager
       objectReference: {fileID: 0}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _agent
+      value: 
+      objectReference: {fileID: 1824135769954071028}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -55416,6 +55439,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b860fd08d9541ba9dd41f431d274e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!195 &1824135769954071028 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 5101881813333376730, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+  m_PrefabInstance: {fileID: 1824135769954071019}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5666482036480621632
 PrefabInstance:
   m_ObjectHideFlags: 0
