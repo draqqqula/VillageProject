@@ -13,6 +13,9 @@ public class BuilderWorkState : WorkVillagerState
     private int _lastTick = -1;
     private BuildingPlan _plan;
     
+    private bool _isActive = false;
+    private bool _isBuilding = false;
+    
     public BuilderWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage,
         BuildingPlanner buildingPlanner, GameTimer gameTimer)
     {
@@ -25,6 +28,9 @@ public class BuilderWorkState : WorkVillagerState
     
     public override void EnterState()
     {
+        _isActive = true;
+        
+        _buildingPlanner.OnCurrentPlanChanged += OnPlanChanged;
         MoveToBuildingPlace();
     }
 
@@ -36,13 +42,24 @@ public class BuilderWorkState : WorkVillagerState
         _movementHandler.ActivateMovement(OnMovementEnded);
     }
 
+    private void OnPlanChanged(BuildingPlan plan)
+    {
+        _movementHandler.DeactivateMovement();
+        
+        if (_isBuilding) FinishBuilding();
+        MoveToBuildingPlace();
+    }
+
     private void OnMovementEnded(WorkResult result)
     {
         if (result == WorkResult.Success)
         {
             _plan = _buildingPlanner.GetCurrentPlan();
-            _builtTicks = (int)Mathf.Floor(_gameTimer.ConvertHoursToTick(_plan.HoursDuration) * _plan.BuildingProgress);
+            _lastTick = -1;
+            _builtTicks = (int)Mathf.Floor(_gameTimer.ConvertHoursToTick(_plan.HoursDuration) * _plan.BuildingProgress.Value);
             _gameTimer.OnTick += OnTick;
+            
+            _isBuilding = true;
         }
     }
 
@@ -55,12 +72,13 @@ public class BuilderWorkState : WorkVillagerState
 
         float totalTicks = _gameTimer.ConvertHoursToTick(_plan.HoursDuration);
         float progress = _builtTicks / totalTicks;
-        _plan.BuildingProgress = progress;
+        _plan.BuildingProgress.Value = progress;
 
         if (progress >= 1f)
         {
-            _plan.BuildingProgress = 1f;
+            _plan.BuildingProgress.Value = 1f;
             FinishBuilding();
+            MoveToBuildingPlace();
         }
     }
 
@@ -68,24 +86,28 @@ public class BuilderWorkState : WorkVillagerState
     {
         _buildingPlanner.TryCompleteCurrentPlan();
         _gameTimer.OnTick -= OnTick;
-        MoveToBuildingPlace();
+        _plan = null;
+        _isBuilding = false;
     }
     
     public override void ExitState()
     {
-        if (_plan != null)
+        if (_isBuilding)
         {
             _gameTimer.OnTick -= OnTick;
             _plan = null;
-            _builtTicks = -1;
-            _lastTick = -1;
+            _isBuilding = false;
         }
         
+        if (_isActive) _buildingPlanner.OnCurrentPlanChanged -= OnPlanChanged;
         _movementHandler.DeactivateMovement();
+        
+        _isActive = false;
     }
 
     public override void Dispose()
     {
+        if (_isActive) _buildingPlanner.OnCurrentPlanChanged -= OnPlanChanged;
        _movementHandler.DeactivateMovement();
     }
 }

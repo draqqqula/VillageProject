@@ -6,25 +6,35 @@ public class MapIcon : MonoBehaviour
 
     [SerializeField] private GameObject _prefab;
     private Transform _root;
-    private GameObject _instance;
+    protected GameObject _instance;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _root = GetComponentInParent<ParentAnchorSystem>().System.transform.Find(Path);
     }
-
-    private void OnEnable()
+    
+    protected void InstantiateIcon()
     {
         _instance = Instantiate(_prefab, _root);
         _instance.GetComponent<WorldToCanvasPosition>().WorldPosition = transform.position;
     }
 
-    private void OnDisable()
+    protected void DestroyIcon()
     {
         if (_instance == null)
         {
             return;
         }
         Destroy(_instance);
+    }
+    
+    protected virtual void OnEnable()
+    {
+        InstantiateIcon();
+    }
+
+    protected virtual void OnDisable()
+    {
+        DestroyIcon();
     }
 }

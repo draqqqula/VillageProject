@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1714759168762151076
+--- !u!1001 &3616240239240991244
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1074966483338026673, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.55
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1074966483338026673, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
       propertyPath: m_LocalPosition.z
@@ -50,39 +50,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2558085571468816421, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
       propertyPath: _options.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2558085571468816421, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
       propertyPath: '_options.Array.data[0]'
       value: 
-      objectReference: {fileID: 8531158229741635321, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
-    - target: {fileID: 5603848785068465648, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7261226208335841536, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      objectReference: {fileID: 2790990115316247149}
+    - target: {fileID: 2558085571468816421, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+      propertyPath: '_options.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 35f5990ae17131b419c093806a864d8a, type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603848785068465648, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+      propertyPath: _icons.Array.data[0].Icon
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603848785068465648, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+      propertyPath: _icons.Array.data[1].Icon
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8412005407044101625, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+      propertyPath: _team
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8862546195155982014, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
       propertyPath: m_Name
-      value: Archer Tower Preview
+      value: Archer Tower BuildPreview
       objectReference: {fileID: 0}
     - target: {fileID: 9084115816426464623, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 35f5990ae17131b419c093806a864d8a, type: 2}
-    - target: {fileID: 9084115816428469167, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4226481529840161161, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
-    - {fileID: 5603848785068465648, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
-    - {fileID: 7852453036323750667, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
     - {fileID: 7051679656386904011, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+    - {fileID: 7852453036323750667, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+    - {fileID: 5603848785068465648, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
     m_RemovedGameObjects:
     - {fileID: 6084123627870945827, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8862546195155982014, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2790990115316247149}
   m_SourcePrefab: {fileID: 100100000, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+--- !u!1 &5247082352863986866 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8862546195155982014, guid: fc577fa079291bd4a940d345c48f7a56, type: 3}
+  m_PrefabInstance: {fileID: 3616240239240991244}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2790990115316247149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5247082352863986866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 432559648b434e9f8bef5cfd6b4cec29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Description>k__BackingField: "\u0418\u043C\u0435\u0435\u0442 \u043E\u0433\u0440\u0430\u043D\u0438\u0447\u0435\u043D\u043D\u044B\u0439
+    \u0437\u0430\u043F\u0430\u0441 \u0441\u0442\u0440\u0435\u043B, \u043D\u0430\u043D\u043E\u0441\u0438\u0442
+    \u0443\u0440\u043E\u043D \u0432\u0440\u0430\u0433\u0430\u043C \u043F\u043E\u0431\u043B\u0438\u0437\u043E\u0441\u0442\u0438.
+    \u0421\u0442\u0440\u0435\u043B\u044B \u043C\u043E\u0436\u043D\u043E \u043A\u0443\u043F\u0438\u0442\u044C
+    \u0432 \u0446\u0435\u0440\u043A\u0432\u0438."

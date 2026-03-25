@@ -1,4 +1,5 @@
 using System;
+using R3;
 using UnityEngine;
 
 [Serializable]
@@ -8,6 +9,8 @@ public class BuildingData
     [field: SerializeField] public State CurrentState { get; set; }
     
     [field: SerializeField] public Transform EnterPoint { get; private set; }
+    public ReactiveProperty<BuildingPlan> Plan => _currentPlan;
+    private ReactiveProperty<BuildingPlan> _currentPlan = new ReactiveProperty<BuildingPlan>();
     
     public enum State { Wait, Ready, Broken, Building }
 }

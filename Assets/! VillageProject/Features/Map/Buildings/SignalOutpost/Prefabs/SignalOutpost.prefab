@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 192600809439884859}
   - component: {fileID: 2465482060695656421}
   - component: {fileID: 9187088991798956131}
+  - component: {fileID: 6276660892539746912}
   m_Layer: 0
   m_Name: SignalOutpost
   m_TagString: Untagged
@@ -368,6 +369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Data>k__BackingField:
     rid: 601279076003217517
+  _view: {fileID: 3538761379418934446}
   references:
     version: 2
     RefIds:
@@ -377,6 +379,20 @@ MonoBehaviour:
         <Type>k__BackingField: 2
         <CurrentState>k__BackingField: 1
         <EnterPoint>k__BackingField: {fileID: 7075053074409593128}
+--- !u!114 &6276660892539746912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6585943900527090621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b877236815a48e7913810eba7f9ef32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 8881358302732457190, guid: ba0a834b74dde4e95899f39e826d77fe, type: 3}
+  _building: {fileID: 9187088991798956131}
 --- !u!1001 &4149600209917705695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -572,6 +588,11 @@ PrefabInstance:
       addedObject: {fileID: 4150281328019291767}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5026ef9fe5ae7bd4690ff5d87c80b8fc, type: 3}
+--- !u!1 &3538761379418934446 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7173998236604818472, guid: 5026ef9fe5ae7bd4690ff5d87c80b8fc, type: 3}
+  m_PrefabInstance: {fileID: 5950132357867038854}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4771072104918107248 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1199467232054455542, guid: 5026ef9fe5ae7bd4690ff5d87c80b8fc, type: 3}
