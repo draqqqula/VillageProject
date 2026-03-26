@@ -16,6 +16,8 @@ public class BuildingPlanner : MonoBehaviour
     
     private BuildingStorage _storage;
     private DiContainer _container;
+
+    private bool _isPlanPriorityForPlayer = false;
     
     public event Action<BuildingPlan> OnCurrentPlanChanged;
 
@@ -44,7 +46,8 @@ public class BuildingPlanner : MonoBehaviour
         PriorityBuildingPlans.Remove(plan);
         PriorityBuildingPlans.Insert(0, plan);
         TryShowPreview();
-        
+
+        _isPlanPriorityForPlayer = PriorityBuildingPlans.Any(p => p is RepairingPlan);
         OnCurrentPlanChanged?.Invoke(plan);
     }
 
@@ -59,23 +62,16 @@ public class BuildingPlanner : MonoBehaviour
         building.Data.Plan.Value = newPlan;
             
         TryHidePreview();
-        var currentPlan = GetCurrentPlan();
+        var insertIndex = GetInsertPlanIndex(newPlan);
+        PriorityBuildingPlans.Insert(insertIndex, newPlan);
         
-        if (currentPlan is RepairingPlan)
-        {
-            if (PriorityBuildingPlans.Count > 1) PriorityBuildingPlans.Insert(1, newPlan);
-            else PriorityBuildingPlans.Add(newPlan);
-        }
-        else
-        {
-            PriorityBuildingPlans.Insert(0, newPlan);
-            var mapIcon = newPlan.BrokenBuilding.GetComponent<BuildPlanMapIcon>();
-            mapIcon.Activate();
-            OnCurrentPlanChanged?.Invoke(newPlan);
-        }
+        var mapIcon = newPlan.BrokenBuilding.GetComponent<BuildPlanMapIcon>();
+        mapIcon.Activate();
+        
+        if (insertIndex == 0) OnCurrentPlanChanged?.Invoke(newPlan);
         TryShowPreview();
     }
-
+    
     public bool TryCompleteCurrentPlan()
     {
         if (PriorityBuildingPlans.Count == 0)
@@ -107,6 +103,8 @@ public class BuildingPlanner : MonoBehaviour
         _completedBuildingPlans.Add(plan);
         
         GeneratePriorityPlans(NewBuildingPlansLength, false);
+        
+        _isPlanPriorityForPlayer = false;
         OnCurrentPlanChanged?.Invoke(GetCurrentPlan());
     }
     
@@ -144,7 +142,8 @@ public class BuildingPlanner : MonoBehaviour
         {
             if (TryGeneratePriorityPlan(out var plan, remainingBuildingPlans))
             {
-                PriorityBuildingPlans.Add(plan);
+                var insertIndex = GetInsertPlanIndex(plan);
+                PriorityBuildingPlans.Insert(insertIndex, plan);
                 if (plan is NewBuildingPlan newBuildingPlan) InstantiatePreview(newBuildingPlan);
             }
         }
@@ -167,6 +166,24 @@ public class BuildingPlanner : MonoBehaviour
             return true;
         }
         return false;
+    }
+    
+    private int GetInsertPlanIndex(BuildingPlan newPlan)
+    {
+        int insertIndex = 0;
+
+        var lastRepairIndex = PriorityBuildingPlans.FindLastIndex(p => p is RepairingPlan);
+
+        if (newPlan is RepairingPlan)
+        {
+            insertIndex = lastRepairIndex != -1 ? lastRepairIndex + 1 : (_isPlanPriorityForPlayer ? 1 : 0);
+        }
+        else
+        {
+            insertIndex = PriorityBuildingPlans.Count;
+        }
+        
+        return Mathf.Clamp(insertIndex, 0, PriorityBuildingPlans.Count);
     }
 
     private void InstantiatePreview(NewBuildingPlan plan)
