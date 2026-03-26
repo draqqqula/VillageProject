@@ -6,23 +6,16 @@ public class ArcherWorkState : WorkVillagerState
     private NavmeshMovementAgent _navmeshAgent;
 
     private Building _archerTower;
+    private BuildingStorage _storage;
     
     private bool _isInited = false;
     private bool _isOnTower = false;
     
     public ArcherWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage)
     {
-        _archerTower = buildingStorage.Get(BuildingType.ArcherTower, BuildingData.State.Wait);
-        if (_archerTower == null)
-        {
-            Debug.LogWarning($"{_archerTower} is not valid ArcherTower!");
-            return;
-        }
-        
-        _archerTower.Data.CurrentState = BuildingData.State.Ready;
-        
         _navmeshAgent = navmeshAgent;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, _archerTower.Data.EnterPoint.position);
+        _storage = buildingStorage;
+        _movementHandler = new VillagerMovementHandler(navmeshAgent, navmeshAgent.transform.position);
         
         _isInited = true;
     }
@@ -30,6 +23,17 @@ public class ArcherWorkState : WorkVillagerState
     public override void EnterState()
     {
         if (!_isInited) return;
+        
+        _archerTower = _storage.Get(BuildingType.ArcherTower, BuildingData.State.Wait);
+        if (_archerTower == null)
+        {
+            Debug.LogWarning($"{_archerTower} is not valid ArcherTower!");
+            return;
+        }
+        
+        _archerTower.SetReady();
+        
+        _movementHandler.SetTargetPos(_archerTower.Data.EnterPoint.position);
         _movementHandler.ActivateMovement(OnMovementEnded);
     }
 
@@ -54,6 +58,7 @@ public class ArcherWorkState : WorkVillagerState
             _navmeshAgent.enabled = true;
         }
         
+        _archerTower.SetWaiting();
         _movementHandler.DeactivateMovement();
     }
 

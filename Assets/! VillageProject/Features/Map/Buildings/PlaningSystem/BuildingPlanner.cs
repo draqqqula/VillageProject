@@ -8,26 +8,31 @@ using Random = UnityEngine.Random;
 
 public class BuildingPlanner : MonoBehaviour
 {
-    private const int PlansLength = 3;
+    private const int NewBuildingPlansLength = 3;
     
-    [SerializeField] private List<BuildingPlan> _allBuildingPlans;
+    [SerializeField] private List<NewBuildingPlan> _allBuildingPlans;
     private List<BuildingPlan> _completedBuildingPlans = new List<BuildingPlan>();
     public List<BuildingPlan> PriorityBuildingPlans { get; private set; }
     
-    [Inject] private BuildingStorage _storage;
-    [Inject] private DiContainer _container;
+    private BuildingStorage _storage;
+    private DiContainer _container;
     
     public event Action<BuildingPlan> OnCurrentPlanChanged;
 
-    private void Awake()
+    [Inject]
+    private void Construct(DiContainer container, BuildingStorage storage)
     {
+        _container = container;
+        _storage = storage;
+        _storage.OnBuildingBroken += AddBrokenBuildingToPlan;
+        
         PriorityBuildingPlans = new List<BuildingPlan>();
-        GeneratePriorityPlans(PlansLength);
+        GeneratePriorityPlans(NewBuildingPlansLength);
     }
     
     public BuildingPlan GetCurrentPlan()
     {
-        if (PriorityBuildingPlans.Count == 0) GeneratePriorityPlans(PlansLength);
+        if (PriorityBuildingPlans.Count == 0) GeneratePriorityPlans(NewBuildingPlansLength);
         if (PriorityBuildingPlans.Count == 0) return null;
         
         return PriorityBuildingPlans[0];
@@ -35,12 +40,40 @@ public class BuildingPlanner : MonoBehaviour
 
     public void ChangeCurrentPlan(BuildingPlan plan)
     {
-        HidePreview();
+        TryHidePreview();
         PriorityBuildingPlans.Remove(plan);
         PriorityBuildingPlans.Insert(0, plan);
-        ShowPreview();
+        TryShowPreview();
         
         OnCurrentPlanChanged?.Invoke(plan);
+    }
+
+    private void AddBrokenBuildingToPlan(Building building)
+    {
+        if (PriorityBuildingPlans.Any(p => p is RepairingPlan repairingPlan && repairingPlan.BrokenBuilding == building))
+        {
+            return;
+        }
+
+        var newPlan = new RepairingPlan(building.Data.RepairingHours, building);
+        building.Data.Plan.Value = newPlan;
+            
+        TryHidePreview();
+        var currentPlan = GetCurrentPlan();
+        
+        if (currentPlan is RepairingPlan)
+        {
+            if (PriorityBuildingPlans.Count > 1) PriorityBuildingPlans.Insert(1, newPlan);
+            else PriorityBuildingPlans.Add(newPlan);
+        }
+        else
+        {
+            PriorityBuildingPlans.Insert(0, newPlan);
+            var mapIcon = newPlan.BrokenBuilding.GetComponent<BuildPlanMapIcon>();
+            mapIcon.Activate();
+            OnCurrentPlanChanged?.Invoke(newPlan);
+        }
+        TryShowPreview();
     }
 
     public bool TryCompleteCurrentPlan()
@@ -63,28 +96,37 @@ public class BuildingPlanner : MonoBehaviour
     
     private void CompleteCurrentPlan()
     {
-        HidePreview();
+        TryHidePreview();
         
         var plan = PriorityBuildingPlans[0];
         PriorityBuildingPlans.RemoveAt(0);
         
-        Perform(plan);
-        plan.PreviewObject.Data.Plan.Value = null;
+        if (plan is NewBuildingPlan newBuildingPlan) Perform(newBuildingPlan);
+        else if (plan is RepairingPlan repairingPlan) Perform(repairingPlan);
+        
         _completedBuildingPlans.Add(plan);
         
-        GeneratePriorityPlans(PlansLength, false);
+        GeneratePriorityPlans(NewBuildingPlansLength, false);
         OnCurrentPlanChanged?.Invoke(GetCurrentPlan());
     }
     
-    private void Perform(BuildingPlan plan)
+    private void Perform(NewBuildingPlan plan)
     {
+        plan.PreviewObject.Data.Plan.Value = null;
         var slot = plan.BuildingAnchor.GetComponentInChildren<SingleInstance>();
         
-        var building = _container.InstantiatePrefab(plan.BuildingPrefab, slot.transform);
-        _container.InjectGameObject(building);
-        slot.Substitute(building);
+        var building = _container.InstantiatePrefabForComponent<Building>(plan.BuildingPrefab, slot.transform);
+        building.CompleteBuilding();
+        slot.Substitute(building.gameObject);
         _storage.Add(building.GetComponent<Building>());
-    } 
+    }
+
+    private void Perform(RepairingPlan plan)
+    {
+        plan.BrokenBuilding.Data.Plan.Value = null;
+        plan.BrokenBuilding.Health.Amount = plan.BrokenBuilding.Health.MaxHealth;
+        if (plan.BrokenBuilding.TryGetComponent(out GateState gateState)) gateState.Fix();
+    }
     
     private void GeneratePriorityPlans(int maxCounts, bool isNewPlans = true)
     {
@@ -103,10 +145,10 @@ public class BuildingPlanner : MonoBehaviour
             if (TryGeneratePriorityPlan(out var plan, remainingBuildingPlans))
             {
                 PriorityBuildingPlans.Add(plan);
-                InstantiatePreview(plan);
+                if (plan is NewBuildingPlan newBuildingPlan) InstantiatePreview(newBuildingPlan);
             }
         }
-        ShowPreview();
+        TryShowPreview();
     }
 
     private bool TryGeneratePriorityPlan(out BuildingPlan plan, BuildingPlan[] remainingBuildingPlans)
@@ -127,11 +169,12 @@ public class BuildingPlanner : MonoBehaviour
         return false;
     }
 
-    private void InstantiatePreview(BuildingPlan plan)
+    private void InstantiatePreview(NewBuildingPlan plan)
     {
         var slot = plan.BuildingAnchor.GetComponentInChildren<SingleInstance>();
         plan.PreviewObject = _container.InstantiatePrefabForComponent<Building>(plan.BuildingPreviewPrefab, slot.transform);
         plan.PreviewObject.Data.Plan.Value = plan;
+        plan.PreviewObject.StartBuilding();
         slot.Substitute(plan.PreviewObject.gameObject);
             
         var mapIcon = plan.PreviewObject.GetComponent<BuildPlanMapIcon>();
@@ -139,35 +182,69 @@ public class BuildingPlanner : MonoBehaviour
         plan.PreviewObject.DeactivateView();
     }
     
-    private void ShowPreview()
+    private bool TryShowPreview()
     {
         var plan = GetCurrentPlan();
 
-        if (plan.PreviewObject != null)
+        if (plan is NewBuildingPlan newBuildingPlan && newBuildingPlan.PreviewObject != null)
         {
-            plan.PreviewObject.ActivateView();
+            newBuildingPlan.PreviewObject.ActivateView();
+            return true;
         }
+        return false;
     }
     
-    private void HidePreview()
+    private bool TryHidePreview()
     {
         var plan = GetCurrentPlan();
-        if (plan.PreviewObject != null)
+        if (plan is NewBuildingPlan newBuildingPlan && newBuildingPlan.PreviewObject != null)
         {
-            plan.PreviewObject.DeactivateView();
+            newBuildingPlan.PreviewObject.DeactivateView();
+            return true;
         }
+        return false;
     }
 }
 
 [System.Serializable]
-public class BuildingPlan
+public abstract class BuildingPlan
+{
+    [field: SerializeField] public int HoursDuration {get; private set;}
+    public ReactiveProperty<float> BuildingProgress => _buildingProgress;
+    private ReactiveProperty<float> _buildingProgress = new ReactiveProperty<float>(0);
+
+    public BuildingPlan(int hours)
+    {
+        HoursDuration = hours;
+    }
+}
+
+[System.Serializable]
+public class NewBuildingPlan : BuildingPlan
 {
     [field: SerializeField] public Anchor BuildingAnchor {get; private set;}
     [field: SerializeField] public Building BuildingPrefab {get; private set;}
     [field: SerializeField] public Building BuildingPreviewPrefab {get; private set;}
     public Building PreviewObject {get; set;}
+
+    public NewBuildingPlan() : this(0)
+    {
+        
+    }
     
-    [field: SerializeField] public int HoursDuration {get; private set;}
-    public ReactiveProperty<float> BuildingProgress => _buildingProgress;
-    private ReactiveProperty<float> _buildingProgress = new ReactiveProperty<float>(0);
+    public NewBuildingPlan(int hours) : base(hours)
+    {
+        
+    }
+}
+
+[System.Serializable]
+public class RepairingPlan : BuildingPlan
+{
+    public Building BrokenBuilding {get; private set;}
+
+    public RepairingPlan(int hours, Building brokenBuilding) : base(hours)
+    {
+        BrokenBuilding = brokenBuilding;
+    }
 }

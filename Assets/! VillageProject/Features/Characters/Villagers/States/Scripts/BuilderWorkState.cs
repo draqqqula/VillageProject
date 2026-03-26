@@ -38,15 +38,21 @@ public class BuilderWorkState : WorkVillagerState
     {
         var plan = _buildingPlanner.GetCurrentPlan();
         
-        _movementHandler.SetTargetPos(plan.PreviewObject.Data.EnterPoint.position);
+        Vector3 enterPoint;
+        if (plan is NewBuildingPlan newBuildingPlan) enterPoint = newBuildingPlan.PreviewObject.Data.EnterPoint.position;
+        else enterPoint = (plan as RepairingPlan).BrokenBuilding.Data.EnterPoint.position;
+        
+        _movementHandler.SetTargetPos(enterPoint);
         _movementHandler.ActivateMovement(OnMovementEnded);
     }
 
     private void OnPlanChanged(BuildingPlan plan)
     {
-        _movementHandler.DeactivateMovement();
+        if (_plan == plan) return;
         
+        _movementHandler.DeactivateMovement();
         if (_isBuilding) FinishBuilding();
+        
         MoveToBuildingPlace();
     }
 

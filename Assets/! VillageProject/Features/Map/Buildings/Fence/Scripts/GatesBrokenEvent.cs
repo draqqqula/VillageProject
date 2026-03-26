@@ -16,7 +16,7 @@ public class GatesBrokenEvent : MonoBehaviour
 
     private void HandleDamageDealt(float amount)
     {
-        if (_health.Amount > 0 && _isBrokenCached)
+        if (Mathf.Approximately(_health.Amount, _health.MaxHealth) && _isBrokenCached)
         {
             OnFixed.Invoke();
             _isBrokenCached = false;

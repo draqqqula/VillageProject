@@ -1230,16 +1230,16 @@ GameObject:
   - component: {fileID: 2806308279671874773}
   - component: {fileID: 7192404346196671724}
   - component: {fileID: 9212047837172498996}
-  - component: {fileID: 5999643507407786837}
   - component: {fileID: 5585753674597020949}
   - component: {fileID: 3468123147850131063}
   - component: {fileID: 1384682311671238909}
-  - component: {fileID: 689720355751184840}
   - component: {fileID: 1078042075965007534}
   - component: {fileID: 6151611454082138780}
   - component: {fileID: 6471504788037814132}
   - component: {fileID: 7656479964756077699}
   - component: {fileID: 2335694269204215771}
+  - component: {fileID: 3232733873806602199}
+  - component: {fileID: 7129027094320238723}
   m_Layer: 7
   m_Name: Wooden_Gate
   m_TagString: Untagged
@@ -1329,7 +1329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _options:
-  - {fileID: 5999643507407786837}
+  - {fileID: 7129027094320238723}
   <Name>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:404486e00368dd346b943b0115d443e2
@@ -1342,21 +1342,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &5999643507407786837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8638632888674053106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc7eb8f5aafdcad4c82a7df260d4e06d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _health: {fileID: 2705789490830106555}
-  _price: {fileID: 11400000, guid: 34c47749c6f195745a082c05010d9182, type: 2}
-  _gateState: {fileID: 7192404346196671724}
 --- !u!114 &5585753674597020949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1449,19 +1434,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tracker: {fileID: 5585753674597020949}
---- !u!114 &689720355751184840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8638632888674053106}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e023dd4e3000c8b42b913ca2f9bc3d13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _prefab: {fileID: 6545047646235738418, guid: e6c98a096da0ca7449bf5db2a5b4e1bf, type: 3}
 --- !u!114 &1078042075965007534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1477,18 +1449,6 @@ MonoBehaviour:
   OnBroken:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 689720355751184840}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 3300176977317854571}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -1516,18 +1476,6 @@ MonoBehaviour:
   OnFixed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 689720355751184840}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3300176977317854571}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -1610,6 +1558,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Data>k__BackingField:
     rid: 601279076003217511
+  _view: {fileID: 8037683987502864235}
+  <Health>k__BackingField: {fileID: 2705789490830106555}
   references:
     version: 2
     RefIds:
@@ -1618,7 +1568,37 @@ MonoBehaviour:
       data:
         <Type>k__BackingField: 0
         <CurrentState>k__BackingField: 1
+        <RepairingHours>k__BackingField: 3
         <EnterPoint>k__BackingField: {fileID: 2157348303118233034}
+--- !u!114 &3232733873806602199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638632888674053106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b877236815a48e7913810eba7f9ef32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 8881358302732457190, guid: ca3aa0ebffe3d46b48377e6cf4a73081, type: 3}
+  _building: {fileID: 2335694269204215771}
+--- !u!114 &7129027094320238723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638632888674053106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 432559648b434e9f8bef5cfd6b4cec29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Description>k__BackingField: "\u0412\u043E\u0440\u043E\u0442\u0430 - \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u044F\u044F
+    \u043F\u0440\u0435\u0433\u0440\u0430\u0434\u0430 \u0434\u043B\u044F \u043C\u043E\u043D\u0441\u0442\u0440\u043E\u0432
+    \u043D\u0430 \u043F\u0443\u0442\u0438 \u043A \u0436\u0438\u0442\u0435\u043B\u044F\u043C."
 --- !u!1001 &820771011363523468
 PrefabInstance:
   m_ObjectHideFlags: 0

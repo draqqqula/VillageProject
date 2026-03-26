@@ -7,12 +7,13 @@ public class BuildingData
 {
     [field: SerializeField] public BuildingType Type { get; private set; }
     [field: SerializeField] public State CurrentState { get; set; }
+    [field: SerializeField] public int RepairingHours { get; private set; }
     
     [field: SerializeField] public Transform EnterPoint { get; private set; }
     public ReactiveProperty<BuildingPlan> Plan => _currentPlan;
     private ReactiveProperty<BuildingPlan> _currentPlan = new ReactiveProperty<BuildingPlan>();
     
-    public enum State { Wait, Ready, Broken, Building }
+    public enum State { Wait, Ready, Broken, Build }
 }
 
 [Serializable]
