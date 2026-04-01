@@ -19,12 +19,12 @@ public class VillagerStateMachine : IDisposable
     private Transform _villageCenter;
     private GameTimer _gameTimer;
 
-    public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, Animator animator,
-        BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, Transform villageCenter, GameTimer gameTimer)
+    public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, 
+        SkinReferencesResolver skinReferencesResolver, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, Transform villageCenter,
+        GameTimer gameTimer)
     {
         _navmeshAgent = navmeshAgent;
         _searchForTarget = searchForTarget;
-        _animator = animator;
         _stateFactory = new VillagerStateFactory();
         
         _buildingStorage = buildingStorage;
@@ -33,11 +33,12 @@ public class VillagerStateMachine : IDisposable
         _villageCenter = villageCenter;
         _gameTimer = gameTimer;
         
-        SetStates(villagerData);
+        SetStates(villagerData, skinReferencesResolver);
     }
 
-    public void SetStates(VillagerData villagerData)
+    public void SetStates(VillagerData villagerData, SkinReferencesResolver skinReferencesResolver)
     {
+        _animator = skinReferencesResolver.Animator;
         _stateFactory.SetParams(_navmeshAgent, villagerData,  _searchForTarget, _animator, _buildingStorage, _buildingPlanner,
             _villageCenter, _gameTimer);
         _states.Clear();

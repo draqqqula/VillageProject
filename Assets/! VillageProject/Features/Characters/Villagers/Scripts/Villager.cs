@@ -1,4 +1,5 @@
 using System;
+using R3;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -14,20 +15,44 @@ public class Villager : MonoBehaviour
     private VillagerStateMachine _stateMachine;
     
     [SerializeField] private SearchForTarget _searchForTarget;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private VillagersSkinsInfo _villagersSkinsInfo;
+    [SerializeField] private Transform _viewParent;
+    private GameObject _currentSkin;
+    private SkinChanger _skinChanger;
+    
+    public ReadOnlyReactiveProperty<SkinReferencesResolver> SkinReferencesResolver => _skinReferencesResolver;
+    private ReactiveProperty<SkinReferencesResolver> _skinReferencesResolver;
     
     [Inject] private BuildingStorage _buildingStorage;
     [Inject] private BuildingPlanner _buildingPlanner;
-
+    [Inject] private DiContainer _diContainer;
+    
     public void Init(HomeService homeService, Transform villagerCenter, GameTimer gameTimer)
     {
         VillagerData = ScriptableObject.Instantiate(_villagerData);
         
+        var skinsInfoInstance = ScriptableObject.Instantiate(_villagersSkinsInfo);
+        _skinChanger = new SkinChanger(skinsInfoInstance, _diContainer);
+        ChangeSkin();
+        
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
         
-        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _searchForTarget, _animator, _buildingStorage, _buildingPlanner,
-            villagerCenter, gameTimer);
+        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _searchForTarget, _skinReferencesResolver.Value,
+            _buildingStorage, _buildingPlanner, villagerCenter, gameTimer);
+    }
+
+    private void ChangeSkin()
+    {
+        if (_currentSkin != null) Destroy(_currentSkin);
+        
+        var newSkin = _skinChanger.CreateSkin(_viewParent, VillagerData.Gender, VillagerData.Profession.Type);
+        var skinResolver = newSkin.GetComponent<SkinReferencesResolver>();
+
+        if (_skinReferencesResolver == null) _skinReferencesResolver = new ReactiveProperty<SkinReferencesResolver>(skinResolver);
+        else _skinReferencesResolver.Value = skinResolver;
+        
+        _currentSkin = newSkin;
     }
 
     private void Update()
@@ -48,8 +73,11 @@ public class Villager : MonoBehaviour
 
     public void SwitchProfession(ProfessionType profession)
     {
+        Debug.Log($"Villager {gameObject.name} profession change to {profession}");
         VillagerData.Profession = new Profession() {Type = profession};
-        _stateMachine.SetStates(VillagerData);
+        ChangeSkin();
+        
+        _stateMachine.SetStates(VillagerData, _skinReferencesResolver.Value);
         _stateMachine.UpdateCurrentState(VillagerData.ActivityType);
         Debug.Log($"Villager {gameObject.name} profession change to {profession}");
     }

@@ -77,6 +77,8 @@ public class ProfessionMenu : MonoBehaviour
         
         ProfessionType? prevProfession = CurrentProfession.CurrentValue;
         _currentProfession.Value = professionInfo.ProfessionType;
+                
+        Debug.Log("Change profession in " + _currentProfession.Value);
         
         _mainButton.Text.text = professionInfo.RussianName + " v";
         UpdateChoosingButtons(prevProfession, professionInfo);
