@@ -12,14 +12,12 @@ public class ProfessionController : MonoBehaviour
     
     public void ChangeProfession(string villagerKey, ProfessionType professionType, bool isUpdateView = true)
     {
-        Debug.Log("Try find villager profession!");
         var villager = _villagerSystem.GetVillager(villagerKey);
         if (villager != null) ChangeVillager(villager, professionType, isUpdateView);
     }
 
     public void ChangeVillager(Villager villager, ProfessionType professionType, bool isUpdateView = true)
     {
-        Debug.Log("Try switching profession!");
         if (villager.VillagerData.Profession.Type == professionType) return;
         
         villager.SwitchProfession(professionType);

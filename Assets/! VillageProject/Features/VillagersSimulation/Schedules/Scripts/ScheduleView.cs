@@ -88,7 +88,6 @@ public class ScheduleView : MonoBehaviour
 
     private void InvokeProfessionChanged(string villagerKey, ProfessionType profession)
     {
-        Debug.Log("Invoke changing profession in shedule view!");
         OnProfessionChanged?.Invoke(villagerKey, profession);
     }
 
