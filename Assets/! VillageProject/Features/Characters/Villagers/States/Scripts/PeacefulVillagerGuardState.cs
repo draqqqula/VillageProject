@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 
@@ -21,7 +23,7 @@ public sealed class PeacefulVillagerGuardState : GuardVillagerState
         
         _villageCenter = villageCenter;
         _navmeshAgent = navmeshAgent;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, _villagerData.HomePoint.DoorPoint.position);
+        _movementHandler = new VillagerMovementHandler(navmeshAgent);
     }
     
     public override void EnterState()
@@ -34,8 +36,7 @@ public sealed class PeacefulVillagerGuardState : GuardVillagerState
     
     private void MoveToHome()
     {
-        _movementHandler.SetTargetPos(_villagerData.HomePoint.DoorPoint.position);
-        _movementHandler.ActivateMovement(OnHomeReached);
+        _movementHandler.ActivateMovement(_villagerData.HomePoint.DoorPoint.position, OnHomeReached);
     }
 
     private void MoveToRandomPoint()
@@ -76,7 +77,7 @@ public sealed class PeacefulVillagerGuardState : GuardVillagerState
         _coroutine = null;
     }
 
-    public override void ExitState()
+    public override async UniTask ExitState(CancellationToken token)
     {
         _movementHandler.DeactivateMovement();
         if (_coroutine != null)

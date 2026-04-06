@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,7 +10,6 @@ public class VillagerStateMachine : IDisposable
     public VillagerState CurrentState { get; private set; }
     private NavmeshMovementAgent _navmeshAgent;
     private SearchForTarget _searchForTarget;
-    private Animator _animator;
 
     private Dictionary<ActivityType, VillagerState> _states = new Dictionary<ActivityType, VillagerState>();
     
@@ -38,8 +39,7 @@ public class VillagerStateMachine : IDisposable
 
     public void SetStates(VillagerData villagerData, SkinReferencesResolver skinReferencesResolver)
     {
-        _animator = skinReferencesResolver.Animator;
-        _stateFactory.SetParams(_navmeshAgent, villagerData,  _searchForTarget, _animator, _buildingStorage, _buildingPlanner,
+        _stateFactory.SetParams(_navmeshAgent, villagerData, _searchForTarget, skinReferencesResolver, _buildingStorage, _buildingPlanner,
             _villageCenter, _gameTimer);
         _states.Clear();
         
@@ -49,11 +49,24 @@ public class VillagerStateMachine : IDisposable
         _states.Add(ActivityType.Guard, _stateFactory.CreateGuardState());
     }
 
-    public void UpdateCurrentState(ActivityType activityType)
+    public async UniTask UpdateCurrentState(ActivityType activityType, CancellationToken token)
     {
-        CurrentState?.ExitState();
+        await ExitCurrentState(token);
         CurrentState = _states[activityType];
         CurrentState.EnterState();
+    }
+
+    public async UniTask ExitCurrentState(CancellationToken token)
+    {
+        try
+        {
+            if (CurrentState != null) await CurrentState.ExitState(token);
+            CurrentState = null;
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.LogWarning(e.Message);
+        }
     }
 
     public void Update()

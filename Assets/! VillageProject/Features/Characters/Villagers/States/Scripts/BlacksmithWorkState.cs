@@ -1,30 +1,42 @@
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+
 public class BlacksmithWorkState : WorkVillagerState
 {
-    private VillagerMovementHandler _movementHandler;
+    private Transform target;
     
-    public BlacksmithWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage)
+    private VillagerTransformHandler _transformHandler;
+    private SkinReferencesResolver _skinReferencesResolver;
+    
+    public BlacksmithWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
+        Profession profession, BuildingStorage buildingStorage)
     {
+        _skinReferencesResolver = skinReferencesResolver;
         var blacksmith = buildingStorage.Get(BuildingType.Blacksmith);
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, blacksmith.Data.EnterPoint.position);
+        target = blacksmith.Data.EnterPoint;
+        
+        _transformHandler = new VillagerTransformHandler(navmeshAgent);
     }
     
     public override void EnterState()
     {
-        _movementHandler.ActivateMovement(OnMovementEnded);
+        _transformHandler.ActivateMovementWithRotation(target, 2, OnPointReached);
     }
 
-    private void OnMovementEnded(WorkResult result)
+    private void OnPointReached()
     {
-        
+        _skinReferencesResolver.Animator.SetBool("Work", true);
     }
 
-    public override void ExitState()
+    public override async UniTask ExitState(CancellationToken token)
     {
-        _movementHandler.DeactivateMovement();
+        _transformHandler.DeactivateMovement();
+        await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
     }
-
+    
     public override void Dispose()
     {
-        _movementHandler.Dispose();
+        _transformHandler.Dispose();
     }
 }

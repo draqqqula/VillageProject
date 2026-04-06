@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -16,12 +18,16 @@ public class DefenderWorkState : WorkVillagerState
     private Transform _villageCenter;
     private Coroutine _coroutine;
     
-    public DefenderWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, Transform villageCenter)
+    private SkinReferencesResolver _skinReferencesResolver;
+    
+    public DefenderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
+        Profession profession, Transform villageCenter)
     {
+        _skinReferencesResolver = skinReferencesResolver;
         _villageCenter = villageCenter;
         
         _navmeshAgent = navmeshAgent;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, _villageCenter.position);
+        _movementHandler = new VillagerMovementHandler(navmeshAgent);
     }
     
     public override void EnterState()
@@ -37,12 +43,15 @@ public class DefenderWorkState : WorkVillagerState
 
     private IEnumerator StandRoutine(Action callback)
     {
+        _skinReferencesResolver.Animator.SetBool("Work", true);
         yield return new WaitForSeconds(StandDuration);
+        _skinReferencesResolver.Animator.SetBool("Work", false);
+        
         callback?.Invoke();
         _coroutine = null;
     }
 
-    public override void ExitState()
+    public override async UniTask ExitState(CancellationToken token)
     {
         _movementHandler.DeactivateMovement();
         
@@ -50,6 +59,7 @@ public class DefenderWorkState : WorkVillagerState
         {
             _navmeshAgent.StopCoroutine(_coroutine);
             _coroutine = null;
+            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         }
     }
     
@@ -61,5 +71,6 @@ public class DefenderWorkState : WorkVillagerState
     public override void Dispose()
     {
        _movementHandler.Dispose();
+       base.Dispose();
     }
 }

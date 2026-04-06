@@ -118,6 +118,8 @@ GameObject:
   - component: {fileID: 8032371046697938641}
   - component: {fileID: 4124658664037177442}
   - component: {fileID: 7553169113000571653}
+  - component: {fileID: 1669074080113774880}
+  - component: {fileID: 4889724845115092532}
   m_Layer: 0
   m_Name: Villager
   m_TagString: Untagged
@@ -175,10 +177,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WorkCompleted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4889724845115092532}
+        m_TargetAssemblyTypeName: WorkerSwitcher`1[[MovementWorkerBase, Assembly-CSharp
+        m_MethodName: HandleWorkCompleted
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2700721286470927998}
+          m_ObjectArgumentAssemblyTypeName: MovementWorkerBase, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   WorkAssigned:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4889724845115092532}
+        m_TargetAssemblyTypeName: WorkerSwitcher`1[[MovementWorkerBase, Assembly-CSharp
+        m_MethodName: HandleWorkAssigned
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2700721286470927998}
+          m_ObjectArgumentAssemblyTypeName: MovementWorkerBase, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _navMeshAgent: {fileID: 5101881813333376730}
   _raycastHeight: 1
   _speed: {fileID: 1738121367800785482}
@@ -313,6 +339,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _teamMember: {fileID: 1998849619901002287}
+--- !u!114 &1669074080113774880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176552873163846531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0ecf5e4a735264ba3d66a777625661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movementSwitcher: {fileID: 4889724845115092532}
+  _movementAnimator: {fileID: 0}
+  _maxVelocity: 2
+  _variableName: Velocity
+--- !u!114 &4889724845115092532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176552873163846531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e207dc9a8da4ac54188ea813d5b8f479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnNeutralEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNeutralExit:
+    m_PersistentCalls:
+      m_Calls: []
+  _workers:
+  - {fileID: 2700721286470927998}
 --- !u!1 &8350947445294955013
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,6 +423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animationWindows:
   - {fileID: 11400000, guid: 891ec3490c9f93a44a73dc02bfe5350e, type: 2}
+  - {fileID: 11400000, guid: 9e8a0402b7da3464fb9f8c7ecce17441, type: 2}
 --- !u!114 &7719765255521397215
 MonoBehaviour:
   m_ObjectHideFlags: 0

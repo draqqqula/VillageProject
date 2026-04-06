@@ -1,12 +1,17 @@
 using System;
+using System.Threading;
 using R3;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using Cysharp.Threading.Tasks;
 
 [RequireComponent(typeof(NavmeshMovementAgent))]
+[RequireComponent(typeof(VelocityToAnimation))]
 public class Villager : MonoBehaviour
 {
+    private static readonly int PROFESSION = Animator.StringToHash("Profession");
+    
     [SerializeField] private VillagerData _villagerData;
     [SerializeField] private ActivityType _currentActivity;
     public VillagerData VillagerData {get; private set;}
@@ -34,6 +39,12 @@ public class Villager : MonoBehaviour
         var skinsInfoInstance = ScriptableObject.Instantiate(_villagersSkinsInfo);
         _skinChanger = new SkinChanger(skinsInfoInstance, _diContainer);
         ChangeSkin();
+        
+        _skinReferencesResolver.Value.Animator.SetInteger(PROFESSION, (int)VillagerData.Profession.Type);
+        if (TryGetComponent(out VelocityToAnimation velocityToAnimation))
+        {
+            velocityToAnimation.SetReferencesResolver(_skinReferencesResolver);
+        }
         
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
@@ -64,21 +75,29 @@ public class Villager : MonoBehaviour
     {
         if (VillagerData.ActivityType == activity) return;
         
-        _stateMachine.UpdateCurrentState(activity);
+        _ = _stateMachine.UpdateCurrentState(activity, gameObject.GetCancellationTokenOnDestroy());
         
-        _currentActivity = _stateMachine.CurrentState.ActivityType;
+        _currentActivity = activity;
         VillagerData.ActivityType = _currentActivity;
         Debug.Log($"Villager {gameObject.name} change to {activity}");
     }
 
     public void SwitchProfession(ProfessionType profession)
     {
+        _ = SwitchProfession(profession, gameObject.GetCancellationTokenOnDestroy());
+    }
+
+    private async UniTask SwitchProfession(ProfessionType profession, CancellationToken token)
+    {
+        await _stateMachine.ExitCurrentState(token);
+        
         Debug.Log($"Villager {gameObject.name} profession change to {profession}");
         VillagerData.Profession = new Profession() {Type = profession};
         ChangeSkin();
         
+        _skinReferencesResolver.Value.Animator.SetInteger(PROFESSION, (int)profession);
         _stateMachine.SetStates(VillagerData, _skinReferencesResolver.Value);
-        _stateMachine.UpdateCurrentState(VillagerData.ActivityType);
+        _ = _stateMachine.UpdateCurrentState(VillagerData.ActivityType, gameObject.GetCancellationTokenOnDestroy());
         Debug.Log($"Villager {gameObject.name} profession change to {profession}");
     }
 

@@ -1,3 +1,5 @@
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableState
@@ -19,7 +21,7 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
         _animator = animator;
         
         _navmeshAgent = navmeshAgent;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, navmeshAgent.transform.position);
+        _movementHandler = new VillagerMovementHandler(navmeshAgent);
     }
     
     public override void EnterState()
@@ -30,8 +32,7 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     private void ActivateMovement()
     {
         _prevPos = _searchForTarget.MainTarget.transform.position;
-        _movementHandler.SetTargetPos(_prevPos);
-        _movementHandler.ActivateMovement();
+        _movementHandler.ActivateMovement(_prevPos);
     }
     
     public void Update()
@@ -44,7 +45,7 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
         }
     }
 
-    public override void ExitState()
+    public override async UniTask ExitState(CancellationToken token)
     {
         _movementHandler.DeactivateMovement();
         _animator.ResetTrigger("Attack");

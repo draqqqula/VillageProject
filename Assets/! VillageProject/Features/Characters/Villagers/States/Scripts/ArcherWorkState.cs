@@ -1,9 +1,13 @@
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ArcherWorkState : WorkVillagerState
 {
     private VillagerMovementHandler _movementHandler;
     private NavmeshMovementAgent _navmeshAgent;
+    
+    private SkinReferencesResolver _skinReferencesResolver;
 
     private Building _archerTower;
     private BuildingStorage _storage;
@@ -11,12 +15,14 @@ public class ArcherWorkState : WorkVillagerState
     private bool _isInited = false;
     private bool _isOnTower = false;
     
-    public ArcherWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage)
+    public ArcherWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Profession profession,
+        BuildingStorage buildingStorage)
     {
         _navmeshAgent = navmeshAgent;
         _storage = buildingStorage;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, navmeshAgent.transform.position);
+        _skinReferencesResolver = skinReferencesResolver;
         
+        _movementHandler = new VillagerMovementHandler(navmeshAgent);
         _isInited = true;
     }
     
@@ -31,10 +37,10 @@ public class ArcherWorkState : WorkVillagerState
             return;
         }
         
+        Debug.Log("Found ArcherTower!");
         _archerTower.SetReady();
-        
-        _movementHandler.SetTargetPos(_archerTower.Data.EnterPoint.position);
-        _movementHandler.ActivateMovement(OnMovementEnded);
+        Debug.Log("Start Movement!");
+        _movementHandler.ActivateMovement(_archerTower.Data.EnterPoint.position, OnMovementEnded);
     }
 
     private void OnMovementEnded(WorkResult result)
@@ -44,10 +50,11 @@ public class ArcherWorkState : WorkVillagerState
         var archerPoint = (_archerTower.Data as ArcherTowerData).ArcherPoint;
         _navmeshAgent.enabled = false;
         _navmeshAgent.transform.position = archerPoint.position;
+        _skinReferencesResolver.Animator.SetBool("Work", true);
         _isOnTower = true;
     }
 
-    public override void ExitState()
+    public override async UniTask ExitState(CancellationToken token)
     {
         if (!_isInited) return;
 
@@ -60,6 +67,7 @@ public class ArcherWorkState : WorkVillagerState
         
         _archerTower.SetWaiting();
         _movementHandler.DeactivateMovement();
+        await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
     }
 
     public override void Dispose()

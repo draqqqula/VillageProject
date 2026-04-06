@@ -1,28 +1,38 @@
+using System;
 using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BuilderWorkState : WorkVillagerState
 {
     private BuildingPlanner _buildingPlanner;
     private BuildingStorage _buildingStorage;
     
-    private VillagerMovementHandler _movementHandler;
+    private NavmeshMovementAgent _navMeshAgent;
+    private VillagerTransformHandler _movementHandler;
     private GameTimer _gameTimer;
     
     private int _builtTicks;
     private int _lastTick = -1;
     private BuildingPlan _plan;
     
+    private SkinReferencesResolver _skinReferencesResolver;
+    
     private bool _isActive = false;
     private bool _isBuilding = false;
     
-    public BuilderWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage,
-        BuildingPlanner buildingPlanner, GameTimer gameTimer)
+    public BuilderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
+        Profession profession, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, GameTimer gameTimer)
     {
+        _skinReferencesResolver = skinReferencesResolver;
+        
         _buildingPlanner = buildingPlanner;
         _buildingStorage = buildingStorage;
         
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, navmeshAgent.transform.position);
+        _navMeshAgent = navmeshAgent;
+        _movementHandler = new VillagerTransformHandler(navmeshAgent);
         _gameTimer = gameTimer;
     }
     
@@ -38,12 +48,11 @@ public class BuilderWorkState : WorkVillagerState
     {
         var plan = _buildingPlanner.GetCurrentPlan();
         
-        Vector3 enterPoint;
-        if (plan is NewBuildingPlan newBuildingPlan) enterPoint = newBuildingPlan.PreviewObject.Data.EnterPoint.position;
-        else enterPoint = (plan as RepairingPlan).BrokenBuilding.Data.EnterPoint.position;
+        Transform enterPoint;
+        if (plan is NewBuildingPlan newBuildingPlan) enterPoint = newBuildingPlan.PreviewObject.Data.EnterPoint;
+        else enterPoint = (plan as RepairingPlan).BrokenBuilding.Data.EnterPoint;
         
-        _movementHandler.SetTargetPos(enterPoint);
-        _movementHandler.ActivateMovement(OnMovementEnded);
+        _movementHandler.ActivateMovementWithRotation(enterPoint, 2f, OnReachedPoint);
     }
 
     private void OnPlanChanged(BuildingPlan plan)
@@ -51,22 +60,22 @@ public class BuilderWorkState : WorkVillagerState
         if (_plan == plan) return;
         
         _movementHandler.DeactivateMovement();
-        if (_isBuilding) FinishBuilding();
-        
-        MoveToBuildingPlace();
+        if (_isBuilding && !_skinReferencesResolver.AnimatorHandler.IsTransitioning)
+        {
+            _ = FinishBuilding(_navMeshAgent.GetCancellationTokenOnDestroy(), MoveToBuildingPlace);
+        }
+        else if (!_isBuilding) MoveToBuildingPlace();
     }
 
-    private void OnMovementEnded(WorkResult result)
+    private void OnReachedPoint()
     {
-        if (result == WorkResult.Success)
-        {
-            _plan = _buildingPlanner.GetCurrentPlan();
-            _lastTick = -1;
-            _builtTicks = (int)Mathf.Floor(_gameTimer.ConvertHoursToTick(_plan.HoursDuration) * _plan.BuildingProgress.Value);
-            _gameTimer.OnTick += OnTick;
-            
-            _isBuilding = true;
-        }
+        _plan = _buildingPlanner.GetCurrentPlan();
+        _lastTick = -1;
+        _builtTicks = (int)Mathf.Floor(_gameTimer.ConvertHoursToTick(_plan.HoursDuration) * _plan.BuildingProgress.Value);
+        _gameTimer.OnTick += OnTick;
+        
+        _skinReferencesResolver.Animator.SetBool("Work", true);
+        _isBuilding = true;
     }
 
     private void OnTick(int currentTick)
@@ -83,32 +92,38 @@ public class BuilderWorkState : WorkVillagerState
         if (progress >= 1f)
         {
             _plan.BuildingProgress.Value = 1f;
-            FinishBuilding();
-            MoveToBuildingPlace();
+
+            if (!_skinReferencesResolver.AnimatorHandler.IsTransitioning)
+            {
+                _ = FinishBuilding(_navMeshAgent.GetCancellationTokenOnDestroy(), MoveToBuildingPlace);
+            }
         }
     }
 
-    private void FinishBuilding()
+    private async UniTask FinishBuilding(CancellationToken token, Action callback = null)
     {
         _buildingPlanner.TryCompleteCurrentPlan();
         _gameTimer.OnTick -= OnTick;
         _plan = null;
+        
+        await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         _isBuilding = false;
+        callback?.Invoke();
     }
     
-    public override void ExitState()
+    public override async UniTask ExitState(CancellationToken token)
     {
+        if (_isActive) _buildingPlanner.OnCurrentPlanChanged -= OnPlanChanged;
+        _movementHandler.DeactivateMovement();
+        _isActive = false;
+        
         if (_isBuilding)
         {
             _gameTimer.OnTick -= OnTick;
             _plan = null;
             _isBuilding = false;
+            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         }
-        
-        if (_isActive) _buildingPlanner.OnCurrentPlanChanged -= OnPlanChanged;
-        _movementHandler.DeactivateMovement();
-        
-        _isActive = false;
     }
 
     public override void Dispose()

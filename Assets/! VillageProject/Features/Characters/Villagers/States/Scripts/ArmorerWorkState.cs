@@ -1,26 +1,38 @@
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+
 public class ArmorerWorkState : WorkVillagerState
 {
-    private VillagerMovementHandler _movementHandler;
+    private Transform target;
     
-    public ArmorerWorkState(NavmeshMovementAgent navmeshAgent, Profession profession, BuildingStorage buildingStorage)
+    private VillagerTransformHandler _movementHandler;
+    private SkinReferencesResolver _skinReferencesResolver;
+    
+    public ArmorerWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
+        Profession profession, BuildingStorage buildingStorage)
     {
+        _skinReferencesResolver = skinReferencesResolver;
         var hospital = buildingStorage.Get(BuildingType.Hospital);
-        _movementHandler = new VillagerMovementHandler(navmeshAgent, hospital.Data.EnterPoint.position);
+        target = hospital.Data.EnterPoint;
+        
+        _movementHandler = new VillagerTransformHandler(navmeshAgent);
     }
     
     public override void EnterState()
     {
-        _movementHandler.ActivateMovement(OnMovementEnded);
+        _movementHandler.ActivateMovementWithRotation(target, 2, OnPointReached);
     }
 
-    private void OnMovementEnded(WorkResult result)
+    private void OnPointReached()
     {
-        
+        _skinReferencesResolver.Animator.SetBool("Work", true);
     }
 
-    public override void ExitState()
+    public override async UniTask ExitState(CancellationToken token)
     {
         _movementHandler.DeactivateMovement();
+        await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
     }
 
     public override void Dispose()

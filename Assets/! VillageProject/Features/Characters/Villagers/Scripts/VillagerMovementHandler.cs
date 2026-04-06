@@ -12,20 +12,14 @@ public class VillagerMovementHandler : IDisposable
     private IWorkEventSource<WorkResult> _source; 
     private Action<WorkResult> _movementCallback;
     
-    public VillagerMovementHandler(NavmeshMovementAgent navmeshAgent, Vector3 targetPos)
+    public VillagerMovementHandler(NavmeshMovementAgent navmeshAgent)
     {
         _navmeshAgent = navmeshAgent;
-        SetTargetPos(targetPos);
-    }
-
-    public void SetTargetPos(Vector3 targetPos)
-    {
-        _targetPos = targetPos;
     }
     
-    public void ActivateMovement(Action<WorkResult> callback = null)
+    public void ActivateMovement(Vector3 targetPos, Action<WorkResult> callback = null)
     {
-        _navmeshAgent.TrySetInstructions(_targetPos, out _source);
+        _navmeshAgent.TrySetInstructions(targetPos, out _source);
         
         _movementCallback = callback;
         if (_movementCallback != null)
@@ -38,9 +32,7 @@ public class VillagerMovementHandler : IDisposable
         Action<WorkResult> callback = null)
     {
         var pos = GetMovePos(transformCenter, maxRadius, minRadius);
-        
-        SetTargetPos(pos);
-        ActivateMovement(callback);
+        ActivateMovement(pos, callback);
     }
 
     public void DeactivateMovement()

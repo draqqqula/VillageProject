@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public abstract class WorkVillagerState : VillagerState
 {
@@ -9,13 +11,13 @@ public abstract class WorkVillagerState : VillagerState
         
     }
     
-    public override void ExitState()
+    public override async UniTask ExitState(CancellationToken token)
     {
-        
+
     }
 
     public override void Dispose()
     {
-       
+
     }
 }
