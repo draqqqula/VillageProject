@@ -22,14 +22,14 @@ namespace KevinIglesias
 
         public float delay;
  
-        private HumanArcherController hAC;
+        private ArcherAnimationHandler hAC;
         
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if(!hAC)
             {
-                hAC = animator.GetComponent<HumanArcherController>();
+                hAC = animator.GetComponent<ArcherAnimationHandler>();
             }
             
             if(action == UnsheatheAction.Unsheathe)

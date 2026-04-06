@@ -14,13 +14,13 @@ namespace KevinIglesias
     {
         public float getArrowDelay = 0f;
         
-        private HumanArcherController hAC;
+        private ArcherAnimationHandler hAC;
         
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if(!hAC)
             {
-                hAC = animator.GetComponent<HumanArcherController>();
+                hAC = animator.GetComponent<ArcherAnimationHandler>();
             }
             
             hAC.GetArrow(getArrowDelay);

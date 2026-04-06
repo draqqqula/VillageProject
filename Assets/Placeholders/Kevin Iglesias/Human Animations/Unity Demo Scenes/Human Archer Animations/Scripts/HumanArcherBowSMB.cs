@@ -33,7 +33,7 @@ namespace KevinIglesias
         
         public float duration;
         
-        private HumanArcherController hAC;
+        private ArcherAnimationHandler hAC;
         
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -42,7 +42,7 @@ namespace KevinIglesias
             {
                 if(!hAC)
                 {
-                    hAC = animator.GetComponent<HumanArcherController>();
+                    hAC = animator.GetComponent<ArcherAnimationHandler>();
                 }
                 
                 if(bowAction == BowActions.Pull)
@@ -61,7 +61,7 @@ namespace KevinIglesias
             {
                 if(!hAC)
                 {
-                    hAC = animator.GetComponent<HumanArcherController>();
+                    hAC = animator.GetComponent<ArcherAnimationHandler>();
                 }
                 
                 if(bowAction == BowActions.Pull)
