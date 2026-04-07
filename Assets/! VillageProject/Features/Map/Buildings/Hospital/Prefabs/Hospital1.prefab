@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4491291356964922061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 90817160522723832}
+  m_Layer: 0
+  m_Name: RelaxPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &90817160522723832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4491291356964922061}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.30070576, z: 0, w: 0.953717}
+  m_LocalPosition: {x: -7.277, y: 0.365, z: 5.377}
+  m_LocalScale: {x: 0.6666667, y: 0.66666657, z: 0.6666667}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5795120550244162702}
+  m_LocalEulerAnglesHint: {x: 0, y: 35, z: 0}
+--- !u!1 &7138862981501584747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6068024619255191673}
+  m_Layer: 0
+  m_Name: WorkPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6068024619255191673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7138862981501584747}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -4.6566123e-10, w: 1}
+  m_LocalPosition: {x: -6.244, y: 0.365, z: 3.349}
+  m_LocalScale: {x: 0.6666667, y: 0.66666657, z: 0.6666667}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5795120550244162702}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7219903307448898160
 GameObject:
   m_ObjectHideFlags: 0
@@ -24,13 +86,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7219903307448898160}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -4.6566123e-10, w: 1}
-  m_LocalPosition: {x: -2.2020001, y: 0.011999924, z: 6.8646674}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -6.244, y: 0.365, z: 4.91}
   m_LocalScale: {x: 0.6666667, y: 0.66666657, z: 0.6666667}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5795120550244162702}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &5824026733932255958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -197,6 +259,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 969109496631838108, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6465316718415837717}
+    - targetCorrespondingSourceObject: {fileID: 969109496631838108, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6068024619255191673}
+    - targetCorrespondingSourceObject: {fileID: 969109496631838108, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 90817160522723832}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3362685765486524907, guid: f2075ef806d867f4bb74fce9ef8a7a1e, type: 3}
       insertIndex: -1
@@ -247,13 +315,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Data>k__BackingField:
-    rid: 601279076003217514
+    rid: 601279526696649117
+  _view: {fileID: 0}
+  <Health>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: 601279076003217514
-      type: {class: BuildingData, ns: , asm: Assembly-CSharp}
+    - rid: 601279526696649117
+      type: {class: WorkBuildingData, ns: , asm: Assembly-CSharp}
       data:
         <Type>k__BackingField: 4
         <CurrentState>k__BackingField: 1
+        <RepairingHours>k__BackingField: 3
         <EnterPoint>k__BackingField: {fileID: 6465316718415837717}
+        <WorkPoint>k__BackingField: {fileID: 6068024619255191673}
+        <RelaxPoint>k__BackingField: {fileID: 90817160522723832}

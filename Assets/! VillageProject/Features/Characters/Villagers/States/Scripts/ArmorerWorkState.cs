@@ -14,14 +14,14 @@ public class ArmorerWorkState : WorkVillagerState
     {
         _skinReferencesResolver = skinReferencesResolver;
         var hospital = buildingStorage.Get(BuildingType.Hospital);
-        target = hospital.Data.EnterPoint;
+        target = (hospital.Data as WorkBuildingData).WorkPoint;
         
         _movementHandler = new VillagerTransformHandler(navmeshAgent);
     }
     
     public override void EnterState()
     {
-        _movementHandler.ActivateMovementWithRotation(target, 2, OnPointReached);
+        _movementHandler.ActivateMovementWithRotation(target, callback: OnPointReached);
     }
 
     private void OnPointReached()

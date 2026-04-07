@@ -22,6 +22,13 @@ public class ArcherTowerData : BuildingData
     [field: SerializeField] public Transform ArcherPoint { get; private set; }
 }
 
+[Serializable]
+public class WorkBuildingData : BuildingData
+{
+    [field: SerializeField] public Transform WorkPoint { get; private set; }
+    [field: SerializeField] public Transform RelaxPoint { get; private set; }
+}
+
 public enum BuildingType
 {
     Gates, ArcherTower, Smoke, Blacksmith, Hospital, Church

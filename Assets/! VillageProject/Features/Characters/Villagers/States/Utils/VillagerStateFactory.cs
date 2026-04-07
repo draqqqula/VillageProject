@@ -37,7 +37,25 @@ public class VillagerStateFactory
 
     public RelaxVillagerState CreateRelaxState()
     {
-        return new RelaxVillagerState(_navmeshAgent, _villagerData.HomePoint.RelaxPoint);
+        if (_villagerData.Profession.Type == ProfessionType.Blacksmith || _villagerData.Profession.Type == ProfessionType.Armorer)
+        {
+            WorkBuildingData workData = null;
+
+            if (_villagerData.Profession.Type == ProfessionType.Blacksmith)
+                workData = _buildingStorage.Get(BuildingType.Blacksmith)?.Data as WorkBuildingData;
+            else workData = _buildingStorage.Get(BuildingType.Hospital)?.Data as WorkBuildingData;
+            
+            if (workData == null)
+            {
+                Debug.LogError("Building has not WorkBuildingData!");
+                return new RelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
+            }
+            else return new RelaxVillagerState(_navmeshAgent, _skinReferencesResolver, workData.RelaxPoint, true);
+        }
+        else
+        {
+            return new RelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
+        }
     }
 
     public GuardVillagerState CreateGuardState()

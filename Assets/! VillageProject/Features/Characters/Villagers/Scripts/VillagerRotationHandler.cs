@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class VillagerRotationHandler : IDisposable
 {
+    private const float DefaultRotationSpeed = 120;
     private NavmeshMovementAgent _navmeshAgent;
 
     private Coroutine _coroutine;
@@ -13,14 +14,19 @@ public class VillagerRotationHandler : IDisposable
         _navmeshAgent = navmeshAgent;
     }
     
-    public void ActivateRotation(Quaternion targetRotation, float duration, Action callback = null)
+    public void ActivateRotation(Quaternion targetRotation, float duration = -1, Action callback = null)
     {
+        if (duration < 0) duration = DefaultRotationSpeed;
+        
         if (_coroutine != null) _navmeshAgent.StopCoroutine(_coroutine);
         _coroutine = _navmeshAgent.StartCoroutine(RotateRoutine(targetRotation, duration, callback));
     }
 
-    private IEnumerator RotateRoutine(Quaternion targetRotation, float duration, Action callback = null)
+    private IEnumerator RotateRoutine(Quaternion targetRotation, float speed, Action callback = null)
     {
+        float angle = Quaternion.Angle(_navmeshAgent.transform.rotation, targetRotation);
+        float duration = angle / speed;
+        
         Quaternion startRotation = _navmeshAgent.transform.rotation;
         
         float progress = 0f;

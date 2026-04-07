@@ -28,12 +28,12 @@ public class VillagerTransformHandler : IDisposable
         _movementHandler.DeactivateMovement();
     }
     
-    public void ActivateMovementWithRotation(Transform target, float rotationDuration, Action callback = null)
+    public void ActivateMovementWithRotation(Transform target, float rotationDuration = -1, Action callback = null)
     {
         ActivateMovementWithRotation(target.position, target.rotation, rotationDuration, callback);
     }
     
-    public void ActivateMovementWithRotation(Vector3 targetPos, Quaternion targetRotation, float rotationDuration, Action callback = null)
+    public void ActivateMovementWithRotation(Vector3 targetPos, Quaternion targetRotation, float rotationDuration = -1, Action callback = null)
     {
         _movementHandler.ActivateMovement(targetPos, (workResult) =>
         {
@@ -41,7 +41,7 @@ public class VillagerTransformHandler : IDisposable
         });
     }
     
-    public void ActivateRotation(Quaternion targetRotation, float duration, Action callback = null)
+    public void ActivateRotation(Quaternion targetRotation, float duration = -1, Action callback = null)
     {
         _rotationHandler.ActivateRotation(targetRotation, duration, callback);
     }

@@ -52,7 +52,7 @@ public class BuilderWorkState : WorkVillagerState
         if (plan is NewBuildingPlan newBuildingPlan) enterPoint = newBuildingPlan.PreviewObject.Data.EnterPoint;
         else enterPoint = (plan as RepairingPlan).BrokenBuilding.Data.EnterPoint;
         
-        _movementHandler.ActivateMovementWithRotation(enterPoint, 2f, OnReachedPoint);
+        _movementHandler.ActivateMovementWithRotation(enterPoint, callback: OnReachedPoint);
     }
 
     private void OnPlanChanged(BuildingPlan plan)

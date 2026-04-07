@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1743158988991767381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1773231242990429814}
+  m_Layer: 17
+  m_Name: WorkPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1773231242990429814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743158988991767381}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.6427876, z: 0, w: 0.7660445}
+  m_LocalPosition: {x: 2.756, y: 0.238, z: -3.997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8518335692077845459}
+  m_LocalEulerAnglesHint: {x: 0, y: 80, z: 0}
+--- !u!1 &4084788298793120152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 766211052926535120}
+  m_Layer: 17
+  m_Name: RelaxPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &766211052926535120
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4084788298793120152}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.4430712, z: 0, w: 0.89648646}
+  m_LocalPosition: {x: 5.098, y: 0.238, z: -4.341}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8518335692077845459}
+  m_LocalEulerAnglesHint: {x: 0, y: 52.6, z: 0}
 --- !u!1 &8518335692077750259
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,6 +99,8 @@ Transform:
   m_Children:
   - {fileID: 277448257281070757}
   - {fileID: 5812576925309149552}
+  - {fileID: 1773231242990429814}
+  - {fileID: 766211052926535120}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8518335692078615539
@@ -171,16 +235,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Data>k__BackingField:
-    rid: 601279076003217512
+    rid: 601279526696649118
+  _view: {fileID: 0}
+  <Health>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: 601279076003217512
-      type: {class: BuildingData, ns: , asm: Assembly-CSharp}
+    - rid: 601279526696649118
+      type: {class: WorkBuildingData, ns: , asm: Assembly-CSharp}
       data:
         <Type>k__BackingField: 3
         <CurrentState>k__BackingField: 1
+        <RepairingHours>k__BackingField: 3
         <EnterPoint>k__BackingField: {fileID: 5812576925309149552}
+        <WorkPoint>k__BackingField: {fileID: 1773231242990429814}
+        <RelaxPoint>k__BackingField: {fileID: 766211052926535120}
 --- !u!1 &8852036058575551740
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,13 +274,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8852036058575551740}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: 0.238, z: 3.582}
+  m_LocalRotation: {x: 0, y: 0.7660445, z: -0, w: -0.6427876}
+  m_LocalPosition: {x: 4.407, y: 0.238, z: -3.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8518335692077845459}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 260, z: 0}
 --- !u!1001 &6064736226917418902
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,14 +14,14 @@ public class BlacksmithWorkState : WorkVillagerState
     {
         _skinReferencesResolver = skinReferencesResolver;
         var blacksmith = buildingStorage.Get(BuildingType.Blacksmith);
-        target = blacksmith.Data.EnterPoint;
+        target = (blacksmith.Data as WorkBuildingData).WorkPoint;
         
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
     }
     
     public override void EnterState()
     {
-        _transformHandler.ActivateMovementWithRotation(target, 2, OnPointReached);
+        _transformHandler.ActivateMovementWithRotation(target, callback: OnPointReached);
     }
 
     private void OnPointReached()
