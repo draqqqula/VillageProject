@@ -45,6 +45,11 @@ public class VillagerTransformHandler : IDisposable
     {
         _rotationHandler.ActivateRotation(targetRotation, duration, callback);
     }
+
+    public void ActivateRotation(Vector3 lookAtTarget, float duration = -1, Action callback = null)
+    {
+        _rotationHandler.ActivateRotation(lookAtTarget, duration, callback);
+    }
     
     public void DeactivateRotation()
     {

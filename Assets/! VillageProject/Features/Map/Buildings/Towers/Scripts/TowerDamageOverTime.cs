@@ -14,11 +14,11 @@ public class TowerDamageOverTime : TowerIntervalAction
     [SerializeField] private float _defaultInterval;
     public ProjectileSpawner Spawner { get; set; }
     
-    [SerializeField] private BuildingData _building;
+    [SerializeField] private Building _building;
 
     protected override float Perform()
     {
-        if (_building.CurrentState == BuildingData.State.Wait) return _defaultInterval;
+        if (_building.Data.CurrentState == BuildingData.State.Wait) return _defaultInterval;
         
         var min = float.MaxValue;
         Health closest = null;

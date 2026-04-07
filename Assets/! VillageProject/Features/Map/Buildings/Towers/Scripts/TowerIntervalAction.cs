@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class TowerIntervalAction : MonoBehaviour
 {
 
     [SerializeField] protected TowerRange Range;
+    [SerializeField] private float _animDelay;
     private Coroutine _coroutine;
+
+    public event Action OnAnimInvoked;
 
     private void OnEnable()
     {
@@ -31,7 +35,9 @@ public abstract class TowerIntervalAction : MonoBehaviour
         {
             if (Range.Targets.Count != 0)
             {
-                yield return new WaitForSeconds(Perform());
+                OnAnimInvoked?.Invoke();
+                yield return new WaitForSeconds(_animDelay);
+                yield return new WaitForSeconds(Perform() - _animDelay);
             }
             else
             {

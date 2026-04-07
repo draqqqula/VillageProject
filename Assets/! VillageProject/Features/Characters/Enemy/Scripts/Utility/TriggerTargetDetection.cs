@@ -18,6 +18,7 @@ public class TriggerTargetDetection : MonoBehaviour
         }
         
         var searcher = other.GetComponent<SearchForTarget>();
+        Debug.Log($"Triggered by: {other.name}, enabled: {other.enabled}");
         if (searcher != null)
         {
             searcher.Detect(_target);

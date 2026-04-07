@@ -147,7 +147,7 @@ namespace KevinIglesias
 
             arrowInHand.SetActive(false);
 
-            Instantiate(arrowToShoot, bowstringAnchorPoint.position, bowstringAnchorPoint.rotation);
+            //Instantiate(arrowToShoot, bowstringAnchorPoint.position, bowstringAnchorPoint.rotation);
 
             float t = 0;
             while (t < 1)

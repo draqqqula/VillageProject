@@ -19,10 +19,11 @@ public class VillagerStateMachine : IDisposable
     
     private Transform _villageCenter;
     private GameTimer _gameTimer;
+    private Collider _discoveryCollider;
 
     public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, 
         SkinReferencesResolver skinReferencesResolver, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, Transform villageCenter,
-        GameTimer gameTimer)
+        GameTimer gameTimer, Collider discoveryCollider)
     {
         _navmeshAgent = navmeshAgent;
         _searchForTarget = searchForTarget;
@@ -33,6 +34,7 @@ public class VillagerStateMachine : IDisposable
         
         _villageCenter = villageCenter;
         _gameTimer = gameTimer;
+        _discoveryCollider = discoveryCollider;
         
         SetStates(villagerData, skinReferencesResolver);
     }
@@ -40,7 +42,7 @@ public class VillagerStateMachine : IDisposable
     public void SetStates(VillagerData villagerData, SkinReferencesResolver skinReferencesResolver)
     {
         _stateFactory.SetParams(_navmeshAgent, villagerData, _searchForTarget, skinReferencesResolver, _buildingStorage, _buildingPlanner,
-            _villageCenter, _gameTimer);
+            _villageCenter, _gameTimer, _discoveryCollider);
         _states.Clear();
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());
@@ -68,12 +70,17 @@ public class VillagerStateMachine : IDisposable
             Debug.LogWarning(e.Message);
         }
     }
-
+    
     public void Update()
     {
         if (CurrentState is IUpdatableState updatableState) updatableState.Update();
     }
 
+    public void OnDeath()
+    {
+        CurrentState = null;
+    }
+    
     public void Dispose()
     {
         foreach (var state in _states.Values)

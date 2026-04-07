@@ -16,14 +16,22 @@ public partial class NavigateToZoneAction : Action
 
     protected override Status OnStart()
     {
-        var entrances = Zone.Value.GetComponentsInChildren<Transform>();
-        var nearest = NavmeshExtensions.FirstWithShortestPath(entrances, GetPath);
-        if (nearest == null)
+        try
         {
+            var entrances = Zone.Value.GetComponentsInChildren<Transform>();
+            var nearest = NavmeshExtensions.FirstWithShortestPath(entrances, GetPath);
+            if (nearest == null)
+            {
+                return Status.Failure;
+            }
+            Destination.Value = nearest.position;
+            return Status.Success;
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
             return Status.Failure;
         }
-        Destination.Value = nearest.position;
-        return Status.Success;
     }
 
     private NavMeshPath GetPath(Transform target)

@@ -71,11 +71,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Range: {fileID: 8412005407044101625}
-  _defaultInterval: 1.5
-  _building:
-    <Type>k__BackingField: 0
-    <CurrentState>k__BackingField: 0
-    <EnterPoint>k__BackingField: {fileID: 0}
+  _animDelay: 1.5
+  _defaultInterval: 2.5
+  _building: {fileID: 1127533435628739290}
 --- !u!114 &5666561135211183262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,7 +96,7 @@ MonoBehaviour:
       type: {class: ArrowSpawner, ns: , asm: Assembly-CSharp}
       data:
         _prefab: {fileID: 822112668561322717, guid: b17074382f3a5b54fb8a67e719253208, type: 3}
-        _interval: 1.5
+        _interval: 2.5
 --- !u!114 &2805341447617116203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,13 +223,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7455329206300629629}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0.08, y: 0, z: 4.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1074966483338026673}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &8862546195155982014
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +386,7 @@ MonoBehaviour:
   <Data>k__BackingField:
     rid: 601279076003217516
   _view: {fileID: 9084115816428469167}
+  <Health>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds:
@@ -396,8 +395,10 @@ MonoBehaviour:
       data:
         <Type>k__BackingField: 1
         <CurrentState>k__BackingField: 0
+        <RepairingHours>k__BackingField: 0
         <EnterPoint>k__BackingField: {fileID: 6713678102663328653}
         <ArcherPoint>k__BackingField: {fileID: 4923763293729174658}
+        <DamageHandler>k__BackingField: {fileID: 4997322888087095976}
 --- !u!1001 &3844507480357149237
 PrefabInstance:
   m_ObjectHideFlags: 0

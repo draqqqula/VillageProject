@@ -13,10 +13,11 @@ public class VillagerStateFactory
     
     private Transform _villageCenter;
     private GameTimer _gameTimer;
+    private Collider _discoveryCollider;
     
     public void SetParams(NavmeshMovementAgent navmeshAgent, VillagerData villagerData, SearchForTarget searchForTarget,
         SkinReferencesResolver skinReferencesResolver, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner,
-        Transform villageCenter, GameTimer gameTimer)
+        Transform villageCenter, GameTimer gameTimer, Collider discoveryCollider)
     {
         _navmeshAgent = navmeshAgent;
         _villagerData = villagerData;
@@ -28,6 +29,7 @@ public class VillagerStateFactory
         
         _villageCenter = villageCenter;
         _gameTimer = gameTimer;
+        _discoveryCollider = discoveryCollider;
     }
     
     public SleepVillagerState CreateSleepState()
@@ -82,7 +84,8 @@ public class VillagerStateFactory
             case (ProfessionType.Armorer):
                 return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage);
             case (ProfessionType.Archer):
-                return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage);
+                return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage,
+                    _searchForTarget, _discoveryCollider);
             case (ProfessionType.Defender):
                 return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _villageCenter);
             default:

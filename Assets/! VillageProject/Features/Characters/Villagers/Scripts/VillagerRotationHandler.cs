@@ -14,6 +14,17 @@ public class VillagerRotationHandler : IDisposable
         _navmeshAgent = navmeshAgent;
     }
     
+    public void ActivateRotation(Vector3 lookAtTarget, float duration = -1, Action callback = null)
+    {
+        Vector3 direction = lookAtTarget - _navmeshAgent.transform.position;
+        direction.y = 0f;
+        
+        if (direction.sqrMagnitude < 0.0001f) return;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        
+        ActivateRotation(targetRotation, duration, callback);
+    }
+    
     public void ActivateRotation(Quaternion targetRotation, float duration = -1, Action callback = null)
     {
         if (duration < 0) duration = DefaultRotationSpeed;
@@ -21,7 +32,7 @@ public class VillagerRotationHandler : IDisposable
         if (_coroutine != null) _navmeshAgent.StopCoroutine(_coroutine);
         _coroutine = _navmeshAgent.StartCoroutine(RotateRoutine(targetRotation, duration, callback));
     }
-
+    
     private IEnumerator RotateRoutine(Quaternion targetRotation, float speed, Action callback = null)
     {
         float angle = Quaternion.Angle(_navmeshAgent.transform.rotation, targetRotation);

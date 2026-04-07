@@ -20,6 +20,7 @@ public class BuildingData
 public class ArcherTowerData : BuildingData
 {
     [field: SerializeField] public Transform ArcherPoint { get; private set; }
+    [field: SerializeField] public TowerDamageOverTime DamageHandler { get; private set; }
 }
 
 [Serializable]

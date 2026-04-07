@@ -24,6 +24,8 @@ public class Villager : MonoBehaviour
     [SerializeField] private Transform _viewParent;
     private GameObject _currentSkin;
     private SkinChanger _skinChanger;
+
+    [SerializeField] private Collider _discoveryCollider;
     
     public ReadOnlyReactiveProperty<SkinReferencesResolver> SkinReferencesResolver => _skinReferencesResolver;
     private ReactiveProperty<SkinReferencesResolver> _skinReferencesResolver;
@@ -31,6 +33,8 @@ public class Villager : MonoBehaviour
     [Inject] private BuildingStorage _buildingStorage;
     [Inject] private BuildingPlanner _buildingPlanner;
     [Inject] private DiContainer _diContainer;
+    
+    [SerializeField] private DeathEvent _deathEvent;
     
     public void Init(HomeService homeService, Transform villagerCenter, GameTimer gameTimer)
     {
@@ -50,7 +54,9 @@ public class Villager : MonoBehaviour
         VillagerData.HomePoint = home;
         
         _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _searchForTarget, _skinReferencesResolver.Value,
-            _buildingStorage, _buildingPlanner, villagerCenter, gameTimer);
+            _buildingStorage, _buildingPlanner, villagerCenter, gameTimer, _discoveryCollider);
+
+        _deathEvent.FiredEvent += OnDeath;
     }
 
     private void ChangeSkin()
@@ -101,8 +107,15 @@ public class Villager : MonoBehaviour
         Debug.Log($"Villager {gameObject.name} profession change to {profession}");
     }
 
+    private void OnDeath()
+    {
+        _stateMachine.OnDeath();
+        _skinReferencesResolver.Value.Animator.SetTrigger("Death");
+    }
+
     private void OnDestroy()
     {
         _stateMachine.Dispose();
+        _deathEvent.FiredEvent -= OnDeath;
     }
 }

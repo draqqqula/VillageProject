@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2045301902391715592}
   serializedVersion: 2
   m_LocalRotation: {x: 0.3550075, y: -0.7441642, z: -0.5502276, w: 0.132057}
-  m_LocalPosition: {x: 0.337, y: 0.164, z: 0.668}
+  m_LocalPosition: {x: 0.144, y: 1.225, z: 0.443}
   m_LocalScale: {x: 0.2686, y: 0.46609998, z: 0.2686}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,9 +120,12 @@ GameObject:
   - component: {fileID: 7553169113000571653}
   - component: {fileID: 1669074080113774880}
   - component: {fileID: 4889724845115092532}
+  - component: {fileID: 4134963685522017656}
+  - component: {fileID: 2203599019461336513}
+  - component: {fileID: 2671009833406581085}
   m_Layer: 0
   m_Name: Villager
-  m_TagString: Untagged
+  m_TagString: damageable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -163,6 +166,8 @@ MonoBehaviour:
   _searchForTarget: {fileID: 3122033597428601144}
   _villagersSkinsInfo: {fileID: 11400000, guid: 8dd86a3d555f749a7a5f7e581bc0a88f, type: 2}
   _viewParent: {fileID: 8646088773368326699}
+  _discoveryCollider: {fileID: 8919438586891559947}
+  _deathEvent: {fileID: 2671009833406581085}
 --- !u!114 &2700721286470927998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +328,7 @@ MonoBehaviour:
   _monoInstallers:
   - {fileID: 5905653733878682241}
   - {fileID: 7553169113000571653}
+  - {fileID: 2203599019461336513}
   _installerPrefabs: []
   _autoRun: 1
   _kernel: {fileID: 0}
@@ -339,6 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _teamMember: {fileID: 1998849619901002287}
+  _villager: {fileID: 6677530680594479035}
 --- !u!114 &1669074080113774880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +382,85 @@ MonoBehaviour:
       m_Calls: []
   _workers:
   - {fileID: 2700721286470927998}
+--- !u!114 &4134963685522017656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176552873163846531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98505cab4c1a3b24db4107f815ee059b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 15
+--- !u!114 &2203599019461336513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176552873163846531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a7512c8148d3e49b8b00ac01472832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 4134963685522017656}
+  _deathEvent: {fileID: 2671009833406581085}
+--- !u!114 &2671009833406581085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176552873163846531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d1d9d82ff2e5b478441545e732a96b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fired:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4889724845115092532}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1145910838671034814}
+        m_TargetAssemblyTypeName: DetachFromParent, Assembly-CSharp
+        m_MethodName: Detach
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4260893795346177565}
+        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _health: {fileID: 4134963685522017656}
 --- !u!1 &8350947445294955013
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,6 +472,7 @@ GameObject:
   - component: {fileID: 8646088773368326699}
   - component: {fileID: 5905653733878682241}
   - component: {fileID: 7719765255521397215}
+  - component: {fileID: 1145910838671034814}
   m_Layer: 0
   m_Name: VillagerView
   m_TagString: Untagged
@@ -440,6 +527,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _window: {fileID: 11400000, guid: 891ec3490c9f93a44a73dc02bfe5350e, type: 2}
   _object: {fileID: 2045301902391715592}
+--- !u!114 &1145910838671034814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8350947445294955013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db31806952d3df42b6c3af8c6dc400b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CorpseDespawnTime: 5
 --- !u!1 &8423205612467631245
 GameObject:
   m_ObjectHideFlags: 0
