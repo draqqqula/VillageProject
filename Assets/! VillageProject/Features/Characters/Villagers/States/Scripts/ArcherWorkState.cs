@@ -50,6 +50,8 @@ public class ArcherWorkState : WorkVillagerState
         var archerPoint = (_archerTower.Data as ArcherTowerData).ArcherPoint;
         _navmeshAgent.enabled = false;
         _navmeshAgent.transform.position = archerPoint.position;
+        
+        _skinReferencesResolver.Animator.SetBool("Agressed", true);
         _skinReferencesResolver.Animator.SetBool("Work", true);
         _isOnTower = true;
     }
@@ -67,6 +69,8 @@ public class ArcherWorkState : WorkVillagerState
         
         _archerTower.SetWaiting();
         _movementHandler.DeactivateMovement();
+        
+        _skinReferencesResolver.Animator.SetBool("Agressed", false);
         await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
     }
 

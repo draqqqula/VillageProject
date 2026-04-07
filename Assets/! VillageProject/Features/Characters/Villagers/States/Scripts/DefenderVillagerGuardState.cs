@@ -26,7 +26,7 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     
     public override void EnterState()
     { 
-        
+        _animator.SetBool("Agressed", true);
     }
 
     private void ActivateMovement()
@@ -48,6 +48,7 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     public override async UniTask ExitState(CancellationToken token)
     {
         _movementHandler.DeactivateMovement();
+        _animator.SetBool("Agressed", false);
         _animator.ResetTrigger("Attack");
 
         if (_coroutine != null)
