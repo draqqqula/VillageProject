@@ -12,6 +12,7 @@ public sealed class RelaxVillagerState : VillagerState
     
     private SkinReferencesResolver _skinReferencesResolver;
     private bool _isSitPoint;
+    private bool _isRelaxing;
 
     public RelaxVillagerState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
         Transform relaxPoint, bool isSitPoint)
@@ -31,6 +32,7 @@ public sealed class RelaxVillagerState : VillagerState
 
     private void OnPointReached()
     {
+        _isRelaxing = true;
         if (_isSitPoint) _skinReferencesResolver.AnimatorHandler.SetBool("SitRelax", true);
         else _skinReferencesResolver.AnimatorHandler.SetBool("StandRelax", true);
     }
@@ -38,7 +40,8 @@ public sealed class RelaxVillagerState : VillagerState
     public override async UniTask ExitState(CancellationToken token)
     {
         _transformHandler.DeactivateMovement();
-
+        if (!_isRelaxing) return;
+        
         if (_isSitPoint)
         {
             await _skinReferencesResolver.AnimatorHandler.TransitByBool("SitRelax", false, _navmeshAgent.GetCancellationTokenOnDestroy());

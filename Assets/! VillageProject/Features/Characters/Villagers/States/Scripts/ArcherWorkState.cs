@@ -14,11 +14,14 @@ public class ArcherWorkState : WorkVillagerState
     private Building _archerTower;
     private BuildingStorage _storage;
     
+    private VillagerStateFactory _factory;
+    private DefenderWorkState _patrulState;
+    
     private bool _isInited = false;
     private bool _isOnTower = false;
     
     public ArcherWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Profession profession,
-        BuildingStorage buildingStorage, SearchForTarget searchForTarget, Collider discoveryCollider)
+        BuildingStorage buildingStorage, SearchForTarget searchForTarget, Collider discoveryCollider, VillagerStateFactory factory)
     {
         _navmeshAgent = navmeshAgent;
         _storage = buildingStorage;
@@ -26,6 +29,7 @@ public class ArcherWorkState : WorkVillagerState
         
         _searchForTarget = searchForTarget;
         _discoveryCollider = discoveryCollider;
+        _factory = factory;
         
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
         _isInited = true;
@@ -36,13 +40,16 @@ public class ArcherWorkState : WorkVillagerState
         if (!_isInited) return;
         
         _archerTower = _storage.Get(BuildingType.ArcherTower, BuildingData.State.Wait);
-        (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked += OnShootInvoked;
+
         if (_archerTower == null)
         {
             Debug.LogWarning($"{_archerTower} is not valid ArcherTower!");
+            _patrulState = _factory.CreateDefenderWorkState();
+            _patrulState.EnterState();
             return;
         }
-        
+     
+        (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked += OnShootInvoked;
         Debug.Log("Found ArcherTower!");
         _archerTower.SetReady();
         Debug.Log("Start Movement!");
@@ -71,6 +78,13 @@ public class ArcherWorkState : WorkVillagerState
     {
         if (!_isInited) return;
 
+        if (_patrulState != null)
+        {
+            await _patrulState.ExitState(token);
+            _patrulState = null;
+            return;
+        }
+
         if (_isOnTower)
         {
             var point = _archerTower.Data.EnterPoint;
@@ -78,10 +92,13 @@ public class ArcherWorkState : WorkVillagerState
             _navmeshAgent.enabled = true;
             _discoveryCollider.enabled = true;
         }
-        
-        (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked -= OnShootInvoked;
-        _archerTower.SetWaiting();
-        _archerTower = null;
+
+        if (_archerTower != null)
+        {
+            (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked -= OnShootInvoked;
+            _archerTower.SetWaiting();
+            _archerTower = null;
+        }
         
         _transformHandler.DeactivateMovement();
         

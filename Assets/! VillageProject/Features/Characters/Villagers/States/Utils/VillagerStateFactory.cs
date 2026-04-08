@@ -34,7 +34,7 @@ public class VillagerStateFactory
     
     public SleepVillagerState CreateSleepState()
     {
-        return new SleepVillagerState(_navmeshAgent, _villagerData.HomePoint.DoorPoint, _villagerData);
+        return new SleepVillagerState(_navmeshAgent, _villagerData);
     }
 
     public RelaxVillagerState CreateRelaxState()
@@ -85,11 +85,16 @@ public class VillagerStateFactory
                 return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage);
             case (ProfessionType.Archer):
                 return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage,
-                    _searchForTarget, _discoveryCollider);
+                    _searchForTarget, _discoveryCollider, this);
             case (ProfessionType.Defender):
                 return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _villageCenter);
             default:
                 throw new ArgumentException($"{_villagerData.Profession.Type} is not a valid profession!");
         }
+    }
+
+    public DefenderWorkState CreateDefenderWorkState()
+    {
+        return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _villageCenter);
     }
 }

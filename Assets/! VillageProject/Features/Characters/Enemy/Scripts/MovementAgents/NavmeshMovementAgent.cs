@@ -99,7 +99,7 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
         _cachedDestination = Vector3.zero;
         _destination = null;
         
-        _navMeshAgent.isStopped = true;
+        if (_navMeshAgent.enabled) _navMeshAgent.isStopped = true;
         HandleWorkCompleted();
     }
 
@@ -139,6 +139,7 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
 
     private bool TryBuildPathToDestination(NavMeshPath path)
     {
+        Debug.Log(_raycastHeight);
         return NavmeshExtensions.TryBuildPathToProjection(_navMeshAgent, _destination.GetPosition(), path, _raycastHeight);
     }
 

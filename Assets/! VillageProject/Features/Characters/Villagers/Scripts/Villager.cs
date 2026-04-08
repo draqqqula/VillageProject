@@ -79,7 +79,7 @@ public class Villager : MonoBehaviour
 
     public void ChangeActivity(ActivityType activity)
     {
-        if (VillagerData.ActivityType == activity) return;
+        if (VillagerData.ActivityType != null && VillagerData.ActivityType.Value == activity) return;
         
         _ = _stateMachine.UpdateCurrentState(activity, gameObject.GetCancellationTokenOnDestroy());
         
@@ -96,14 +96,15 @@ public class Villager : MonoBehaviour
     private async UniTask SwitchProfession(ProfessionType profession, CancellationToken token)
     {
         await _stateMachine.ExitCurrentState(token);
-        
-        Debug.Log($"Villager {gameObject.name} profession change to {profession}");
         VillagerData.Profession = new Profession() {Type = profession};
         ChangeSkin();
         
         _skinReferencesResolver.Value.Animator.SetInteger(PROFESSION, (int)profession);
         _stateMachine.SetStates(VillagerData, _skinReferencesResolver.Value);
-        _ = _stateMachine.UpdateCurrentState(VillagerData.ActivityType, gameObject.GetCancellationTokenOnDestroy());
+        if (VillagerData.ActivityType != null)
+        {
+            _ = _stateMachine.UpdateCurrentState(VillagerData.ActivityType.Value, gameObject.GetCancellationTokenOnDestroy());
+        }
         Debug.Log($"Villager {gameObject.name} profession change to {profession}");
     }
 

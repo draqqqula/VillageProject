@@ -6,40 +6,44 @@ public sealed class SleepVillagerState : VillagerState
 {
     public override ActivityType ActivityType => ActivityType.Sleep;
     private VillagerData _villagerData;
-    private Transform _homePoint;
     
     private NavmeshMovementAgent _navmeshAgent;
-    private VillagerMovementHandler _movementHandler;
+    private VillagerTransformHandler _transformHandler;
 
-    public SleepVillagerState(NavmeshMovementAgent navmeshAgent, Transform homePoint, VillagerData villagerData)
+    public SleepVillagerState(NavmeshMovementAgent navmeshAgent, VillagerData villagerData)
     {
         _villagerData = villagerData;
-        _homePoint = homePoint;
         
         _navmeshAgent = navmeshAgent;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent);
+        _transformHandler = new VillagerTransformHandler(navmeshAgent);
     }
     
     public override void EnterState()
     {
-        _movementHandler.ActivateMovement(_homePoint.position, OnMovementEnded);
+        _transformHandler.ActivateMovementWithRotation(_villagerData.HomePoint.DoorPoint, callback: OnPointReached);
     }
 
-    private void OnMovementEnded(WorkResult result)
+    private void OnPointReached()
     {
         _villagerData.IsOnHome = true;
-        _navmeshAgent.gameObject.SetActive(false);
+        _navmeshAgent.enabled = false;
+        _navmeshAgent.transform.position = _villagerData.HomePoint.Point.position;
     }
 
     public override async UniTask ExitState(CancellationToken token)
     {
-        _villagerData.IsOnHome = false;
-        _navmeshAgent.gameObject.SetActive(true);
-        _movementHandler.DeactivateMovement();
+        if (_villagerData.IsOnHome)
+        {
+            _villagerData.IsOnHome = false;
+            _navmeshAgent.transform.position = _villagerData.HomePoint.DoorPoint.position;
+            _navmeshAgent.enabled = true;
+        }
+
+        _transformHandler.DeactivateMovement();
     }
 
     public override void Dispose()
     {
-        _movementHandler.Dispose();
+        _transformHandler.Dispose();
     }
 }

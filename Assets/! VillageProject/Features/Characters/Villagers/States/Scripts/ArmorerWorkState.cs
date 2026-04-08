@@ -8,6 +8,8 @@ public class ArmorerWorkState : WorkVillagerState
     
     private VillagerTransformHandler _movementHandler;
     private SkinReferencesResolver _skinReferencesResolver;
+
+    private bool _isWorking;
     
     public ArmorerWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
         Profession profession, BuildingStorage buildingStorage)
@@ -26,13 +28,19 @@ public class ArmorerWorkState : WorkVillagerState
 
     private void OnPointReached()
     {
+        _isWorking = true;
         _skinReferencesResolver.Animator.SetBool("Work", true);
     }
 
     public override async UniTask ExitState(CancellationToken token)
     {
         _movementHandler.DeactivateMovement();
-        await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+        
+        if (_isWorking)
+        {
+            _isWorking = false;
+            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+        }
     }
 
     public override void Dispose()

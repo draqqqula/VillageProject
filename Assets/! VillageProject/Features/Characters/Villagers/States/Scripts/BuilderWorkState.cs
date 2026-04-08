@@ -82,7 +82,6 @@ public class BuilderWorkState : WorkVillagerState
     {
         int deltaTicks = _lastTick >= 0 ? currentTick - _lastTick : 0;
         _lastTick = currentTick;
-
         _builtTicks += deltaTicks;
 
         float totalTicks = _gameTimer.ConvertHoursToTick(_plan.HoursDuration);

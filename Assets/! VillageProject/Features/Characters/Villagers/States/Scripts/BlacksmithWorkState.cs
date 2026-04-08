@@ -9,6 +9,8 @@ public class BlacksmithWorkState : WorkVillagerState
     private VillagerTransformHandler _transformHandler;
     private SkinReferencesResolver _skinReferencesResolver;
     
+    private bool _isWorking;
+    
     public BlacksmithWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
         Profession profession, BuildingStorage buildingStorage)
     {
@@ -26,13 +28,19 @@ public class BlacksmithWorkState : WorkVillagerState
 
     private void OnPointReached()
     {
+        _isWorking = true;
         _skinReferencesResolver.Animator.SetBool("Work", true);
     }
 
     public override async UniTask ExitState(CancellationToken token)
     {
         _transformHandler.DeactivateMovement();
-        await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+
+        if (_isWorking)
+        {
+            _isWorking = false;
+            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+        }
     }
     
     public override void Dispose()

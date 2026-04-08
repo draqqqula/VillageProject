@@ -22,9 +22,17 @@ public class VillagerMovementHandler : IDisposable
         _navmeshAgent.TrySetInstructions(targetPos, out _source);
         
         _movementCallback = callback;
-        if (_movementCallback != null)
+
+        try
         {
-            _source.OnFinished += _movementCallback;
+            if (_movementCallback != null)
+            {
+                _source.OnFinished += _movementCallback;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Can't move to {targetPos}!");
         }
     }
 
