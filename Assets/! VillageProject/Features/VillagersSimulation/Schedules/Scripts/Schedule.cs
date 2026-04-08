@@ -13,7 +13,12 @@ public class Schedule : ScriptableObject
     {
         foreach (var period in SchedulePeriods)
         {
-            if (period.EndTime <= period.StartTime)
+            if (period.EndTime == period.StartTime)
+            {
+                return period;
+            }
+            
+            if (period.EndTime < period.StartTime)
             {
                 if ((period.StartTime <= hour && hour <= 23) || (hour < period.EndTime && hour >= 0)) return period;
             }
@@ -23,7 +28,7 @@ public class Schedule : ScriptableObject
             }
         }
         
-        throw new ArgumentOutOfRangeException("Period out of range!");
+        throw new ArgumentOutOfRangeException($"Period {hour} out of range!");
     }
 
     [ContextMenu("Merge Periods")]

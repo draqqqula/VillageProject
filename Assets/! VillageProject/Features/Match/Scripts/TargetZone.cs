@@ -12,8 +12,8 @@ public class TargetZone : MonoBehaviour
         if (other.CompareTag(TargetTag) && other.TryGetComponent<TargetDamage>(out var damage))
         {
             _objective.Take(damage);
-            _waveController.HandleUnitDied();
-            Destroy(other.gameObject);
+            //_waveController.HandleUnitDied();
+            //Destroy(other.gameObject);
         }
     }
 }

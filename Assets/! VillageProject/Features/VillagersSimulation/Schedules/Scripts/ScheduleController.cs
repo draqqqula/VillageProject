@@ -1,19 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class ScheduleController : MonoBehaviour
 {
     [SerializeField] private Schedule[] _schedules;
     private List<Schedule> _schedulesInstances;
+    private List<Schedule> _schedulesCopies = new List<Schedule>();
 
     [SerializeField] private GameTimer _gameTimer;
     [SerializeField] private VillagerSystem _villagerSystem;
 
     [SerializeField] private ScheduleView _scheduleView;
+    [Inject] private MatchObjective _matchObjective;
+    [Inject] private WaveController _waveController;
 
     private void Awake()
     {
@@ -21,6 +26,14 @@ public class ScheduleController : MonoBehaviour
         _gameTimer.OnHourChanged += OnHourChanged;
         _scheduleView.OnPeriodChanged += OnPeriodChanged;
         _scheduleView.OnSavedSchedule += OnSavedSchedule;
+
+        _matchObjective.OnEnemiesInVillage += ActivateDefendPeriods;
+        _waveController.IsOnBreak.Subscribe(OnBreakChanged).AddTo(this);
+    }
+
+    private void OnBreakChanged(bool value)
+    {
+        if (value) ReturnCommonPeriods();
     }
 
     private void CreateInstances()
@@ -81,6 +94,11 @@ public class ScheduleController : MonoBehaviour
     public void UpdatePeriods(string villagerKey, ActivityType activityType, int startTime, int endTime)
     {
         var schedule = _schedulesInstances.FirstOrDefault(schedule => schedule.VillagerKey == villagerKey);
+        UpdatePeriods(schedule, activityType, startTime, endTime);
+    }
+
+    private void UpdatePeriods(Schedule schedule, ActivityType activityType, int startTime, int endTime)
+    {
         if (schedule == null) return;
 
         var length = endTime != startTime ? (endTime - startTime + 24) % 24 : 24;
@@ -91,6 +109,49 @@ public class ScheduleController : MonoBehaviour
         }
 
         _scheduleView.UpdateView(schedule);
+    }
+
+    public void ActivateDefendPeriods()
+    {
+        if (_schedulesInstances[0].GetPeriod(0).ActivityType == ActivityType.Guard) return;
+        
+        foreach (var schedule in _schedulesInstances)
+        {
+            _schedulesCopies.Add(CopySchedules(schedule));
+            UpdatePeriods(schedule, ActivityType.Guard, 20, 6);
+        }
+    }
+
+    public void ReturnCommonPeriods()
+    {
+        foreach (var schedule in _schedulesCopies)
+        {
+            foreach (var period in schedule.SchedulePeriods)
+            {
+                UpdatePeriods(schedule.VillagerKey, period.ActivityType, period.StartTime, period.EndTime);
+            }
+        }
+        
+        _schedulesCopies.Clear();
+    }
+    
+    private Schedule CopySchedules(Schedule schedule)
+    {
+        var scheduleCopy = ScriptableObject.CreateInstance<Schedule>();
+        scheduleCopy.VillagerKey = schedule.VillagerKey;
+        scheduleCopy.SchedulePeriods = new List<SchedulePeriod>();
+        
+        for (int j = 0; j < schedule.SchedulePeriods.Count; j++)
+        {
+            var period = schedule.SchedulePeriods[j];
+            scheduleCopy.SchedulePeriods.Add(new SchedulePeriod()
+            {
+                StartTime = period.StartTime,
+                EndTime = period.EndTime,
+                ActivityType = period.ActivityType
+            });
+        }
+        return scheduleCopy;
     }
     
     private void OnPeriodChanged(string villagerKey, int period, ActivityColorData data)
@@ -175,5 +236,6 @@ public class ScheduleController : MonoBehaviour
         _gameTimer.OnHourChanged -= OnHourChanged;
         _scheduleView.OnPeriodChanged -= OnPeriodChanged;
         _scheduleView.OnSavedSchedule -= OnSavedSchedule;
+        _matchObjective.OnEnemiesInVillage -= ActivateDefendPeriods;
     }
 }

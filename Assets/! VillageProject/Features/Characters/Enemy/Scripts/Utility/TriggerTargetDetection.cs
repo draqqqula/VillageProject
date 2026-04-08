@@ -3,6 +3,7 @@ using UnityEngine;
 public class TriggerTargetDetection : MonoBehaviour
 {
     [SerializeField] private Target _target;
+    [SerializeField] private TeamMember _teamMember;
 
     public void SetTarget(Target target)
     {
@@ -18,8 +19,7 @@ public class TriggerTargetDetection : MonoBehaviour
         }
         
         var searcher = other.GetComponent<SearchForTarget>();
-        Debug.Log($"Triggered by: {other.name}, enabled: {other.enabled}");
-        if (searcher != null)
+        if (searcher != null && searcher.TeamMember.Team.IsEnemiesWith(_teamMember.Team))
         {
             searcher.Detect(_target);
         }

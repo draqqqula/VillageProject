@@ -139,7 +139,6 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
 
     private bool TryBuildPathToDestination(NavMeshPath path)
     {
-        Debug.Log(_raycastHeight);
         return NavmeshExtensions.TryBuildPathToProjection(_navMeshAgent, _destination.GetPosition(), path, _raycastHeight);
     }
 

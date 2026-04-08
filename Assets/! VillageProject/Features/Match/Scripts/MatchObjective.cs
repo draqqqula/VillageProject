@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ObservableCollections;
@@ -11,6 +12,8 @@ public class MatchObjective : MonoBehaviour
     private ObservableList<float> _targets = new ObservableList<float>();
     [Inject] private MatchState _matchState;
     public IReadOnlyObservableList<float> Targets => _targets;
+    
+    public event Action OnEnemiesInVillage;
 
     public void Initialize(params float[] health)
     {
@@ -22,6 +25,7 @@ public class MatchObjective : MonoBehaviour
 
     public void Take(TargetDamage damage)
     {
+        OnEnemiesInVillage?.Invoke();
         damage.Deal(_targets);
         if (_targets.All(x => x == 0))
         {
