@@ -20,10 +20,13 @@ public class VillagerStateMachine : IDisposable
     private Transform _villageCenter;
     private GameTimer _gameTimer;
     private Collider _discoveryCollider;
+    private VillagerSystem  _villagerSystem;
+    private DialogueSystem _dialogueSystem;
+    private VillagerData _villagerData;
 
-    public VillagerStateMachine(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, 
+    public VillagerStateMachine(Villager villager, NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, 
         SkinReferencesResolver skinReferencesResolver, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, Transform villageCenter,
-        GameTimer gameTimer, Collider discoveryCollider)
+        GameTimer gameTimer, Collider discoveryCollider, VillagerSystem villagerSystem, DialogueSystem dialogueSystem)
     {
         _navmeshAgent = navmeshAgent;
         _searchForTarget = searchForTarget;
@@ -35,14 +38,17 @@ public class VillagerStateMachine : IDisposable
         _villageCenter = villageCenter;
         _gameTimer = gameTimer;
         _discoveryCollider = discoveryCollider;
+        _villagerSystem = villagerSystem;
+        _dialogueSystem = dialogueSystem;
         
-        SetStates(villagerData, skinReferencesResolver);
+        SetStates(villager, skinReferencesResolver);
     }
 
-    public void SetStates(VillagerData villagerData, SkinReferencesResolver skinReferencesResolver)
+    public void SetStates(Villager villager, SkinReferencesResolver skinReferencesResolver)
     {
-        _stateFactory.SetParams(_navmeshAgent, villagerData, _searchForTarget, skinReferencesResolver, _buildingStorage, _buildingPlanner,
-            _villageCenter, _gameTimer, _discoveryCollider);
+        _villagerData = villager.VillagerData;
+        _stateFactory.SetParams(_navmeshAgent, villager, villager.VillagerData, _searchForTarget, skinReferencesResolver, _buildingStorage, _buildingPlanner,
+            _villageCenter, _gameTimer, _discoveryCollider, _villagerSystem, _dialogueSystem);
         _states.Clear();
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());
@@ -64,6 +70,7 @@ public class VillagerStateMachine : IDisposable
         {
             if (CurrentState != null) await CurrentState.ExitState(token);
             CurrentState = null;
+            if (_villagerData.IsTalking) await UniTask.WaitWhile(() => _villagerData.IsTalking, cancellationToken: token); 
         }
         catch (OperationCanceledException e)
         {

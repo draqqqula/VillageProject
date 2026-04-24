@@ -10,6 +10,10 @@ public class VillagerData : ScriptableObject
     [field: SerializeField] public Profession Profession {get; set;}
     
     public bool IsOnHome { get; set; }
+    public bool IsTalking { get; set; }
+    public bool IsMoving => NavmeshAgent.GetVelocityPerSecond() > 0;
+    
+    public NavmeshMovementAgent NavmeshAgent {private get; set; }
     public HomePoint HomePoint {get; set;}
 }
 

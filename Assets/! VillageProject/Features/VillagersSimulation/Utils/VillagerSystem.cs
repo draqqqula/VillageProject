@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class VillagerSystem : MonoBehaviour
 {
@@ -13,12 +14,18 @@ public class VillagerSystem : MonoBehaviour
     {
         foreach (var villager in Villagers)
         {
-            villager.Init(_homeService, _villageCenter, _gameTimer);
+            villager.Init(_homeService, _villageCenter, _gameTimer, this);
         }
     }
 
     public Villager GetVillager(string villagerKey)
     {
         return Villagers.FirstOrDefault(villager => villager.VillagerData.Key == villagerKey);
+    }
+
+    public Villager GetVillager(ActivityType[] activities)
+    {
+        var villagers = Villagers.Where(villager => activities.Contains(villager.VillagerData.ActivityType.Value)).ToArray();
+        return villagers[Random.Range(0, villagers.Length)];
     }
 }

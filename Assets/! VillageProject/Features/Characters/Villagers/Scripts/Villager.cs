@@ -33,12 +33,14 @@ public class Villager : MonoBehaviour
     [Inject] private BuildingStorage _buildingStorage;
     [Inject] private BuildingPlanner _buildingPlanner;
     [Inject] private DiContainer _diContainer;
+    [Inject] private DialogueSystem _dialogueSystem;
     
     [SerializeField] private DeathEvent _deathEvent;
     
-    public void Init(HomeService homeService, Transform villagerCenter, GameTimer gameTimer)
+    public void Init(HomeService homeService, Transform villagerCenter, GameTimer gameTimer, VillagerSystem villagerSystem)
     {
         VillagerData = ScriptableObject.Instantiate(_villagerData);
+        VillagerData.NavmeshAgent = _navmeshAgent;
         
         var skinsInfoInstance = ScriptableObject.Instantiate(_villagersSkinsInfo);
         _skinChanger = new SkinChanger(skinsInfoInstance, _diContainer);
@@ -53,8 +55,8 @@ public class Villager : MonoBehaviour
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
         
-        _stateMachine = new VillagerStateMachine(VillagerData, _navmeshAgent, _searchForTarget, _skinReferencesResolver.Value,
-            _buildingStorage, _buildingPlanner, villagerCenter, gameTimer, _discoveryCollider);
+        _stateMachine = new VillagerStateMachine(this, _navmeshAgent, _searchForTarget, _skinReferencesResolver.Value,
+            _buildingStorage, _buildingPlanner, villagerCenter, gameTimer, _discoveryCollider, villagerSystem, _dialogueSystem);
 
         _deathEvent.FiredEvent += OnDeath;
     }
@@ -100,12 +102,17 @@ public class Villager : MonoBehaviour
         ChangeSkin();
         
         _skinReferencesResolver.Value.Animator.SetInteger(PROFESSION, (int)profession);
-        _stateMachine.SetStates(VillagerData, _skinReferencesResolver.Value);
+        _stateMachine.SetStates(this, _skinReferencesResolver.Value);
         if (VillagerData.ActivityType != null)
         {
             _ = _stateMachine.UpdateCurrentState(VillagerData.ActivityType.Value, gameObject.GetCancellationTokenOnDestroy());
         }
         Debug.Log($"Villager {gameObject.name} profession change to {profession}");
+    }
+
+    public void Speak(string text)
+    {
+        Debug.Log($"{gameObject.name} : {text}");
     }
 
     private void OnDeath()

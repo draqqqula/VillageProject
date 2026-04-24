@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class VillagerStateFactory
 {
     private NavmeshMovementAgent _navmeshAgent;
+    
+    private Villager _villager;
     private VillagerData _villagerData;
     private SearchForTarget _searchForTarget;
     private SkinReferencesResolver _skinReferencesResolver;
@@ -14,12 +17,15 @@ public class VillagerStateFactory
     private Transform _villageCenter;
     private GameTimer _gameTimer;
     private Collider _discoveryCollider;
+    private VillagerSystem _villagerSystem;
+    private DialogueSystem _dialogueSystem;
     
-    public void SetParams(NavmeshMovementAgent navmeshAgent, VillagerData villagerData, SearchForTarget searchForTarget,
+    public void SetParams(NavmeshMovementAgent navmeshAgent, Villager villager, VillagerData villagerData, SearchForTarget searchForTarget,
         SkinReferencesResolver skinReferencesResolver, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner,
-        Transform villageCenter, GameTimer gameTimer, Collider discoveryCollider)
+        Transform villageCenter, GameTimer gameTimer, Collider discoveryCollider, VillagerSystem villagerSystem, DialogueSystem dialogueSystem)
     {
         _navmeshAgent = navmeshAgent;
+        _villager = villager;
         _villagerData = villagerData;
         _searchForTarget = searchForTarget;
         _skinReferencesResolver = skinReferencesResolver;
@@ -30,6 +36,8 @@ public class VillagerStateFactory
         _villageCenter = villageCenter;
         _gameTimer = gameTimer;
         _discoveryCollider = discoveryCollider;
+        _villagerSystem = villagerSystem;
+        _dialogueSystem = dialogueSystem;
     }
     
     public SleepVillagerState CreateSleepState()
@@ -50,13 +58,16 @@ public class VillagerStateFactory
             if (workData == null)
             {
                 Debug.LogError("Building has not WorkBuildingData!");
-                return new RelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
+                return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
             }
-            else return new RelaxVillagerState(_navmeshAgent, _skinReferencesResolver, workData.RelaxPoint, true);
+            else return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, workData.RelaxPoint, true);
         }
         else
         {
-            return new RelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
+            bool isTalkingRelax = Random.Range(0, 2) == 1;
+
+            if (isTalkingRelax) return new TalkRelaxVillagerState(_navmeshAgent, _villager, _villagerSystem, _dialogueSystem);
+            return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
         }
     }
 
