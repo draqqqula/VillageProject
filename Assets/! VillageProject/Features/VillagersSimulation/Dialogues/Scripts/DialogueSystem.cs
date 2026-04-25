@@ -24,6 +24,12 @@ public class DialogueSystem : MonoBehaviour
         var dialogueID = _dialogueChooser.ChooseDialogueID(villagerA, villagerB);
         PlayDialogue(villagerA, villagerB, dialogueID, callback);
     }
+
+    public void PlayShortDialogue(Villager villagerA, Villager villagerB, Action callback = null)
+    {
+        var dialogueID = _dialogueChooser.ChooseDialogueID(villagerA, villagerB, true);
+        PlayDialogue(villagerA, villagerB, dialogueID, callback);
+    }
     
     public void PlayDialogue(Villager villagerA, Villager villagerB, string id, Action callback = null)
     {
@@ -34,9 +40,45 @@ public class DialogueSystem : MonoBehaviour
             Debug.LogError($"Dialogue with index {id} not found!");
             return;
         }
+        
+        Action<Replica> speakAction = (replica) =>
+        {
+            if (replica.SpeakerID == Replica.ActorID.ActorA) villagerA.Speak(replica.Text);
+            else villagerB.Speak(replica.Text);
+        };
 
+        Action silentAction = () =>
+        {
+            villagerA.KeepSilent();
+            villagerB.KeepSilent();
+        };
+        
         if (_dialogueCoroutine != null) StopCoroutine(_dialogueCoroutine);
-        _dialogueCoroutine = StartCoroutine(DialogueRoutine(villagerA, villagerB, dialogue, callback));
+        _dialogueCoroutine = StartCoroutine(DialogueRoutine(dialogue, speakAction, silentAction, callback));
+    }
+
+    public void PlayDialogue(Villager villager, string id, Action callback = null)
+    {
+        var dialogue = _dialoguesDataInstance.Dialogues.FirstOrDefault(d => d.DialogueID == id);
+
+        if (dialogue == null)
+        {
+            Debug.LogError($"Dialogue with index {id} not found!");
+            return;
+        }
+        
+        Action<Replica> speakAction = (replica) =>
+        {
+            villager.Speak(replica.Text);
+        };
+
+        Action silentAction = () =>
+        {
+            villager.KeepSilent();
+        };
+        
+        if (_dialogueCoroutine != null) StopCoroutine(_dialogueCoroutine);
+        _dialogueCoroutine = StartCoroutine(DialogueRoutine(dialogue, speakAction, silentAction, callback));
     }
     
     public void StopDialogue()
@@ -48,19 +90,19 @@ public class DialogueSystem : MonoBehaviour
         }
     }
 
-    private IEnumerator DialogueRoutine(Villager villagerA, Villager villagerB, DialogueConfig dialogue, Action callback)
+    private IEnumerator DialogueRoutine(DialogueConfig dialogue, Action<Replica> speakAction, Action silentAction, Action callback)
     {
         var curReplicaIndex = 0;
         while (curReplicaIndex < dialogue.Replicas.Count)
         {
             var replica = dialogue.Replicas[curReplicaIndex];
-            
-            if (replica.SpeakerID == Replica.ActorID.ActorA) villagerA.Speak(replica.Text);
-            else villagerB.Speak(replica.Text);
+            speakAction?.Invoke(replica);
             
             if (replica.ReplicaDuration > 0) yield return new WaitForSeconds(replica.ReplicaDuration);
             else yield return new WaitForSeconds(BaseReplicaDuration);
             curReplicaIndex++;
+            
+            silentAction?.Invoke();
         }
         
         _dialogueCoroutine = null;
@@ -70,8 +112,9 @@ public class DialogueSystem : MonoBehaviour
 
 public class DialogueChooser
 {
-    public string ChooseDialogueID(Villager villagerA, Villager villagerB)
-    {
+    public string ChooseDialogueID(Villager villagerA, Villager villagerB, bool isShort = false)
+    { 
+        if (isShort) return "ShortTestDialogue";
         return "TestDialogue";
     }
 }

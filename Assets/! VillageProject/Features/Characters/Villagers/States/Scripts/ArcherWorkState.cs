@@ -101,9 +101,12 @@ public class ArcherWorkState : WorkVillagerState
         }
         
         _transformHandler.DeactivateMovement();
-        
-        _skinReferencesResolver.Animator.SetBool("Agressed", false);
-        await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+
+        if (_isOnTower)
+        {
+            _skinReferencesResolver.Animator.SetBool("Agressed", false);
+            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+        }
     }
 
     public override void Dispose()

@@ -19,6 +19,7 @@ public class DefenderWorkState : WorkVillagerState
     private Coroutine _coroutine;
     
     private SkinReferencesResolver _skinReferencesResolver;
+    private bool _isFinishing;
     
     public DefenderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
         Profession profession, Transform villageCenter)
@@ -32,11 +33,14 @@ public class DefenderWorkState : WorkVillagerState
     
     public override void EnterState()
     {
+        _isFinishing = false;
         ActivateMovement();
     }
     
     private void OnMovementEnded(WorkResult result)
     {
+        if (_isFinishing) return;
+        
         if (_coroutine != null) _navmeshAgent.StopCoroutine(_coroutine);
         _coroutine = _navmeshAgent.StartCoroutine(StandRoutine(ActivateMovement));
     }
@@ -53,6 +57,7 @@ public class DefenderWorkState : WorkVillagerState
 
     public override async UniTask ExitState(CancellationToken token)
     {
+        _isFinishing = true;
         _movementHandler.DeactivateMovement();
         
         if (_coroutine != null)

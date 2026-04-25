@@ -6471,9 +6471,17 @@ PrefabInstance:
       value: Villager (3)
       objectReference: {fileID: 0}
     - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogCanvas
+      value: 
+      objectReference: {fileID: 900756933}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: _villagerData
       value: 
       objectReference: {fileID: 11400000, guid: f6eaef9d059cd4e92b7c8be3d33cabc2, type: 2}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogueCanvas
+      value: 
+      objectReference: {fileID: 900756933}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8144,6 +8152,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2276830629822440595, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3049801893293441889, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.81
@@ -8189,9 +8201,17 @@ PrefabInstance:
       value: Villager (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogCanvas
+      value: 
+      objectReference: {fileID: 900756933}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: _villagerData
       value: 
       objectReference: {fileID: 11400000, guid: 351d8fc776c8a4059881ca2a604e6976, type: 2}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogueCanvas
+      value: 
+      objectReference: {fileID: 900756933}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17999,9 +18019,17 @@ PrefabInstance:
       value: Villager (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogCanvas
+      value: 
+      objectReference: {fileID: 900756933}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: _villagerData
       value: 
       objectReference: {fileID: 11400000, guid: a97cd335694464ffd90407fe0336f74c, type: 2}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogueCanvas
+      value: 
+      objectReference: {fileID: 900756933}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21796,6 +21824,107 @@ Transform:
   m_Children: []
   m_Father: {fileID: 420578193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &900756929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900756930}
+  - component: {fileID: 900756933}
+  - component: {fileID: 900756932}
+  - component: {fileID: 900756931}
+  m_Layer: 0
+  m_Name: DialogueCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &900756930
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900756929}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1224321327}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 960, y: 540}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &900756931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900756929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &900756932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900756929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &900756933
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900756929}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 1862511845}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &901008119
 GameObject:
   m_ObjectHideFlags: 0
@@ -23140,9 +23269,17 @@ PrefabInstance:
       value: Villager (4)
       objectReference: {fileID: 0}
     - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogCanvas
+      value: 
+      objectReference: {fileID: 900756933}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: _villagerData
       value: 
       objectReference: {fileID: 11400000, guid: 90960944446c84a9280b855aeab15e55, type: 2}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogueCanvas
+      value: 
+      objectReference: {fileID: 900756933}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23420,9 +23557,17 @@ PrefabInstance:
       value: Villager (6)
       objectReference: {fileID: 0}
     - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogCanvas
+      value: 
+      objectReference: {fileID: 900756933}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: _villagerData
       value: 
       objectReference: {fileID: 11400000, guid: 38ea7af582f9048d2a3910f3ba7c1be7, type: 2}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogueCanvas
+      value: 
+      objectReference: {fileID: 900756933}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29046,9 +29191,17 @@ PrefabInstance:
       value: Villager (5)
       objectReference: {fileID: 0}
     - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogCanvas
+      value: 
+      objectReference: {fileID: 900756933}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: _villagerData
       value: 
       objectReference: {fileID: 11400000, guid: 713173f921c514ca9b262681fe0f0236, type: 2}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogueCanvas
+      value: 
+      objectReference: {fileID: 900756933}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -32070,9 +32223,17 @@ PrefabInstance:
       value: Villager
       objectReference: {fileID: 0}
     - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogCanvas
+      value: 
+      objectReference: {fileID: 900756933}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
       propertyPath: _villagerData
       value: 
       objectReference: {fileID: 11400000, guid: 96970ef9b84514a6a9aff4c9a98d4b8d, type: 2}
+    - target: {fileID: 6677530680594479035, guid: c78ab4a639d774847ad11aba9b9d328a, type: 3}
+      propertyPath: _dialogueCanvas
+      value: 
+      objectReference: {fileID: 900756933}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -40223,6 +40384,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 547915112534262827, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1498615993}
+    - targetCorrespondingSourceObject: {fileID: 547915112534262827, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 900756930}
     - targetCorrespondingSourceObject: {fileID: 5261575029070157045, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 685531020}
@@ -43510,6 +43674,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -35.135
       objectReference: {fileID: 0}
+    - target: {fileID: 1645934214450623382, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.1367538
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645934214450623382, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.00031932423
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645934214450623382, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.99054605
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645934214450623382, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.010808445
+      objectReference: {fileID: 0}
     - target: {fileID: 1670907035066457857, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -43586,6 +43766,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1090304666}
+    - target: {fileID: 2038430085407585256, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.51832736
+      objectReference: {fileID: 0}
+    - target: {fileID: 2038430085407585256, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8546087
+      objectReference: {fileID: 0}
     - target: {fileID: 2055762855004463702, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -47634,6 +47822,18 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 67
       objectReference: {fileID: 0}
+    - target: {fileID: 8419035085124180394, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.83888286
+      objectReference: {fileID: 0}
+    - target: {fileID: 8419035085124180394, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.007969078
+      objectReference: {fileID: 0}
+    - target: {fileID: 8419035085124180394, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.0073087784
+      objectReference: {fileID: 0}
     - target: {fileID: 8440449363085358757, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.0024521
@@ -47897,6 +48097,14 @@ PrefabInstance:
     - target: {fileID: 9095989073146554898, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 217.732
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137571693418316460, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.008436157
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137571693418316460, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.006764294
       objectReference: {fileID: 0}
     - target: {fileID: 9151595894620108396, guid: 7803a52e0cb195e4995296c14b2ced10, type: 3}
       propertyPath: m_Mesh

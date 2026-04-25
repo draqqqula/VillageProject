@@ -8,6 +8,7 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
     private const int MinVillagerTries = 7;
     private const float TalkDistance = 2f;
     private const float MinTryTiming = 5;
+    private const float MaxRadius = 50; 
     
     private NavmeshMovementAgent _navmeshAgent;
     private VillagerTransformHandler _transformHandler;
@@ -15,6 +16,8 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
     private VillagerSystem _villagerSystem;
     private Villager _curVillager;
     private Villager _targetVillager;
+
+    private Transform _villageCenter;
     
     private DialogueSystem _dialogueSystem;
     
@@ -24,7 +27,7 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
     private float _lastChoosingTiming;
 
     public TalkRelaxVillagerState(NavmeshMovementAgent navmeshAgent, Villager villager, VillagerSystem villagerSystem, 
-        DialogueSystem dialogueSystem)
+        DialogueSystem dialogueSystem, Transform villageCenter)
     {
         _navmeshAgent = navmeshAgent;
         _curVillager = villager;
@@ -32,6 +35,8 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         
         _villagerSystem = villagerSystem;
         _dialogueSystem = dialogueSystem;
+        
+        _villageCenter = villageCenter;
     }
     
     public override void EnterState()
@@ -48,20 +53,29 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         while (_targetVillager == null || _targetVillager == _curVillager || _targetVillager.VillagerData.IsTalking || _targetVillager.VillagerData.IsMoving
                || Vector3.Distance(_navmeshAgent.transform.position, _targetVillager.transform.position) > MinDistance)
         {
-            if (triesCount >= MinVillagerTries) break;
+            if (triesCount >= MinVillagerTries)
+            {
+                _targetVillager = null;
+                break;
+            }
             
             _targetVillager = _villagerSystem.GetVillager(new ActivityType[] { ActivityType.Work, ActivityType.Relax });
             triesCount++;
         }
         
+        Debug.Log($"{_curVillager} choose Talk Target {_targetVillager}");
         if (_targetVillager) _targetVillager.VillagerData.IsTalking = true;
     }
     
     public void Update()
     {
-        if (_targetVillager && !_isTalking)
+        if (_targetVillager != null && !_isTalking)
         {
-            if (_targetVillager.VillagerData.IsMoving) OnDialogueFinished();
+            if (_targetVillager.VillagerData.IsMoving)
+            {
+                ReleaseTalkingParams();
+                return;
+            }
             
             var movePoint = _targetVillager.transform.position + _targetVillager.transform.forward * TalkDistance;
             Quaternion targetRotation = Quaternion.LookRotation(_targetVillager.transform.position - _navmeshAgent.transform.position);
@@ -73,6 +87,10 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
             {
                 ChooseTarget();   
             }
+            else if (!_curVillager.VillagerData.IsMoving)
+            {
+                _transformHandler.ActivateMovementWithPosInCircle(_villageCenter, MaxRadius);
+            }
         }
     }
 
@@ -81,16 +99,23 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         _isTalking = true;
 
         _curVillager.VillagerData.IsTalking = true;
+        Debug.Log($"{_curVillager} reached talk point!");
         _dialogueSystem.PlayDialogue(_curVillager, _targetVillager, OnDialogueFinished);
     }
 
     private void OnDialogueFinished()
     {
+        ReleaseTalkingParams();
+        if (!_isFinishing) ChooseTarget();
+    }
+
+    private void ReleaseTalkingParams()
+    {
         _isTalking = false;
         
         _targetVillager.VillagerData.IsTalking = false;
         _curVillager.VillagerData.IsTalking = false;
-        if (!_isFinishing) ChooseTarget();
+        _transformHandler.DeactivateMovement();
     }
 
     public async override UniTask ExitState(CancellationToken token)
@@ -102,7 +127,7 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         }
         
         _transformHandler.DeactivateMovement();
-        _targetVillager.VillagerData.IsTalking = false;
+        if (_targetVillager != null) _targetVillager.VillagerData.IsTalking = false;
         _curVillager.VillagerData.IsTalking = false;
         
         _targetVillager = null;

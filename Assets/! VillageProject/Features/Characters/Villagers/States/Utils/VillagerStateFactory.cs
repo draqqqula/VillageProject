@@ -4,6 +4,8 @@ using Random = UnityEngine.Random;
 
 public class VillagerStateFactory
 {
+    private const float DialogueChance = 0.3f;
+    
     private NavmeshMovementAgent _navmeshAgent;
     
     private Villager _villager;
@@ -64,9 +66,9 @@ public class VillagerStateFactory
         }
         else
         {
-            bool isTalkingRelax = Random.Range(0, 2) == 1;
-
-            if (isTalkingRelax) return new TalkRelaxVillagerState(_navmeshAgent, _villager, _villagerSystem, _dialogueSystem);
+            bool isTalking = Random.Range(0f, 1f) <= DialogueChance;
+            
+            if (isTalking) return new TalkRelaxVillagerState(_navmeshAgent, _villager, _villagerSystem, _dialogueSystem, _villageCenter);
             return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 using Cysharp.Threading.Tasks;
+using TMPro;
 
 [RequireComponent(typeof(NavmeshMovementAgent))]
 [RequireComponent(typeof(VelocityToAnimation))]
@@ -26,6 +27,10 @@ public class Villager : MonoBehaviour
     private SkinChanger _skinChanger;
 
     [SerializeField] private Collider _discoveryCollider;
+    [SerializeField] private Transform _dialoguePoint;
+    [SerializeField] private DialogueView _dialogueWindowPrefab;
+    private DialogueView _dialogueWindow;
+    [SerializeField] private Canvas _dialogueCanvas;
     
     public ReadOnlyReactiveProperty<SkinReferencesResolver> SkinReferencesResolver => _skinReferencesResolver;
     private ReactiveProperty<SkinReferencesResolver> _skinReferencesResolver;
@@ -59,6 +64,10 @@ public class Villager : MonoBehaviour
             _buildingStorage, _buildingPlanner, villagerCenter, gameTimer, _discoveryCollider, villagerSystem, _dialogueSystem);
 
         _deathEvent.FiredEvent += OnDeath;
+        
+        _dialogueWindow = Instantiate(_dialogueWindowPrefab, _dialogueCanvas.transform);
+        _dialogueWindow.transform.position = _dialoguePoint.position;
+        _dialogueWindow.Init(_dialoguePoint);
     }
 
     private void ChangeSkin()
@@ -113,6 +122,12 @@ public class Villager : MonoBehaviour
     public void Speak(string text)
     {
         Debug.Log($"{gameObject.name} : {text}");
+        _dialogueWindow.ShowView(text);
+    }
+
+    public void KeepSilent()
+    {
+        _dialogueWindow.HideView();
     }
 
     private void OnDeath()
