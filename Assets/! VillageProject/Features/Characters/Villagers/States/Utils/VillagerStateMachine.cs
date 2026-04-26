@@ -4,51 +4,33 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 public class VillagerStateMachine : IDisposable
 {
     public VillagerState CurrentState { get; private set; }
     private NavmeshMovementAgent _navmeshAgent;
-    private SearchForTarget _searchForTarget;
 
     private Dictionary<ActivityType, VillagerState> _states = new Dictionary<ActivityType, VillagerState>();
     
     private VillagerStateFactory _stateFactory;
-    private BuildingStorage _buildingStorage;
-    private BuildingPlanner _buildingPlanner;
-    
-    private Transform _villageCenter;
-    private GameTimer _gameTimer;
-    private Collider _discoveryCollider;
-    private VillagerSystem  _villagerSystem;
-    private DialogueSystem _dialogueSystem;
     private VillagerData _villagerData;
+    
+    private DiContainer _container;
 
-    public VillagerStateMachine(Villager villager, NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, 
-        SkinReferencesResolver skinReferencesResolver, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, Transform villageCenter,
-        GameTimer gameTimer, Collider discoveryCollider, VillagerSystem villagerSystem, DialogueSystem dialogueSystem)
+    public VillagerStateMachine(Villager villager, NavmeshMovementAgent navmeshAgent, DiContainer container)
     {
         _navmeshAgent = navmeshAgent;
-        _searchForTarget = searchForTarget;
         _stateFactory = new VillagerStateFactory();
+        _container = container;
         
-        _buildingStorage = buildingStorage;
-        _buildingPlanner = buildingPlanner;
-        
-        _villageCenter = villageCenter;
-        _gameTimer = gameTimer;
-        _discoveryCollider = discoveryCollider;
-        _villagerSystem = villagerSystem;
-        _dialogueSystem = dialogueSystem;
-        
-        SetStates(villager, skinReferencesResolver);
+        SetStates(villager);
     }
 
-    public void SetStates(Villager villager, SkinReferencesResolver skinReferencesResolver)
+    public void SetStates(Villager villager)
     {
         _villagerData = villager.VillagerData;
-        _stateFactory.SetParams(_navmeshAgent, villager, villager.VillagerData, _searchForTarget, skinReferencesResolver, _buildingStorage, _buildingPlanner,
-            _villageCenter, _gameTimer, _discoveryCollider, _villagerSystem, _dialogueSystem);
+        _stateFactory.SetParams(_navmeshAgent, villager, _container);
         _states.Clear();
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());

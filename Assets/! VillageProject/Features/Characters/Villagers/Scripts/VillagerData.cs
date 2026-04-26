@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "VillagerData", menuName = "Villagers Simulation/New Villager Data")]
 public class VillagerData : ScriptableObject
@@ -23,6 +24,7 @@ public enum Gender {Male, Female}
 public class Profession
 {
     [field: SerializeField] public ProfessionType Type {get; set;}
+    [field: SerializeField] public float Experience {get; set;}
 }
 
 public enum ProfessionType

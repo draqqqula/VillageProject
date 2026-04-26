@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Zenject;
 
 public class VillagerStateFactory
 {
@@ -8,9 +9,11 @@ public class VillagerStateFactory
     
     private NavmeshMovementAgent _navmeshAgent;
     
+    private SearchForTarget _searchForTarget;
+    private Collider _discoveryCollider;
+    
     private Villager _villager;
     private VillagerData _villagerData;
-    private SearchForTarget _searchForTarget;
     private SkinReferencesResolver _skinReferencesResolver;
     
     private BuildingStorage _buildingStorage;
@@ -18,28 +21,26 @@ public class VillagerStateFactory
     
     private Transform _villageCenter;
     private GameTimer _gameTimer;
-    private Collider _discoveryCollider;
     private VillagerSystem _villagerSystem;
+    
     private DialogueSystem _dialogueSystem;
     
-    public void SetParams(NavmeshMovementAgent navmeshAgent, Villager villager, VillagerData villagerData, SearchForTarget searchForTarget,
-        SkinReferencesResolver skinReferencesResolver, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner,
-        Transform villageCenter, GameTimer gameTimer, Collider discoveryCollider, VillagerSystem villagerSystem, DialogueSystem dialogueSystem)
+    public void SetParams(NavmeshMovementAgent navmeshAgent, Villager villager, DiContainer container)
     {
         _navmeshAgent = navmeshAgent;
         _villager = villager;
-        _villagerData = villagerData;
-        _searchForTarget = searchForTarget;
-        _skinReferencesResolver = skinReferencesResolver;
+        _villagerData = _villager.VillagerData;
+        _skinReferencesResolver = _villager.SkinReferencesResolver.CurrentValue;
+        _searchForTarget = container.Resolve<SearchForTarget>();
         
-        _buildingStorage = buildingStorage;
-        _buildingPlanner = buildingPlanner;
+        _buildingStorage = container.Resolve<BuildingStorage>();
+        _buildingPlanner = container.Resolve<BuildingPlanner>();
         
-        _villageCenter = villageCenter;
-        _gameTimer = gameTimer;
-        _discoveryCollider = discoveryCollider;
-        _villagerSystem = villagerSystem;
-        _dialogueSystem = dialogueSystem;
+        _villageCenter = container.ResolveId<Transform>("VillageCenter");
+        _gameTimer = container.Resolve<GameTimer>();
+        _discoveryCollider = container.ResolveId<Collider>("Discovery");
+        _villagerSystem = container.Resolve<VillagerSystem>();
+        _dialogueSystem = container.Resolve<DialogueSystem>();
     }
     
     public SleepVillagerState CreateSleepState()

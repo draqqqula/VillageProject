@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class DialogueSystem : MonoBehaviour
     
     private DialogueChooser _dialogueChooser;
     private Coroutine _dialogueCoroutine;
+    private List<DialogueSession> _dialogueSessions;
 
     private void Awake()
     {
@@ -52,9 +54,11 @@ public class DialogueSystem : MonoBehaviour
             villagerA.KeepSilent();
             villagerB.KeepSilent();
         };
-        
-        if (_dialogueCoroutine != null) StopCoroutine(_dialogueCoroutine);
-        _dialogueCoroutine = StartCoroutine(DialogueRoutine(dialogue, speakAction, silentAction, callback));
+
+        StopDialogue(villagerA);
+        StopDialogue(villagerB);
+        var coroutine = StartCoroutine(DialogueRoutine(dialogue, speakAction, silentAction, callback));
+        _dialogueSessions.Add(new DialogueSession() {VillagerA = villagerA, VillagerB = villagerB, DialogueCoroutine = coroutine});
     }
 
     public void PlayDialogue(Villager villager, string id, Action callback = null)
@@ -77,16 +81,19 @@ public class DialogueSystem : MonoBehaviour
             villager.KeepSilent();
         };
         
-        if (_dialogueCoroutine != null) StopCoroutine(_dialogueCoroutine);
-        _dialogueCoroutine = StartCoroutine(DialogueRoutine(dialogue, speakAction, silentAction, callback));
+        StopDialogue(villager);
+        var coroutine = StartCoroutine(DialogueRoutine(dialogue, speakAction, silentAction, callback));
+        _dialogueSessions.Add(new DialogueSession() {VillagerA = villager, DialogueCoroutine = coroutine});
     }
     
-    public void StopDialogue()
+    public void StopDialogue(Villager villager)
     {
-        if (_dialogueCoroutine != null)
+        var session = _dialogueSessions.FirstOrDefault(s => s.VillagerA == villager || s.VillagerB == villager);
+        
+        if (session != null)
         {
-            StopCoroutine(_dialogueCoroutine);
-            _dialogueCoroutine = null;
+            StopCoroutine(session.DialogueCoroutine);
+            _dialogueSessions.Remove(session);
         }
     }
 
@@ -108,6 +115,13 @@ public class DialogueSystem : MonoBehaviour
         _dialogueCoroutine = null;
         callback?.Invoke();
     }
+}
+
+public class DialogueSession
+{
+    public Villager VillagerA { get; set; }
+    public Villager VillagerB { get; set; }
+    public Coroutine DialogueCoroutine { get; set; }
 }
 
 public class DialogueChooser

@@ -38780,6 +38780,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dialogueSystem: {fileID: 41999439}
+  _dialogueCanvas: {fileID: 900756933}
+--- !u!114 &1579072757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579072738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25275db8265445bb9a88fd16a3b99a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _villagerSystem: {fileID: 1469070017}
+  _gameTimer: {fileID: 1565272555}
+  _villageCenter: {fileID: 705236816}
 --- !u!1001 &1580537859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40175,12 +40191,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4104091483445518022, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       propertyPath: _monoInstallers.Array.size
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4104091483445518022, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       propertyPath: '_monoInstallers.Array.data[13]'
       value: 
       objectReference: {fileID: 1579072756}
+    - target: {fileID: 4104091483445518022, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+      propertyPath: '_monoInstallers.Array.data[14]'
+      value: 
+      objectReference: {fileID: 1579072757}
     - target: {fileID: 4200332942534850617, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -40400,6 +40420,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6139211187508445516, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1579072756}
+    - targetCorrespondingSourceObject: {fileID: 6139211187508445516, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1579072757}
   m_SourcePrefab: {fileID: 100100000, guid: 96f7d0431aa949a4c8f762da9f05754f, type: 3}
 --- !u!224 &1646114855 stripped
 RectTransform:

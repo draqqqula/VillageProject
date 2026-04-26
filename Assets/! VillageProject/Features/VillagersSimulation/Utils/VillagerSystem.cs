@@ -14,7 +14,7 @@ public class VillagerSystem : MonoBehaviour
     {
         foreach (var villager in Villagers)
         {
-            villager.Init(_homeService, _villageCenter, _gameTimer, this);
+            villager.Init(_homeService);
         }
     }
 

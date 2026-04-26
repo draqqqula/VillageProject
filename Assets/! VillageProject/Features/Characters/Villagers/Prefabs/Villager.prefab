@@ -165,13 +165,10 @@ MonoBehaviour:
   _villagerData: {fileID: 11400000, guid: 96970ef9b84514a6a9aff4c9a98d4b8d, type: 2}
   _currentActivity: 0
   _navmeshAgent: {fileID: 2700721286470927998}
-  _searchForTarget: {fileID: 3122033597428601144}
   _villagersSkinsInfo: {fileID: 11400000, guid: 8dd86a3d555f749a7a5f7e581bc0a88f, type: 2}
   _viewParent: {fileID: 8646088773368326699}
-  _discoveryCollider: {fileID: 8919438586891559947}
   _dialoguePoint: {fileID: 2276830629822440595}
   _dialogueWindowPrefab: {fileID: 1238243824860244923, guid: 36846b1ce06b24a4aa78d043595f4d67, type: 3}
-  _dialogueCanvas: {fileID: 0}
   _deathEvent: {fileID: 2671009833406581085}
 --- !u!114 &2700721286470927998
 MonoBehaviour:
@@ -351,6 +348,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _teamMember: {fileID: 1998849619901002287}
   _villager: {fileID: 6677530680594479035}
+  _discoveryCollider: {fileID: 8919438586891559947}
+  _searchForTarget: {fileID: 3122033597428601144}
 --- !u!114 &1669074080113774880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -533,6 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _villager: {fileID: 6677530680594479035}
+  _dialogueChance: 0.6
 --- !u!1 &6691590844814211982
 GameObject:
   m_ObjectHideFlags: 0

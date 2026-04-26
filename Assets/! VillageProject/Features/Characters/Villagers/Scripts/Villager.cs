@@ -20,29 +20,24 @@ public class Villager : MonoBehaviour
     [SerializeField] private NavmeshMovementAgent _navmeshAgent;
     private VillagerStateMachine _stateMachine;
     
-    [SerializeField] private SearchForTarget _searchForTarget;
     [SerializeField] private VillagersSkinsInfo _villagersSkinsInfo;
     [SerializeField] private Transform _viewParent;
     private GameObject _currentSkin;
     private SkinChanger _skinChanger;
-
-    [SerializeField] private Collider _discoveryCollider;
+    
     [SerializeField] private Transform _dialoguePoint;
     [SerializeField] private DialogueView _dialogueWindowPrefab;
     private DialogueView _dialogueWindow;
-    [SerializeField] private Canvas _dialogueCanvas;
+    [Inject(Id = "Dialogue")] private Canvas _dialogueCanvas;
     
     public ReadOnlyReactiveProperty<SkinReferencesResolver> SkinReferencesResolver => _skinReferencesResolver;
     private ReactiveProperty<SkinReferencesResolver> _skinReferencesResolver;
     
-    [Inject] private BuildingStorage _buildingStorage;
-    [Inject] private BuildingPlanner _buildingPlanner;
     [Inject] private DiContainer _diContainer;
-    [Inject] private DialogueSystem _dialogueSystem;
     
     [SerializeField] private DeathEvent _deathEvent;
     
-    public void Init(HomeService homeService, Transform villagerCenter, GameTimer gameTimer, VillagerSystem villagerSystem)
+    public void Init(HomeService homeService)
     {
         VillagerData = ScriptableObject.Instantiate(_villagerData);
         VillagerData.NavmeshAgent = _navmeshAgent;
@@ -60,8 +55,7 @@ public class Villager : MonoBehaviour
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
         
-        _stateMachine = new VillagerStateMachine(this, _navmeshAgent, _searchForTarget, _skinReferencesResolver.Value,
-            _buildingStorage, _buildingPlanner, villagerCenter, gameTimer, _discoveryCollider, villagerSystem, _dialogueSystem);
+        _stateMachine = new VillagerStateMachine(this, _navmeshAgent, _diContainer);
 
         _deathEvent.FiredEvent += OnDeath;
         
@@ -111,7 +105,7 @@ public class Villager : MonoBehaviour
         ChangeSkin();
         
         _skinReferencesResolver.Value.Animator.SetInteger(PROFESSION, (int)profession);
-        _stateMachine.SetStates(this, _skinReferencesResolver.Value);
+        _stateMachine.SetStates(this);
         if (VillagerData.ActivityType != null)
         {
             _ = _stateMachine.UpdateCurrentState(VillagerData.ActivityType.Value, gameObject.GetCancellationTokenOnDestroy());
