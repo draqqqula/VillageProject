@@ -8,17 +8,19 @@ public class ArmorerWorkState : WorkVillagerState
     
     private VillagerTransformHandler _movementHandler;
     private SkinReferencesResolver _skinReferencesResolver;
+    private ExperienceHandler _experienceHandler;
 
     private bool _isWorking;
     
     public ArmorerWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
-        Profession profession, BuildingStorage buildingStorage)
+        Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer)
     {
         _skinReferencesResolver = skinReferencesResolver;
         var hospital = buildingStorage.Get(BuildingType.Hospital);
         target = (hospital.Data as WorkBuildingData).WorkPoint;
         
         _movementHandler = new VillagerTransformHandler(navmeshAgent);
+        _experienceHandler = new ExperienceHandler(profession, gameTimer);
     }
     
     public override void EnterState()
@@ -30,6 +32,7 @@ public class ArmorerWorkState : WorkVillagerState
     {
         _isWorking = true;
         _skinReferencesResolver.Animator.SetBool("Work", true);
+        _experienceHandler.StartRaisingExperience();
     }
 
     public override async UniTask ExitState(CancellationToken token)
@@ -39,6 +42,7 @@ public class ArmorerWorkState : WorkVillagerState
         if (_isWorking)
         {
             _isWorking = false;
+            _experienceHandler.StopRaisingExperience();
             await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         }
     }

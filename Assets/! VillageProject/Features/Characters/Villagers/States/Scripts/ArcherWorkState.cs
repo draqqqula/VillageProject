@@ -17,11 +17,13 @@ public class ArcherWorkState : WorkVillagerState
     private VillagerStateFactory _factory;
     private DefenderWorkState _patrulState;
     
+    private ExperienceHandler _experienceHandler;
+    
     private bool _isInited = false;
     private bool _isOnTower = false;
     
     public ArcherWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Profession profession,
-        BuildingStorage buildingStorage, SearchForTarget searchForTarget, Collider discoveryCollider, VillagerStateFactory factory)
+        BuildingStorage buildingStorage, SearchForTarget searchForTarget, Collider discoveryCollider, VillagerStateFactory factory, GameTimer gameTimer)
     {
         _navmeshAgent = navmeshAgent;
         _storage = buildingStorage;
@@ -32,6 +34,7 @@ public class ArcherWorkState : WorkVillagerState
         _factory = factory;
         
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
+        _experienceHandler = new ExperienceHandler(profession, gameTimer);
         _isInited = true;
     }
     
@@ -65,6 +68,8 @@ public class ArcherWorkState : WorkVillagerState
         _skinReferencesResolver.Animator.SetBool("Agressed", true);
         _skinReferencesResolver.Animator.SetBool("Work", true);
         _discoveryCollider.enabled = false;
+        
+        _experienceHandler.StartRaisingExperience();
         _isOnTower = true;
     }
 
@@ -91,6 +96,8 @@ public class ArcherWorkState : WorkVillagerState
             _navmeshAgent.transform.position = point.position;
             _navmeshAgent.enabled = true;
             _discoveryCollider.enabled = true;
+            
+            _experienceHandler.StopRaisingExperience();
         }
 
         if (_archerTower != null)

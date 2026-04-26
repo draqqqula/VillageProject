@@ -12,22 +12,26 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     private Vector3 _prevPos;
     
     private Animator _animator;
-    
     private Coroutine _coroutine;
     
-    public DefenderVillagerGuardState(NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, Animator animator)
+    private ExperienceHandler _experienceHandler;
+    
+    public DefenderVillagerGuardState(NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, Animator animator, Profession profession,
+        GameTimer gameTimer)
     {
         _searchForTarget = searchForTarget;
         _animator = animator;
         
         _navmeshAgent = navmeshAgent;
         _movementHandler = new VillagerMovementHandler(navmeshAgent);
+
+        _experienceHandler = new ExperienceHandler(profession, gameTimer);
     }
     
     public override void EnterState()
     { 
-        Debug.Log("Enter Defend state!");
         _animator.SetBool("Agressed", true);
+        _experienceHandler.StartRaisingExperience();
     }
 
     private void ActivateMovement()
@@ -51,6 +55,8 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     public override async UniTask ExitState(CancellationToken token)
     {
         _movementHandler.DeactivateMovement();
+        
+        _experienceHandler.StopRaisingExperience();
         _animator.SetBool("Agressed", false);
         _animator.ResetTrigger("Attack");
 

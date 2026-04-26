@@ -21,8 +21,7 @@ public class DefenderWorkState : WorkVillagerState
     private SkinReferencesResolver _skinReferencesResolver;
     private bool _isFinishing;
     
-    public DefenderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
-        Profession profession, Transform villageCenter)
+    public DefenderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Transform villageCenter)
     {
         _skinReferencesResolver = skinReferencesResolver;
         _villageCenter = villageCenter;

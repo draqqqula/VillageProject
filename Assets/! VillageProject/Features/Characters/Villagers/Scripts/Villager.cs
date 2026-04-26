@@ -33,14 +33,17 @@ public class Villager : MonoBehaviour
     public ReadOnlyReactiveProperty<SkinReferencesResolver> SkinReferencesResolver => _skinReferencesResolver;
     private ReactiveProperty<SkinReferencesResolver> _skinReferencesResolver;
     
+    [Inject] private Health _health;
     [Inject] private DiContainer _diContainer;
     
     [SerializeField] private DeathEvent _deathEvent;
     
+    [SerializeField] private float experience; // test
+    
     public void Init(HomeService homeService)
     {
         VillagerData = ScriptableObject.Instantiate(_villagerData);
-        VillagerData.NavmeshAgent = _navmeshAgent;
+        VillagerData.Init(_navmeshAgent, _health);
         
         var skinsInfoInstance = ScriptableObject.Instantiate(_villagersSkinsInfo);
         _skinChanger = new SkinChanger(skinsInfoInstance, _diContainer);
@@ -62,6 +65,14 @@ public class Villager : MonoBehaviour
         _dialogueWindow = Instantiate(_dialogueWindowPrefab, _dialogueCanvas.transform);
         _dialogueWindow.transform.position = _dialoguePoint.position;
         _dialogueWindow.Init(_dialoguePoint);
+
+        VillagerData.Profession.Experience.Subscribe(OnExperienceChanged).AddTo(this); // test
+    }
+
+    private void OnExperienceChanged(float value)
+    {
+        Debug.Log("Experience Changed");
+        experience = value;
     }
 
     private void ChangeSkin()

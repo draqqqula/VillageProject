@@ -78,7 +78,7 @@ public class VillagerStateFactory
     {
         if (_villagerData.Profession.Type == ProfessionType.Defender)
         {
-            return new DefenderVillagerGuardState(_navmeshAgent, _searchForTarget, _skinReferencesResolver.Animator);
+            return new DefenderVillagerGuardState(_navmeshAgent, _searchForTarget, _skinReferencesResolver.Animator, _villagerData.Profession, _gameTimer);
         }
         else
         {
@@ -91,17 +91,17 @@ public class VillagerStateFactory
         switch (_villagerData.Profession.Type)
         {
             case (ProfessionType.Blacksmith):
-                return new BlacksmithWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage);
+                return new BlacksmithWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer);
             case (ProfessionType.Builder):
                 return new BuilderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, 
                     _buildingPlanner, _gameTimer);
             case (ProfessionType.Armorer):
-                return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage);
+                return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer);
             case (ProfessionType.Archer):
                 return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage,
-                    _searchForTarget, _discoveryCollider, this);
+                    _searchForTarget, _discoveryCollider, this, _gameTimer);
             case (ProfessionType.Defender):
-                return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _villageCenter);
+                return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
             default:
                 throw new ArgumentException($"{_villagerData.Profession.Type} is not a valid profession!");
         }
@@ -109,6 +109,6 @@ public class VillagerStateFactory
 
     public DefenderWorkState CreateDefenderWorkState()
     {
-        return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _villageCenter);
+        return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
     }
 }

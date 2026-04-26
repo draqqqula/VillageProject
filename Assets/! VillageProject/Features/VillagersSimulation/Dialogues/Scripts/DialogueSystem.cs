@@ -13,7 +13,7 @@ public class DialogueSystem : MonoBehaviour
     
     private DialogueChooser _dialogueChooser;
     private Coroutine _dialogueCoroutine;
-    private List<DialogueSession> _dialogueSessions;
+    private List<DialogueSession> _dialogueSessions = new List<DialogueSession>();
 
     private void Awake()
     {

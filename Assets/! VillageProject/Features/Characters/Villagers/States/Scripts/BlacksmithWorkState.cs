@@ -9,16 +9,19 @@ public class BlacksmithWorkState : WorkVillagerState
     private VillagerTransformHandler _transformHandler;
     private SkinReferencesResolver _skinReferencesResolver;
     
+    private ExperienceHandler _experienceHandler;
+    
     private bool _isWorking;
     
     public BlacksmithWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
-        Profession profession, BuildingStorage buildingStorage)
+        Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer)
     {
         _skinReferencesResolver = skinReferencesResolver;
         var blacksmith = buildingStorage.Get(BuildingType.Blacksmith);
         target = (blacksmith.Data as WorkBuildingData).WorkPoint;
         
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
+        _experienceHandler = new ExperienceHandler(profession, gameTimer);
     }
     
     public override void EnterState()
@@ -30,6 +33,7 @@ public class BlacksmithWorkState : WorkVillagerState
     {
         _isWorking = true;
         _skinReferencesResolver.Animator.SetBool("Work", true);
+        _experienceHandler.StartRaisingExperience();
     }
 
     public override async UniTask ExitState(CancellationToken token)
@@ -39,6 +43,7 @@ public class BlacksmithWorkState : WorkVillagerState
         if (_isWorking)
         {
             _isWorking = false;
+            _experienceHandler.StopRaisingExperience();
             await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         }
     }

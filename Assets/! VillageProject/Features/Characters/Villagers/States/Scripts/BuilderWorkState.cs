@@ -19,6 +19,7 @@ public class BuilderWorkState : WorkVillagerState
     private BuildingPlan _plan;
     
     private SkinReferencesResolver _skinReferencesResolver;
+    private ExperienceHandler _experienceHandler;
     
     private bool _isActive = false;
     private bool _isBuilding = false;
@@ -34,6 +35,8 @@ public class BuilderWorkState : WorkVillagerState
         _navMeshAgent = navmeshAgent;
         _movementHandler = new VillagerTransformHandler(navmeshAgent);
         _gameTimer = gameTimer;
+
+        _experienceHandler = new ExperienceHandler(profession, _gameTimer);
     }
     
     public override void EnterState()
@@ -75,6 +78,7 @@ public class BuilderWorkState : WorkVillagerState
         _gameTimer.OnTick += OnTick;
         
         _skinReferencesResolver.Animator.SetBool("Work", true);
+        _experienceHandler.StartRaisingExperience();
         _isBuilding = true;
     }
 
@@ -105,6 +109,7 @@ public class BuilderWorkState : WorkVillagerState
         _gameTimer.OnTick -= OnTick;
         _plan = null;
         
+        _experienceHandler.StopRaisingExperience();
         await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         _isBuilding = false;
         callback?.Invoke();
@@ -121,6 +126,7 @@ public class BuilderWorkState : WorkVillagerState
             _gameTimer.OnTick -= OnTick;
             _plan = null;
             _isBuilding = false;
+            _experienceHandler.StopRaisingExperience();
             await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         }
     }
