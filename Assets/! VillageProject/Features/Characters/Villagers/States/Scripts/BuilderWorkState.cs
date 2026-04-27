@@ -4,39 +4,39 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using R3;
 
 public class BuilderWorkState : WorkVillagerState
 {
+    private Profession _profession;
     private BuildingPlanner _buildingPlanner;
-    private BuildingStorage _buildingStorage;
     
     private NavmeshMovementAgent _navMeshAgent;
     private VillagerTransformHandler _movementHandler;
-    private GameTimer _gameTimer;
-    
-    private int _builtTicks;
-    private int _lastTick = -1;
     private BuildingPlan _plan;
     
     private SkinReferencesResolver _skinReferencesResolver;
-    private ExperienceHandler _experienceHandler;
+    private RaiseExperienceHandler _experienceHandler;
+    private BuildingProgressHandler _buildingProgressHandler;
     
     private bool _isActive = false;
     private bool _isBuilding = false;
     
     public BuilderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
-        Profession profession, BuildingStorage buildingStorage, BuildingPlanner buildingPlanner, GameTimer gameTimer)
+        Profession profession, BuildingPlanner buildingPlanner, GameTimer gameTimer)
     {
+        _profession = profession;
         _skinReferencesResolver = skinReferencesResolver;
         
         _buildingPlanner = buildingPlanner;
-        _buildingStorage = buildingStorage;
         
         _navMeshAgent = navmeshAgent;
         _movementHandler = new VillagerTransformHandler(navmeshAgent);
-        _gameTimer = gameTimer;
 
-        _experienceHandler = new ExperienceHandler(profession, _gameTimer);
+        _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
+        _buildingProgressHandler = new BuildingProgressHandler(gameTimer);
+
+        _profession.Experience.Subscribe(TryDecreasePlanDuration).AddTo(navmeshAgent.gameObject);
     }
     
     public override void EnterState()
@@ -73,43 +73,50 @@ public class BuilderWorkState : WorkVillagerState
     private void OnReachedPoint()
     {
         _plan = _buildingPlanner.GetCurrentPlan();
-        _lastTick = -1;
-        _builtTicks = (int)Mathf.Floor(_gameTimer.ConvertHoursToTick(_plan.HoursDuration) * _plan.BuildingProgress.Value);
-        _gameTimer.OnTick += OnTick;
+        _buildingProgressHandler.SetPlan(_plan);
+        _buildingProgressHandler.OnPlanCompleted += OnPlanCompleted;
         
         _skinReferencesResolver.Animator.SetBool("Work", true);
+        TryDecreasePlanDuration(_profession.Experience.CurrentValue);
+        
+        _buildingProgressHandler.StartRaisingProgress();
         _experienceHandler.StartRaisingExperience();
+        
         _isBuilding = true;
     }
 
-    private void OnTick(int currentTick)
+    private void TryDecreasePlanDuration(float experience)
     {
-        int deltaTicks = _lastTick >= 0 ? currentTick - _lastTick : 0;
-        _lastTick = currentTick;
-        _builtTicks += deltaTicks;
-
-        float totalTicks = _gameTimer.ConvertHoursToTick(_plan.HoursDuration);
-        float progress = _builtTicks / totalTicks;
-        _plan.BuildingProgress.Value = progress;
-
-        if (progress >= 1f)
+        var multiplier = (_profession.ProfessionData as BuilderProfessionData).PlanDurationMultiplierCurve.Evaluate(experience);
+        foreach (var plan in _buildingPlanner.PriorityBuildingPlans)
         {
-            _plan.BuildingProgress.Value = 1f;
-
-            if (!_skinReferencesResolver.AnimatorHandler.IsTransitioning)
-            {
-                _ = FinishBuilding(_navMeshAgent.GetCancellationTokenOnDestroy(), MoveToBuildingPlace);
-            }
+            if (plan == _plan) continue;
+            
+            var hours = plan.BuildingProgress.CurrentValue * plan.HoursDuration;
+            plan.HoursDuration = (int)Mathf.Ceil(plan.DefaultHoursDuration * multiplier);
+            plan.BuildingProgress.Value = Mathf.Clamp01(hours / plan.HoursDuration);
         }
     }
 
+    private void OnPlanCompleted()
+    {
+        _plan.BuildingProgress.Value = 1f;
+
+        if (!_skinReferencesResolver.AnimatorHandler.IsTransitioning)
+        {
+            _ = FinishBuilding(_navMeshAgent.GetCancellationTokenOnDestroy(), MoveToBuildingPlace);
+        }
+    }
+    
     private async UniTask FinishBuilding(CancellationToken token, Action callback = null)
     {
         _buildingPlanner.TryCompleteCurrentPlan();
-        _gameTimer.OnTick -= OnTick;
+        _buildingProgressHandler.OnPlanCompleted -= OnPlanCompleted;
         _plan = null;
         
+        _buildingProgressHandler.StopRaisingProgress();
         _experienceHandler.StopRaisingExperience();
+        
         await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         _isBuilding = false;
         callback?.Invoke();
@@ -123,10 +130,13 @@ public class BuilderWorkState : WorkVillagerState
         
         if (_isBuilding)
         {
-            _gameTimer.OnTick -= OnTick;
+            _buildingProgressHandler.OnPlanCompleted -= OnPlanCompleted;
             _plan = null;
             _isBuilding = false;
+            
+            _buildingProgressHandler.StopRaisingProgress();
             _experienceHandler.StopRaisingExperience();
+            
             await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         }
     }

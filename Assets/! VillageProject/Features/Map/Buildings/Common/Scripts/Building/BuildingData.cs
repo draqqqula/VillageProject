@@ -21,6 +21,7 @@ public class ArcherTowerData : BuildingData
 {
     [field: SerializeField] public Transform ArcherPoint { get; private set; }
     [field: SerializeField] public TowerDamageOverTime DamageHandler { get; private set; }
+    [field: SerializeField] public AmmunitionStorage AmmunitionStorage { get; private set; }
 }
 
 [Serializable]

@@ -71,7 +71,6 @@ public class Villager : MonoBehaviour
 
     private void OnExperienceChanged(float value)
     {
-        Debug.Log("Experience Changed");
         experience = value;
     }
 
@@ -104,18 +103,18 @@ public class Villager : MonoBehaviour
         Debug.Log($"Villager {gameObject.name} change to {activity}");
     }
 
-    public void SwitchProfession(ProfessionType profession)
+    public void SwitchProfession(Profession profession)
     {
         _ = SwitchProfession(profession, gameObject.GetCancellationTokenOnDestroy());
     }
 
-    private async UniTask SwitchProfession(ProfessionType profession, CancellationToken token)
+    private async UniTask SwitchProfession(Profession profession, CancellationToken token)
     {
         await _stateMachine.ExitCurrentState(token);
-        VillagerData.Profession = new Profession() {Type = profession};
+        VillagerData.Profession = profession;
         ChangeSkin();
         
-        _skinReferencesResolver.Value.Animator.SetInteger(PROFESSION, (int)profession);
+        _skinReferencesResolver.Value.Animator.SetInteger(PROFESSION, (int)profession.Type);
         _stateMachine.SetStates(this);
         if (VillagerData.ActivityType != null)
         {

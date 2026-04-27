@@ -29,6 +29,10 @@ public class BuildingPlanner : MonoBehaviour
         _storage.OnBuildingBroken += AddBrokenBuildingToPlan;
         
         PriorityBuildingPlans = new List<BuildingPlan>();
+    }
+
+    public void Init()
+    {
         GeneratePriorityPlans(NewBuildingPlansLength);
     }
     
@@ -226,9 +230,50 @@ public class BuildingPlanner : MonoBehaviour
 [System.Serializable]
 public abstract class BuildingPlan
 {
-    [field: SerializeField] public int HoursDuration {get; private set;}
-    public ReactiveProperty<float> BuildingProgress => _buildingProgress;
+    [SerializeField] private int _hoursDuration;
+
+    public int HoursDuration
+    {
+        get => DurationProperty.CurrentValue;
+        set
+        {
+            if (_hoursDuration == 0) return;
+            
+            if (_durationProperty == null) 
+            {
+                _durationProperty = new ReactiveProperty<int>(_hoursDuration);
+                return;
+            }
+            
+            Debug.Log($"Hours set {value}");
+            _durationProperty.Value = value;
+            _hoursDuration = value;
+        }
+    }
+
+    private ReactiveProperty<int> _durationProperty;
+    public ReadOnlyReactiveProperty<int> DurationProperty
+    {
+        get
+        {
+            if (_durationProperty == null) _durationProperty = new ReactiveProperty<int>(_hoursDuration);
+            return _durationProperty;
+        }
+    }
+    
+    private int _defaultHoursDuration = -1;
+    public int DefaultHoursDuration
+    {
+        get
+        {
+            if (_defaultHoursDuration == -1) _defaultHoursDuration = HoursDuration;
+            return _defaultHoursDuration;
+        }
+    }
+
     private ReactiveProperty<float> _buildingProgress = new ReactiveProperty<float>(0);
+    public ReactiveProperty<float> BuildingProgress => _buildingProgress;
+
 
     public BuildingPlan(int hours)
     {

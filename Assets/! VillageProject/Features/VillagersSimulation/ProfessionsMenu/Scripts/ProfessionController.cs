@@ -1,10 +1,16 @@
+using System;
+using System.Linq;
 using UnityEngine;
 
 public class ProfessionController : MonoBehaviour
 {
+    [SerializeField] private ProfessionData[] _professions;
+    
     [SerializeField] private VillagerSystem _villagerSystem;
     [SerializeField] private ScheduleView _scheduleView;
 
+    public event Action<Villager, ProfessionType> OnProfessionChanged;
+    
     public void Init()
     {
         _scheduleView.OnProfessionChanged += InvokeProfessionChanged;
@@ -20,7 +26,18 @@ public class ProfessionController : MonoBehaviour
     {
         if (villager.VillagerData.Profession.Type == professionType) return;
         
-        villager.SwitchProfession(professionType);
+        var profession = _professions.FirstOrDefault(p => p.Type == professionType);
+
+        if (profession == null)
+        {
+            Debug.LogError($"Can't find profession data with type {professionType}!");
+            return;
+        }
+        
+        var professionInstance = ScriptableObject.Instantiate(profession);
+        villager.SwitchProfession(new Profession() {ProfessionData = professionInstance});
+        OnProfessionChanged?.Invoke(villager, professionType);
+        
         if (isUpdateView) _scheduleView.UpdateProfessionView(villager.VillagerData.Key, professionType);
     }
     

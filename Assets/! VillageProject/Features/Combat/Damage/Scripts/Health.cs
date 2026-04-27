@@ -9,6 +9,8 @@ public class Health : MonoBehaviour, IHealth
     [SerializeField] private float _maxHealth;
     private ReactiveProperty<float> _amount = new ReactiveProperty<float>();
     private ReactiveProperty<float> _maxAmountReactive;
+    
+    public float DefaultMaxHealth { get; private set; }
 
     public event Action<float> OnDamageDealt;
 
@@ -51,6 +53,8 @@ public class Health : MonoBehaviour, IHealth
     private void Awake()
     {
         _amount.Value = MaxHealth;
+        DefaultMaxHealth = _maxHealth;
+        
         _maxAmountReactive = new ReactiveProperty<float>(_maxHealth);
         _maxAmountReactive.Subscribe(it => _maxHealth = it).AddTo(this);
     }

@@ -17,7 +17,7 @@ public class ArcherWorkState : WorkVillagerState
     private VillagerStateFactory _factory;
     private DefenderWorkState _patrulState;
     
-    private ExperienceHandler _experienceHandler;
+    private RaiseExperienceHandler _experienceHandler;
     
     private bool _isInited = false;
     private bool _isOnTower = false;
@@ -34,7 +34,7 @@ public class ArcherWorkState : WorkVillagerState
         _factory = factory;
         
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
-        _experienceHandler = new ExperienceHandler(profession, gameTimer);
+        _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
         _isInited = true;
     }
     

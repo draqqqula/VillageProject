@@ -24,6 +24,7 @@ public class VillagerStateFactory
     private VillagerSystem _villagerSystem;
     
     private DialogueSystem _dialogueSystem;
+    private ProfessionController _professionController;
     
     public void SetParams(NavmeshMovementAgent navmeshAgent, Villager villager, DiContainer container)
     {
@@ -41,6 +42,7 @@ public class VillagerStateFactory
         _discoveryCollider = container.ResolveId<Collider>("Discovery");
         _villagerSystem = container.Resolve<VillagerSystem>();
         _dialogueSystem = container.Resolve<DialogueSystem>();
+        _professionController = container.Resolve<ProfessionController>();
     }
     
     public SleepVillagerState CreateSleepState()
@@ -93,10 +95,10 @@ public class VillagerStateFactory
             case (ProfessionType.Blacksmith):
                 return new BlacksmithWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer);
             case (ProfessionType.Builder):
-                return new BuilderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, 
-                    _buildingPlanner, _gameTimer);
+                return new BuilderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingPlanner, _gameTimer);
             case (ProfessionType.Armorer):
-                return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer);
+                return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer,
+                    _villagerSystem, _professionController);
             case (ProfessionType.Archer):
                 return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage,
                     _searchForTarget, _discoveryCollider, this, _gameTimer);

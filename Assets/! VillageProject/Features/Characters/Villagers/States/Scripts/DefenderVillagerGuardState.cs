@@ -14,7 +14,7 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     private Animator _animator;
     private Coroutine _coroutine;
     
-    private ExperienceHandler _experienceHandler;
+    private RaiseExperienceHandler _experienceHandler;
     
     public DefenderVillagerGuardState(NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, Animator animator, Profession profession,
         GameTimer gameTimer)
@@ -25,7 +25,7 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
         _navmeshAgent = navmeshAgent;
         _movementHandler = new VillagerMovementHandler(navmeshAgent);
 
-        _experienceHandler = new ExperienceHandler(profession, gameTimer);
+        _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
     }
     
     public override void EnterState()

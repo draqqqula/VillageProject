@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using R3;
 
 public class BlacksmithWorkState : WorkVillagerState
 {
@@ -8,20 +11,61 @@ public class BlacksmithWorkState : WorkVillagerState
     
     private VillagerTransformHandler _transformHandler;
     private SkinReferencesResolver _skinReferencesResolver;
+    private Profession _profession;
+    private BlacksmithProfessionData _blacksmithData;
     
-    private ExperienceHandler _experienceHandler;
+    private BuildingStorage _buildingStorage;
+    private RaiseExperienceHandler _experienceHandler;
+    private List<RaiseArrowsHandler> _arrowsHandlers = new List<RaiseArrowsHandler>();
+    private GameTimer _gameTimer;
     
     private bool _isWorking;
+    private bool _isRaisingArrows;
     
     public BlacksmithWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
         Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer)
     {
+        _profession = profession;
+        _blacksmithData = _profession.ProfessionData as BlacksmithProfessionData;
         _skinReferencesResolver = skinReferencesResolver;
-        var blacksmith = buildingStorage.Get(BuildingType.Blacksmith);
+        
+        _buildingStorage = buildingStorage;
+        _buildingStorage.OnBuildingAdded += OnBuildingAdded;
+        
+        var blacksmith = _buildingStorage.Get(BuildingType.Blacksmith);
         target = (blacksmith.Data as WorkBuildingData).WorkPoint;
         
+        _gameTimer = gameTimer;
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
-        _experienceHandler = new ExperienceHandler(profession, gameTimer);
+        _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
+        _profession.Experience.Subscribe(TryStartRaisingArrows).AddTo(navmeshAgent.gameObject);
+        InitRaiseArrowHandlers();
+    }
+    
+    private void InitRaiseArrowHandlers()
+    {
+        var archerTowers = _buildingStorage.GetAll(BuildingType.ArcherTower);
+            
+        foreach (var archerTower in archerTowers)
+        {
+            OnBuildingAdded(archerTower);
+        }
+    }
+    
+    private void OnBuildingAdded(Building building)
+    {
+        if (building.Data.Type == BuildingType.ArcherTower && building.Data is ArcherTowerData archerTowerData)
+        {
+            Debug.Log(building.gameObject);
+            var raiseArrowHandler = new RaiseArrowsHandler(_blacksmithData.RaisingAmmunition, _blacksmithData.HoursForRaisingAmmunition,
+                archerTowerData.AmmunitionStorage, _gameTimer);
+            
+            if (_isWorking && _profession.Experience.CurrentValue >= _blacksmithData.ExperienceForRaisingAmmunition)
+            {
+                raiseArrowHandler.StartRaisingArrows();    
+            }
+            _arrowsHandlers.Add(raiseArrowHandler);
+        }
     }
     
     public override void EnterState()
@@ -34,8 +78,24 @@ public class BlacksmithWorkState : WorkVillagerState
         _isWorking = true;
         _skinReferencesResolver.Animator.SetBool("Work", true);
         _experienceHandler.StartRaisingExperience();
-    }
 
+        TryStartRaisingArrows(_profession.Experience.CurrentValue);
+    }
+    
+    private void TryStartRaisingArrows(float experience)
+    {
+        if (!_isWorking || _isRaisingArrows) return;
+        
+        if (experience >= _blacksmithData.ExperienceForRaisingAmmunition)
+        {
+            _isRaisingArrows = true;
+            foreach (var raiseArrowHandler in _arrowsHandlers)
+            {
+                raiseArrowHandler.StartRaisingArrows();
+            }
+        }
+    }
+    
     public override async UniTask ExitState(CancellationToken token)
     {
         _transformHandler.DeactivateMovement();
@@ -44,6 +104,16 @@ public class BlacksmithWorkState : WorkVillagerState
         {
             _isWorking = false;
             _experienceHandler.StopRaisingExperience();
+
+            if (_isRaisingArrows)
+            {
+                foreach (var arrowHandler in _arrowsHandlers)
+                {
+                    arrowHandler.StopRaisingArrows();
+                }
+                _isRaisingArrows = false;
+            }
+            
             await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         }
     }
@@ -51,5 +121,6 @@ public class BlacksmithWorkState : WorkVillagerState
     public override void Dispose()
     {
         _transformHandler.Dispose();
+        _buildingStorage.OnBuildingAdded -= OnBuildingAdded;
     }
 }

@@ -9,6 +9,8 @@ public class VillagerSystem : MonoBehaviour
     [SerializeField] private HomeService _homeService;
     [SerializeField] private Transform _villageCenter;
     [SerializeField] private GameTimer _gameTimer;
+    
+    public event Action<Villager> OnAddedVillager;
 
     public void Init()
     {
@@ -27,5 +29,10 @@ public class VillagerSystem : MonoBehaviour
     {
         var villagers = Villagers.Where(villager => activities.Contains(villager.VillagerData.ActivityType.Value)).ToArray();
         return villagers[Random.Range(0, villagers.Length)];
+    }
+
+    public void AddVillager(Villager villager)
+    {
+        OnAddedVillager?.Invoke(villager);
     }
 }

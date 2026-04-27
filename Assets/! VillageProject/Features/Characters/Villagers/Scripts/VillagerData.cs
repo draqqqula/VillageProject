@@ -12,6 +12,7 @@ public class VillagerData : ScriptableObject
     [field: SerializeField] public Profession Profession {get; set;}
 
     public Health Health { get; private set; }
+    
     [field: SerializeField] public Loyalty Loyalty {get; private set;}
     
     public bool IsOnHome { get; set; }
@@ -33,9 +34,10 @@ public enum Gender {Male, Female}
 [Serializable]
 public class Profession
 {
-    [field: SerializeField] public ProfessionType Type {get; set;}
+    public ProfessionType Type => ProfessionData.Type;
+    [field: SerializeField] public ProfessionData ProfessionData {get; set;}
+    [SerializeField] private float _startExperience = 0f;
     
-    [field: SerializeField] private float _startExperience;
     private ReactiveProperty<float> _experience;
     public ReactiveProperty<float> Experience
     {
@@ -45,8 +47,6 @@ public class Profession
             return _experience;
         }
     }
-    
-    [field: SerializeField] public int HoursForMaxExperience {get; set;}
 }
 
 [Serializable]
@@ -62,9 +62,4 @@ public class Loyalty
             return _property;
         }
     }
-}
-
-public enum ProfessionType
-{
-    Blacksmith, Armorer, Builder, Archer, Defender
 }

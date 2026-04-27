@@ -6,10 +6,10 @@ public class SwitchBuildingPlanOption : BuildingMenuItemBase<SwitchBuildingPlanO
 {
     public class SwitchBuildingData
     {
-        public int BuildingHours;
+        public ReadOnlyReactiveProperty<int> BuildingHours;
         public ReactiveProperty<float> Progress;
 
-        public SwitchBuildingData(int buildingHours, ReactiveProperty<float> progress)
+        public SwitchBuildingData(ReadOnlyReactiveProperty<int> buildingHours, ReactiveProperty<float> progress)
         {
             BuildingHours = buildingHours;
             Progress = progress;
@@ -70,7 +70,7 @@ public class SwitchBuildingPlanOption : BuildingMenuItemBase<SwitchBuildingPlanO
         _plan = plan;
         CheckAvailable(_buildingPlanner.GetCurrentPlan());
 
-        if (_plan != null) _data.Value = new SwitchBuildingData(_plan.HoursDuration, _plan.BuildingProgress);
+        if (_plan != null) _data.Value = new SwitchBuildingData(_plan.DurationProperty, _plan.BuildingProgress);
         else _data.Value = null;
     }
 
