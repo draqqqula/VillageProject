@@ -29,7 +29,7 @@ public class MultiArrowSpawner : ProjectileSpawner
         }
         return _interval;
     }
-
+    
     private float RandomSpread()
     {
         return _spreadCurve.Evaluate(UnityEngine.Random.Range(0, 1f)) * _spread;

@@ -1,5 +1,4 @@
 using R3;
-using UnityEngine;
 
 public class AttackBonus
 {
@@ -11,4 +10,6 @@ public class AttackBonus
         get => _damageMultiplierAmount.Value;
         set => _damageMultiplierAmount.Value = value;
     }
+
+    public float DefaultDamageMultiplier => 1f;
 }

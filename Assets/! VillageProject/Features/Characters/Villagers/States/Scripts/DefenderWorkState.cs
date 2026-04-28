@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using R3;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -24,6 +25,7 @@ public class DefenderWorkState : WorkVillagerState
     public DefenderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Transform villageCenter)
     {
         _skinReferencesResolver = skinReferencesResolver;
+        
         _villageCenter = villageCenter;
         
         _navmeshAgent = navmeshAgent;
@@ -53,7 +55,7 @@ public class DefenderWorkState : WorkVillagerState
         callback?.Invoke();
         _coroutine = null;
     }
-
+    
     public override async UniTask ExitState(CancellationToken token)
     {
         _isFinishing = true;

@@ -245,7 +245,6 @@ public abstract class BuildingPlan
                 return;
             }
             
-            Debug.Log($"Hours set {value}");
             _durationProperty.Value = value;
             _hoursDuration = value;
         }

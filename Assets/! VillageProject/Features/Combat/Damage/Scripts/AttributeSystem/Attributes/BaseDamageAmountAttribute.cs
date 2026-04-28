@@ -23,8 +23,13 @@ public class BaseDamageAmountAttribute : DamageAttributeBase
                 if (context.SourceAttributes.TryGetService<DamageMultiplierAttribute.Data>(out var damageMultiplier))
                 {
                     data.Health.Amount -= Amount * damageMultiplier.MultiplyAmount;
+                    Debug.Log($"{(data.Health as Health).gameObject.name} Apply damage {Amount * damageMultiplier.MultiplyAmount}");
                 }
-                else data.Health.Amount -= Amount;
+                else
+                {
+                    data.Health.Amount -= Amount;
+                    Debug.Log($"{(data.Health as Health).gameObject.name} Apply damage {Amount}");
+                }
             }
             return true;
         }

@@ -8,6 +8,7 @@ public class VillagerStateFactory
     private const float DialogueChance = 0.3f;
     
     private NavmeshMovementAgent _navmeshAgent;
+    private AttackBonus _attackBonus;
     
     private SearchForTarget _searchForTarget;
     private Collider _discoveryCollider;
@@ -33,6 +34,7 @@ public class VillagerStateFactory
         _villagerData = _villager.VillagerData;
         _skinReferencesResolver = _villager.SkinReferencesResolver.CurrentValue;
         _searchForTarget = container.Resolve<SearchForTarget>();
+        _attackBonus = container.Resolve<AttackBonus>();
         
         _buildingStorage = container.Resolve<BuildingStorage>();
         _buildingPlanner = container.Resolve<BuildingPlanner>();
@@ -80,7 +82,8 @@ public class VillagerStateFactory
     {
         if (_villagerData.Profession.Type == ProfessionType.Defender)
         {
-            return new DefenderVillagerGuardState(_navmeshAgent, _searchForTarget, _skinReferencesResolver.Animator, _villagerData.Profession, _gameTimer);
+            return new DefenderVillagerGuardState(_navmeshAgent, _searchForTarget, _skinReferencesResolver.Animator, _villagerData.Profession, 
+                _gameTimer, _attackBonus);
         }
         else
         {

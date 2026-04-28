@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using R3;
 
 public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableState
 {
@@ -8,6 +9,9 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     
     private SearchForTarget _searchForTarget;
     private NavmeshMovementAgent _navmeshAgent;
+    private Profession _profession;
+    private AttackBonus _attackBonus;
+    
     private VillagerMovementHandler _movementHandler;
     private Vector3 _prevPos;
     
@@ -17,15 +21,19 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     private RaiseExperienceHandler _experienceHandler;
     
     public DefenderVillagerGuardState(NavmeshMovementAgent navmeshAgent, SearchForTarget searchForTarget, Animator animator, Profession profession,
-        GameTimer gameTimer)
+        GameTimer gameTimer, AttackBonus attackBonus)
     {
         _searchForTarget = searchForTarget;
         _animator = animator;
+        _profession = profession;
+        _attackBonus = attackBonus;
         
         _navmeshAgent = navmeshAgent;
         _movementHandler = new VillagerMovementHandler(navmeshAgent);
 
         _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
+        
+        _profession.Experience.Subscribe(TryRiseAttack).AddTo(_navmeshAgent.gameObject);
     }
     
     public override void EnterState()
@@ -50,6 +58,12 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
         {
             _animator.SetTrigger("Attack");
         }
+    }
+    
+    private void TryRiseAttack(float experience)
+    {
+        var multiplier = (_profession.ProfessionData as DefenderProfessionData).DamageMultiplierCurve.Evaluate(experience);
+        _attackBonus.DamageMultiplier = _attackBonus.DefaultDamageMultiplier * multiplier;
     }
 
     public override async UniTask ExitState(CancellationToken token)

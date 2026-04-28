@@ -1,11 +1,13 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using R3;
 using UnityEngine;
 
 public class ArcherWorkState : WorkVillagerState
 {
     private VillagerTransformHandler _transformHandler;
     private NavmeshMovementAgent _navmeshAgent;
+    private Profession _profession;
     
     private SkinReferencesResolver _skinReferencesResolver;
     private SearchForTarget _searchForTarget;
@@ -23,18 +25,23 @@ public class ArcherWorkState : WorkVillagerState
     private bool _isOnTower = false;
     
     public ArcherWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Profession profession,
-        BuildingStorage buildingStorage, SearchForTarget searchForTarget, Collider discoveryCollider, VillagerStateFactory factory, GameTimer gameTimer)
+        BuildingStorage buildingStorage, SearchForTarget searchForTarget, Collider discoveryCollider, VillagerStateFactory factory,
+        GameTimer gameTimer)
     {
         _navmeshAgent = navmeshAgent;
-        _storage = buildingStorage;
+        _profession = profession;
         _skinReferencesResolver = skinReferencesResolver;
         
         _searchForTarget = searchForTarget;
         _discoveryCollider = discoveryCollider;
+        
+        _storage = buildingStorage;
         _factory = factory;
         
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
         _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
+
+        _profession.Experience.Subscribe(TryRiseAttack).AddTo(_navmeshAgent.gameObject);
         _isInited = true;
     }
     
@@ -71,12 +78,22 @@ public class ArcherWorkState : WorkVillagerState
         
         _experienceHandler.StartRaisingExperience();
         _isOnTower = true;
+        
+        TryRiseAttack(_profession.Experience.CurrentValue);
     }
 
     private void OnShootInvoked()
     {
         _transformHandler.ActivateRotation(_searchForTarget.MainTarget.transform.position);
         _skinReferencesResolver.Animator.SetTrigger("Attack");
+    }
+
+    private void TryRiseAttack(float experience)
+    {
+        if (!_isOnTower) return;
+        
+        var multiplier = (_profession.ProfessionData as ArcherProfessionData).DamageMultiplierCurve.Evaluate(experience);
+        (_archerTower.Data as ArcherTowerData).DamageMultiplier = multiplier;
     }
 
     public override async UniTask ExitState(CancellationToken token)

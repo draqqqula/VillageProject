@@ -34,7 +34,12 @@ public class TowerDamageOverTime : TowerIntervalAction
 
         if (closest != null && Spawner != null)
         {
-            var projectile = Spawner.Spawn(_container, closest.transform, transform);
+            var projectile = (Spawner as ArrowSpawner).Spawn(_container, closest.transform, transform, out GameObject spawnedObject);
+            
+            if (spawnedObject.TryGetComponent<ArrowDamageInstaller>(out var arrowDamageInstaller))
+            {
+                arrowDamageInstaller.AttackBonus.DamageMultiplier = (_building.Data as ArcherTowerData).DamageMultiplier;
+            }
             ProjectileFired?.Invoke();
             return projectile;
         }

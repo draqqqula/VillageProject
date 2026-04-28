@@ -18,7 +18,7 @@ public class DamageMultiplierAttribute : DamageAttributeBase
         private void Construct(AttackBonus attackBonus, FirstPersonController player)
         {
             _attackBonus = attackBonus;
-            _attackBonus.DamageMultiplierAmount.Skip(1).Subscribe(OnAttackBonusChanged).AddTo(player);
+            _attackBonus.DamageMultiplierAmount.Subscribe(OnAttackBonusChanged).AddTo(player);
         }
         
         private void OnAttackBonusChanged(float value)
