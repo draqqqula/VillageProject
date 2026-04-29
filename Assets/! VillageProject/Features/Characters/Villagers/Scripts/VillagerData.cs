@@ -62,4 +62,6 @@ public class Loyalty
             return _property;
         }
     }
+    
+    public float DecreaseByHealthPercentage { get; set; }
 }

@@ -3028,6 +3028,56 @@ Transform:
   - {fileID: 2136219321}
   m_Father: {fileID: 1347842598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &127467685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 127467687}
+  - component: {fileID: 127467686}
+  m_Layer: 0
+  m_Name: ScheduleAPITester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &127467686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127467685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6240df975a4ab8b5ee3370e19e5a96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _newStartPeriod: 0
+  _newEndPeriod: 0
+  _newLength: 0
+  _villagerKey: Maria
+  _changingPeriod: 0
+  _scheduleController: {fileID: 1469070014}
+--- !u!4 &127467687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127467685}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.7645206, y: 8.438367, z: 66.55021}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &128260601
 GameObject:
   m_ObjectHideFlags: 0
@@ -23406,6 +23456,76 @@ Transform:
   - {fileID: 189062255}
   m_Father: {fileID: 1096344276}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &992612765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 992612767}
+  - component: {fileID: 992612766}
+  m_Layer: 0
+  m_Name: LoyaltyController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &992612766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992612765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30eb52caf85c47e5a8623cfc4a996919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _increaseByWavePercentage: 0.2
+  _decreaseByWavePercentage: 0.1
+  _decreaseHealthForLoyaltyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.20045789
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &992612767
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992612765}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.7645206, y: 8.438367, z: 66.55021}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &993500723
 GameObject:
   m_ObjectHideFlags: 0
@@ -35468,6 +35588,7 @@ GameObject:
   - component: {fileID: 1469070014}
   - component: {fileID: 1469070016}
   - component: {fileID: 1469070018}
+  - component: {fileID: 1469070019}
   m_Layer: 0
   m_Name: VillagerSimulationControllers
   m_TagString: Untagged
@@ -35571,6 +35692,44 @@ MonoBehaviour:
   _villagerSystem: {fileID: 1469070017}
   _scheduleController: {fileID: 1469070014}
   _professionController: {fileID: 1469070016}
+  _loyaltyController: {fileID: 992612766}
+  _scheduleParamsHandler: {fileID: 1469070019}
+--- !u!114 &1469070019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469070013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd70f0b179f34b5d84dd60ecc330b052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _workForLoyaltyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.49999997
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1.4998444
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1472784586
 GameObject:
   m_ObjectHideFlags: 0
@@ -60123,6 +60282,8 @@ SceneRoots:
   - {fileID: 40302562}
   - {fileID: 1580537859}
   - {fileID: 1469070015}
+  - {fileID: 127467687}
+  - {fileID: 992612767}
   - {fileID: 41999440}
   - {fileID: 1681076769}
   - {fileID: 606812145}

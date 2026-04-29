@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using R3;
@@ -108,7 +107,7 @@ public class ScheduleController : MonoBehaviour
             ChangePeriod(schedule, ConvertToHoursFormat(startTime + i), activityType);
         }
 
-        _scheduleView.UpdateView(schedule);
+        UpdateView(schedule);
     }
 
     public void ActivateDefendPeriods()
@@ -152,6 +151,130 @@ public class ScheduleController : MonoBehaviour
             });
         }
         return scheduleCopy;
+    }
+
+    public Schedule GetDefaultSchedule(string villagerKey)
+    {
+        return _schedules.FirstOrDefault(s => s.VillagerKey == villagerKey);
+    }
+
+    public void ChangeLengthEvenlyForPeriod(string villagerKey, int hourInDefaultSchedule, int length)
+    {
+        var defaultSchedule = GetDefaultSchedule(villagerKey);
+        var defaultPeriod = defaultSchedule.GetPeriod(hourInDefaultSchedule);
+
+        ChangeLengthEvenlyForPeriod(villagerKey, defaultPeriod, length);
+    }
+    
+    public void ChangeLengthEvenlyForPeriod(string villagerKey, SchedulePeriod defaultPeriod, int length)
+    {
+        length = Mathf.Clamp(length, 1, 24);
+        
+        var halfHour = defaultPeriod.Length / 2;
+        var medianHour = ConvertToHoursFormat(defaultPeriod.StartTime + halfHour);
+        
+        int half = length / 2;
+        int newStart = medianHour - half;
+        int newEnd = medianHour + half;
+        
+        if (length % 2 == 1)
+        {
+            newEnd += 1;
+        }
+        
+        ChangeStartForPeriod(villagerKey, medianHour, ConvertToHoursFormat(newStart));
+        ChangeEndForPeriod(villagerKey, medianHour, ConvertToHoursFormat(newEnd));
+    }
+    
+    public void ChangeStartForPeriod(string villagerKey, int hour, int newStartTime)
+    {
+        Schedule schedule;
+
+        if (_schedulesCopies.Count == 0)
+        {
+            schedule = _schedulesInstances.FirstOrDefault(s => s.VillagerKey == villagerKey);
+        }
+        else
+        {
+            schedule = _schedulesCopies.FirstOrDefault(s => s.VillagerKey == villagerKey);
+        }
+
+        var period = schedule.GetPeriod(hour);
+        ChangeStartForPeriod(schedule, period, newStartTime);
+    }
+
+    public void ChangeEndForPeriod(string villagerKey, int hour, int newEndTime)
+    {
+        Schedule schedule;
+
+        if (_schedulesCopies.Count == 0)
+        {
+            schedule = _schedulesInstances.FirstOrDefault(s => s.VillagerKey == villagerKey);
+        }
+        else
+        {
+            schedule = _schedulesCopies.FirstOrDefault(s => s.VillagerKey == villagerKey);
+            Debug.Log("Change Schedule Copy");
+        }
+
+        var period = schedule.GetPeriod(hour);
+        ChangeEndForPeriod(schedule, period, newEndTime);
+    }
+    
+    private void ChangeStartForPeriod(Schedule schedule, SchedulePeriod period, int newStartTime)
+    {
+        var activityType = period.ActivityType;
+        var oldPeriodCopy = new SchedulePeriod() {ActivityType = activityType, StartTime = period.StartTime, EndTime = period.EndTime};
+
+        UpdatePeriods(schedule, activityType, newStartTime, oldPeriodCopy.EndTime);
+        var newLength = newStartTime != oldPeriodCopy.EndTime ? (oldPeriodCopy.EndTime - newStartTime + 24) % 24 : 24;
+        
+        if (newLength < oldPeriodCopy.Length)
+        {
+            ReturnToDefaultPeriods(schedule, oldPeriodCopy.StartTime, newStartTime);
+            var defaultPeriod = schedule.GetPeriod(newStartTime);
+
+            if (defaultPeriod.StartTime != newStartTime)
+            {
+                var previousPeriod = schedule.GetPeriod(ConvertToHoursFormat(defaultPeriod.StartTime - 1));
+                UpdatePeriods(schedule, previousPeriod.ActivityType, defaultPeriod.StartTime, newStartTime);
+            }
+        }
+    }
+
+    private void ChangeEndForPeriod(Schedule schedule, SchedulePeriod period, int newEndTime)
+    {
+        var activityType = period.ActivityType;
+        var oldPeriodCopy = new SchedulePeriod() {ActivityType = activityType, StartTime = period.StartTime, EndTime = period.EndTime};
+        
+        UpdatePeriods(schedule, activityType, oldPeriodCopy.StartTime, newEndTime);
+        var newLength = oldPeriodCopy.StartTime != newEndTime ? (newEndTime - oldPeriodCopy.StartTime + 24) % 24 : 24;
+        
+        if (newLength < oldPeriodCopy.Length)
+        {
+            ReturnToDefaultPeriods(schedule, newEndTime, oldPeriodCopy.EndTime);
+            var defaultPeriod = schedule.GetPeriod(newEndTime - 1);
+
+            if (defaultPeriod.EndTime != newEndTime)
+            {
+                var nextPeriod = schedule.GetPeriod(ConvertToHoursFormat(defaultPeriod.EndTime));
+                UpdatePeriods(schedule, nextPeriod.ActivityType, newEndTime, defaultPeriod.EndTime);
+            }
+        }
+    }
+    
+    private void ReturnToDefaultPeriods(Schedule schedule, int fromPeriodInclusive, int toPeriodExclusive)
+    {
+        var defaultSchedule = GetDefaultSchedule(schedule.VillagerKey);
+        var length = fromPeriodInclusive != toPeriodExclusive ? (toPeriodExclusive - fromPeriodInclusive + 24) % 24 : 24;
+
+        for (int i = 0; i < length; i += 1)
+        {
+            var defaultActivity = defaultSchedule.GetPeriod(ConvertToHoursFormat(fromPeriodInclusive + i)).ActivityType;
+            ChangePeriod(schedule, ConvertToHoursFormat(fromPeriodInclusive + i), defaultActivity);
+        }
+        
+        UpdateView(schedule);
     }
     
     private void OnPeriodChanged(string villagerKey, int period, ActivityColorData data)
@@ -223,6 +346,14 @@ public class ScheduleController : MonoBehaviour
             
             schedule.SchedulePeriods.Add(newPeriod);
             foundedPeriod.EndTime = period;
+        }
+    }
+
+    private void UpdateView(Schedule schedule)
+    {
+        if (_schedulesInstances.Contains(schedule))
+        {
+            _scheduleView.UpdateView(schedule);
         }
     }
 

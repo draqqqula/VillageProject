@@ -58,6 +58,13 @@ public class Schedule : ScriptableObject
     {
         if (period1.ActivityType == period2.ActivityType)
         {
+            if (period2.Length == 23)
+            {
+                period2.EndTime = period1.EndTime;
+                merged.Remove(period1);
+                merged.Add(period2);
+                return;
+            }
             period1.EndTime = period2.EndTime;
         }
         else

@@ -38,7 +38,10 @@ public class Villager : MonoBehaviour
     
     [SerializeField] private DeathEvent _deathEvent;
     
-    [SerializeField] private float experience; // test
+    // tests
+    [SerializeField] private float experience;
+    [SerializeField] private float loyalty;
+    [SerializeField] private float health;
     
     public void Init(HomeService homeService)
     {
@@ -66,14 +69,12 @@ public class Villager : MonoBehaviour
         _dialogueWindow.transform.position = _dialoguePoint.position;
         _dialogueWindow.Init(_dialoguePoint);
 
-        VillagerData.Profession.Experience.Subscribe(OnExperienceChanged).AddTo(this); // test
+        // tests
+        VillagerData.Profession.Experience.Subscribe(v => experience = v).AddTo(this); 
+        VillagerData.Loyalty.Property.Subscribe(v => loyalty = v).AddTo(this);
+        VillagerData.Health.AmountReactive.Subscribe(v => health = v).AddTo(this);
     }
-
-    private void OnExperienceChanged(float value)
-    {
-        experience = value;
-    }
-
+    
     private void ChangeSkin()
     {
         if (_currentSkin != null) Destroy(_currentSkin);
