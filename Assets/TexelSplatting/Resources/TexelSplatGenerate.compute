@@ -1,0 +1,91 @@
+#pragma kernel CSMain
+
+struct SplatData
+{
+    float3 position;
+    float  size;
+    float4 color;
+};
+
+AppendStructuredBuffer<SplatData> _SplatBuffer;
+
+Texture2DArray<float4> _ProbeColorArray;
+Texture2DArray<float>  _ProbeDepthArray;
+
+float4x4 _FaceInvViews[6];
+
+float  _FaceResolution;
+float  _FarPlane;
+float  _PosterizeLevels;
+float  _SplatSizeMultiplier;
+float4 _FaceIndices0;
+float4 _FaceIndices1;
+
+// Main camera frustum planes (normal.xyz, distance) — inward-facing
+float4 _FrustumPlane0, _FrustumPlane1, _FrustumPlane2, _FrustumPlane3, _FrustumPlane4, _FrustumPlane5;
+
+bool IsInsideFrustum(float3 pos, float radius)
+{
+    float4 planes[6] = { _FrustumPlane0, _FrustumPlane1, _FrustumPlane2, _FrustumPlane3, _FrustumPlane4, _FrustumPlane5 };
+    for (int i = 0; i < 6; i++)
+    {
+        if (dot(planes[i].xyz, pos) + planes[i].w + radius < 0.0)
+            return false;
+    }
+    return true;
+}
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    uint2 texel = id.xy;
+    uint face = (uint)(id.z < 4 ? _FaceIndices0[id.z] : _FaceIndices1[id.z - 4]);
+
+    if (texel.x >= (uint)_FaceResolution || texel.y >= (uint)_FaceResolution)
+        return;
+
+    float depth = _ProbeDepthArray[uint3(texel, face)];
+
+    // Skip sky pixels
+    if (depth >= _FarPlane * 0.99)
+        return;
+
+    // Compute NDC for the center of this texel
+    float2 ndc;
+    ndc.x = ((float)texel.x + 0.5) / _FaceResolution * 2.0 - 1.0;
+    ndc.y = ((float)texel.y + 0.5) / _FaceResolution * 2.0 - 1.0;
+
+    // On D3D-like platforms, texture (0,0) is top-left so Y must be flipped
+#if UNITY_UV_STARTS_AT_TOP
+    ndc.y = -ndc.y;
+#endif
+
+    // Face cameras are 90° FOV, 1:1 aspect (cubemap faces), so tan(45°) = 1
+    // and NDC maps directly to view-space XY. The direction is NOT normalized
+    // because depth is linear eye depth (Z-distance), not ray distance.
+    float3 viewDir = float3(ndc.x, ndc.y, -1.0);
+    float3 viewPos = viewDir * depth;
+
+    // Transform to world space
+    float4x4 invView = _FaceInvViews[face];
+    float3 worldPos = mul(invView, float4(viewPos, 1.0)).xyz;
+
+    // Quad half-extent in world units, scaled up to eliminate gaps
+    float size = depth / _FaceResolution * _SplatSizeMultiplier;
+
+    // Frustum cull — skip splats outside the main camera's view
+    if (!IsInsideFrustum(worldPos, size))
+        return;
+
+    // Sample and posterize color
+    float4 color = _ProbeColorArray[uint3(texel, face)];
+    float levels = _PosterizeLevels;
+    color.rgb = floor(color.rgb * levels + 0.5) / levels;
+
+    SplatData splat;
+    splat.position = worldPos;
+    splat.size = size;
+    splat.color = color;
+
+    _SplatBuffer.Append(splat);
+}
