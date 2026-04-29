@@ -169,7 +169,11 @@ MonoBehaviour:
   _viewParent: {fileID: 8646088773368326699}
   _dialoguePoint: {fileID: 2276830629822440595}
   _dialogueWindowPrefab: {fileID: 1238243824860244923, guid: 36846b1ce06b24a4aa78d043595f4d67, type: 3}
+  _interactTrigger: {fileID: 7092169328558165140}
   _deathEvent: {fileID: 2671009833406581085}
+  experience: 0
+  loyalty: 0
+  health: 0
 --- !u!114 &2700721286470927998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,8 +480,9 @@ GameObject:
   - component: {fileID: 5799178722057690098}
   - component: {fileID: 2583538520536894782}
   - component: {fileID: 2507787742097961738}
+  - component: {fileID: 7092169328558165140}
   m_Layer: 0
-  m_Name: DialogueTrigger
+  m_Name: InteractTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -533,6 +538,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _villager: {fileID: 6677530680594479035}
   _dialogueChance: 0.6
+--- !u!114 &7092169328558165140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526994928551716344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92b1b06e1f644706b7f4896cfc16e2a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactKey: E
+  _actionReference: {fileID: -5949451587552014798, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+  _interactableObject: {fileID: 4176552873163846531}
 --- !u!1 &6691590844814211982
 GameObject:
   m_ObjectHideFlags: 0

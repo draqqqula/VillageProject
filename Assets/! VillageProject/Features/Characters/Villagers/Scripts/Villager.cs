@@ -5,11 +5,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 using Cysharp.Threading.Tasks;
-using TMPro;
 
 [RequireComponent(typeof(NavmeshMovementAgent))]
 [RequireComponent(typeof(VelocityToAnimation))]
-public class Villager : MonoBehaviour
+public class Villager : MonoBehaviour, IInteractable
 {
     private static readonly int PROFESSION = Animator.StringToHash("Profession");
     
@@ -29,6 +28,11 @@ public class Villager : MonoBehaviour
     [SerializeField] private DialogueView _dialogueWindowPrefab;
     private DialogueView _dialogueWindow;
     [Inject(Id = "Dialogue")] private Canvas _dialogueCanvas;
+    
+    [SerializeField] private InteractTrigger _interactTrigger;
+    private VillagerInteractHandler _interactHandler;
+    
+    public event Action<Profession> OnProfessionChanged;
     
     public ReadOnlyReactiveProperty<SkinReferencesResolver> SkinReferencesResolver => _skinReferencesResolver;
     private ReactiveProperty<SkinReferencesResolver> _skinReferencesResolver;
@@ -68,6 +72,8 @@ public class Villager : MonoBehaviour
         _dialogueWindow = Instantiate(_dialogueWindowPrefab, _dialogueCanvas.transform);
         _dialogueWindow.transform.position = _dialoguePoint.position;
         _dialogueWindow.Init(_dialoguePoint);
+
+        _interactHandler = new VillagerInteractHandler(this, _interactTrigger, _diContainer);
 
         // tests
         VillagerData.Profession.Experience.Subscribe(v => experience = v).AddTo(this); 
@@ -121,6 +127,8 @@ public class Villager : MonoBehaviour
         {
             _ = _stateMachine.UpdateCurrentState(VillagerData.ActivityType.Value, gameObject.GetCancellationTokenOnDestroy());
         }
+        
+        OnProfessionChanged?.Invoke(profession);
         Debug.Log($"Villager {gameObject.name} profession change to {profession}");
     }
 
@@ -134,6 +142,11 @@ public class Villager : MonoBehaviour
     {
         _dialogueWindow.HideView();
     }
+    
+    public void Interact()
+    {
+        _interactHandler?.Interact();
+    }
 
     private void OnDeath()
     {
@@ -144,6 +157,7 @@ public class Villager : MonoBehaviour
     private void OnDestroy()
     {
         _stateMachine.Dispose();
+        _interactHandler?.Dispose();
         _deathEvent.FiredEvent -= OnDeath;
     }
 }

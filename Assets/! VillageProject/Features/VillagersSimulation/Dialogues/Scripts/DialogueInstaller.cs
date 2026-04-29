@@ -9,6 +9,6 @@ public class DialogueInstaller : MonoInstaller<DialogueInstaller>
     public override void InstallBindings()
     {
         Container.BindInstance(_dialogueSystem).AsSingle();
-        Container.BindInstance(_dialogueCanvas).WithId("Dialogue").AsSingle();
+        Container.BindInstance(_dialogueCanvas).WithId("Dialogue").AsCached();
     }
 }
