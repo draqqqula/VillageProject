@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class EnemyInstaller : MonoInstaller
+public class EnemyInstaller : MonoInstaller, IDialogueTarget
 {
     [SerializeField] private Transform _originPoint;
     [SerializeField] private StateOfAttack stateOfAttack;

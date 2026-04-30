@@ -8,7 +8,7 @@ using Cysharp.Threading.Tasks;
 
 [RequireComponent(typeof(NavmeshMovementAgent))]
 [RequireComponent(typeof(VelocityToAnimation))]
-public class Villager : MonoBehaviour, IInteractable
+public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
 {
     private static readonly int PROFESSION = Animator.StringToHash("Profession");
     
@@ -25,8 +25,10 @@ public class Villager : MonoBehaviour, IInteractable
     private SkinChanger _skinChanger;
     
     [SerializeField] private Transform _dialoguePoint;
-    [SerializeField] private DialogueView _dialogueWindowPrefab;
-    private DialogueView _dialogueWindow;
+    [SerializeField] private DialogueIcon _dialogueIconPrefab;
+    private DialogueIcon _dialogueIcon;
+    
+    [Inject] private DialogueView _dialogueWindow;
     [Inject(Id = "Dialogue")] private Canvas _dialogueCanvas;
     
     [SerializeField] private InteractTrigger _interactTrigger;
@@ -69,9 +71,9 @@ public class Villager : MonoBehaviour, IInteractable
 
         _deathEvent.FiredEvent += OnDeath;
         
-        _dialogueWindow = Instantiate(_dialogueWindowPrefab, _dialogueCanvas.transform);
-        _dialogueWindow.transform.position = _dialoguePoint.position;
-        _dialogueWindow.Init(_dialoguePoint);
+        _dialogueIcon = Instantiate(_dialogueIconPrefab, _dialogueCanvas.transform);
+        _dialogueIcon.transform.position = _dialoguePoint.position;
+        _dialogueIcon.Init(_dialoguePoint);
 
         _interactHandler = new VillagerInteractHandler(this, _interactTrigger, _diContainer);
 
@@ -135,12 +137,14 @@ public class Villager : MonoBehaviour, IInteractable
     public void Speak(string text)
     {
         Debug.Log($"{gameObject.name} : {text}");
-        _dialogueWindow.ShowView(text);
+        _dialogueIcon.ShowView();
+        _dialogueWindow.TrySetText(_villagerData.Key, _villagerData.NameInRussian, _villagerData.Profession.TypeInRussian, text);
     }
 
     public void KeepSilent()
     {
-        _dialogueWindow.HideView();
+        _dialogueIcon.HideView();
+        _dialogueWindow.HideText();
     }
     
     public void Interact()

@@ -7,6 +7,8 @@ using Zenject;
 public class VillagerData : ScriptableObject
 {
     [field: SerializeField] public string Key {get; private set;}
+    [field: SerializeField] public string NameInRussian {get; private set; }
+    
     [field: SerializeField] public Gender Gender {get; private set;}
     [field: SerializeField] public ActivityType? ActivityType {get; set;}
     [field: SerializeField] public Profession Profession {get; set;}
@@ -35,6 +37,8 @@ public enum Gender {Male, Female}
 public class Profession
 {
     public ProfessionType Type => ProfessionData.Type;
+    public string TypeInRussian => GetProfessionInRussian();
+    
     [field: SerializeField] public ProfessionData ProfessionData {get; set;}
     [SerializeField] private float _startExperience = 0f;
     
@@ -46,6 +50,26 @@ public class Profession
             if (_experience == null) _experience = new ReactiveProperty<float>(_startExperience);
             return _experience;
         }
+    }
+
+    private string GetProfessionInRussian()
+    {
+        switch (ProfessionData.Type)
+        {
+            case ProfessionType.Blacksmith:
+                return "Кузнец";
+            case ProfessionType.Armorer:
+                return "Бронник";
+            case ProfessionType.Builder:
+                return "Строитель";
+            case ProfessionType.Archer:
+                return "Лучник";
+            case ProfessionType.Defender:
+                return "Стражник";
+            default:
+                return "";
+        }
+        
     }
 }
 

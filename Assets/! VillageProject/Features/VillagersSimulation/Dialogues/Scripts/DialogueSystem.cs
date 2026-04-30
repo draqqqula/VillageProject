@@ -13,7 +13,9 @@ public class DialogueSystem : MonoBehaviour
     
     private DialogueChooser _dialogueChooser;
     private Coroutine _dialogueCoroutine;
+    
     private List<DialogueSession> _dialogueSessions = new List<DialogueSession>();
+    public List<DialogueSession> DialogueSessions => _dialogueSessions;
 
     private void Awake()
     {
@@ -31,6 +33,14 @@ public class DialogueSystem : MonoBehaviour
     {
         var dialogueID = _dialogueChooser.ChooseDialogueID(villagerA, villagerB, true);
         PlayDialogue(villagerA, villagerB, dialogueID, callback);
+    }
+    
+    public void PlayShortDialogue(Villager villagerA, IDialogueTarget target, Action callback = null)
+    {
+        var dialogueID = _dialogueChooser.ChooseDialogueID(villagerA, target, true);
+        
+        if (target is Villager villagerB) PlayDialogue(villagerA, villagerB, dialogueID, callback);
+        else PlayDialogue(villagerA, dialogueID, callback);
     }
     
     public void PlayDialogue(Villager villagerA, Villager villagerB, string id, Action callback = null)
@@ -57,8 +67,12 @@ public class DialogueSystem : MonoBehaviour
 
         StopDialogue(villagerA);
         StopDialogue(villagerB);
-        var coroutine = StartCoroutine(DialogueRoutine(dialogue, speakAction, silentAction, callback));
-        _dialogueSessions.Add(new DialogueSession() {VillagerA = villagerA, VillagerB = villagerB, DialogueCoroutine = coroutine});
+
+        var session = new DialogueSession() { Id = id, VillagerA = villagerA, VillagerB = villagerB};
+        _dialogueSessions.Add(session);
+        
+        var coroutine = StartCoroutine(DialogueRoutine(session, dialogue, speakAction, silentAction, callback));
+        session.DialogueCoroutine = coroutine;
     }
 
     public void PlayDialogue(Villager villager, string id, Action callback = null)
@@ -82,8 +96,12 @@ public class DialogueSystem : MonoBehaviour
         };
         
         StopDialogue(villager);
-        var coroutine = StartCoroutine(DialogueRoutine(dialogue, speakAction, silentAction, callback));
-        _dialogueSessions.Add(new DialogueSession() {VillagerA = villager, DialogueCoroutine = coroutine});
+        
+        var session = new DialogueSession() { Id = id, VillagerA = villager};
+        _dialogueSessions.Add(session);
+        
+        var coroutine = StartCoroutine(DialogueRoutine(session, dialogue, speakAction, silentAction, callback));
+        session.DialogueCoroutine = coroutine;
     }
     
     public void StopDialogue(Villager villager)
@@ -92,12 +110,18 @@ public class DialogueSystem : MonoBehaviour
         
         if (session != null)
         {
+            session.IsFinished = true;
+            
             StopCoroutine(session.DialogueCoroutine);
+            session.VillagerA.KeepSilent();
+            session.VillagerB.KeepSilent();
+            
             _dialogueSessions.Remove(session);
         }
     }
 
-    private IEnumerator DialogueRoutine(DialogueConfig dialogue, Action<Replica> speakAction, Action silentAction, Action callback)
+    private IEnumerator DialogueRoutine(DialogueSession session, DialogueConfig dialogue, Action<Replica> speakAction,
+        Action silentAction, Action callback)
     {
         var curReplicaIndex = 0;
         while (curReplicaIndex < dialogue.Replicas.Count)
@@ -113,22 +137,50 @@ public class DialogueSystem : MonoBehaviour
         }
         
         _dialogueCoroutine = null;
+        session.IsFinished = true;
+        silentAction?.Invoke();
+        _dialogueSessions.Remove(session);  
+        
         callback?.Invoke();
     }
 }
 
 public class DialogueSession
 {
+    public string Id {get; set;}
+    
     public Villager VillagerA { get; set; }
     public Villager VillagerB { get; set; }
+    
     public Coroutine DialogueCoroutine { get; set; }
+    public bool IsFinished { get; set; }
+
+    public bool IsVillagerInDialog(string villagerKey)
+    {
+        return villagerKey == VillagerA.VillagerData.Key || villagerKey == VillagerB.VillagerData.Key;;
+    }
 }
 
 public class DialogueChooser
 {
-    public string ChooseDialogueID(Villager villagerA, Villager villagerB, bool isShort = false)
-    { 
-        if (isShort) return "ShortTestDialogue";
-        return "TestDialogue";
+    public string ChooseDialogueID(Villager villagerA, IDialogueTarget target, bool isShort = false)
+    {
+        if (target is Villager villagerB)
+        {
+            if (isShort) return "ShortTestDialogue";
+            return "TestDialogue";
+        }
+        
+        if (target is FirstPersonController player)
+        {
+            
+        }
+        
+        if (target is EnemyInstaller enemy)
+        {
+            
+        }
+        
+        return null;
     }
 }

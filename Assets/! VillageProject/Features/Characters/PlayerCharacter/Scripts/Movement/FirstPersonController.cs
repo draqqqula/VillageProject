@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class FirstPersonController : InputListener, IInitializable
+public class FirstPersonController : InputListener, IInitializable, IDialogueTarget
 {
     [SerializeField, FromInputActionAsset("Look")] private InputActionReference _look;
     [SerializeField] private Transform _head;
