@@ -15,6 +15,7 @@ public class VillagerInteractHandler : IDisposable
         _interactTrigger = interactTrigger;
 
         _villager = villager;
+        OnProfessionChanged(villager.VillagerData.Profession);
         _villager.OnProfessionChanged += OnProfessionChanged;
         
         _armorUpgrader = container.ResolveId<UpgradeMenu>("UpgradeArmor");

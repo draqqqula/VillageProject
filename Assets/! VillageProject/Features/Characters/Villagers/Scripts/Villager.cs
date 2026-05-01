@@ -144,7 +144,7 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
     public void KeepSilent()
     {
         _dialogueIcon.HideView();
-        _dialogueWindow.HideText();
+        _dialogueWindow.HideText(_villagerData.Key);
     }
     
     public void Interact()

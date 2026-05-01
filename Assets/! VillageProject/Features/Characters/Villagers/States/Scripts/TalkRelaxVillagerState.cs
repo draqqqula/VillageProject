@@ -16,6 +16,7 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
     private VillagerSystem _villagerSystem;
     private Villager _curVillager;
     private Villager _targetVillager;
+    private Villager _prevTargetVillager;
 
     private Transform _villageCenter;
     
@@ -50,8 +51,9 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         _targetVillager = null;
         int triesCount = 0;
 
-        while (_targetVillager == null || _targetVillager == _curVillager || _targetVillager.VillagerData.IsTalking || _targetVillager.VillagerData.IsMoving
-               || Vector3.Distance(_navmeshAgent.transform.position, _targetVillager.transform.position) > MinDistance)
+        while (_targetVillager == null || _targetVillager == _curVillager || _targetVillager == _prevTargetVillager
+                || _targetVillager.VillagerData.IsReservedForTalk || _targetVillager.VillagerData.IsMoving
+                || Vector3.Distance(_navmeshAgent.transform.position, _targetVillager.transform.position) > MinDistance)
         {
             if (triesCount >= MinVillagerTries)
             {
@@ -64,7 +66,11 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         }
         
         Debug.Log($"{_curVillager} choose Talk Target {_targetVillager}");
-        if (_targetVillager) _targetVillager.VillagerData.IsTalking = true;
+        if (_targetVillager)
+        {
+            _targetVillager.VillagerData.IsReservedForTalk = true;
+            _curVillager.VillagerData.IsReservedForTalk = true;
+        }
     }
     
     public void Update()
@@ -99,12 +105,15 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         _isTalking = true;
 
         _curVillager.VillagerData.IsTalking = true;
+        _targetVillager.VillagerData.IsTalking = true;
+        
         Debug.Log($"{_curVillager} reached talk point!");
         _dialogueSystem.PlayDialogue(_curVillager, _targetVillager, OnDialogueFinished);
     }
 
     private void OnDialogueFinished()
     {
+        _prevTargetVillager = _targetVillager;
         ReleaseTalkingParams();
         if (!_isFinishing) ChooseTarget();
     }
@@ -115,6 +124,9 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         
         _targetVillager.VillagerData.IsTalking = false;
         _curVillager.VillagerData.IsTalking = false;
+        
+        _targetVillager.VillagerData.IsReservedForTalk = false;
+        _curVillager.VillagerData.IsReservedForTalk = false;
         _transformHandler.DeactivateMovement();
     }
 
@@ -124,12 +136,11 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         if (_isTalking)
         {
             await UniTask.WaitWhile(() => _isTalking, cancellationToken: token);
+            ReleaseTalkingParams();
         }
-        
-        _transformHandler.DeactivateMovement();
-        if (_targetVillager != null) _targetVillager.VillagerData.IsTalking = false;
-        _curVillager.VillagerData.IsTalking = false;
-        
+        else _transformHandler.DeactivateMovement();
+
+        _prevTargetVillager = null;
         _targetVillager = null;
         _isFinishing = false;
     }

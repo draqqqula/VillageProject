@@ -55,7 +55,7 @@ public class Replica
 
         int chars = text.Length;
 
-        float time = chars / 15f;
-        return Mathf.Clamp(time, 1.0f, 5f);
+        float time = chars / 12f;
+        return Mathf.Clamp(time, 1.0f, 7f);
     }
 }

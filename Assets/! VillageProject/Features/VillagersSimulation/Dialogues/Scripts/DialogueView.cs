@@ -54,11 +54,12 @@ public class DialogueView : MonoBehaviour
         else _textLabel.text = $"{villagerName} ({profession}): {text}";
     }
 
-    public void HideText()
+    public void HideText(string villagerKey)
     {
-        if (_focusedSession != null && _focusedSession.IsFinished)
+        if (_focusedSession != null)
         {
-            _focusedSession = null;
+            if (!_focusedSession.IsVillagerInDialog(villagerKey)) return; 
+            if (_focusedSession.IsFinished) _focusedSession = null;
         }
         
         gameObject.SetActive(false);

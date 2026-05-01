@@ -19,6 +19,8 @@ public class VillagerData : ScriptableObject
     
     public bool IsOnHome { get; set; }
     public bool IsTalking { get; set; }
+    public bool IsReservedForTalk { get; set; }
+    
     public bool IsMoving => _navmeshAgent.GetVelocityPerSecond() > 0.1f;
 
     private NavmeshMovementAgent _navmeshAgent;

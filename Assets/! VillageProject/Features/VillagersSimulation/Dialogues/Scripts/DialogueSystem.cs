@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = System.Random;
 
 public class DialogueSystem : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class DialogueSystem : MonoBehaviour
     
     public void PlayDialogue(Villager villagerA, Villager villagerB, string id, Action callback = null)
     {
+        var (first, second) = _dialogueChooser.GetSpeakerOrder(villagerA, villagerB, id);
         var dialogue = _dialoguesDataInstance.Dialogues.FirstOrDefault(d => d.DialogueID == id);
 
         if (dialogue == null)
@@ -55,20 +57,20 @@ public class DialogueSystem : MonoBehaviour
         
         Action<Replica> speakAction = (replica) =>
         {
-            if (replica.SpeakerID == Replica.ActorID.ActorA) villagerA.Speak(replica.Text);
-            else villagerB.Speak(replica.Text);
+            if (replica.SpeakerID == Replica.ActorID.ActorA) first.Speak(replica.Text);
+            else second.Speak(replica.Text);
         };
 
         Action silentAction = () =>
         {
-            villagerA.KeepSilent();
-            villagerB.KeepSilent();
+            first.KeepSilent();
+            second.KeepSilent();
         };
 
-        StopDialogue(villagerA);
-        StopDialogue(villagerB);
+        StopDialogue(first);
+        StopDialogue(second);
 
-        var session = new DialogueSession() { Id = id, VillagerA = villagerA, VillagerB = villagerB};
+        var session = new DialogueSession() { Id = id, VillagerA = first, VillagerB = second};
         _dialogueSessions.Add(session);
         
         var coroutine = StartCoroutine(DialogueRoutine(session, dialogue, speakAction, silentAction, callback));
@@ -157,30 +159,7 @@ public class DialogueSession
 
     public bool IsVillagerInDialog(string villagerKey)
     {
-        return villagerKey == VillagerA.VillagerData.Key || villagerKey == VillagerB.VillagerData.Key;;
-    }
-}
-
-public class DialogueChooser
-{
-    public string ChooseDialogueID(Villager villagerA, IDialogueTarget target, bool isShort = false)
-    {
-        if (target is Villager villagerB)
-        {
-            if (isShort) return "ShortTestDialogue";
-            return "TestDialogue";
-        }
-        
-        if (target is FirstPersonController player)
-        {
-            
-        }
-        
-        if (target is EnemyInstaller enemy)
-        {
-            
-        }
-        
-        return null;
+        return (VillagerA != null && villagerKey == VillagerA.VillagerData.Key) ||
+               (VillagerB != null && villagerKey == VillagerB.VillagerData.Key);
     }
 }
