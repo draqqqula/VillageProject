@@ -18,7 +18,7 @@ public class TowerDamageOverTime : TowerIntervalAction
 
     protected override float Perform()
     {
-        if (_building.Data.CurrentState == BuildingData.State.Wait) return _defaultInterval;
+        if (_building.Data.CurrentState != BuildingData.State.Ready) return _defaultInterval;
         
         var min = float.MaxValue;
         Health closest = null;

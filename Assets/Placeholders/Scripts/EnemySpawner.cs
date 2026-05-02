@@ -13,6 +13,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject _road;
     [SerializeField] private GameObject _player;
 
+    [field: SerializeField] public string RoadIndex {get; private set;}
+
     private IEnumerator SpawnOnInterval(WaveInfo.Spawn spawn, WorkEventSource eventSource)
     {
         foreach (var group in spawn.Groups)

@@ -38,6 +38,11 @@ public class Building : MonoBehaviour
         else SetReady();
     }
 
+    public void SetReserved()
+    {
+        Data.CurrentState = BuildingData.State.Reserved;
+    }
+
     public void SetReady()
     {
         Data.CurrentState = BuildingData.State.Ready;

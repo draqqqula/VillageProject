@@ -30,6 +30,8 @@ public class WaveController : MonoBehaviour
     public WaveInfo CurrentWave { get; private set; }
     public IReadOnlyList<EnemySpawner> Spawners => _spawners;
 
+    public event Action<string[]> OnWaveRoadChanged;
+
     private void Awake()
     {
         foreach (var spawner in _spawners)
@@ -46,6 +48,7 @@ public class WaveController : MonoBehaviour
 
     private void ScheduleWave()
     {
+        var prevRoads = GetWaveRoadIndexes();
         if (!_wavesSequence.MoveNext())
         {
             CurrentWave = null;
@@ -55,6 +58,10 @@ public class WaveController : MonoBehaviour
         CurrentWave = _wavesSequence.Current.Item1.Wave;
         _isOnBreak.Value = true;
         BreakStarted?.Invoke();
+        
+        var curRoads = GetWaveRoadIndexes();
+        if (prevRoads.Length == curRoads.Length && prevRoads.All(r => curRoads.Contains(r))) return;
+        OnWaveRoadChanged?.Invoke(curRoads);
     }
 
     private void InvokeWave()
@@ -115,5 +122,22 @@ public class WaveController : MonoBehaviour
             BreakFinished?.Invoke();
             InvokeWave();
         }
+    }
+
+    public string[] GetWaveRoadIndexes()
+    {
+        if (_wavesSequence.Current.Item1 == null) return new string[0]; 
+            
+        var spawnerIndexes = _wavesSequence.Current.Item1.Wave.Spawns.Select(s => s.SpawnpointIndex);
+        string[] results = new string[spawnerIndexes.Count()];
+
+        var counter = 0;
+        foreach (var spawnerIndex in spawnerIndexes)
+        {
+            results[counter] = _spawners[spawnerIndex].RoadIndex;
+            counter++;
+        }
+        
+        return results;
     }
 }

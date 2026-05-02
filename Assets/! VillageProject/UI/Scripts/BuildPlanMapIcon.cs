@@ -37,17 +37,22 @@ public sealed class BuildPlanMapIcon : MapIcon
 
     private void OnPlanCompleted()
     {
-        if (!_isActivated) return;
-        
-        _buildingPlanner.OnCurrentPlanChanged -= OnCurrentPlanChanged;
-        DestroyIcon();
-        _isActivated = false;
+        Deactivate();
     }
-
+    
     private void OnCurrentPlanChanged(BuildingPlan newPlan)
     {
         if (_building.Data.Plan.Value != newPlan) _planDisplay.LockPlan();
         else _planDisplay.UnlockPlan();
+    }
+    
+    public void Deactivate()
+    {
+        if (!_isActivated) return;
+        
+        _buildingPlanner.OnCurrentPlanChanged -= OnCurrentPlanChanged;
+        _isActivated = false;
+        DestroyIcon();
     }
     
     protected override void OnEnable() { }

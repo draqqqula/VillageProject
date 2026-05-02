@@ -28,6 +28,12 @@ public class BuildingStorage : IDisposable
     {
         return _buildings.Where(b => b.Data.Type == buildingType).ToList();
     }
+    
+    public List<Building> GetAll(BuildingType buildingType, BuildingData.State state, string[] roadIndexes)
+    {
+        return _buildings.Where(b => b.Data.Type == buildingType && b.Data.CurrentState == state
+                                                                 && roadIndexes.Contains(b.Data.RoadIndex)).ToList();
+    }
 
     public Building Get(BuildingType buildingType, BuildingData.State state)
     {

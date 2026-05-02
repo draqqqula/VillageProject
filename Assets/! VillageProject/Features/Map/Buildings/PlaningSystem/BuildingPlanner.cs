@@ -11,34 +11,48 @@ public class BuildingPlanner : MonoBehaviour
     private const int NewBuildingPlansLength = 3;
     
     [SerializeField] private List<NewBuildingPlan> _allBuildingPlans;
-    private List<BuildingPlan> _completedBuildingPlans = new List<BuildingPlan>();
     public List<BuildingPlan> PriorityBuildingPlans { get; private set; }
     
     private BuildingStorage _storage;
     private DiContainer _container;
-
-    private bool _isPlanPriorityForPlayer = false;
+    private WaveController _waveController;
     
+    [SerializeField] private GameObject _baseBuildingPrefab;
+    
+    private bool _isInitialized;
     public event Action<BuildingPlan> OnCurrentPlanChanged;
 
     [Inject]
-    private void Construct(DiContainer container, BuildingStorage storage)
+    private void Construct(DiContainer container, BuildingStorage storage, WaveController waveController)
     {
+        PriorityBuildingPlans = new List<BuildingPlan>();
+        
         _container = container;
         _storage = storage;
         _storage.OnBuildingBroken += AddBrokenBuildingToPlan;
-        
-        PriorityBuildingPlans = new List<BuildingPlan>();
+        _waveController = waveController;
+        _waveController.OnWaveRoadChanged += OnRoadChanged;
     }
 
     public void Init()
     {
-        GeneratePriorityPlans(NewBuildingPlansLength);
+        GeneratePriorityPlans(NewBuildingPlansLength, _waveController.GetWaveRoadIndexes());
+        _isInitialized = true;
+    }
+    
+    private void OnRoadChanged(string[] roadIndexes)
+    {
+        if (!_isInitialized) return;
+        TryHidePreview();
+        
+        GeneratePriorityPlans(NewBuildingPlansLength, roadIndexes);
+        SortPlansByRoad(roadIndexes);
+        ChangeCurrentPlan(GetCurrentPlan());
     }
     
     public BuildingPlan GetCurrentPlan()
     {
-        if (PriorityBuildingPlans.Count == 0) GeneratePriorityPlans(NewBuildingPlansLength);
+        if (PriorityBuildingPlans.Count == 0) GeneratePriorityPlans(NewBuildingPlansLength, _waveController.GetWaveRoadIndexes());
         if (PriorityBuildingPlans.Count == 0) return null;
         
         return PriorityBuildingPlans[0];
@@ -50,8 +64,6 @@ public class BuildingPlanner : MonoBehaviour
         PriorityBuildingPlans.Remove(plan);
         PriorityBuildingPlans.Insert(0, plan);
         TryShowPreview();
-
-        _isPlanPriorityForPlayer = PriorityBuildingPlans.Any(p => p is RepairingPlan);
         OnCurrentPlanChanged?.Invoke(plan);
     }
 
@@ -62,7 +74,7 @@ public class BuildingPlanner : MonoBehaviour
             return;
         }
 
-        var newPlan = new RepairingPlan(building.Data.RepairingHours, building);
+        var newPlan = new RepairingPlan(building.Data.RepairingHours, building, building.Data.RoadIndex);
         building.Data.Plan.Value = newPlan;
             
         TryHidePreview();
@@ -103,12 +115,8 @@ public class BuildingPlanner : MonoBehaviour
         
         if (plan is NewBuildingPlan newBuildingPlan) Perform(newBuildingPlan);
         else if (plan is RepairingPlan repairingPlan) Perform(repairingPlan);
-        
-        _completedBuildingPlans.Add(plan);
-        
-        GeneratePriorityPlans(NewBuildingPlansLength, false);
-        
-        _isPlanPriorityForPlayer = false;
+
+        GeneratePriorityPlans(NewBuildingPlansLength, _waveController.GetWaveRoadIndexes(), false);
         OnCurrentPlanChanged?.Invoke(GetCurrentPlan());
     }
     
@@ -118,9 +126,10 @@ public class BuildingPlanner : MonoBehaviour
         var slot = plan.BuildingAnchor.GetComponentInChildren<SingleInstance>();
         
         var building = _container.InstantiatePrefabForComponent<Building>(plan.BuildingPrefab, slot.transform);
+        building.Data.RoadIndex = plan.RoadIndex;
         building.CompleteBuilding();
         slot.Substitute(building.gameObject);
-        _storage.Add(building.GetComponent<Building>());
+        _storage.Add(building);
     }
 
     private void Perform(RepairingPlan plan)
@@ -130,19 +139,24 @@ public class BuildingPlanner : MonoBehaviour
         if (plan.BrokenBuilding.TryGetComponent(out GateState gateState)) gateState.Fix();
     }
     
-    private void GeneratePriorityPlans(int maxCounts, bool isNewPlans = true)
+    private void GeneratePriorityPlans(int maxCounts, string[] roadIndexes, bool isClearNonStartedPlans = true)
     {
-        if (_allBuildingPlans.Count <= 0)
+        if (isClearNonStartedPlans) ClearNonStartedPlans();
+        
+        int existingCounts = PriorityBuildingPlans.Count(p => p is NewBuildingPlan newBuildingPlan && roadIndexes.Contains(newBuildingPlan.RoadIndex));
+        int neededCount = maxCounts - existingCounts;
+        if (neededCount <= 0) return;
+        
+        var remainingBuildingPlans = GetRemainingBuildingPlans(roadIndexes);
+        if (remainingBuildingPlans.Count <= 0)
         {
-            Debug.LogWarning("Can't generate plan! All plans were completed!");
+            Debug.LogWarning($"Can't generate plan! All plans in roads were completed!");
             return;
         }
-        if (isNewPlans) PriorityBuildingPlans.Clear();
         
-        var remainingBuildingPlans = _allBuildingPlans.Except(_completedBuildingPlans).ToArray();
-        if (remainingBuildingPlans.Length < maxCounts) maxCounts = remainingBuildingPlans.Length;
-        
-        while (PriorityBuildingPlans.Count < maxCounts)
+        neededCount = Mathf.Min(neededCount, remainingBuildingPlans.Count);
+        int totalCounts = PriorityBuildingPlans.Count + neededCount;
+        while (PriorityBuildingPlans.Count < totalCounts)
         {
             if (TryGeneratePriorityPlan(out var plan, remainingBuildingPlans))
             {
@@ -154,18 +168,55 @@ public class BuildingPlanner : MonoBehaviour
         TryShowPreview();
     }
 
-    private bool TryGeneratePriorityPlan(out BuildingPlan plan, BuildingPlan[] remainingBuildingPlans)
+    private void ClearNonStartedPlans()
+    {
+        if (PriorityBuildingPlans.Count == 0) return;
+        
+        var removingPlans = PriorityBuildingPlans.Where(p => p is NewBuildingPlan && p.BuildingProgress.CurrentValue == 0)
+            .Select(p => p as NewBuildingPlan).ToArray();
+
+        foreach (var removingPlan in removingPlans)
+        {            
+            DestroyPreview(removingPlan);
+            PriorityBuildingPlans.Remove(removingPlan);
+        }
+    }
+
+    private List<BuildingPlan> GetRemainingBuildingPlans(string[] roadIndexes)
+    {
+        var remainingBuildingPlans = _allBuildingPlans.Where(p => !PriorityBuildingPlans.Contains(p) && p.BuildingProgress.CurrentValue < 1
+                                                                  && roadIndexes.Contains(p.RoadIndex)).Select(p => p as BuildingPlan).ToList();
+        return remainingBuildingPlans;
+        
+        if (remainingBuildingPlans.Count <= 0) // Раскомментить, если нужно брать планы по всем дорогам, когда планы на текущих дорогах закончились
+        {
+            Debug.LogWarning($"Can't generate plan! All plans in road {roadIndexes} were completed!");
+
+            remainingBuildingPlans = _allBuildingPlans.Where(p => !PriorityBuildingPlans.Contains(p) && p.BuildingProgress.CurrentValue < 1)
+                .Select(p => p as BuildingPlan).ToList();
+        }
+        
+        return remainingBuildingPlans;
+    }
+
+    private bool TryGeneratePriorityPlan(out BuildingPlan plan, List<BuildingPlan> remainingBuildingPlans)
     {
         plan = null;
-        if (_allBuildingPlans.Count <= 0)
+        if (remainingBuildingPlans.Count <= 0)
         {
             Debug.LogWarning("Can't generate plan! All plans were completed!");
             return false;
         }
-        
-        var randomPlan = remainingBuildingPlans[Random.Range(0, remainingBuildingPlans.Length)];
+
+        var maxProgressPlan = remainingBuildingPlans.Max(p => p.BuildingProgress.Value);
+        BuildingPlan randomPlan = null;
+
+        if (maxProgressPlan > 0) randomPlan = remainingBuildingPlans.Find(p => p.BuildingProgress.Value >= maxProgressPlan);
+        else randomPlan = remainingBuildingPlans[Random.Range(0, remainingBuildingPlans.Count)];
+
         if (!PriorityBuildingPlans.Contains(randomPlan))
         {
+            remainingBuildingPlans.Remove(randomPlan);
             plan = randomPlan;
             return true;
         }
@@ -180,7 +231,7 @@ public class BuildingPlanner : MonoBehaviour
 
         if (newPlan is RepairingPlan)
         {
-            insertIndex = lastRepairIndex != -1 ? lastRepairIndex + 1 : (_isPlanPriorityForPlayer ? 1 : 0);
+            insertIndex = lastRepairIndex != -1 ? lastRepairIndex + 1 : 1;
         }
         else
         {
@@ -188,6 +239,29 @@ public class BuildingPlanner : MonoBehaviour
         }
         
         return Mathf.Clamp(insertIndex, 0, PriorityBuildingPlans.Count);
+    }
+
+    private void SortPlansByRoad(string[] roadIndexes)
+    {
+        if (PriorityBuildingPlans.Count <= 0) return;
+        
+        var currentPlan = PriorityBuildingPlans[0];
+        
+        var repairingPlans = PriorityBuildingPlans.Skip(1).Where(p => p is RepairingPlan);
+        repairingPlans = repairingPlans.OrderByDescending(p => GetPriority(p, roadIndexes)).ToList();
+        
+        var builds = PriorityBuildingPlans.Skip(1).Where(p => p is NewBuildingPlan);
+        builds = builds.OrderByDescending(p => GetPriority(p, roadIndexes)).ToList();
+        
+        PriorityBuildingPlans = new List<BuildingPlan>();
+        PriorityBuildingPlans.Add(currentPlan);
+        PriorityBuildingPlans.AddRange(repairingPlans);
+        PriorityBuildingPlans.AddRange(builds);
+    }
+
+    private int GetPriority(BuildingPlan buildingPlan, string[] roadIndexes)
+    {
+        return roadIndexes.Contains(buildingPlan.RoadIndex) ? 1 : 0;
     }
 
     private void InstantiatePreview(NewBuildingPlan plan)
@@ -201,6 +275,18 @@ public class BuildingPlanner : MonoBehaviour
         var mapIcon = plan.PreviewObject.GetComponent<BuildPlanMapIcon>();
         mapIcon.Activate();
         plan.PreviewObject.DeactivateView();
+    }
+
+    private void DestroyPreview(NewBuildingPlan plan)
+    {
+        var slot = plan.BuildingAnchor.GetComponentInChildren<SingleInstance>();
+        var anchor = Instantiate(_baseBuildingPrefab,  slot.transform);
+        _container.InjectGameObject(anchor);
+        
+        var mapIcon = plan.PreviewObject.GetComponent<BuildPlanMapIcon>();
+        mapIcon.Deactivate();
+        
+        slot.Substitute(anchor);
     }
     
     private bool TryShowPreview()
@@ -224,6 +310,12 @@ public class BuildingPlanner : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void OnDestroy()
+    {
+        _storage.OnBuildingBroken -= AddBrokenBuildingToPlan;
+        _waveController.OnWaveRoadChanged -= OnRoadChanged;
     }
 }
 
@@ -271,13 +363,10 @@ public abstract class BuildingPlan
     }
 
     private ReactiveProperty<float> _buildingProgress = new ReactiveProperty<float>(0);
+
     public ReactiveProperty<float> BuildingProgress => _buildingProgress;
-
-
-    public BuildingPlan(int hours)
-    {
-        HoursDuration = hours;
-    }
+    
+    [field: SerializeField] public string RoadIndex {get; protected set;}
 }
 
 [System.Serializable]
@@ -286,17 +375,8 @@ public class NewBuildingPlan : BuildingPlan
     [field: SerializeField] public Anchor BuildingAnchor {get; private set;}
     [field: SerializeField] public Building BuildingPrefab {get; private set;}
     [field: SerializeField] public Building BuildingPreviewPrefab {get; private set;}
-    public Building PreviewObject {get; set;}
-
-    public NewBuildingPlan() : this(0)
-    {
-        
-    }
     
-    public NewBuildingPlan(int hours) : base(hours)
-    {
-        
-    }
+    public Building PreviewObject {get; set;}
 }
 
 [System.Serializable]
@@ -304,8 +384,10 @@ public class RepairingPlan : BuildingPlan
 {
     public Building BrokenBuilding {get; private set;}
 
-    public RepairingPlan(int hours, Building brokenBuilding) : base(hours)
+    public RepairingPlan(int hours, Building brokenBuilding, string roadIndex)
     {
+        HoursDuration = hours;
         BrokenBuilding = brokenBuilding;
+        RoadIndex = roadIndex;
     }
 }

@@ -23,6 +23,7 @@ public class VillagerStateFactory
     private Transform _villageCenter;
     private GameTimer _gameTimer;
     private VillagerSystem _villagerSystem;
+    private WaveController _waveController;
     
     private DialogueSystem _dialogueSystem;
     private ProfessionController _professionController;
@@ -43,6 +44,8 @@ public class VillagerStateFactory
         _gameTimer = container.Resolve<GameTimer>();
         _discoveryCollider = container.ResolveId<Collider>("Discovery");
         _villagerSystem = container.Resolve<VillagerSystem>();
+        _waveController = container.Resolve<WaveController>();
+        
         _dialogueSystem = container.Resolve<DialogueSystem>();
         _professionController = container.Resolve<ProfessionController>();
     }
@@ -104,7 +107,7 @@ public class VillagerStateFactory
                     _villagerSystem, _professionController);
             case (ProfessionType.Archer):
                 return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage,
-                    _searchForTarget, _discoveryCollider, this, _gameTimer);
+                    _searchForTarget, _discoveryCollider, this, _gameTimer, _villageCenter, _waveController);
             case (ProfessionType.Defender):
                 return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
             default:
