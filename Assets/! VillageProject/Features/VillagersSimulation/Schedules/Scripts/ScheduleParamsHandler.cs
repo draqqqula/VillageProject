@@ -26,6 +26,7 @@ public class ScheduleParamsHandler : MonoBehaviour
         var defaultSchedule = _controller.GetDefaultSchedule(villager.VillagerData.Key);
         
         var workPeriod = defaultSchedule.SchedulePeriods.FirstOrDefault(x => x.ActivityType == ActivityType.Work);
+        if (workPeriod == null) return;
 
         var multiplier = _workForLoyaltyCurve.Evaluate(newLoyalty);
         var newLength = (int)Math.Round(workPeriod.Length * multiplier, MidpointRounding.AwayFromZero);

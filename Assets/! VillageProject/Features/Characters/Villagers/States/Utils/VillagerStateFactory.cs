@@ -64,20 +64,24 @@ public class VillagerStateFactory
             if (_villagerData.Profession.Type == ProfessionType.Blacksmith)
                 workData = _buildingStorage.Get(BuildingType.Blacksmith)?.Data as WorkBuildingData;
             else workData = _buildingStorage.Get(BuildingType.Hospital)?.Data as WorkBuildingData;
-            
+
             if (workData == null)
             {
                 Debug.LogError("Building has not WorkBuildingData!");
-                return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
+                return CreateRelaxInHomeVillagerState();
             }
-            else return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, workData.RelaxPoint, true);
+            else return CreateRelaxInWorkVillagerState(workData.RelaxPoint);
+        }
+        else if (_villagerData.Profession.Type == ProfessionType.Builder)
+        {
+            return new CombineRelaxVillagerState(_navmeshAgent.gameObject, this, _gameTimer);
         }
         else
         {
             bool isTalking = Random.Range(0f, 1f) <= DialogueChance;
-            
-            if (isTalking) return new TalkRelaxVillagerState(_navmeshAgent, _villager, _villagerSystem, _dialogueSystem, _villageCenter);
-            return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
+
+            if (isTalking) return CreateTalkRelaxVillagerState();
+            return CreateRelaxInHomeVillagerState();
         }
     }
 
@@ -118,5 +122,25 @@ public class VillagerStateFactory
     public DefenderWorkState CreateDefenderWorkState()
     {
         return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
+    }
+
+    public IdleRelaxVillagerState CreateRelaxInHomeVillagerState()
+    {
+        return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, _villagerData.HomePoint.RelaxPoint, false);
+    }
+    
+    public IdleRelaxVillagerState CreateRelaxInWorkVillagerState(Transform relaxPoint)
+    {
+        return new IdleRelaxVillagerState(_navmeshAgent, _skinReferencesResolver, relaxPoint, true);
+    }
+
+    public TalkRelaxVillagerState CreateTalkRelaxVillagerState()
+    {
+        return new TalkRelaxVillagerState(_navmeshAgent, _villager, _villagerSystem, _dialogueSystem, _villageCenter);
+    }
+
+    public WalkInCenterVillagerState CreateWalkInCenterState()
+    {
+        return new WalkInCenterVillagerState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
     }
 }

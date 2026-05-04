@@ -34,7 +34,7 @@ public class VillagerStateMachine : IDisposable
         _states.Clear();
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());
-        _states.Add(ActivityType.Work, _stateFactory.CreateWorkState());
+        if (villager.VillagerData.Profession.Type != ProfessionType.None) _states.Add(ActivityType.Work, _stateFactory.CreateWorkState());
         _states.Add(ActivityType.Relax, _stateFactory.CreateRelaxState());
         _states.Add(ActivityType.Guard, _stateFactory.CreateGuardState());
     }

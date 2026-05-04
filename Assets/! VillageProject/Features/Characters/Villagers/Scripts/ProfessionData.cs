@@ -11,5 +11,5 @@ public class ProfessionData : ScriptableObject
 
 public enum ProfessionType
 {
-    Blacksmith, Armorer, Builder, Archer, Defender
+    Blacksmith, Armorer, Builder, Archer, Defender, None
 }
