@@ -14,5 +14,7 @@ public class VillagerDependencyInstaller : MonoInstaller
         Container.BindInstance(_villager).AsSingle();
         Container.BindInstance(_discoveryCollider).WithId("Discovery").AsSingle();
         Container.BindInstance(_searchForTarget).AsSingle();
+        
+        Container.Bind<AttackBonus>().FromNew().AsSingle();
     }
 }

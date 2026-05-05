@@ -8,18 +8,15 @@ public sealed class RaiseArrowsHandler : ResourceOverTimeHandler
     private TowerAmmunition _ammunition;
     private AmmunitionStorage _ammunitionStorage;
     
-    public RaiseArrowsHandler(TowerAmmunition ammunition, int hoursForRaisingAmmunition, AmmunitionStorage ammunitionStorage, 
-        GameTimer gameTimer) : base(gameTimer)
+    public RaiseArrowsHandler(TowerAmmunition ammunition, AmmunitionStorage ammunitionStorage, GameTimer gameTimer) : base(gameTimer)
     {
-        _hoursForRaisingAmmunition =  hoursForRaisingAmmunition;
-        
         _ammunition = ammunition;
         _ammunitionStorage = ammunitionStorage;
     }
 
-    public void StartRaisingArrows()
+    public void StartRaisingArrows(float hoursForRaisingAmmunition)
     {
-        StartRaising(_hoursForRaisingAmmunition, _ammunition.MaxAmount, OnChangedAmount);
+        StartRaising(hoursForRaisingAmmunition, _ammunition.MaxAmount, OnChangedAmount);
     }
     
     private void OnChangedAmount(uint value)

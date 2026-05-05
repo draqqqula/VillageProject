@@ -14,6 +14,9 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
     
     [SerializeField] private VillagerData _villagerData;
     [SerializeField] private ActivityType _currentActivity;
+    [SerializeField] private RelaxVillagerStateConfigs _relaxStateConfigs;
+    private RelaxVillagerStateConfigs _relaxStateConfigsInstance;
+    
     public VillagerData VillagerData {get; private set;}
     
     [SerializeField] private NavmeshMovementAgent _navmeshAgent;
@@ -67,7 +70,8 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
         var home = homeService.OccupyHouse();
         VillagerData.HomePoint = home;
         
-        _stateMachine = new VillagerStateMachine(this, _navmeshAgent, _diContainer);
+        _relaxStateConfigsInstance = ScriptableObject.Instantiate(_relaxStateConfigs);
+        _stateMachine = new VillagerStateMachine(this, _navmeshAgent, _relaxStateConfigsInstance, _diContainer);
 
         _deathEvent.FiredEvent += OnDeath;
         

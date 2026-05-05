@@ -15,14 +15,17 @@ public class VillagerStateMachine : IDisposable
     
     private VillagerStateFactory _stateFactory;
     private VillagerData _villagerData;
+    private RelaxVillagerStateConfigs _relaxStateConfigs;
     
     private DiContainer _container;
 
-    public VillagerStateMachine(Villager villager, NavmeshMovementAgent navmeshAgent, DiContainer container)
+    public VillagerStateMachine(Villager villager, NavmeshMovementAgent navmeshAgent, RelaxVillagerStateConfigs relaxStateConfigs,
+        DiContainer container)
     {
         _navmeshAgent = navmeshAgent;
         _stateFactory = new VillagerStateFactory();
         _container = container;
+        _relaxStateConfigs = relaxStateConfigs;
         
         SetStates(villager);
     }
@@ -30,7 +33,7 @@ public class VillagerStateMachine : IDisposable
     public void SetStates(Villager villager)
     {
         _villagerData = villager.VillagerData;
-        _stateFactory.SetParams(_navmeshAgent, villager, _container);
+        _stateFactory.SetParams(_navmeshAgent, villager, _relaxStateConfigs, _container);
         _states.Clear();
         
         _states.Add(ActivityType.Sleep, _stateFactory.CreateSleepState());

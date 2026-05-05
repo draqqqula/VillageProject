@@ -9,8 +9,11 @@ public class WaveStarter : MonoBehaviour
     [SerializeField] private WaveController _waveController;
 
     private int _maxHoursInWave = 2;
-    private int _waveHour;
+    private int _pauseTick;
 
+    [SerializeField] private int _startAllWavesHour = 20;
+    [SerializeField] private int _endAllWavesHour = 5;
+    
     private void Awake()
     {
         _gameTimer.OnHourChanged += OnHourChanged;
@@ -24,13 +27,20 @@ public class WaveStarter : MonoBehaviour
         }
         else
         {
-            if (hour >= _waveHour + _maxHoursInWave) _gameTimer.Pause();
+            if (_gameTimer.CurrentTick >= _pauseTick)
+            {
+                _gameTimer.Pause();
+            }
         }
     }
 
     private void StartWave()
     {
-        _waveHour = _gameTimer.CurrentHour;
+        _pauseTick = _gameTimer.CurrentTick + _gameTimer.ConvertHoursToTick(_maxHoursInWave);
+        var startTick = _gameTimer.CurrentTick - _gameTimer.ConvertHoursToTick((_gameTimer.CurrentHour - _startAllWavesHour + 24) % 24);
+        var endTick   = startTick + _gameTimer.ConvertHoursToTick((_endAllWavesHour - _startAllWavesHour + 24) % 24);
+        _pauseTick = Mathf.Clamp(_pauseTick, startTick, endTick);
+        
         _gameTimer.DecreaseTickSpeed(10);
         
         _waveController.FinishBreak();

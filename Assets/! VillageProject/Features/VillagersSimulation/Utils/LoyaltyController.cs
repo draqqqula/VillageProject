@@ -4,8 +4,8 @@ using Zenject;
 
 public class LoyaltyController : MonoBehaviour
 {
-    [SerializeField, Range(0, 1)] private float _increaseByWavePercentage;
-    [SerializeField, Range(0, 1)] private float _decreaseByWavePercentage;
+    [SerializeField] private AnimationCurve _increaseByWaveCurve;
+    [SerializeField] private AnimationCurve _decreaseByWaveCurve;
     
     [SerializeField] private AnimationCurve _decreaseHealthForLoyaltyCurve;
     
@@ -18,7 +18,7 @@ public class LoyaltyController : MonoBehaviour
     public void Init()
     {
         _matchObjective.OnEnemiesInVillage += OnEnemiesInVillage;
-        _waveController.IsOnBreak.Skip(1).Subscribe(OnWaveStateChanged).AddTo(this);
+        _waveController.OnWaveCompleted += OnWaveCompleted;
 
         foreach (var villager in _villagerSystem.Villagers)
         {
@@ -29,16 +29,19 @@ public class LoyaltyController : MonoBehaviour
     private void OnEnemiesInVillage()
     {
         _isEnemiesInVillage = true;
-        DecreaseLoyalty(_decreaseByWavePercentage);
+
+        var decreasePercentage = _decreaseByWaveCurve.Evaluate(_waveController.CurrentWave.Difficulty);
+        DecreaseLoyalty(decreasePercentage);
     }
 
-    private void OnWaveStateChanged(bool isOnBreak)
+    private void OnWaveCompleted(WaveInfo waveInfo)
     {
-        if (isOnBreak)
+        if (!_isEnemiesInVillage)
         {
-            if (!_isEnemiesInVillage) IncreaseLoyalty(_increaseByWavePercentage);
-            _isEnemiesInVillage = false;
+            var increasePercentage = _increaseByWaveCurve.Evaluate(waveInfo.Difficulty);
+            IncreaseLoyalty(increasePercentage);
         }
+        _isEnemiesInVillage = false;
     }
 
     private void OnHealthChanged(Villager villager, float health)
@@ -74,5 +77,6 @@ public class LoyaltyController : MonoBehaviour
     private void OnDestroy()
     {
         _matchObjective.OnEnemiesInVillage -= OnEnemiesInVillage;
+        _waveController.OnWaveCompleted -= OnWaveCompleted;
     }
 }

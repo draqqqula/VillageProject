@@ -4,7 +4,7 @@ using UnityEngine;
 public class BlacksmithProfessionData : ProfessionData
 {
     [field: SerializeField] public TowerAmmunition RaisingAmmunition {get; private set;}
-    [field: SerializeField] public int HoursForRaisingAmmunition {get; private set;}
+    [field: SerializeField] public AnimationCurve RaiseHoursForExperienceCurve {get; private set;}
     [field: SerializeField] public float ExperienceForRaisingAmmunition {get; private set;}
 }
 

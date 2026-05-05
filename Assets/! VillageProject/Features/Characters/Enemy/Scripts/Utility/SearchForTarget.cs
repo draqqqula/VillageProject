@@ -11,7 +11,12 @@ public class SearchForTarget : MonoBehaviour
     {
         public int Compare(Target x, Target y)
         {
-            return x.Priority - y.Priority;
+            if (ReferenceEquals(x, y)) return 0;
+
+            int result = x.Priority.CompareTo(y.Priority);
+            if (result != 0) return result;
+            
+            return x.GetInstanceID().CompareTo(y.GetInstanceID());
         }
     }
 
@@ -43,7 +48,6 @@ public class SearchForTarget : MonoBehaviour
 
     public void Detect(Target target)
     {
-        Debug.Log($"Detected target {target.gameObject.name}");
         if (!target.isActiveAndEnabled)
         {
             return;

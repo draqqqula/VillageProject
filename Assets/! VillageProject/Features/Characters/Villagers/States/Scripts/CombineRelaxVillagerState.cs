@@ -4,30 +4,36 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using R3;
 
 public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableState
 {
-    private const int ChangeActivityHours = 3;
-    
     private GameObject _villagerObject;
-    private GameTimer _gameTimer;
-
-    private ChoosingStateConfig[] _statesConfigs;
+    private VillagerData _villagerData;
+    
+    private RelaxVillagerStateConfigs _configs;
     private RelaxVillagerState _curState;
-
+    
+    private GameTimer _gameTimer;
+    
     private int _lastTick = Int32.MaxValue;
     private bool _isChangingActivity;
 
-    public CombineRelaxVillagerState(GameObject villagerObject, VillagerStateFactory factory, GameTimer gameTimer)
+    public CombineRelaxVillagerState(GameObject villagerObject, VillagerData villagerData, RelaxVillagerStateConfigs configs,
+        VillagerStateFactory factory, GameTimer gameTimer)
     {
         _villagerObject = villagerObject;
+        _villagerData = villagerData;
+        _configs = configs;
+        
         _gameTimer = gameTimer;
-        
-        _statesConfigs = new ChoosingStateConfig[3];
-        
-        _statesConfigs[0] = new ChoosingStateConfig(2, factory.CreateRelaxInHomeVillagerState(), 0.3f);
-        _statesConfigs[1] = new ChoosingStateConfig(4, factory.CreateTalkRelaxVillagerState(), 0.2f);
-        _statesConfigs[2] = new ChoosingStateConfig(4, factory.CreateWalkInCenterState(), 0.5f);
+
+        foreach (var state in _configs.StatesConfigs)
+        {
+            if (state.StateName == "RelaxInHome") state.VillagerState = factory.CreateRelaxInHomeVillagerState();
+            else if (state.StateName == "TalkRelax") state.VillagerState = factory.CreateTalkRelaxVillagerState();
+            else if (state.StateName == "WalkInCenter") state.VillagerState = factory.CreateWalkInCenterState();
+        }
     }
     
     public override void EnterState()
@@ -60,15 +66,18 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
         var randomValue = Random.Range(0f, totalWeight);
         float sum = 0;
 
-        foreach (var state in _statesConfigs)
+        foreach (var state in _configs.StatesConfigs)
         {
             if (state.VillagerState == _curState) continue;
-            sum += state.Chance;
+            
+            var weight = state.Weight * state.WeightByLoyalty.Evaluate(_villagerData.Loyalty.Property.CurrentValue);
+            sum += weight;
 
             if (randomValue <= sum)
             {
+                var activityHours = (int)Mathf.Ceil(state.ActivityHours * state.ActivityHoursByLoyalty.Evaluate(_villagerData.Loyalty.Property.CurrentValue));
                 _curState = state.VillagerState;
-                _lastTick = _gameTimer.CurrentTick + _gameTimer.ConvertHoursToTick(state.ChangeActivityHours);
+                _lastTick = _gameTimer.CurrentTick + _gameTimer.ConvertHoursToTick(activityHours);
                 break;
             }
         }
@@ -81,10 +90,11 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
     {
         var totalWeight = 0f;
 
-        foreach (var state in _statesConfigs)
+        foreach (var state in _configs.StatesConfigs)
         {
             if (state.VillagerState == _curState) continue;
-            totalWeight += state.Chance;
+            var weight = state.Weight * state.WeightByLoyalty.Evaluate(_villagerData.Loyalty.Property.CurrentValue);
+            totalWeight += weight;
         }
         
         return totalWeight;
@@ -104,16 +114,3 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
     public override void Dispose() { }
 }
 
-public class ChoosingStateConfig
-{
-    public int ChangeActivityHours { get; private set; }
-    public RelaxVillagerState VillagerState {get; private set;}
-    public float Chance {get; set;}
-
-    public ChoosingStateConfig(int changeActivityHours, RelaxVillagerState villagerState, float chance)
-    {
-        ChangeActivityHours = changeActivityHours;
-        VillagerState = villagerState;
-        Chance = chance;
-    }
-}

@@ -5,8 +5,6 @@ using Zenject;
 
 public class VillagerStateFactory
 {
-    private const float DialogueChance = 0.3f;
-    
     private NavmeshMovementAgent _navmeshAgent;
     private AttackBonus _attackBonus;
     
@@ -16,6 +14,7 @@ public class VillagerStateFactory
     private Villager _villager;
     private VillagerData _villagerData;
     private SkinReferencesResolver _skinReferencesResolver;
+    private RelaxVillagerStateConfigs _relaxStatesConfigs;
     
     private BuildingStorage _buildingStorage;
     private BuildingPlanner _buildingPlanner;
@@ -28,12 +27,15 @@ public class VillagerStateFactory
     private DialogueSystem _dialogueSystem;
     private ProfessionController _professionController;
     
-    public void SetParams(NavmeshMovementAgent navmeshAgent, Villager villager, DiContainer container)
+    public void SetParams(NavmeshMovementAgent navmeshAgent, Villager villager, RelaxVillagerStateConfigs relaxStateConfigs,
+        DiContainer container)
     {
         _navmeshAgent = navmeshAgent;
         _villager = villager;
         _villagerData = _villager.VillagerData;
         _skinReferencesResolver = _villager.SkinReferencesResolver.CurrentValue;
+        _relaxStatesConfigs = relaxStateConfigs;
+        
         _searchForTarget = container.Resolve<SearchForTarget>();
         _attackBonus = container.Resolve<AttackBonus>();
         
@@ -72,16 +74,9 @@ public class VillagerStateFactory
             }
             else return CreateRelaxInWorkVillagerState(workData.RelaxPoint);
         }
-        else if (_villagerData.Profession.Type == ProfessionType.Builder)
-        {
-            return new CombineRelaxVillagerState(_navmeshAgent.gameObject, this, _gameTimer);
-        }
         else
         {
-            bool isTalking = Random.Range(0f, 1f) <= DialogueChance;
-
-            if (isTalking) return CreateTalkRelaxVillagerState();
-            return CreateRelaxInHomeVillagerState();
+            return new CombineRelaxVillagerState(_navmeshAgent.gameObject, _villagerData, _relaxStatesConfigs, this, _gameTimer);
         }
     }
 

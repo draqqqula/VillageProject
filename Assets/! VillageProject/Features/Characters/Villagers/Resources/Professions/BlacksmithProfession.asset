@@ -13,7 +13,30 @@ MonoBehaviour:
   m_Name: BlacksmithProfession
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 0
-  <HoursForMaxExperience>k__BackingField: 120
+  <HoursForMaxExperience>k__BackingField: 21
   <RaisingAmmunition>k__BackingField: {fileID: 11400000, guid: a9afa827a570aaf448e81a08a7d3b656, type: 2}
-  <HoursForRaisingAmmunition>k__BackingField: 8
+  <RaiseHoursForExperienceCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00006167404
+      value: 22.000118
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.0081375
+      value: 9.994588
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   <ExperienceForRaisingAmmunition>k__BackingField: 0.5

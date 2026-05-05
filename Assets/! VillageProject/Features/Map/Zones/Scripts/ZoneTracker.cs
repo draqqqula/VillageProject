@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,9 +57,17 @@ public class ZoneTracker : MonoBehaviour
         {
             var order = GetOrder(other.gameObject);
             _zones.TryAdd(order, other.gameObject);
-            if (IsHighestPriority(order))
+
+            try
             {
-                ActiveZone = other.gameObject;
+                if (IsHighestPriority(order))
+                {
+                    ActiveZone = other.gameObject;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
             }
         }
     }

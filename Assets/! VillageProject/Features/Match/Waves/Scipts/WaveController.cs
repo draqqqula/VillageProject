@@ -31,6 +31,7 @@ public class WaveController : MonoBehaviour
     public IReadOnlyList<EnemySpawner> Spawners => _spawners;
 
     public event Action<string[]> OnWaveRoadChanged;
+    public event Action<WaveInfo> OnWaveCompleted;
 
     private void Awake()
     {
@@ -49,6 +50,8 @@ public class WaveController : MonoBehaviour
     private void ScheduleWave()
     {
         var prevRoads = GetWaveRoadIndexes();
+        if (CurrentWave != null) OnWaveCompleted?.Invoke(CurrentWave);
+        
         if (!_wavesSequence.MoveNext())
         {
             CurrentWave = null;

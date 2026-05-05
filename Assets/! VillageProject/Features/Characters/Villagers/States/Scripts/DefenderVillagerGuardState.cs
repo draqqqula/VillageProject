@@ -52,11 +52,13 @@ public sealed class DefenderVillagerGuardState : GuardVillagerState, IUpdatableS
     {
         if (_searchForTarget.MainTarget == null) return;
         
-        if (_prevPos != _searchForTarget.MainTarget.transform.position) ActivateMovement();
-        
         if (Vector3.Distance(_navmeshAgent.transform.position, _searchForTarget.MainTarget.transform.position) <= AttackDistance)
         {
             _animator.SetTrigger("Attack");
+        }
+        else
+        {
+            ActivateMovement();
         }
     }
     

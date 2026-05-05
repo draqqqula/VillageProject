@@ -22,4 +22,5 @@ public class WaveInfo : ScriptableObject
     }
 
     public List<Spawn> Spawns;
+    [field: SerializeField, Range(0f, 1f)] public float Difficulty {get; private set;}
 }

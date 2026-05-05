@@ -56,13 +56,12 @@ public class BlacksmithWorkState : WorkVillagerState
     {
         if (building.Data.Type == BuildingType.ArcherTower && building.Data is ArcherTowerData archerTowerData)
         {
-            Debug.Log(building.gameObject);
-            var raiseArrowHandler = new RaiseArrowsHandler(_blacksmithData.RaisingAmmunition, _blacksmithData.HoursForRaisingAmmunition,
-                archerTowerData.AmmunitionStorage, _gameTimer);
+            var raiseArrowHandler = new RaiseArrowsHandler(_blacksmithData.RaisingAmmunition, archerTowerData.AmmunitionStorage, _gameTimer);
             
             if (_isWorking && _profession.Experience.CurrentValue >= _blacksmithData.ExperienceForRaisingAmmunition)
             {
-                raiseArrowHandler.StartRaisingArrows();    
+                var hoursForRaisingAmmunition = (int)Mathf.Ceil(_blacksmithData.RaiseHoursForExperienceCurve.Evaluate(_profession.Experience.CurrentValue));
+                raiseArrowHandler.StartRaisingArrows(hoursForRaisingAmmunition);    
             }
             _arrowsHandlers.Add(raiseArrowHandler);
         }
@@ -89,9 +88,10 @@ public class BlacksmithWorkState : WorkVillagerState
         if (experience >= _blacksmithData.ExperienceForRaisingAmmunition)
         {
             _isRaisingArrows = true;
+            var hoursForRaisingAmmunition = (int)Mathf.Ceil(_blacksmithData.RaiseHoursForExperienceCurve.Evaluate(experience));
             foreach (var raiseArrowHandler in _arrowsHandlers)
             {
-                raiseArrowHandler.StartRaisingArrows();
+                raiseArrowHandler.StartRaisingArrows(hoursForRaisingAmmunition);
             }
         }
     }

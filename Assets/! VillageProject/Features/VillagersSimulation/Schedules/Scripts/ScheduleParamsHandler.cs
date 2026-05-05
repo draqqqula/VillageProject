@@ -23,13 +23,23 @@ public class ScheduleParamsHandler : MonoBehaviour
     
     private void OnLoyaltyChanged(Villager villager, float newLoyalty)
     {
+        if (villager.VillagerData.Profession.Type == ProfessionType.Archer)
+        {
+            newLoyalty = Mathf.Clamp(newLoyalty, 0.5f, 1f);
+        }
+        
         var defaultSchedule = _controller.GetDefaultSchedule(villager.VillagerData.Key);
         
-        var workPeriod = defaultSchedule.SchedulePeriods.FirstOrDefault(x => x.ActivityType == ActivityType.Work);
-        if (workPeriod == null) return;
+        var workPeriods = defaultSchedule.SchedulePeriods.Where(x => x.ActivityType == ActivityType.Work).ToArray();
+        if (workPeriods == null || workPeriods.Count() == 0) return;
 
         var multiplier = _workForLoyaltyCurve.Evaluate(newLoyalty);
-        var newLength = (int)Math.Round(workPeriod.Length * multiplier, MidpointRounding.AwayFromZero);
-        _controller.ChangeLengthEvenlyForPeriod(villager.VillagerData.Key, workPeriod, newLength);
+
+        foreach (var period in workPeriods)
+        {
+            var newLength = (int)Math.Round(period.Length * multiplier, MidpointRounding.AwayFromZero);
+            newLength = Mathf.Clamp(newLength, 0, 14);
+            _controller.ChangeLengthEvenlyForPeriod(villager.VillagerData.Key, period, newLength);
+        }
     }
 }
