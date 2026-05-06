@@ -87,6 +87,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DefenderFemale
       objectReference: {fileID: 0}
+    - target: {fileID: 1430396767194642, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4175843917565214, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -127,6 +131,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4800825095151628828, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
+      propertyPath: <MeshRenderer>k__BackingField
+      value: 
+      objectReference: {fileID: 7122212482124843385}
+    - target: {fileID: 4800825095151628828, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
+      propertyPath: <Accessories>k__BackingField.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800825095151628828, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
+      propertyPath: <MeshRenderers>k__BackingField.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800825095151628828, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
+      propertyPath: '<Accessories>k__BackingField.Array.data[0]'
+      value: 
+      objectReference: {fileID: 448488394531467107}
+    - target: {fileID: 4800825095151628828, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
+      propertyPath: '<MeshRenderers>k__BackingField.Array.data[0]'
+      value: 
+      objectReference: {fileID: 7122212482124843385}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1459188851883464, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
@@ -165,6 +189,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3964339918857622941}
   m_SourcePrefab: {fileID: 100100000, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
+--- !u!137 &7122212482124843385 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 137795105096648032, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}
+  m_PrefabInstance: {fileID: 7151335156366003225}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7146685936211122899 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4650461568276170, guid: c8f9d4c54a23f4d9c97080916d4f709a, type: 3}

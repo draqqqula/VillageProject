@@ -25,14 +25,16 @@ public class WaveController : MonoBehaviour
     private int _unitsRemaining;
     private bool _isSpawning;
     private IEnumerator<(WaveWithPreparaion, int)> _wavesSequence;
+    
     private ReactiveProperty<bool> _isOnBreak = new ReactiveProperty<bool>(false);
+    public bool IsWaveInNextNight {get; set;}
 
     public WaveInfo CurrentWave { get; private set; }
     public IReadOnlyList<EnemySpawner> Spawners => _spawners;
 
     public event Action<string[]> OnWaveRoadChanged;
     public event Action<WaveInfo> OnWaveCompleted;
-
+    
     private void Awake()
     {
         foreach (var spawner in _spawners)

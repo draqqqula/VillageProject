@@ -54,7 +54,7 @@ public class VillagerStateFactory
     
     public SleepVillagerState CreateSleepState()
     {
-        return new SleepVillagerState(_navmeshAgent, _villagerData);
+        return new SleepVillagerState(_navmeshAgent, _villagerData, _skinReferencesResolver);
     }
 
     public RelaxVillagerState CreateRelaxState()

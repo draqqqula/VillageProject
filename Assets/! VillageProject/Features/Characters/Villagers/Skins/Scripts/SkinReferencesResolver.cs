@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using KevinIglesias;
@@ -11,6 +12,9 @@ public class SkinReferencesResolver : MonoBehaviour
     public AnimatorHandler AnimatorHandler {get; private set;}
 
     [SerializeField] private AnimationWindow _idleWindow;
+    
+    [field: SerializeField] public SkinnedMeshRenderer[] MeshRenderers {get; private set;}
+    [field: SerializeField] public GameObject[] Accessories {get; private set;}
 
     [Inject] 
     private void Construct(DiContainer container)

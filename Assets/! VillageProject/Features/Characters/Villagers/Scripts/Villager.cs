@@ -5,12 +5,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Random = System.Random;
 
 [RequireComponent(typeof(NavmeshMovementAgent))]
 [RequireComponent(typeof(VelocityToAnimation))]
 public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
 {
     private static readonly int PROFESSION = Animator.StringToHash("Profession");
+    private const float TalkAnimationChance = 0.3f;
+    private const float InjuredHealthPercentage = 0.3f;
     
     [SerializeField] private VillagerData _villagerData;
     [SerializeField] private ActivityType _currentActivity;
@@ -80,6 +84,7 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
         _dialogueIcon.Init(_dialoguePoint);
 
         _interactHandler = new VillagerInteractHandler(this, _interactTrigger, _diContainer);
+        VillagerData.Health.AmountReactive.Subscribe(OnHealthChanged).AddTo(this);
 
         // tests
         VillagerData.Profession.Experience.Subscribe(v => experience = v).AddTo(this); 
@@ -140,13 +145,17 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
 
     public void Speak(string text)
     {
+        bool isPlayAnimation = UnityEngine.Random.Range(0f, 1f) <= TalkAnimationChance;
+        if (isPlayAnimation) _skinReferencesResolver.CurrentValue.Animator.SetTrigger("Talk");
         Debug.Log($"{gameObject.name} : {text}");
+        
         _dialogueIcon.ShowView();
         _dialogueWindow.TrySetText(_villagerData.Key, _villagerData.NameInRussian, _villagerData.Profession.TypeInRussian, text);
     }
 
     public void KeepSilent()
     {
+        _skinReferencesResolver.CurrentValue.Animator.ResetTrigger("Talk");
         _dialogueIcon.HideView();
         _dialogueWindow.HideText(_villagerData.Key);
     }
@@ -154,6 +163,18 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
     public void Interact()
     {
         _interactHandler?.Interact();
+    }
+    
+    private void OnHealthChanged(float health)
+    {
+        if (health <= InjuredHealthPercentage * VillagerData.Health.MaxHealth)
+        {
+            _skinReferencesResolver.Value.Animator.SetBool("Injured", true);
+        }
+        else
+        {
+            _skinReferencesResolver.Value.Animator.SetBool("Injured", false);
+        }
     }
 
     private void OnDeath()

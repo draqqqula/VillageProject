@@ -23,6 +23,7 @@ public class ArcherWorkState : WorkVillagerState
     private Transform _villageCenter;
     
     private RaiseExperienceHandler _experienceHandler;
+    private VillagerFadingHandler _fadingHandler;
     
     private bool _isInited = false;
     private bool _isOnTower = false;
@@ -45,6 +46,7 @@ public class ArcherWorkState : WorkVillagerState
         
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
         _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
+        _fadingHandler = new VillagerFadingHandler(skinReferencesResolver);
 
         _waveController.OnWaveRoadChanged += OnRoadChanged;
         _profession.Experience.Subscribe(TryRiseAttack).AddTo(_navmeshAgent.gameObject);
@@ -53,8 +55,14 @@ public class ArcherWorkState : WorkVillagerState
 
     private void OnRoadChanged(string[] roadIndexes)
     {
-        ExitTower();
+        if (_waveController.IsWaveInNextNight) return;
         _transformHandler.DeactivateMovement();
+        _ = ChangeTower(_navmeshAgent.GetCancellationTokenOnDestroy());
+    }
+
+    private async UniTask ChangeTower(CancellationToken token)
+    {
+        await ExitTower(token);
         ChooseArcherTower(_waveController.GetWaveRoadIndexes());
     }
     
@@ -89,43 +97,55 @@ public class ArcherWorkState : WorkVillagerState
 
     private void OnPointReached()
     {
+        _fadingHandler.FadeOut(OnFadingEnded);
+    }
+
+    private void OnFadingEnded()
+    {
+        _ = EnterTower(_navmeshAgent.GetCancellationTokenOnDestroy());
+    }
+
+    private async UniTask EnterTower(CancellationToken token)
+    {
         var archerPoint = (_archerTower.Data as ArcherTowerData).ArcherPoint;
+        _navmeshAgent.enabled = false;
+        _navmeshAgent.transform.position = archerPoint.position;
+        _discoveryCollider.enabled = false;
+        
+        await _fadingHandler.FadeInAsync(token);
         (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked += OnShootInvoked;
         _archerTower.SetReady();
         
-        _navmeshAgent.enabled = false;
-        _navmeshAgent.transform.position = archerPoint.position;
-        
         _skinReferencesResolver.Animator.SetBool("Agressed", true);
         _skinReferencesResolver.Animator.SetBool("Work", true);
-        _discoveryCollider.enabled = false;
         
         _experienceHandler.StartRaisingExperience();
-        _isOnTower = true;
-        
         TryRiseAttack(_profession.Experience.CurrentValue);
+        _isOnTower = true;
     }
 
-    private void ExitTower()
+    private async UniTask ExitTower(CancellationToken token)
     {
+        if (_fadingHandler.IsFading) await _fadingHandler.WaitFading(token);
+        if (_archerTower != null) _archerTower.SetWaiting();
+        
         if (_isOnTower)
         {
+            _experienceHandler.StopRaisingExperience();
+            (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked -= OnShootInvoked;
+            
+            _skinReferencesResolver.Animator.SetBool("Agressed", false);
+            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+            await _fadingHandler.FadeOutAsync(token);
+            
             var point = _archerTower.Data.EnterPoint;
             _navmeshAgent.transform.position = point.position;
             _navmeshAgent.enabled = true;
+            
+            await _fadingHandler.FadeInAsync(token);
             _discoveryCollider.enabled = true;
-            
-            _skinReferencesResolver.Animator.SetBool("Work", false);
-            
-            _experienceHandler.StopRaisingExperience();
-            (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked -= OnShootInvoked;
         }
-        
-        if (_archerTower != null)
-        {
-            _archerTower.SetWaiting();
-            _archerTower = null;
-        }
+        _archerTower = null;
     }
 
     private void OnShootInvoked()
@@ -155,14 +175,8 @@ public class ArcherWorkState : WorkVillagerState
             return;
         }
 
-        ExitTower();
+        await ExitTower(token);
         _transformHandler.DeactivateMovement();
-
-        if (_isOnTower)
-        {
-            _skinReferencesResolver.Animator.SetBool("Agressed", false);
-            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
-        }
     }
 
     public override void Dispose()
@@ -172,5 +186,6 @@ public class ArcherWorkState : WorkVillagerState
         if (_isOnTower) (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked -= OnShootInvoked;
         _waveController.OnWaveRoadChanged -= OnRoadChanged;
         _transformHandler.Dispose();
+        _fadingHandler.Dispose();
     }
 }

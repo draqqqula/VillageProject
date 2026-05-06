@@ -23,7 +23,13 @@ public class WaveStarter : MonoBehaviour
     {
         if (_waveController.IsOnBreak.CurrentValue)
         {
-            if (_startWaveHours.Any(h => hour == h)) StartWave();
+            if (_startWaveHours.Any(h => hour == h))
+            {
+                if (_startWaveHours[_startWaveHours.Length - 1] == hour) _waveController.IsWaveInNextNight = true;
+                else _waveController.IsWaveInNextNight = false;
+                
+                StartWave();
+            }
         }
         else
         {
