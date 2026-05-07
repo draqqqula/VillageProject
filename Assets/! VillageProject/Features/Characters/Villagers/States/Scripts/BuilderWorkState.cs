@@ -8,12 +8,9 @@ using R3;
 
 public class BuilderWorkState : WorkVillagerState
 {
-    private const int FirstMoveHours = 2;
-    private const int SecondaryMoveHours = 1;
-    private const int MinDistanceToBuilding = 2;
-    
     private Profession _profession;
     private BuildingPlanner _buildingPlanner;
+    private VillagerData _villagerData;
     
     private NavmeshMovementAgent _navMeshAgent;
     private VillagerTransformHandler _movementHandler;
@@ -31,8 +28,10 @@ public class BuilderWorkState : WorkVillagerState
     private SkipTimeController _skipTimeController;
     
     public BuilderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
-        Profession profession, BuildingPlanner buildingPlanner, GameTimer gameTimer, SkipTimeController skipTimeController)
+        Profession profession, BuildingPlanner buildingPlanner, GameTimer gameTimer, SkipTimeController skipTimeController,
+        VillagerData villagerData)
     {
+        _villagerData = villagerData;
         _profession = profession;
         _skinReferencesResolver = skinReferencesResolver;
         
@@ -61,7 +60,7 @@ public class BuilderWorkState : WorkVillagerState
     {
         _isActive = true;
         _buildingPlanner.OnCurrentPlanChanged += OnPlanChanged;
-        TeleportToBuildingPlace(true);
+        TeleportToBuildingPlace();
     }
 
     private void MoveToBuildingPlace()
@@ -74,10 +73,8 @@ public class BuilderWorkState : WorkVillagerState
         
         _movementHandler.ActivateMovementWithRotation(enterPoint, callback: OnReachedPoint);
     }
-
-    private void TeleportToBuildingPlace() => TeleportToBuildingPlace(false);
     
-    private void TeleportToBuildingPlace(bool isFirstBuilding)
+    private void TeleportToBuildingPlace()
     {
         var plan = _buildingPlanner.GetCurrentPlan();
         Transform enterPoint;
@@ -85,12 +82,10 @@ public class BuilderWorkState : WorkVillagerState
         if (plan is NewBuildingPlan newBuildingPlan) enterPoint = newBuildingPlan.PreviewObject.Data.EnterPoint;
         else enterPoint = (plan as RepairingPlan).BrokenBuilding.Data.EnterPoint;
         
-        if (Vector3.Distance(_navMeshAgent.transform.position, enterPoint.position) > MinDistanceToBuilding)
-        {
-            var hours = isFirstBuilding ? FirstMoveHours : SecondaryMoveHours;
-            _buildingProgressHandler.IncreaseBuildDuration(hours);
-            _experienceHandler.IncreaseHours(hours);
-        }
+        var distance = Vector3.Distance(_navMeshAgent.transform.position, enterPoint.position);
+        var moveHours = (int)Mathf.Ceil(distance / _villagerData.SpeedInHour);
+        _buildingProgressHandler.IncreaseBuildDuration(moveHours);
+        _experienceHandler.IncreaseHours(moveHours);
         
         _navMeshAgent.enabled = false;
         _navMeshAgent.transform.position = enterPoint.position;

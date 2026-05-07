@@ -7,10 +7,8 @@ using R3;
 
 public class BlacksmithWorkState : WorkVillagerState
 {
-    private const int MoveHours = 2;
-    private const int MinDistanceToBuilding = 2;
-    
     private Transform target;
+    private VillagerData _villagerData;
 
     private NavmeshMovementAgent _navMeshAgent;
     private VillagerTransformHandler _transformHandler;
@@ -28,8 +26,10 @@ public class BlacksmithWorkState : WorkVillagerState
     private SkipTimeController _skipTimeController;
     
     public BlacksmithWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
-        Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer, SkipTimeController skipTimeController)
+        Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer, SkipTimeController skipTimeController,
+        VillagerData villagerData)
     {
+        _villagerData = villagerData;
         _navMeshAgent = navmeshAgent;
         _profession = profession;
         _blacksmithData = _profession.ProfessionData as BlacksmithProfessionData;
@@ -82,15 +82,16 @@ public class BlacksmithWorkState : WorkVillagerState
     public override void EnterStateWithSkip()
     {
         _navMeshAgent.transform.position = target.position;
+        
+        var distance = Vector3.Distance(_navMeshAgent.transform.position, target.position);
+        var moveHours = (int)Mathf.Ceil(distance / _villagerData.SpeedInHour);
 
-        if (Vector3.Distance(_navMeshAgent.transform.position, target.position) > MinDistanceToBuilding)
+        _experienceHandler.IncreaseHours(moveHours);
+        foreach (var arrowsHandler in _arrowsHandlers)
         {
-            _experienceHandler.IncreaseHours(MoveHours);
-            foreach (var arrowsHandler in _arrowsHandlers)
-            {
-                arrowsHandler.IncreaseRaiseArrows(MoveHours);
-            }
+            arrowsHandler.IncreaseRaiseArrows(moveHours);
         }
+        
         OnPointReached();
     }
 

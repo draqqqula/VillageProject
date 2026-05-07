@@ -101,16 +101,16 @@ public class VillagerStateFactory
         {
             case (ProfessionType.Blacksmith):
                 return new BlacksmithWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer,
-                    _skipTimeController);
+                    _skipTimeController, _villagerData);
             case (ProfessionType.Builder):
                 return new BuilderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingPlanner, _gameTimer,
-                    _skipTimeController);
+                    _skipTimeController, _villagerData);
             case (ProfessionType.Armorer):
                 return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer,
-                    _villagerSystem, _professionController, _skipTimeController);
+                    _villagerSystem, _professionController, _skipTimeController, _villagerData);
             case (ProfessionType.Archer):
-                return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage,
-                    _searchForTarget, _discoveryCollider, this, _gameTimer, _villageCenter, _waveController, _skipTimeController);
+                return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _searchForTarget,
+                    _discoveryCollider, this, _gameTimer, _villageCenter, _waveController, _skipTimeController, _villagerData);
             case (ProfessionType.Defender):
                 return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
             default:

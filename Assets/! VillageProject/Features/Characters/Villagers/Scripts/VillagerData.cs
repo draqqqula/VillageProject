@@ -14,6 +14,8 @@ public class VillagerData : ScriptableObject
     [field: SerializeField] public Profession Profession {get; set;}
 
     public Health Health { get; private set; }
+    public Speed Speed { get; private set; }
+    public float SpeedInHour => Speed.Value.CurrentValue * 13f;
     
     [field: SerializeField] public Loyalty Loyalty {get; private set;}
     
@@ -26,10 +28,11 @@ public class VillagerData : ScriptableObject
     private NavmeshMovementAgent _navmeshAgent;
     public HomePoint HomePoint {get; set;}
 
-    public void Init(NavmeshMovementAgent navmeshAgent, Health health)
+    public void Init(NavmeshMovementAgent navmeshAgent, Health health, Speed speed)
     {
         _navmeshAgent = navmeshAgent;
         Health = health;
+        Speed = speed;
     }
 }
 

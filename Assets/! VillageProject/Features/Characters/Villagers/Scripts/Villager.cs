@@ -61,7 +61,7 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
     public void Init(HomeService homeService)
     {
         VillagerData = ScriptableObject.Instantiate(_villagerData);
-        VillagerData.Init(_navmeshAgent, _health);
+        VillagerData.Init(_navmeshAgent, _health, _speed);
         
         var skinsInfoInstance = ScriptableObject.Instantiate(_villagersSkinsInfo);
         _skinChanger = new SkinChanger(skinsInfoInstance, _diContainer);

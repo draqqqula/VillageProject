@@ -9,6 +9,7 @@ public class ArcherWorkState : WorkVillagerState
     private VillagerTransformHandler _transformHandler;
     private NavmeshMovementAgent _navmeshAgent;
     private Profession _profession;
+    private VillagerData _villagerData;
     
     private SkinReferencesResolver _skinReferencesResolver;
     private SearchForTarget _searchForTarget;
@@ -32,11 +33,13 @@ public class ArcherWorkState : WorkVillagerState
     
     public ArcherWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Profession profession,
         BuildingStorage buildingStorage, SearchForTarget searchForTarget, Collider discoveryCollider, VillagerStateFactory factory,
-        GameTimer gameTimer, Transform villageCenter, WaveController waveController, SkipTimeController skipTimeController)
+        GameTimer gameTimer, Transform villageCenter, WaveController waveController, SkipTimeController skipTimeController, 
+        VillagerData villagerData)
     {
         _navmeshAgent = navmeshAgent;
         _profession = profession;
         _skinReferencesResolver = skinReferencesResolver;
+        _villagerData = villagerData;
         
         _searchForTarget = searchForTarget;
         _discoveryCollider = discoveryCollider;
@@ -100,6 +103,11 @@ public class ArcherWorkState : WorkVillagerState
         _archerTower = ChooseArcherTower(roadIndexes);
         if (_archerTower == null) return;
         _navmeshAgent.transform.position = _archerTower.Data.EnterPoint.position;
+        
+        var distance = Vector3.Distance(_navmeshAgent.transform.position, _archerTower.Data.EnterPoint.position);
+        var moveHours = (int)Mathf.Ceil(distance / _villagerData.SpeedInHour);
+        _experienceHandler.IncreaseHours(moveHours);
+        
         _ = EnterTower(_navmeshAgent.GetCancellationTokenOnDestroy());
     }
 

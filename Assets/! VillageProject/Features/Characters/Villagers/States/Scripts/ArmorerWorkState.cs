@@ -8,12 +8,10 @@ using UnityEngine;
 
 public class ArmorerWorkState : WorkVillagerState
 {
-    private const int MoveHours = 2;
-    private const int MinDistanceToBuilding = 2;
-    
     private Transform target;
     private Profession _profession;
     private NavmeshMovementAgent _navMeshAgent;
+    private VillagerData _villagerData;
     
     private VillagerTransformHandler _movementHandler;
     private SkinReferencesResolver _skinReferencesResolver;
@@ -29,10 +27,11 @@ public class ArmorerWorkState : WorkVillagerState
     
     public ArmorerWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
         Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer, VillagerSystem villagerSystem, 
-        ProfessionController professionController, SkipTimeController skipTimeController)
+        ProfessionController professionController, SkipTimeController skipTimeController, VillagerData villagerData)
     {
         _navMeshAgent = navmeshAgent;
         _profession = profession;
+        _villagerData = villagerData;
         
         _skinReferencesResolver = skinReferencesResolver;
         var hospital = buildingStorage.Get(BuildingType.Hospital);
@@ -94,10 +93,9 @@ public class ArmorerWorkState : WorkVillagerState
         if (_defenders.Count == 0) InitDefenders();
         _navMeshAgent.transform.position = target.position;
         
-        if (Vector3.Distance(_navMeshAgent.transform.position, target.position) > MinDistanceToBuilding)
-        {
-            _experienceHandler.IncreaseHours(MoveHours);
-        }
+        var distance = Vector3.Distance(_navMeshAgent.transform.position, target.position);
+        var moveHours = (int)Mathf.Ceil(distance / _villagerData.SpeedInHour);
+        _experienceHandler.IncreaseHours(moveHours);
         
         OnPointReached();
     }
