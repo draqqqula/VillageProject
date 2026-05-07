@@ -7,8 +7,12 @@ using R3;
 
 public class BlacksmithWorkState : WorkVillagerState
 {
-    private Transform target;
+    private const int MoveHours = 2;
+    private const int MinDistanceToBuilding = 2;
     
+    private Transform target;
+
+    private NavmeshMovementAgent _navMeshAgent;
     private VillagerTransformHandler _transformHandler;
     private SkinReferencesResolver _skinReferencesResolver;
     private Profession _profession;
@@ -21,16 +25,19 @@ public class BlacksmithWorkState : WorkVillagerState
     
     private bool _isWorking;
     private bool _isRaisingArrows;
+    private SkipTimeController _skipTimeController;
     
     public BlacksmithWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
-        Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer)
+        Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer, SkipTimeController skipTimeController)
     {
+        _navMeshAgent = navmeshAgent;
         _profession = profession;
         _blacksmithData = _profession.ProfessionData as BlacksmithProfessionData;
         _skinReferencesResolver = skinReferencesResolver;
         
         _buildingStorage = buildingStorage;
         _buildingStorage.OnBuildingAdded += OnBuildingAdded;
+        _skipTimeController = skipTimeController;
         
         var blacksmith = _buildingStorage.Get(BuildingType.Blacksmith);
         target = (blacksmith.Data as WorkBuildingData).WorkPoint;
@@ -70,6 +77,21 @@ public class BlacksmithWorkState : WorkVillagerState
     public override void EnterState()
     {
         _transformHandler.ActivateMovementWithRotation(target, callback: OnPointReached);
+    }
+
+    public override void EnterStateWithSkip()
+    {
+        _navMeshAgent.transform.position = target.position;
+
+        if (Vector3.Distance(_navMeshAgent.transform.position, target.position) > MinDistanceToBuilding)
+        {
+            _experienceHandler.IncreaseHours(MoveHours);
+            foreach (var arrowsHandler in _arrowsHandlers)
+            {
+                arrowsHandler.IncreaseRaiseArrows(MoveHours);
+            }
+        }
+        OnPointReached();
     }
 
     private void OnPointReached()
@@ -114,8 +136,14 @@ public class BlacksmithWorkState : WorkVillagerState
                 _isRaisingArrows = false;
             }
             
-            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+            if (!_skipTimeController.IsSkipping.CurrentValue) await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+            else _skinReferencesResolver.AnimatorHandler.SetBool("Work", false);
         }
+    }
+
+    public override void ExitStateWithSkip()
+    {
+        _ = ExitState(_navMeshAgent.GetCancellationTokenOnDestroy());
     }
     
     public override void Dispose()

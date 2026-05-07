@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using R3;
 
 public class VillagerStateMachine : IDisposable
 {
@@ -18,6 +19,7 @@ public class VillagerStateMachine : IDisposable
     private RelaxVillagerStateConfigs _relaxStateConfigs;
     
     private DiContainer _container;
+    private SkipTimeController _skipTimeController;
 
     public VillagerStateMachine(Villager villager, NavmeshMovementAgent navmeshAgent, RelaxVillagerStateConfigs relaxStateConfigs,
         DiContainer container)
@@ -26,6 +28,8 @@ public class VillagerStateMachine : IDisposable
         _stateFactory = new VillagerStateFactory();
         _container = container;
         _relaxStateConfigs = relaxStateConfigs;
+        _skipTimeController = _container.Resolve<SkipTimeController>();
+        _skipTimeController.IsSkipping.Subscribe(OnSkipping).AddTo(_navmeshAgent.gameObject);
         
         SetStates(villager);
     }
@@ -46,20 +50,37 @@ public class VillagerStateMachine : IDisposable
     {
         await ExitCurrentState(token);
         CurrentState = _states[activityType];
-        CurrentState.EnterState();
+        if (!_skipTimeController.IsSkipping.CurrentValue) CurrentState.EnterState();
+        else CurrentState.EnterStateWithSkip();
     }
 
     public async UniTask ExitCurrentState(CancellationToken token)
     {
         try
         {
-            if (CurrentState != null) await CurrentState.ExitState(token);
-            CurrentState = null;
-            if (_villagerData.IsTalking) await UniTask.WaitWhile(() => _villagerData.IsTalking, cancellationToken: token); 
+            if (!_skipTimeController.IsSkipping.CurrentValue)
+            {
+                if (CurrentState != null) await CurrentState.ExitState(token);
+                CurrentState = null;
+                if (_villagerData.IsTalking) await UniTask.WaitWhile(() => _villagerData.IsTalking, cancellationToken: token); 
+            }
+            else
+            {
+                CurrentState.ExitStateWithSkip();
+            }
         }
         catch (OperationCanceledException e)
         {
             Debug.LogWarning(e.Message);
+        }
+    }
+
+    private void OnSkipping(bool value)
+    {
+        if (value)
+        {
+            _ = ExitCurrentState(_navmeshAgent.GetCancellationTokenOnDestroy());
+            _ = UpdateCurrentState(_villagerData.ActivityType.Value, _navmeshAgent.GetCancellationTokenOnDestroy());
         }
     }
     

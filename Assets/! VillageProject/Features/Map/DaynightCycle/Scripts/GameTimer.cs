@@ -119,4 +119,19 @@ public class GameTimer : MonoBehaviour
     {
         return (int)Mathf.Ceil(hours * _ticksPerHour);
     }
+    
+    public int ConvertTickToHours(float ticks)
+    {
+        return (int)Mathf.Ceil(ticks / _ticksPerHour);
+    }
+    
+    public int ConvertMinutesToTick(float minutes)
+    {
+        return (int)Mathf.Ceil((minutes / 60) * _ticksPerHour);
+    }
+    
+    public int ConvertTimeToTick(float hours, float minutes)
+    {
+        return ConvertMinutesToTick(minutes) + ConvertHoursToTick(hours);
+    }
 }

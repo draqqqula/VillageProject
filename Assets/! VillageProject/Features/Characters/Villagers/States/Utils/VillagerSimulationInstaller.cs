@@ -5,6 +5,7 @@ public class VillagerSimulationInstaller : MonoInstaller<VillagerSimulationInsta
 {
     [SerializeField] private VillagerSystem _villagerSystem;
     [SerializeField] private GameTimer _gameTimer;
+    [SerializeField] private SkipTimeController _skipTimeController;
     [SerializeField] private Transform _villageCenter;
     [SerializeField] private ProfessionController _professionController;
     
@@ -15,6 +16,8 @@ public class VillagerSimulationInstaller : MonoInstaller<VillagerSimulationInsta
     {
         Container.BindInstance(_villagerSystem).AsSingle();
         Container.BindInstance(_gameTimer).AsSingle();
+        Container.BindInstance(_skipTimeController).AsSingle();
+        
         Container.BindInstance(_villageCenter).WithId("VillageCenter").AsSingle();
         Container.BindInstance(_professionController).AsSingle();
         

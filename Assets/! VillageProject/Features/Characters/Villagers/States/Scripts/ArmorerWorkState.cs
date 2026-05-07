@@ -8,8 +8,12 @@ using UnityEngine;
 
 public class ArmorerWorkState : WorkVillagerState
 {
+    private const int MoveHours = 2;
+    private const int MinDistanceToBuilding = 2;
+    
     private Transform target;
     private Profession _profession;
+    private NavmeshMovementAgent _navMeshAgent;
     
     private VillagerTransformHandler _movementHandler;
     private SkinReferencesResolver _skinReferencesResolver;
@@ -18,13 +22,16 @@ public class ArmorerWorkState : WorkVillagerState
 
     private List<Villager> _defenders = new List<Villager>();
     private VillagerSystem _villagerSystem;
+    private GameTimer _gameTimer;
 
     private bool _isWorking;
+    private SkipTimeController _skipTimeController;
     
     public ArmorerWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
         Profession profession, BuildingStorage buildingStorage, GameTimer gameTimer, VillagerSystem villagerSystem, 
-        ProfessionController professionController)
+        ProfessionController professionController, SkipTimeController skipTimeController)
     {
+        _navMeshAgent = navmeshAgent;
         _profession = profession;
         
         _skinReferencesResolver = skinReferencesResolver;
@@ -40,6 +47,8 @@ public class ArmorerWorkState : WorkVillagerState
         _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
         
         _profession.Experience.Subscribe(TryRaisingArmor).AddTo(navmeshAgent.gameObject);
+        _gameTimer = gameTimer;
+        _skipTimeController = skipTimeController;
     }
     
     private void InitDefenders()
@@ -80,6 +89,19 @@ public class ArmorerWorkState : WorkVillagerState
         _movementHandler.ActivateMovementWithRotation(target, callback: OnPointReached);
     }
 
+    public override void EnterStateWithSkip()
+    {
+        if (_defenders.Count == 0) InitDefenders();
+        _navMeshAgent.transform.position = target.position;
+        
+        if (Vector3.Distance(_navMeshAgent.transform.position, target.position) > MinDistanceToBuilding)
+        {
+            _experienceHandler.IncreaseHours(MoveHours);
+        }
+        
+        OnPointReached();
+    }
+
     private void OnPointReached()
     {
         _isWorking = true;
@@ -110,8 +132,16 @@ public class ArmorerWorkState : WorkVillagerState
         {
             _isWorking = false;
             _experienceHandler.StopRaisingExperience();
-            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+            
+            if (!_skipTimeController.IsSkipping.CurrentValue) 
+                await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+            else _skinReferencesResolver.AnimatorHandler.SetBool("Work", false);
         }
+    }
+
+    public override void ExitStateWithSkip()
+    {
+        _ = ExitState(_navMeshAgent.GetCancellationTokenOnDestroy());
     }
 
     public override void Dispose()

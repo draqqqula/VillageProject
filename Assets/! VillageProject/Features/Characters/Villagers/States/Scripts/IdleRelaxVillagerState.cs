@@ -28,6 +28,13 @@ public sealed class IdleRelaxVillagerState : RelaxVillagerState
         _transformHandler.ActivateMovementWithRotation(_target, callback: OnPointReached);
     }
 
+    public override void EnterStateWithSkip()
+    {
+        _navmeshAgent.transform.position = _target.position;
+        _navmeshAgent.transform.rotation = _target.rotation;
+        OnPointReached();
+    }
+
     private void OnPointReached()
     {
         _isRelaxing = true;
@@ -48,6 +55,15 @@ public sealed class IdleRelaxVillagerState : RelaxVillagerState
         {
             await _skinReferencesResolver.AnimatorHandler.TransitByBool("StandRelax", false, _navmeshAgent.GetCancellationTokenOnDestroy());
         }
+    }
+
+    public override void ExitStateWithSkip()
+    {
+        _transformHandler.DeactivateMovement();
+        if (!_isRelaxing) return;
+        
+        _skinReferencesResolver.AnimatorHandler.SetBool("SitRelax", false);
+        _skinReferencesResolver.AnimatorHandler.SetBool("StandRelax", false);
     }
 
     public override void Dispose()

@@ -24,13 +24,15 @@ public class ArcherWorkState : WorkVillagerState
     
     private RaiseExperienceHandler _experienceHandler;
     private VillagerFadingHandler _fadingHandler;
+    private GameTimer _gameTimer;
     
     private bool _isInited = false;
     private bool _isOnTower = false;
+    private SkipTimeController _skipTimeController;
     
     public ArcherWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Profession profession,
         BuildingStorage buildingStorage, SearchForTarget searchForTarget, Collider discoveryCollider, VillagerStateFactory factory,
-        GameTimer gameTimer, Transform villageCenter, WaveController waveController)
+        GameTimer gameTimer, Transform villageCenter, WaveController waveController, SkipTimeController skipTimeController)
     {
         _navmeshAgent = navmeshAgent;
         _profession = profession;
@@ -47,6 +49,7 @@ public class ArcherWorkState : WorkVillagerState
         _transformHandler = new VillagerTransformHandler(navmeshAgent);
         _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
         _fadingHandler = new VillagerFadingHandler(skinReferencesResolver);
+        _skipTimeController = skipTimeController;
 
         _waveController.OnWaveRoadChanged += OnRoadChanged;
         _profession.Experience.Subscribe(TryRiseAttack).AddTo(_navmeshAgent.gameObject);
@@ -62,39 +65,65 @@ public class ArcherWorkState : WorkVillagerState
 
     private async UniTask ChangeTower(CancellationToken token)
     {
-        await ExitTower(token);
-        ChooseArcherTower(_waveController.GetWaveRoadIndexes());
-    }
-    
-    public override void EnterState()
-    {
-        if (!_isInited) return;
+        if (!_skipTimeController.IsSkipping.CurrentValue) await ExitTower(token);
+        else _ = EnterTower(token);
         ChooseArcherTower(_waveController.GetWaveRoadIndexes());
     }
 
-    private void ChooseArcherTower(string[] roadIndexes)
+    public override void EnterState()
     {
-        _archerTower = null;
-        
-        var archerTowers = _storage.GetAll(BuildingType.ArcherTower, BuildingData.State.Wait, roadIndexes);
-        if (archerTowers != null && archerTowers.Count > 0)
-        {
-            _archerTower = archerTowers.OrderBy(a => Vector3.Distance(a.transform.position, _villageCenter.position)).FirstOrDefault();
-        }
-        
+        if (!_isInited) return;
+        PlayStartActions(_waveController.GetWaveRoadIndexes());
+    }
+
+    public override void EnterStateWithSkip()
+    {
+        if (!_isInited) return;
+        PlayStartActionsWithSkip(_waveController.GetWaveRoadIndexes());
+    }
+    
+    public void PlayStartActions(string[] roadIndexes)
+    {
+        _archerTower = ChooseArcherTower(roadIndexes);
+
         if (_archerTower == null)
         {
-            Debug.LogWarning($"{_archerTower} is not valid ArcherTower!");
             _patrulState = _factory.CreateDefenderWorkState();
             _patrulState.EnterState();
             return;
         }
-        
-        _archerTower.SetReserved();
-        Debug.Log("Found ArcherTower!");
         _transformHandler.ActivateMovementWithRotation(_archerTower.Data.EnterPoint, callback: OnPointReached);
     }
+    
+    public void PlayStartActionsWithSkip(string[] roadIndexes)
+    {
+        _archerTower = ChooseArcherTower(roadIndexes);
+        if (_archerTower == null) return;
+        _navmeshAgent.transform.position = _archerTower.Data.EnterPoint.position;
+        _ = EnterTower(_navmeshAgent.GetCancellationTokenOnDestroy());
+    }
 
+    private Building ChooseArcherTower(string[] roadIndexes)
+    {
+        Building archerTower = null;
+        var archerTowers = _storage.GetAll(BuildingType.ArcherTower, BuildingData.State.Wait, roadIndexes);
+        
+        if (archerTowers != null && archerTowers.Count > 0)
+        {
+            archerTower = archerTowers.OrderBy(a => Vector3.Distance(a.transform.position, _villageCenter.position)).FirstOrDefault();
+        }
+        
+        if (archerTower == null)
+        {
+            Debug.LogWarning($"{_archerTower} is not valid ArcherTower!");
+            return null;
+        }
+        
+        archerTower.SetReserved();
+        Debug.Log("Found ArcherTower!");
+        return archerTower;
+    }
+    
     private void OnPointReached()
     {
         _fadingHandler.FadeOut(OnFadingEnded);
@@ -112,7 +141,8 @@ public class ArcherWorkState : WorkVillagerState
         _navmeshAgent.transform.position = archerPoint.position;
         _discoveryCollider.enabled = false;
         
-        await _fadingHandler.FadeInAsync(token);
+        if (!_skipTimeController.IsSkipping.CurrentValue) await _fadingHandler.FadeInAsync(token);
+        
         (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked += OnShootInvoked;
         _archerTower.SetReady();
         
@@ -123,10 +153,10 @@ public class ArcherWorkState : WorkVillagerState
         TryRiseAttack(_profession.Experience.CurrentValue);
         _isOnTower = true;
     }
-
+    
     private async UniTask ExitTower(CancellationToken token)
     {
-        if (_fadingHandler.IsFading) await _fadingHandler.WaitFading(token);
+        if (_fadingHandler.IsFading && !_skipTimeController.IsSkipping.CurrentValue) await _fadingHandler.WaitFading(token);
         if (_archerTower != null) _archerTower.SetWaiting();
         
         if (_isOnTower)
@@ -135,14 +165,18 @@ public class ArcherWorkState : WorkVillagerState
             (_archerTower.Data as ArcherTowerData).DamageHandler.OnAnimInvoked -= OnShootInvoked;
             
             _skinReferencesResolver.Animator.SetBool("Agressed", false);
-            await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
-            await _fadingHandler.FadeOutAsync(token);
+
+            if (!_skipTimeController.IsSkipping.CurrentValue)
+            {
+                await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
+                await _fadingHandler.FadeOutAsync(token);
+            }
             
             var point = _archerTower.Data.EnterPoint;
             _navmeshAgent.transform.position = point.position;
             _navmeshAgent.enabled = true;
             
-            await _fadingHandler.FadeInAsync(token);
+            if (!_skipTimeController.IsSkipping.CurrentValue) await _fadingHandler.FadeInAsync(token);
             _discoveryCollider.enabled = true;
         }
         _archerTower = null;
@@ -175,8 +209,14 @@ public class ArcherWorkState : WorkVillagerState
             return;
         }
 
-        await ExitTower(token);
+        if (!_skipTimeController.IsSkipping.CurrentValue) await ExitTower(token);
+        else _ = ExitTower(token);
         _transformHandler.DeactivateMovement();
+    }
+
+    public override void ExitStateWithSkip()
+    {
+        _ = ExitState(_navmeshAgent.GetCancellationTokenOnDestroy());
     }
 
     public override void Dispose()

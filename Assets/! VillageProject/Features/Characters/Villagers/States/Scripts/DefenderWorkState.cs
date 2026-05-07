@@ -37,7 +37,9 @@ public class DefenderWorkState : WorkVillagerState
         _isFinishing = false;
         ActivateMovement();
     }
-    
+
+    public override void EnterStateWithSkip() { }
+
     private void OnMovementEnded(WorkResult result)
     {
         if (_isFinishing) return;
@@ -67,6 +69,11 @@ public class DefenderWorkState : WorkVillagerState
             _coroutine = null;
             await _skinReferencesResolver.AnimatorHandler.TransitByBool("Work", false, token);
         }
+    }
+
+    public override void ExitStateWithSkip()
+    {
+        _ = ExitState(_navmeshAgent.GetCancellationTokenOnDestroy());
     }
     
     private void ActivateMovement()

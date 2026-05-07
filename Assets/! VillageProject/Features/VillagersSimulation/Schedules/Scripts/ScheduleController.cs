@@ -361,6 +361,11 @@ public class ScheduleController : MonoBehaviour
     {
         return (hour + 24) % 24;
     }
+
+    public List<Schedule> GetSchedules()
+    {
+        return _schedulesInstances;
+    }
     
     private void OnDestroy()
     {

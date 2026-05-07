@@ -27,6 +27,11 @@ public sealed class SleepVillagerState : VillagerState
         _transformHandler.ActivateMovementWithRotation(_villagerData.HomePoint.DoorPoint, callback: OnPointReached);
     }
 
+    public override void EnterStateWithSkip()
+    {
+        OnFadingEnded();
+    }
+    
     private void OnPointReached()
     {
         _fadingHandler.FadeOut(OnFadingEnded);
@@ -52,6 +57,11 @@ public sealed class SleepVillagerState : VillagerState
         }
 
         _transformHandler.DeactivateMovement();
+    }
+
+    public override void ExitStateWithSkip()
+    {
+        _ = ExitState(_navmeshAgent.GetCancellationTokenOnDestroy());
     }
 
     public override void Dispose()

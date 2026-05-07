@@ -4,9 +4,13 @@ using UnityEngine;
 public sealed class RaiseArrowsHandler : ResourceOverTimeHandler
 {
     private int _hoursForRaisingAmmunition;
+    private int _increasedHour;
     
     private TowerAmmunition _ammunition;
     private AmmunitionStorage _ammunitionStorage;
+    
+    public TowerAmmunition Ammunition => _ammunition;
+    public AmmunitionStorage AmmunitionStorage => _ammunitionStorage;
     
     public RaiseArrowsHandler(TowerAmmunition ammunition, AmmunitionStorage ammunitionStorage, GameTimer gameTimer) : base(gameTimer)
     {
@@ -14,9 +18,19 @@ public sealed class RaiseArrowsHandler : ResourceOverTimeHandler
         _ammunitionStorage = ammunitionStorage;
     }
 
+    public void IncreaseRaiseArrows(int hour)
+    {
+        _increasedHour = hour;
+    }
+
     public void StartRaisingArrows(float hoursForRaisingAmmunition)
     {
-        StartRaising(hoursForRaisingAmmunition, _ammunition.MaxAmount, OnChangedAmount);
+        StartRaising(hoursForRaisingAmmunition + _increasedHour, _ammunition.MaxAmount, OnChangedAmount);
+    }
+
+    public void RaiseArrow(uint amount)
+    {
+        OnChangedAmount(_ammunitionStorage.Amount.CurrentValue.Amount + amount);
     }
     
     private void OnChangedAmount(uint value)
@@ -33,6 +47,7 @@ public sealed class RaiseArrowsHandler : ResourceOverTimeHandler
     public void StopRaisingArrows()
     {
         StopRaising();
+        _increasedHour = 0;
     }
 }
 

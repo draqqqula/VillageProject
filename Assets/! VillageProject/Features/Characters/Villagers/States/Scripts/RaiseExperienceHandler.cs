@@ -5,15 +5,21 @@ using UnityEngine;
 public sealed class RaiseExperienceHandler : ProgressOverTimeHandler
 {
     private Profession _profession;
+    private int _increasedHour;
     
     public RaiseExperienceHandler(Profession profession, GameTimer gameTimer) : base(gameTimer)
     {
         _profession = profession;
     }
 
+    public void IncreaseHours(int hour)
+    {
+        _increasedHour = hour;
+    }
+
     public void StartRaisingExperience()
     {
-        StartRaising(_profession.ProfessionData.HoursForMaxExperience, RaiseExperience);
+        StartRaising(_profession.ProfessionData.HoursForMaxExperience + _increasedHour, RaiseExperience);
     }
     
     public void RaiseExperience(float progressValue)
@@ -24,12 +30,15 @@ public sealed class RaiseExperienceHandler : ProgressOverTimeHandler
     public void StopRaisingExperience()
     {
         StopRaising();
+        _increasedHour = 0;
     }
 }
 
 public sealed class BuildingProgressHandler : ProgressOverTimeHandler
 {
     private BuildingPlan _buildingPlan;
+    private int _increasedHours;
+    
     public event Action OnPlanCompleted;
     
     public BuildingProgressHandler(GameTimer gameTimer) : base(gameTimer)
@@ -42,9 +51,14 @@ public sealed class BuildingProgressHandler : ProgressOverTimeHandler
         _buildingPlan = plan;
     }
 
+    public void IncreaseBuildDuration(int hours)
+    {
+        _increasedHours = hours;
+    }
+
     public void StartRaisingProgress()
     {
-        StartRaising(_buildingPlan.HoursDuration, OnProgressChanged);
+        StartRaising(_buildingPlan.HoursDuration + _increasedHours, OnProgressChanged);
     }
 
     private void OnProgressChanged(float progressValue)
@@ -64,6 +78,7 @@ public sealed class BuildingProgressHandler : ProgressOverTimeHandler
     public void StopRaisingProgress()
     {
         StopRaising();
+        _increasedHours = 0;
     }
 }
 

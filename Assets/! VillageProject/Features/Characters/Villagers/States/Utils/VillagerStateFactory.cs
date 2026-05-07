@@ -26,6 +26,7 @@ public class VillagerStateFactory
     
     private DialogueSystem _dialogueSystem;
     private ProfessionController _professionController;
+    private SkipTimeController _skipTimeController;
     
     public void SetParams(NavmeshMovementAgent navmeshAgent, Villager villager, RelaxVillagerStateConfigs relaxStateConfigs,
         DiContainer container)
@@ -50,6 +51,7 @@ public class VillagerStateFactory
         
         _dialogueSystem = container.Resolve<DialogueSystem>();
         _professionController = container.Resolve<ProfessionController>();
+        _skipTimeController = container.Resolve<SkipTimeController>();
     }
     
     public SleepVillagerState CreateSleepState()
@@ -98,15 +100,17 @@ public class VillagerStateFactory
         switch (_villagerData.Profession.Type)
         {
             case (ProfessionType.Blacksmith):
-                return new BlacksmithWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer);
+                return new BlacksmithWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer,
+                    _skipTimeController);
             case (ProfessionType.Builder):
-                return new BuilderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingPlanner, _gameTimer);
+                return new BuilderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingPlanner, _gameTimer,
+                    _skipTimeController);
             case (ProfessionType.Armorer):
                 return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer,
-                    _villagerSystem, _professionController);
+                    _villagerSystem, _professionController, _skipTimeController);
             case (ProfessionType.Archer):
                 return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage,
-                    _searchForTarget, _discoveryCollider, this, _gameTimer, _villageCenter, _waveController);
+                    _searchForTarget, _discoveryCollider, this, _gameTimer, _villageCenter, _waveController, _skipTimeController);
             case (ProfessionType.Defender):
                 return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
             default:

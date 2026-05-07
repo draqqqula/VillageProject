@@ -17,6 +17,7 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
     private Villager _curVillager;
     private Villager _targetVillager;
     private Villager _prevTargetVillager;
+    private Vector3 _targetPosition;
 
     private Transform _villageCenter;
     
@@ -68,6 +69,7 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         Debug.Log($"{_curVillager} choose Talk Target {_targetVillager}");
         if (_targetVillager)
         {
+            _targetPosition = _targetVillager.transform.position;
             _targetVillager.VillagerData.IsReservedForTalk = true;
             _curVillager.VillagerData.IsReservedForTalk = true;
         }
@@ -77,7 +79,7 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
     {
         if (_targetVillager != null && !_isTalking)
         {
-            if (_targetVillager.VillagerData.IsMoving)
+            if (_targetVillager.VillagerData.IsMoving || _targetPosition != _targetVillager.transform.position)
             {
                 ReleaseTalkingParams();
                 return;

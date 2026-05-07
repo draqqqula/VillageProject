@@ -13,22 +13,45 @@ public class Schedule : ScriptableObject
     {
         foreach (var period in SchedulePeriods)
         {
-            if (period.EndTime == period.StartTime)
-            {
-                return period;
-            }
-            
-            if (period.EndTime < period.StartTime)
-            {
-                if ((period.StartTime <= hour && hour <= 23) || (hour < period.EndTime && hour >= 0)) return period;
-            }
-            else
-            {
-                if (period.StartTime <= hour && hour < period.EndTime) return period;
-            }
+            if (IsHourInPeriod(hour, period)) return period;
         }
         
         throw new ArgumentOutOfRangeException($"Period {hour} out of range!");
+    }
+
+    public SchedulePeriod GetNextPeriod(SchedulePeriod period)
+    {
+        var endTime = period.EndTime;
+        return GetPeriod(endTime);
+    }
+
+    public bool IsHourInPeriod(int hour, SchedulePeriod period)
+    {
+        return IsHourInRange(period.StartTime, period.EndTime, hour);
+    }
+
+    public bool IsPeriodInRange(int startHour, int endHour, SchedulePeriod period)
+    {
+        return IsHourInRange(startHour, endHour, period.StartTime) || IsHourInRange(startHour, endHour, period.EndTime);
+    }
+    
+    public bool IsHourInRange(int startHour, int endHour, int hour)
+    {
+        if (startHour == endHour)
+        {
+            return true;
+        }
+            
+        if (endHour < startHour)
+        {
+            if ((startHour <= hour && hour <= 23) || (hour < endHour && hour >= 0)) return true;
+        }
+        else
+        {
+            if (startHour <= hour && hour < endHour) return true;
+        }
+        
+        return false;
     }
 
     [ContextMenu("Merge Periods")]

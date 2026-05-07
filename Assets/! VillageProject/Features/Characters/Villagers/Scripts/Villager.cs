@@ -19,6 +19,7 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
     [SerializeField] private VillagerData _villagerData;
     [SerializeField] private ActivityType _currentActivity;
     [SerializeField] private RelaxVillagerStateConfigs _relaxStateConfigs;
+    [SerializeField] private Speed _speed;
     private RelaxVillagerStateConfigs _relaxStateConfigsInstance;
     
     public VillagerData VillagerData {get; private set;}
@@ -48,6 +49,7 @@ public class Villager : MonoBehaviour, IInteractable, IDialogueTarget
     
     [Inject] private Health _health;
     [Inject] private DiContainer _diContainer;
+    [Inject] private SkipTimeController _skipTimeController;
     
     [SerializeField] private DeathEvent _deathEvent;
     
