@@ -91,10 +91,15 @@ public class ArmorerWorkState : WorkVillagerState
     public override void EnterStateWithSkip()
     {
         if (_defenders.Count == 0) InitDefenders();
-        _navMeshAgent.transform.position = target.position;
         
         var distance = Vector3.Distance(_navMeshAgent.transform.position, target.position);
         var moveHours = (int)Mathf.Ceil(distance / _villagerData.SpeedInHour);
+        
+        _navMeshAgent.UnconnectFromNavmeshManually();
+        _navMeshAgent.transform.position = target.position;
+        _navMeshAgent.transform.rotation = target.rotation;
+        _navMeshAgent.ConnectToNavmeshManually();
+        
         _experienceHandler.IncreaseHours(moveHours);
         
         OnPointReached();

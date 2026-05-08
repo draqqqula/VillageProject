@@ -25,11 +25,12 @@ public class GameTimer : MonoBehaviour
     public int CurrentMinute { get; private set; }
 
     [SerializeField] private CycleFromTime _cycleFromTime;
-    [SerializeField] private TimeView _timeView;
 
     public event Action<int> OnTick;
     public event Action<int> OnHourChanged;
     public event Action<int> OnDayChanged;
+    public event Action OnTimeUpdated;
+    
     
     private bool _isPaused;
 
@@ -53,7 +54,7 @@ public class GameTimer : MonoBehaviour
             AddTick();
         }
         
-        _timeView.UpdateTime();
+        OnTimeUpdated?.Invoke();
     }
     
     public void AddTick()

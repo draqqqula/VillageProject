@@ -27,7 +27,8 @@ public class VillagerSystem : MonoBehaviour
 
     public Villager GetVillager(ActivityType[] activities)
     {
-        var villagers = Villagers.Where(villager => activities.Contains(villager.VillagerData.ActivityType.Value)).ToArray();
+        var villagers = Villagers.Where(villager => villager.VillagerData.ActivityType != null
+                                                    && activities.Contains(villager.VillagerData.ActivityType.Value)).ToArray();
         return villagers[Random.Range(0, villagers.Length)];
     }
 

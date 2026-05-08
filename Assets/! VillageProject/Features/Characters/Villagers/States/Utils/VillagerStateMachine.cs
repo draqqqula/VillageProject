@@ -29,7 +29,7 @@ public class VillagerStateMachine : IDisposable
         _container = container;
         _relaxStateConfigs = relaxStateConfigs;
         _skipTimeController = _container.Resolve<SkipTimeController>();
-        _skipTimeController.IsSkipping.Subscribe(OnSkipping).AddTo(_navmeshAgent.gameObject);
+        _skipTimeController.IsSkipping.Skip(1).Subscribe(OnSkipping).AddTo(_navmeshAgent.gameObject);
         
         SetStates(villager);
     }
@@ -60,13 +60,16 @@ public class VillagerStateMachine : IDisposable
         {
             if (!_skipTimeController.IsSkipping.CurrentValue)
             {
-                if (CurrentState != null) await CurrentState.ExitState(token);
+                if (CurrentState != null)
+                {
+                    await CurrentState.ExitState(token);
+                }
                 CurrentState = null;
                 if (_villagerData.IsTalking) await UniTask.WaitWhile(() => _villagerData.IsTalking, cancellationToken: token); 
             }
             else
             {
-                CurrentState.ExitStateWithSkip();
+                CurrentState?.ExitStateWithSkip();
             }
         }
         catch (OperationCanceledException e)
@@ -79,7 +82,6 @@ public class VillagerStateMachine : IDisposable
     {
         if (value)
         {
-            _ = ExitCurrentState(_navmeshAgent.GetCancellationTokenOnDestroy());
             _ = UpdateCurrentState(_villagerData.ActivityType.Value, _navmeshAgent.GetCancellationTokenOnDestroy());
         }
     }

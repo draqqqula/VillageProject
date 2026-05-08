@@ -20,6 +20,7 @@ public class VillagerStateFactory
     private BuildingPlanner _buildingPlanner;
     
     private Transform _villageCenter;
+    private Transform _villagersSpawnPoint;
     private GameTimer _gameTimer;
     private VillagerSystem _villagerSystem;
     private WaveController _waveController;
@@ -44,6 +45,8 @@ public class VillagerStateFactory
         _buildingPlanner = container.Resolve<BuildingPlanner>();
         
         _villageCenter = container.ResolveId<Transform>("VillageCenter");
+        _villagersSpawnPoint = container.ResolveId<Transform>("VillagersSpawnPoint");
+        
         _gameTimer = container.Resolve<GameTimer>();
         _discoveryCollider = container.ResolveId<Collider>("Discovery");
         _villagerSystem = container.Resolve<VillagerSystem>();
@@ -56,7 +59,7 @@ public class VillagerStateFactory
     
     public SleepVillagerState CreateSleepState()
     {
-        return new SleepVillagerState(_navmeshAgent, _villagerData, _skinReferencesResolver);
+        return new SleepVillagerState(_navmeshAgent, _villagerData, _skinReferencesResolver, _skipTimeController);
     }
 
     public RelaxVillagerState CreateRelaxState()
@@ -104,7 +107,7 @@ public class VillagerStateFactory
                     _skipTimeController, _villagerData);
             case (ProfessionType.Builder):
                 return new BuilderWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingPlanner, _gameTimer,
-                    _skipTimeController, _villagerData);
+                    _skipTimeController, _villagerData, _villagersSpawnPoint);
             case (ProfessionType.Armorer):
                 return new ArmorerWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _gameTimer,
                     _villagerSystem, _professionController, _skipTimeController, _villagerData);

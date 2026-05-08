@@ -106,13 +106,24 @@ public class NavmeshMovementAgent : MovementWorkerBase<NavMeshPath>,
     private void ConnectToNavmesh()
     {
         _navMeshAgent.enabled = true;
+        
         if (!_navMeshAgent.isOnNavMesh
             && _navMeshAgent.FindClosestEdge(out var hit))
         {
             _navMeshAgent.Warp(hit.position);
         }
-    }    
+    }
 
+    public void ConnectToNavmeshManually()
+    {
+        ConnectToNavmesh();
+    }
+    
+    public void UnconnectFromNavmeshManually()
+    {
+        _navMeshAgent.enabled = false;
+    }
+    
     public bool TrySetInstructions(Vector3 instructions, out IWorkEventSource<WorkResult> source)
     {
         if (!CanChangeDestination)

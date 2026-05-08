@@ -17,11 +17,14 @@ public class DialogueSystem : MonoBehaviour
     
     private List<DialogueSession> _dialogueSessions = new List<DialogueSession>();
     public List<DialogueSession> DialogueSessions => _dialogueSessions;
+    
+    public bool IsCanPlayDialogues {get; set;}
 
     private void Awake()
     {
         _dialoguesDataInstance = ScriptableObject.Instantiate(_dialoguesData);
         _dialogueChooser = new DialogueChooser();
+        IsCanPlayDialogues = true;
     }
 
     public void PlayDialogue(Villager villagerA, Villager villagerB, Action callback = null)
@@ -46,6 +49,12 @@ public class DialogueSystem : MonoBehaviour
     
     public void PlayDialogue(Villager villagerA, Villager villagerB, string id, Action callback = null)
     {
+        if (!IsCanPlayDialogues)
+        {
+            callback?.Invoke();
+            return;
+        }
+        
         var (first, second) = _dialogueChooser.GetSpeakerOrder(villagerA, villagerB, id);
         var dialogue = _dialoguesDataInstance.Dialogues.FirstOrDefault(d => d.DialogueID == id);
 
@@ -79,6 +88,12 @@ public class DialogueSystem : MonoBehaviour
 
     public void PlayDialogue(Villager villager, string id, Action callback = null)
     {
+        if (!IsCanPlayDialogues)
+        {
+            callback?.Invoke();
+            return;
+        }
+        
         var dialogue = _dialoguesDataInstance.Dialogues.FirstOrDefault(d => d.DialogueID == id);
 
         if (dialogue == null)
@@ -120,6 +135,23 @@ public class DialogueSystem : MonoBehaviour
             
             _dialogueSessions.Remove(session);
         }
+    }
+
+    public void StopAllDialogues()
+    {
+        foreach (var session in _dialogueSessions)
+        {
+            if (session != null)
+            {
+                session.IsFinished = true;
+            
+                StopCoroutine(session.DialogueCoroutine);
+                session.VillagerA.KeepSilent();
+                session.VillagerB.KeepSilent();
+            }
+        }
+        
+        _dialogueSessions.Clear();
     }
 
     private IEnumerator DialogueRoutine(DialogueSession session, DialogueConfig dialogue, Action<Replica> speakAction,

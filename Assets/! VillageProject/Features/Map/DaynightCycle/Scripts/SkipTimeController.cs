@@ -7,6 +7,9 @@ public class SkipTimeController : MonoBehaviour
 {
     [SerializeField] private GameTimer _gameTimer;
     [SerializeField] private WaveStarter _waveStarter;
+
+    [Inject] private SkipView _skipUI;
+    [Inject] private DialogueSystem _dialogueSystem;
     
     public ReadOnlyReactiveProperty<bool> IsSkipping => _isSkipping;
     private ReactiveProperty<bool> _isSkipping = new ReactiveProperty<bool>(false);
@@ -23,17 +26,28 @@ public class SkipTimeController : MonoBehaviour
         var waveHour = _waveStarter.GetNextWaveHour();
         SkipToTime(waveHour - 1, 30);
     }
+
+    public void GetSkipTime(out int hour, out int minutes)
+    {
+        var waveHour = _waveStarter.GetNextWaveHour();
+        hour = (waveHour - 1 + 24) % 24;
+        minutes = 30;
+    }
     
     public void SkipToTime(int newHours, int newMinutes)
     {
         if (IsSkipping.CurrentValue) return;
         
         Debug.Log($"StartSkipping to {newHours}:{newMinutes}");
+        _dialogueSystem.IsCanPlayDialogues = false;
+        _dialogueSystem.StopAllDialogues();
+        
         _isSkipping.Value = true;
 
         var ticksBetween = GetTicksBetween(_gameTimer.CurrentHour, _gameTimer.CurrentMinute, newHours, newMinutes);
         _tickToSkip = _gameTimer.CurrentTick + ticksBetween;
         
+        _skipUI.gameObject.SetActive(true);
         _gameTimer.IncreaseTickSpeed(20);
     }
 
@@ -56,8 +70,11 @@ public class SkipTimeController : MonoBehaviour
         if (!IsSkipping.CurrentValue) return;
         
         Debug.Log($"StopSkipping in {_gameTimer.CurrentHour}:{_gameTimer.CurrentMinute}");
+        _dialogueSystem.IsCanPlayDialogues = true;
         _isSkipping.Value = false;
+        
         _gameTimer.ReturnTickSpeed();
+        _skipUI.gameObject.SetActive(false);
     }
 
     private void OnDestroy()

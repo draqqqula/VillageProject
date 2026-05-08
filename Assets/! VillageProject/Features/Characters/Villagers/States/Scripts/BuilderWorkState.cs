@@ -21,6 +21,7 @@ public class BuilderWorkState : WorkVillagerState
     private BuildingProgressHandler _buildingProgressHandler;
     
     private GameTimer _gameTimer;
+    private Transform _villagersSpawnPoint;
     
     private bool _isActive = false;
     private bool _isBuilding = false;
@@ -29,7 +30,7 @@ public class BuilderWorkState : WorkVillagerState
     
     public BuilderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
         Profession profession, BuildingPlanner buildingPlanner, GameTimer gameTimer, SkipTimeController skipTimeController,
-        VillagerData villagerData)
+        VillagerData villagerData, Transform villagersSpawnPoint)
     {
         _villagerData = villagerData;
         _profession = profession;
@@ -43,9 +44,11 @@ public class BuilderWorkState : WorkVillagerState
         _experienceHandler = new RaiseExperienceHandler(profession, gameTimer);
         _buildingProgressHandler = new BuildingProgressHandler(gameTimer);
         _skipTimeController = skipTimeController;
+        
+        _gameTimer = gameTimer;
+        _villagersSpawnPoint = villagersSpawnPoint;
 
         _profession.Experience.Subscribe(TryDecreasePlanDuration).AddTo(navmeshAgent.gameObject);
-        _gameTimer = gameTimer;
     }
     
     public override void EnterState()
@@ -87,9 +90,9 @@ public class BuilderWorkState : WorkVillagerState
         _buildingProgressHandler.IncreaseBuildDuration(moveHours);
         _experienceHandler.IncreaseHours(moveHours);
         
-        _navMeshAgent.enabled = false;
+        _navMeshAgent.UnconnectFromNavmeshManually();
         _navMeshAgent.transform.position = enterPoint.position;
-        _navMeshAgent.enabled = true;
+        _navMeshAgent.ConnectToNavmeshManually();
         OnReachedPoint();
     }
 
@@ -197,6 +200,10 @@ public class BuilderWorkState : WorkVillagerState
 
     public override void ExitStateWithSkip()
     {
+        _navMeshAgent.UnconnectFromNavmeshManually();
+        _navMeshAgent.transform.position = _villagersSpawnPoint.position;
+        _navMeshAgent.ConnectToNavmeshManually();
+        
         _ = ExitState(_navMeshAgent.GetCancellationTokenOnDestroy());
     }
 

@@ -45,7 +45,12 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
     {
         ChooseTarget();
     }
-    
+
+    public override void EnterStateWithSkip()
+    {
+        EnterState();
+    }
+
     private void ChooseTarget()
     {
         _lastChoosingTiming = Time.time;
@@ -145,6 +150,11 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         _prevTargetVillager = null;
         _targetVillager = null;
         _isFinishing = false;
+    }
+    
+    public override void ExitStateWithSkip()
+    {
+        _ = ExitState(_navmeshAgent.GetCancellationTokenOnDestroy());
     }
 
     public override void Dispose()

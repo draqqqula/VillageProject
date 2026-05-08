@@ -46,8 +46,15 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerTarget(IDialogueTarget target)
     {
+        bool isPlayer = target is FirstPersonController;
+        if (isPlayer && _villager.VillagerData.IsOnTower)
+        {
+            _target = null;
+            return;
+        }
+        
         var randomValue = Random.Range(0f, 1f);
-        var chance = target is FirstPersonController ? _dialogueWithPlayerChance : _dialogueWithEnemyChance;
+        var chance = isPlayer ? _dialogueWithPlayerChance : _dialogueWithEnemyChance;
 
         if (randomValue <= chance)
         {

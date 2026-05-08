@@ -3,25 +3,24 @@ using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class WaveCallView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private Image _progressImage;
     [SerializeField] private GameObject _progressHolder;
-    [SerializeField] private WaveController _waveController;
 
-    private void Awake()
+    public void ActivateView()
     {
-        _waveController.IsOnBreak.Subscribe(OnWaveStateChanged).AddTo(this);
+        gameObject.SetActive(true);
     }
 
-    private void OnWaveStateChanged(bool isEndedWave)
+    public void DeactivateView()
     {
-        if (isEndedWave) gameObject.SetActive(true);
-        else gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
-
+    
     public void UpdateProgress(float progress)
     {
         if (progress > 0) _progressHolder.SetActive(true);

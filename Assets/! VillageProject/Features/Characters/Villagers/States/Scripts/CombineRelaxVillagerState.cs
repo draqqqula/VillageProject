@@ -18,6 +18,7 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
     
     private int _lastTick = Int32.MaxValue;
     private bool _isChangingActivity;
+    private bool _isInited;
 
     public CombineRelaxVillagerState(GameObject villagerObject, VillagerData villagerData, RelaxVillagerStateConfigs configs,
         VillagerStateFactory factory, GameTimer gameTimer)
@@ -38,8 +39,14 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
     
     public override void EnterState()
     {
+        _isInited = true;
         _gameTimer.OnTick += OnTick;
         _ = ChangeActivity(_villagerObject.GetCancellationTokenOnDestroy());
+    }
+
+    public override void EnterStateWithSkip()
+    {
+        EnterState();
     }
     
     private void OnTick(int currentTick)
@@ -102,6 +109,7 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
 
     public override async UniTask ExitState(CancellationToken token)
     {
+        _isInited = false;
         _gameTimer.OnTick -= OnTick;
         _lastTick = Int32.MaxValue;
 
@@ -109,6 +117,11 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
         {
             await _curState.ExitState(_villagerObject.GetCancellationTokenOnDestroy());
         }
+    }
+
+    public override void ExitStateWithSkip()
+    {
+        if (_isInited) _ = ExitState(_villagerObject.GetCancellationTokenOnDestroy());
     }
 
     public override void Dispose() { }

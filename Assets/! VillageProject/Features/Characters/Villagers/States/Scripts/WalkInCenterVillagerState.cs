@@ -34,9 +34,14 @@ public sealed class WalkInCenterVillagerState : RelaxVillagerState
         ActivateMovement();
     }
     
+    public override void EnterStateWithSkip()
+    {
+        EnterState();
+    }
+    
     private void OnMovementEnded(WorkResult result)
     {
-        if (_isFinishing) return;
+        if (_isFinishing || _navmeshAgent == null) return;
         
         if (_coroutine != null) _navmeshAgent.StopCoroutine(_coroutine);
         _coroutine = _navmeshAgent.StartCoroutine(StandRoutine(ActivateMovement));
@@ -65,6 +70,11 @@ public sealed class WalkInCenterVillagerState : RelaxVillagerState
             _navmeshAgent.StopCoroutine(_coroutine);
             _coroutine = null;
         }
+    }
+    
+    public override void ExitStateWithSkip()
+    {
+        _ = ExitState(_navmeshAgent.GetCancellationTokenOnDestroy());
     }
     
     public override void Dispose()

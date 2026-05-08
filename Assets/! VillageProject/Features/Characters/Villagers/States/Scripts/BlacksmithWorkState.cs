@@ -81,11 +81,14 @@ public class BlacksmithWorkState : WorkVillagerState
 
     public override void EnterStateWithSkip()
     {
-        _navMeshAgent.transform.position = target.position;
-        
         var distance = Vector3.Distance(_navMeshAgent.transform.position, target.position);
         var moveHours = (int)Mathf.Ceil(distance / _villagerData.SpeedInHour);
-
+        
+        _navMeshAgent.UnconnectFromNavmeshManually();
+        _navMeshAgent.transform.position = target.position;
+        _navMeshAgent.transform.rotation = target.rotation;
+        _navMeshAgent.ConnectToNavmeshManually();
+        
         _experienceHandler.IncreaseHours(moveHours);
         foreach (var arrowsHandler in _arrowsHandlers)
         {

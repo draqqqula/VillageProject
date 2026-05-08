@@ -1,10 +1,17 @@
+using System;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class TimeView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _timeText;
-    [SerializeField] private GameTimer _gameTimer;
+    [Inject] private GameTimer _gameTimer;
+
+    private void Awake()
+    {
+        _gameTimer.OnTimeUpdated += UpdateTime;
+    }
 
     public void UpdateTime()
     {
@@ -14,5 +21,10 @@ public class TimeView : MonoBehaviour
     public string GetFormattedTime()
     {
         return $"Day {_gameTimer.CurrentDay} {_gameTimer.CurrentHour:00}:{_gameTimer.CurrentMinute:00}";
+    }
+
+    private void OnDestroy()
+    {
+        _gameTimer.OnTimeUpdated -= UpdateTime;
     }
 }

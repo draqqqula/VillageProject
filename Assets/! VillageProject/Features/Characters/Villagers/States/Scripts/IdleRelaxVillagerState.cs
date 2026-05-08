@@ -30,8 +30,10 @@ public sealed class IdleRelaxVillagerState : RelaxVillagerState
 
     public override void EnterStateWithSkip()
     {
+        _navmeshAgent.UnconnectFromNavmeshManually();
         _navmeshAgent.transform.position = _target.position;
         _navmeshAgent.transform.rotation = _target.rotation;
+        _navmeshAgent.ConnectToNavmeshManually();
         OnPointReached();
     }
 

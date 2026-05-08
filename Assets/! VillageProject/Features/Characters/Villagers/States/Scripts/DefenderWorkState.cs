@@ -38,7 +38,10 @@ public class DefenderWorkState : WorkVillagerState
         ActivateMovement();
     }
 
-    public override void EnterStateWithSkip() { }
+    public override void EnterStateWithSkip()
+    {
+        EnterState();
+    }
 
     private void OnMovementEnded(WorkResult result)
     {

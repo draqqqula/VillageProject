@@ -27,6 +27,37 @@ public class VillagerFadingHandler : IDisposable
         FadeIn(callback);
         await WaitFading(token);
     }
+
+    public void FadeOutImmediately()
+    {
+        ChangeFadeImmediately(0);
+    }
+    
+    public void FadeInImmediately()
+    {
+        ChangeFadeImmediately(1);
+    }
+
+    public void ChangeFadeImmediately(float alpha)
+    {
+        foreach (var accessory in _skinReferencesResolver.Accessories)
+        {
+            if (alpha < 1) accessory.gameObject.SetActive(false);
+            else if (alpha == 1) accessory.gameObject.SetActive(true);
+        }
+
+        foreach (var meshRenderer in _skinReferencesResolver.MeshRenderers)
+        {
+            var material = meshRenderer.material;
+            SetTransparent(material);
+            
+            var color = material.color;
+            color.a = alpha;
+            material.color = color;
+            
+            if (alpha == 1) SetOpaque(material);
+        }
+    }
     
     public void FadeOut(Action callback = null)
     {
