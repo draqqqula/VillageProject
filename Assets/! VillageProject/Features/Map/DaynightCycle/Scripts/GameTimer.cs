@@ -63,7 +63,7 @@ public class GameTimer : MonoBehaviour
         _currentTick++;
 
         int totalHours = _currentTick / _ticksPerHour;
-        int newDay = totalHours / HoursPerDay;
+        int newDay = (totalHours / HoursPerDay) + 1;
         int ticksPerDay = HoursPerDay * _ticksPerHour;
         
         float dayProgress = (float)(_currentTick - _ticksOffset) % ticksPerDay / ticksPerDay;

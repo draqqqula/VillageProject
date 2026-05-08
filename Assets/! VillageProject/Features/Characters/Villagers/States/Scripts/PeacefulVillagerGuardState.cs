@@ -10,25 +10,32 @@ public sealed class PeacefulVillagerGuardState : GuardVillagerState
     private const float MaxRadius = 50; 
     
     private VillagerData _villagerData;
+    private SkinReferencesResolver _skinReferencesResolver;
     
     private Transform _villageCenter;
     private NavmeshMovementAgent _navmeshAgent;
-    private VillagerMovementHandler _movementHandler;
+    private VillagerTransformHandler _transformHandler;
+    private VillagerFadingHandler _fadingHandler;
     
     private Coroutine _coroutine;
 
-    public PeacefulVillagerGuardState(NavmeshMovementAgent navmeshAgent, Transform villageCenter, VillagerData villagerData)
+    public PeacefulVillagerGuardState(NavmeshMovementAgent navmeshAgent, Transform villageCenter, VillagerData villagerData, 
+        SkinReferencesResolver skinReferencesResolver)
     {
         _villagerData = villagerData;
+        _skinReferencesResolver = skinReferencesResolver;
         
         _villageCenter = villageCenter;
         _navmeshAgent = navmeshAgent;
-        _movementHandler = new VillagerMovementHandler(navmeshAgent);
+        
+        _transformHandler = new VillagerTransformHandler(navmeshAgent);
+        _fadingHandler = new VillagerFadingHandler(skinReferencesResolver);
+        _villagerData.HomePoint.IsAttacked.Skip(1).Subscribe(OnHomeAttacked).AddTo(_navmeshAgent.gameObject);
     }
     
     public override void EnterState()
     {
-        _villagerData.HomePoint.IsAttacked.Skip(1).Subscribe(OnHomeAttacked).AddTo(_navmeshAgent.gameObject);
+        _skinReferencesResolver.Animator.SetBool("Scared", true);
         
         if (!_villagerData.HomePoint.IsAttacked.Value) MoveToHome();
         else MoveToRandomPoint();
@@ -36,12 +43,12 @@ public sealed class PeacefulVillagerGuardState : GuardVillagerState
     
     private void MoveToHome()
     {
-        _movementHandler.ActivateMovement(_villagerData.HomePoint.DoorPoint.position, OnHomeReached);
+        _transformHandler.ActivateMovementWithRotation(_villagerData.HomePoint.DoorPoint, callback: OnHomeReached);
     }
 
     private void MoveToRandomPoint()
     {
-        _movementHandler.ActivateMovementWithPosInCircle(_villageCenter, MaxRadius, callback: OnPointReached);
+        _transformHandler.ActivateMovementWithPosInCircle(_villageCenter, MaxRadius, callback: OnPointReached);
     }
     
     private void OnHomeAttacked(bool value)
@@ -52,13 +59,16 @@ public sealed class PeacefulVillagerGuardState : GuardVillagerState
         }
     }
 
-    private void OnHomeReached(WorkResult workResult)
+    private void OnHomeReached()
     {
-        if (workResult == WorkResult.Success)
-        {
-            _villagerData.IsOnHome = true;
-            _navmeshAgent.gameObject.SetActive(false);
-        }
+        _fadingHandler.FadeOut(OnFadingEnded);
+    }
+
+    private void OnFadingEnded()
+    {
+        _villagerData.IsOnHome = true;
+        _navmeshAgent.UnconnectFromNavmeshManually();
+        _navmeshAgent.transform.position = _villagerData.HomePoint.Point.position;
     }
 
     private void OnPointReached(WorkResult workResult)
@@ -79,16 +89,29 @@ public sealed class PeacefulVillagerGuardState : GuardVillagerState
 
     public override async UniTask ExitState(CancellationToken token)
     {
-        _movementHandler.DeactivateMovement();
+        if (_fadingHandler.IsFading) await _fadingHandler.WaitFading(token);
+        
+        _transformHandler.DeactivateMovement();
         if (_coroutine != null)
         {
             _navmeshAgent.StopCoroutine(_coroutine);
             _coroutine = null;
         }
+
+        if (_villagerData.IsOnHome)
+        {
+            _navmeshAgent.UnconnectFromNavmeshManually();
+            _navmeshAgent.transform.position = _villagerData.HomePoint.DoorPoint.position;
+            _navmeshAgent.ConnectToNavmeshManually();
+            await _fadingHandler.FadeInAsync(token);
+            
+            _villagerData.IsOnHome = false;
+        }
+        await _skinReferencesResolver.AnimatorHandler.TransitByBool("Scared", false, _navmeshAgent.GetCancellationTokenOnDestroy());
     }
 
     public override void Dispose()
     {
-        _movementHandler.Dispose();
+        _transformHandler.Dispose();
     }
 }

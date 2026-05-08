@@ -94,7 +94,7 @@ public class VillagerStateFactory
         }
         else
         {
-            return new PeacefulVillagerGuardState(_navmeshAgent, _villageCenter, _villagerData);
+            return new PeacefulVillagerGuardState(_navmeshAgent, _villageCenter, _villagerData, _skinReferencesResolver);
         }
     }
 
