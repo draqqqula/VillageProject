@@ -13,7 +13,6 @@ public class DialogueSystem : MonoBehaviour
     private DialoguesData _dialoguesDataInstance;
     
     private DialogueChooser _dialogueChooser;
-    private Coroutine _dialogueCoroutine;
     
     private List<DialogueSession> _dialogueSessions = new List<DialogueSession>();
     public List<DialogueSession> DialogueSessions => _dialogueSessions;
@@ -170,7 +169,6 @@ public class DialogueSystem : MonoBehaviour
             silentAction?.Invoke();
         }
         
-        _dialogueCoroutine = null;
         session.IsFinished = true;
         silentAction?.Invoke();
         _dialogueSessions.Remove(session);  

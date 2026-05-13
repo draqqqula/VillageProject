@@ -14,6 +14,6 @@ public class UnlockShop : MonoBehaviour
     
     private void HandlePlayerInside(bool value)
     {
-        _inputListener.enabled = value;
+        //_inputListener.enabled = value;
     }
 }

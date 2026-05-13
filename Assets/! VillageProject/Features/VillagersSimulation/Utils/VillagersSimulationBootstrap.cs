@@ -8,6 +8,7 @@ public class VillagersSimulationBootstrap : MonoBehaviour
     [SerializeField] private ProfessionController _professionController;
     [SerializeField] private LoyaltyController _loyaltyController;
     [SerializeField] private ScheduleParamsHandler _scheduleParamsHandler;
+    [SerializeField] private SimulationDataView _simulationDataView;
     
     [Inject] private BuildingPlanner _buildingPlanner;
 
@@ -19,5 +20,7 @@ public class VillagersSimulationBootstrap : MonoBehaviour
         _professionController.Init();
         _loyaltyController.Init();
         _scheduleParamsHandler.Init(_scheduleController, _villagerSystem);
+        
+        _simulationDataView.Init();
     }
 }

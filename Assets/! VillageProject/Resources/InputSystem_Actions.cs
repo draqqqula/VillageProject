@@ -803,6 +803,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SimulationSettings"",
+                    ""type"": ""Button"",
+                    ""id"": ""fac60f50-d35e-48e0-913d-ae8ebc49bd07"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1245,6 +1254,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""DebugMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a722b9e7-6f49-4394-997f-ae8a7dfd072e"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SimulationSettings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1453,6 +1473,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_E = m_UI.FindAction("E", throwIfNotFound: true);
         m_UI_DebugMode = m_UI.FindAction("DebugMode", throwIfNotFound: true);
+        m_UI_SimulationSettings = m_UI.FindAction("SimulationSettings", throwIfNotFound: true);
         // PlayerAlternative
         m_PlayerAlternative = asset.FindActionMap("PlayerAlternative", throwIfNotFound: true);
         m_PlayerAlternative_LKM = m_PlayerAlternative.FindAction("LKM", throwIfNotFound: true);
@@ -1803,6 +1824,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_E;
     private readonly InputAction m_UI_DebugMode;
+    private readonly InputAction m_UI_SimulationSettings;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1862,6 +1884,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/DebugMode".
         /// </summary>
         public InputAction @DebugMode => m_Wrapper.m_UI_DebugMode;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/SimulationSettings".
+        /// </summary>
+        public InputAction @SimulationSettings => m_Wrapper.m_UI_SimulationSettings;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1924,6 +1950,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @DebugMode.started += instance.OnDebugMode;
             @DebugMode.performed += instance.OnDebugMode;
             @DebugMode.canceled += instance.OnDebugMode;
+            @SimulationSettings.started += instance.OnSimulationSettings;
+            @SimulationSettings.performed += instance.OnSimulationSettings;
+            @SimulationSettings.canceled += instance.OnSimulationSettings;
         }
 
         /// <summary>
@@ -1971,6 +2000,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @DebugMode.started -= instance.OnDebugMode;
             @DebugMode.performed -= instance.OnDebugMode;
             @DebugMode.canceled -= instance.OnDebugMode;
+            @SimulationSettings.started -= instance.OnSimulationSettings;
+            @SimulationSettings.performed -= instance.OnSimulationSettings;
+            @SimulationSettings.canceled -= instance.OnSimulationSettings;
         }
 
         /// <summary>
@@ -2402,6 +2434,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDebugMode(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SimulationSettings" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSimulationSettings(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerAlternative" which allows adding and removing callbacks.

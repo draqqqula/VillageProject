@@ -717,6 +717,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SimulationSettings",
+                    "type": "Button",
+                    "id": "fac60f50-d35e-48e0-913d-ae8ebc49bd07",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1157,6 +1166,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "DebugMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a722b9e7-6f49-4394-997f-ae8a7dfd072e",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SimulationSettings",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
