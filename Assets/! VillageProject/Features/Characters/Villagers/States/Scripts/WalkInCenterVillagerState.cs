@@ -11,6 +11,7 @@ public sealed class WalkInCenterVillagerState : RelaxVillagerState
 
     private NavmeshMovementAgent _navmeshAgent;
     private VillagerMovementHandler _movementHandler;
+    private VillagerData _villagerData;
     
     private Transform _villageCenter;
     private Coroutine _coroutine;
@@ -18,8 +19,10 @@ public sealed class WalkInCenterVillagerState : RelaxVillagerState
     private SkinReferencesResolver _skinReferencesResolver;
     private bool _isFinishing;
     
-    public WalkInCenterVillagerState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Transform villageCenter)
+    public WalkInCenterVillagerState(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver,
+        Transform villageCenter)
     {
+        _villagerData = villagerData;
         _skinReferencesResolver = skinReferencesResolver;
         
         _villageCenter = villageCenter;
@@ -55,6 +58,7 @@ public sealed class WalkInCenterVillagerState : RelaxVillagerState
     private IEnumerator StandRoutine(Action callback)
     {
         yield return new WaitForSeconds(StandDuration);
+        if (_villagerData.IsTalking) yield return new WaitWhile(() => _villagerData.IsTalking);
         
         callback?.Invoke();
         _coroutine = null;

@@ -115,7 +115,7 @@ public class VillagerStateFactory
                 return new ArcherWorkState(_navmeshAgent, _skinReferencesResolver, _villagerData.Profession, _buildingStorage, _searchForTarget,
                     _discoveryCollider, this, _gameTimer, _villageCenter, _waveController, _skipTimeController, _villagerData);
             case (ProfessionType.Defender):
-                return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
+                return new DefenderWorkState(_villagerData, _navmeshAgent, _skinReferencesResolver, _villageCenter);
             default:
                 throw new ArgumentException($"{_villagerData.Profession.Type} is not a valid profession!");
         }
@@ -123,7 +123,7 @@ public class VillagerStateFactory
 
     public DefenderWorkState CreateDefenderWorkState()
     {
-        return new DefenderWorkState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
+        return new DefenderWorkState(_villagerData, _navmeshAgent, _skinReferencesResolver, _villageCenter);
     }
 
     public IdleRelaxVillagerState CreateRelaxInHomeVillagerState()
@@ -143,6 +143,6 @@ public class VillagerStateFactory
 
     public WalkInCenterVillagerState CreateWalkInCenterState()
     {
-        return new WalkInCenterVillagerState(_navmeshAgent, _skinReferencesResolver, _villageCenter);
+        return new WalkInCenterVillagerState(_villagerData, _navmeshAgent, _skinReferencesResolver, _villageCenter);
     }
 }

@@ -130,7 +130,7 @@ public class DialogueSystem : MonoBehaviour
             
             StopCoroutine(session.DialogueCoroutine);
             session.VillagerA.KeepSilent();
-            session.VillagerB.KeepSilent();
+            session.VillagerB?.KeepSilent();
             
             _dialogueSessions.Remove(session);
         }
@@ -146,7 +146,7 @@ public class DialogueSystem : MonoBehaviour
             
                 StopCoroutine(session.DialogueCoroutine);
                 session.VillagerA.KeepSilent();
-                session.VillagerB.KeepSilent();
+                session.VillagerB?.KeepSilent();
             }
         }
         

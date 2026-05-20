@@ -131,9 +131,10 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         
         _targetVillager.VillagerData.IsTalking = false;
         _curVillager.VillagerData.IsTalking = false;
-        
         _targetVillager.VillagerData.IsReservedForTalk = false;
         _curVillager.VillagerData.IsReservedForTalk = false;
+        
+        _targetVillager = null;
         _transformHandler.DeactivateMovement();
     }
 
@@ -143,7 +144,6 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         if (_isTalking)
         {
             await UniTask.WaitWhile(() => _isTalking, cancellationToken: token);
-            ReleaseTalkingParams();
         }
         else _transformHandler.DeactivateMovement();
 

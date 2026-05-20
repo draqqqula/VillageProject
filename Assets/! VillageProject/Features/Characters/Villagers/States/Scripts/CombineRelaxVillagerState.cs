@@ -67,7 +67,11 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
     private async UniTask ChangeActivity(CancellationToken token)
     {
         _isChangingActivity = true;
-        if (_curState != null) await _curState.ExitState(token);
+        if (_curState != null)
+        {
+            await _curState.ExitState(token);
+            await UniTask.WaitWhile(() => _villagerData.IsTalking, cancellationToken: token);
+        }
 
         var totalWeight = GetTotalWeight();
         var randomValue = Random.Range(0f, totalWeight);

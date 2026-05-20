@@ -13,6 +13,7 @@ public class DefenderWorkState : WorkVillagerState
     private const float MinRadius = 40;
     private const float StandDuration = 2f;
 
+    private VillagerData _villagerData;
     private NavmeshMovementAgent _navmeshAgent;
     private VillagerMovementHandler _movementHandler;
     
@@ -22,8 +23,10 @@ public class DefenderWorkState : WorkVillagerState
     private SkinReferencesResolver _skinReferencesResolver;
     private bool _isFinishing;
     
-    public DefenderWorkState(NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, Transform villageCenter)
+    public DefenderWorkState(VillagerData villagerData, NavmeshMovementAgent navmeshAgent, SkinReferencesResolver skinReferencesResolver, 
+        Transform villageCenter)
     {
+        _villagerData = villagerData;
         _skinReferencesResolver = skinReferencesResolver;
         
         _villageCenter = villageCenter;
@@ -56,6 +59,7 @@ public class DefenderWorkState : WorkVillagerState
         _skinReferencesResolver.Animator.SetBool("Work", true);
         yield return new WaitForSeconds(StandDuration);
         _skinReferencesResolver.Animator.SetBool("Work", false);
+        if (_villagerData.IsTalking) yield return new WaitWhile(() => _villagerData.IsTalking);
         
         callback?.Invoke();
         _coroutine = null;
