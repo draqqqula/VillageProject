@@ -58,7 +58,7 @@ public sealed class TalkRelaxVillagerState : RelaxVillagerState, IUpdatableState
         int triesCount = 0;
 
         while (_targetVillager == null || _targetVillager == _curVillager || _targetVillager == _prevTargetVillager
-                || _targetVillager.VillagerData.IsReservedForTalk || _targetVillager.VillagerData.IsMoving
+                || _targetVillager.VillagerData.IsReservedForTalk || !_targetVillager.VillagerData.IsCanTalk || _targetVillager.VillagerData.IsMoving
                 || Vector3.Distance(_navmeshAgent.transform.position, _targetVillager.transform.position) > MinDistance)
         {
             if (triesCount >= MinVillagerTries)

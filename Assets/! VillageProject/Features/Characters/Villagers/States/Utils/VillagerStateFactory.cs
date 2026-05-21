@@ -28,6 +28,7 @@ public class VillagerStateFactory
     private DialogueSystem _dialogueSystem;
     private ProfessionController _professionController;
     private SkipTimeController _skipTimeController;
+    private InterestingPointsService _interestingPointsService;
     
     public void SetParams(NavmeshMovementAgent navmeshAgent, Villager villager, RelaxVillagerStateConfigs relaxStateConfigs,
         DiContainer container)
@@ -55,6 +56,7 @@ public class VillagerStateFactory
         _dialogueSystem = container.Resolve<DialogueSystem>();
         _professionController = container.Resolve<ProfessionController>();
         _skipTimeController = container.Resolve<SkipTimeController>();
+        _interestingPointsService = container.Resolve<InterestingPointsService>();
     }
     
     public SleepVillagerState CreateSleepState()
@@ -144,5 +146,11 @@ public class VillagerStateFactory
     public WalkInCenterVillagerState CreateWalkInCenterState()
     {
         return new WalkInCenterVillagerState(_villagerData, _navmeshAgent, _skinReferencesResolver, _villageCenter);
+    }
+
+    public VisitInterestingPointsState CreateVisitInterestingPointsState()
+    {
+        return new VisitInterestingPointsState(_villagerData,_navmeshAgent, _skinReferencesResolver, _interestingPointsService,
+            _skipTimeController, this);
     }
 }

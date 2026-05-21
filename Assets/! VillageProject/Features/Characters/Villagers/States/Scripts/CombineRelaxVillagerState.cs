@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using R3;
+using UnityEngine.AI;
 
 public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableState
 {
@@ -34,6 +35,7 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
             if (state.StateName == "RelaxInHome") state.VillagerState = factory.CreateRelaxInHomeVillagerState();
             else if (state.StateName == "TalkRelax") state.VillagerState = factory.CreateTalkRelaxVillagerState();
             else if (state.StateName == "WalkInCenter") state.VillagerState = factory.CreateWalkInCenterState();
+            else if (state.StateName == "VisitInterestingPoints") state.VillagerState = factory.CreateVisitInterestingPointsState();
         }
     }
     
@@ -130,4 +132,3 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
 
     public override void Dispose() { }
 }
-
