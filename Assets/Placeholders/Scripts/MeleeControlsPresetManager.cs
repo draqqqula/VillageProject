@@ -14,13 +14,15 @@ public class MeleeControlsPresetManager
         _count = count;
         _action = action;
         _action.action.performed += HandlePress;
-        _chosenPreset = new ReactiveProperty<int>(0);
+        _chosenPreset = new ReactiveProperty<int>(1);
     }
 
     public ReadOnlyReactiveProperty<int> ChosenPreset => _chosenPreset;
 
     private void HandlePress(InputAction.CallbackContext context)
     {
+        return;
+        
         if (_chosenPreset.Value + 1 == _count)
         {
             _chosenPreset.Value = 0;
