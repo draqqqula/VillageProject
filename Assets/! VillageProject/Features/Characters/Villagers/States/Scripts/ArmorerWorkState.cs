@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 public class ArmorerWorkState : WorkVillagerState

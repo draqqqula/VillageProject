@@ -131,7 +131,7 @@ public class WaveController : MonoBehaviour
 
     public string[] GetWaveRoadIndexes()
     {
-        if (_wavesSequence.Current.Item1 == null) return new string[0]; 
+        if (_wavesSequence == null || _wavesSequence.Current.Item1 == null) return new string[0]; 
             
         var spawnerIndexes = _wavesSequence.Current.Item1.Wave.Spawns.Select(s => s.SpawnpointIndex);
         string[] results = new string[spawnerIndexes.Count()];

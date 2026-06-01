@@ -1874,6 +1874,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Injured
     m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: StandRelax
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -383014546188493068}
   m_Solo: 0
@@ -2826,6 +2829,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: Injured
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: StandRelax
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7085375192784056388}

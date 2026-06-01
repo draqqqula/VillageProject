@@ -8,6 +8,17 @@ public class HomeService : MonoBehaviour
 {
     [SerializeField] private HomePoint[] _homePoints;
 
+    public void Initialize()
+    {
+        foreach (var h in _homePoints)
+        {
+            if (h.Point == null) return;
+
+            h.DoorPoint = h.Point.GetChild(0);
+            h.RelaxPoint = h.Point.GetChild(1);
+        }
+    }
+    
     public HomePoint OccupyHouse()
     {
         var houses = _homePoints.Where(h => !h.IsBusy).ToArray();

@@ -14,6 +14,7 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
     
     private RelaxVillagerStateConfigs _configs;
     private RelaxVillagerState _curState;
+    private SkipTimeController _skipTimeController;
     
     private GameTimer _gameTimer;
     
@@ -22,8 +23,10 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
     private bool _isInited;
 
     public CombineRelaxVillagerState(GameObject villagerObject, VillagerData villagerData, RelaxVillagerStateConfigs configs,
-        VillagerStateFactory factory, GameTimer gameTimer)
+        VillagerStateFactory factory, GameTimer gameTimer, SkipTimeController skipTimeController)
     {
+        _skipTimeController = skipTimeController;
+        
         _villagerObject = villagerObject;
         _villagerData = villagerData;
         _configs = configs;
@@ -53,7 +56,7 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
     
     private void OnTick(int currentTick)
     {
-        if (_isChangingActivity) return;
+        if (!_isInited || _isChangingActivity) return;
         
         if (currentTick >= _lastTick)
         {
@@ -71,8 +74,17 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
         _isChangingActivity = true;
         if (_curState != null)
         {
-            await _curState.ExitState(token);
-            await UniTask.WaitWhile(() => _villagerData.IsTalking, cancellationToken: token);
+            if (!_skipTimeController.IsSkipping.CurrentValue)
+            {
+                await _curState.ExitState(token);
+                await UniTask.WaitWhile(() => _villagerData.IsTalking, cancellationToken: token);
+            }
+            else
+            {
+                _curState.ExitStateWithSkip();
+            }
+            
+            if (!_isInited) return;
         }
 
         var totalWeight = GetTotalWeight();
@@ -95,6 +107,7 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
             }
         }
         
+        Debug.Log($"{_villagerData.Key} start relaxing with state {_curState}!");
         _curState.EnterState();
         _isChangingActivity = false;
     }
@@ -121,7 +134,8 @@ public sealed class CombineRelaxVillagerState : RelaxVillagerState, IUpdatableSt
 
         if (_curState != null)
         {
-            await _curState.ExitState(_villagerObject.GetCancellationTokenOnDestroy());
+            if (!_skipTimeController.IsSkipping.CurrentValue) await _curState.ExitState(_villagerObject.GetCancellationTokenOnDestroy());
+            else _curState.ExitStateWithSkip();
         }
     }
 

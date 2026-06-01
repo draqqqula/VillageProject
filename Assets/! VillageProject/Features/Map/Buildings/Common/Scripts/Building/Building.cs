@@ -14,7 +14,7 @@ public class Building : MonoBehaviour
 
     private void Awake()
     {
-        if (Health != null) Health.AmountReactive.Subscribe(OnHealthChanged).AddTo(this);
+        if (Health != null) Health.AmountReactive.Skip(1).Subscribe(OnHealthChanged).AddTo(this);
     }
 
     private void OnHealthChanged(float value)

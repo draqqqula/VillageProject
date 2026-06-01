@@ -83,7 +83,7 @@ public class VillagerStateFactory
         }
         else
         {
-            return new CombineRelaxVillagerState(_navmeshAgent.gameObject, _villagerData, _relaxStatesConfigs, this, _gameTimer);
+            return new CombineRelaxVillagerState(_navmeshAgent.gameObject, _villagerData, _relaxStatesConfigs, this, _gameTimer, _skipTimeController);
         }
     }
 

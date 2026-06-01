@@ -13,6 +13,7 @@ public class WorldToCanvasPosition : MonoBehaviour
     private void Update()
     {
         var normalized = _canvas.worldCamera.WorldToViewportPoint(WorldPosition) - new Vector3(0.5f, 0.5f);
-        transform.localPosition = new Vector3(normalized.x * _canvas.pixelRect.width, normalized.y * _canvas.pixelRect.height);
+        transform.localPosition = new Vector3(normalized.x * _canvas.pixelRect.width,
+            normalized.y * _canvas.pixelRect.height);
     }
 }

@@ -21,11 +21,11 @@ public sealed class SleepVillagerState : VillagerState
         _skinReferencesResolver = skinReferencesResolver;
         
         _navmeshAgent = navmeshAgent;
-        _transformHandler = new VillagerTransformHandler(navmeshAgent);
+        _transformHandler = new VillagerTransformHandler(_navmeshAgent);
         _fadingHandler = new VillagerFadingHandler(skinReferencesResolver);
         _skipTimeController = skipTimeController;
     }
-    
+
     public override void EnterState()
     {
         _transformHandler.ActivateMovementWithRotation(_villagerData.HomePoint.DoorPoint, callback: OnPointReached);
