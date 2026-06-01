@@ -206,7 +206,8 @@ MonoBehaviour:
   - rid: 3795778358107439406
   - rid: 3795778358107439407
   - rid: 3795778358107439408
-  m_VersionTimestamp: 639040608489600417
+  m_VersionTimestamp: 639128457776743885
+  m_SerializedVersion: 2
   m_DebugInfo: {fileID: 6333458495487737285}
   m_RuntimeGraph: {fileID: 254213845229529795}
   AssetID:
@@ -219,14 +220,19 @@ MonoBehaviour:
   m_NodeModelsInfo:
   - Name: On Start
     Story: 
+    RuntimeTypeString: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 3335272451348827663
       m_Value1: 11549843281177505721
     Variables: []
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: Find Nearest Target
     Story: 'Find [Target] with shortest path from [Agent] with tag: [Tag] and save
       [Position]'
+    RuntimeTypeString: NavigateToClosestAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 1998554358729198902
       m_Value1: 4926807120808616397
@@ -252,8 +258,11 @@ MonoBehaviour:
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: Go To Position Navmesh
     Story: '[Agent] goes to [Destination] using Navmesh'
+    RuntimeTypeString: GoToPositionNavmeshAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 9954977992975468244
       m_Value1: 17126634360072975476
@@ -269,8 +278,11 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: Active Zone State
     Story: '[Tracker] is in [Zone]'
+    RuntimeTypeString: ActiveZoneStateSequence, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 12731104678445273349
       m_Value1: 53119185226988770
@@ -288,8 +300,11 @@ MonoBehaviour:
     NamedChildren:
     - True
     - False
+    IsPlaceholder: 0
   - Name: Get Local Path
     Story: 'Chose [Path] from [Tracker] current zone leading to [TargetZone]'
+    RuntimeTypeString: GetLocalPathAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 3236041098824676576
       m_Value1: 3065528190318242450
@@ -310,8 +325,11 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: Find Nearest Path Point
     Story: '[Agent] searches for nearest [Position] on [Path]'
+    RuntimeTypeString: FindNearestPathPointAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 5279874943078845647
       m_Value1: 15648832150736779196
@@ -332,8 +350,11 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: Move Along Path
     Story: '[Agent] starts walking [Path]'
+    RuntimeTypeString: MoveAlongPathAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 2056951001153572321
       m_Value1: 10570720654560502862
@@ -349,8 +370,11 @@ MonoBehaviour:
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: Search Zone entrance
     Story: '[Agent] searches for [Zone] closest entrance and set [Destination]'
+    RuntimeTypeString: NavigateToZoneAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 14746360359382329337
       m_Value1: 736538891358180288
@@ -376,8 +400,11 @@ MonoBehaviour:
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: Blowing Up State
     Story: '[Self] is blowing up'
+    RuntimeTypeString: BlowingUpStateSequence, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 12356655245787794007
       m_Value1: 14677706556602648797
@@ -390,8 +417,11 @@ MonoBehaviour:
     NamedChildren:
     - True
     - False
+    IsPlaceholder: 0
   - Name: Stop Bezier Movement
     Story: '[Agent] stop Bezier movement'
+    RuntimeTypeString: StopBezierMovementAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 4872401814061719047
       m_Value1: 13780069721293510720
@@ -402,8 +432,11 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: Stop NavMesh Movement
     Story: '[Agent] stop NavMesh movement'
+    RuntimeTypeString: StopNavMeshMovementAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 14514293202618854909
       m_Value1: 31905627647798465
@@ -414,80 +447,15 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
-  - Name: Log Message
-    Story: Log [message] to the console
-    RuntimeTypeID:
-      m_Value0: 14362779694071371193
-      m_Value1: 7851297057022692581
-    Variables:
-    - Name: Message
-      Type:
-        m_SerializableType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      Tooltip: 
-    - Name: LogLevel
-      Type:
-        m_SerializableType: Unity.Behavior.LogMessageToConsoleAction+LogType, Unity.Behavior,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      Tooltip: 
-    NamedChildren: []
-  - Name: Conditional Branch
-    Story: 
-    RuntimeTypeID:
-      m_Value0: 12334964803190848789
-      m_Value1: 14608808926743427008
-    Variables: []
-    NamedChildren:
-    - True
-    - False
-  - Name: Blowing Up State
-    Story: '[Self] is blowing up'
-    RuntimeTypeID:
-      m_Value0: 6408141726110997311
-      m_Value1: 7716560794903602878
-    Variables:
-    - Name: Self
-      Type:
-        m_SerializableType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      Tooltip: 
-    NamedChildren:
-    - True
-    - False
-  - Name: Assign Animator
-    Story: Sets [Animator] Value from [Root] children
-    RuntimeTypeID:
-      m_Value0: 1357762600327587542
-      m_Value1: 8113957263747025046
-    Variables:
-    - Name: Root
-      Type:
-        m_SerializableType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      Tooltip: 
-    - Name: Animator
-      Type:
-        m_SerializableType: UnityEngine.Animator, UnityEngine.AnimationModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      Tooltip: 
-    NamedChildren: []
-  - Name: Syncronize Blackboard
-    Story: 'Log variable [Variable]'
-    RuntimeTypeID:
-      m_Value0: 12976647386897896851
-      m_Value1: 429052726203102552
-    Variables:
-    - Name: Variable
-      Type:
-        m_SerializableType: Target, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-      Tooltip: 
-    NamedChildren: []
+    IsPlaceholder: 0
   m_Blackboards: []
   m_MainBlackboardAuthoringAsset: {fileID: -9222825009373244371}
   m_CommandBuffer:
     m_Commands: []
   m_SubgraphsInfo: []
+  m_BlackboardMissingManagedRef: 0
+  m_GraphMissingManagedRef: 0
+  m_HasMissingTypeInManagedRef: 0
   references:
     version: 2
     RefIds:
@@ -2299,34 +2267,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Graphs:
   - rid: 3795778358107439573
-  RootGraph:
-    rid: 3795778358107439573
   m_DebugInfo: {fileID: 6333458495487737285}
+  m_WasCompileWithPlaceholderNode: 0
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3795778358107439573
-      type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        AuthoringAssetID:
-          m_Value0: 5612781773062375747
-          m_Value1: 17169401155488969785
-        m_DebugInfo: {fileID: 0}
-        Root:
-          rid: 3795778358107439574
-        BlackboardReference:
-          rid: 3795778358107439575
-        BlackboardGroupReferences: []
-        m_ActiveNodes: []
-        m_NodesToTick: []
-        m_NodesToEnd:
-          rid: 3795778358107439576
-        m_EndedNodes:
-          rid: 3795778358107439577
-        m_VersionTimestamp: 639040608489600417
-    - rid: 3795778358107439574
+    - rid: 2638440386054848747
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -2337,22 +2285,10 @@ MonoBehaviour:
         m_Parent:
           rid: -2
         m_Child:
-          rid: 3795778358107439578
+          rid: 2638440386054848748
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
-    - rid: 3795778358107439575
-      type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        m_Blackboard:
-          rid: 3795778358107439579
-        m_Source: {fileID: -4002830414627106435}
-    - rid: 3795778358107439576
-      type: {class: 'Stack`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: mscorlib}
-      data: 
-    - rid: 3795778358107439577
-      type: {class: 'HashSet`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: System.Core}
-      data: 
-    - rid: 3795778358107439578
+    - rid: 2638440386054848748
       type: {class: BlowingUpStateSequence, ns: , asm: Assembly-CSharp}
       data:
         ID:
@@ -2361,16 +2297,168 @@ MonoBehaviour:
         Graph:
           rid: 3795778358107439573
         m_Parent:
-          rid: 3795778358107439574
+          rid: 2638440386054848747
         m_Children:
-        - rid: 3795778358107439580
-        - rid: 3795778358107439581
+        - rid: 2638440386054848749
+        - rid: 2638440386054848750
+        m_RegisteredObservers: []
         True:
-          rid: 3795778358107439580
+          rid: 2638440386054848749
         False:
-          rid: 3795778358107439581
+          rid: 2638440386054848750
         Self:
           rid: 3795778358107439582
+    - rid: 2638440386054848749
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 11797253794465132483
+          m_Value1: 5167190846525034456
+        Graph:
+          rid: 3795778358107439573
+        m_Parent:
+          rid: 2638440386054848748
+        m_Children:
+        - rid: 2638440386054848751
+        - rid: 2638440386054848752
+        m_RegisteredObservers: []
+    - rid: 2638440386054848750
+      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 4089101642415468209
+          m_Value1: 8169906784253146340
+        Graph:
+          rid: 3795778358107439573
+        m_Parent:
+          rid: 2638440386054848748
+        m_Children:
+        - rid: 2638440386054848753
+        - rid: 2638440386054848754
+        m_RegisteredObservers: []
+    - rid: 2638440386054848751
+      type: {class: StopBezierMovementAction, ns: , asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 11797253794465132483
+          m_Value1: 5167190846525034456
+        Graph:
+          rid: 3795778358107439573
+        m_Parent:
+          rid: 2638440386054848749
+        Agent:
+          rid: 2638440386054848755
+    - rid: 2638440386054848752
+      type: {class: StopNavMeshMovementAction, ns: , asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 13602307231990181999
+          m_Value1: 9190012909879167971
+        Graph:
+          rid: 3795778358107439573
+        m_Parent:
+          rid: 2638440386054848749
+        Agent:
+          rid: 2638440386054848756
+    - rid: 2638440386054848753
+      type: {class: NavigateToZoneAction, ns: , asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 13405690245834758344
+          m_Value1: 18266775107736411300
+        Graph:
+          rid: 3795778358107439573
+        m_Parent:
+          rid: 2638440386054848750
+        Agent:
+          rid: 2638440386054848757
+        Zone:
+          rid: 3795778358107439585
+        Destination:
+          rid: 3795778358107439584
+        RaycastHeight:
+          rid: 2638440386054848758
+    - rid: 2638440386054848754
+      type: {class: GoToPositionNavmeshAction, ns: , asm: Assembly-CSharp}
+      data:
+        ID:
+          m_Value0: 15860073360901266330
+          m_Value1: 15277916891373227993
+        Graph:
+          rid: 3795778358107439573
+        m_Parent:
+          rid: 2638440386054848750
+        Agent:
+          rid: 2638440386054848759
+        Destination:
+          rid: 3795778358107439584
+    - rid: 2638440386054848755
+      type: {class: 'GameObjectToComponentBlackboardVariable`1[[BezierCurveMovementAgent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+        m_LinkedVariable:
+          rid: 3795778358107439582
+    - rid: 2638440386054848756
+      type: {class: 'GameObjectToComponentBlackboardVariable`1[[NavmeshMovementAgent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+        m_LinkedVariable:
+          rid: 3795778358107439582
+    - rid: 2638440386054848757
+      type: {class: 'GameObjectToComponentBlackboardVariable`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+        m_LinkedVariable:
+          rid: 3795778358107439582
+    - rid: 2638440386054848758
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 5
+    - rid: 2638440386054848759
+      type: {class: 'GameObjectToComponentBlackboardVariable`1[[NavmeshMovementAgent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+        m_LinkedVariable:
+          rid: 3795778358107439582
+    - rid: 3795778358107439573
+      type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        AuthoringAssetID:
+          m_Value0: 5612781773062375747
+          m_Value1: 17169401155488969785
+        m_DebugInfo: {fileID: 0}
+        BlackboardReference:
+          rid: 3795778358107439575
+        BlackboardGroupReferences: []
+        Root:
+          rid: 2638440386054848747
+        m_VersionTimestamp: 639128457773924869
+    - rid: 3795778358107439575
+      type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        m_Blackboard:
+          rid: 3795778358107439579
+        m_Source: {fileID: -4002830414627106435}
     - rid: 3795778358107439579
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2381,32 +2469,6 @@ MonoBehaviour:
         - rid: 3795778358107439585
         - rid: 3795778358107439586
         - rid: 3795778358107439587
-    - rid: 3795778358107439580
-      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        ID:
-          m_Value0: 11797253794465132483
-          m_Value1: 5167190846525034456
-        Graph:
-          rid: 3795778358107439573
-        m_Parent:
-          rid: 3795778358107439578
-        m_Children:
-        - rid: 3795778358107439588
-        - rid: 3795778358107439589
-    - rid: 3795778358107439581
-      type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        ID:
-          m_Value0: 4089101642415468209
-          m_Value1: 8169906784253146340
-        Graph:
-          rid: 3795778358107439573
-        m_Parent:
-          rid: 3795778358107439578
-        m_Children:
-        - rid: 3795778358107439590
-        - rid: 3795778358107439591
     - rid: 3795778358107439582
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2455,110 +2517,6 @@ MonoBehaviour:
           m_Value1: 5186866730736876058
         Name: RoadZone
         m_Value: {fileID: 0}
-    - rid: 3795778358107439588
-      type: {class: StopBezierMovementAction, ns: , asm: Assembly-CSharp}
-      data:
-        ID:
-          m_Value0: 11797253794465132483
-          m_Value1: 5167190846525034456
-        Graph:
-          rid: 3795778358107439573
-        m_Parent:
-          rid: 3795778358107439580
-        Agent:
-          rid: 3795778358107439592
-    - rid: 3795778358107439589
-      type: {class: StopNavMeshMovementAction, ns: , asm: Assembly-CSharp}
-      data:
-        ID:
-          m_Value0: 13602307231990181999
-          m_Value1: 9190012909879167971
-        Graph:
-          rid: 3795778358107439573
-        m_Parent:
-          rid: 3795778358107439580
-        Agent:
-          rid: 3795778358107439593
-    - rid: 3795778358107439590
-      type: {class: NavigateToZoneAction, ns: , asm: Assembly-CSharp}
-      data:
-        ID:
-          m_Value0: 13405690245834758344
-          m_Value1: 18266775107736411300
-        Graph:
-          rid: 3795778358107439573
-        m_Parent:
-          rid: 3795778358107439581
-        Agent:
-          rid: 3795778358107439594
-        Zone:
-          rid: 3795778358107439585
-        Destination:
-          rid: 3795778358107439584
-        RaycastHeight:
-          rid: 3795778358107439595
-    - rid: 3795778358107439591
-      type: {class: GoToPositionNavmeshAction, ns: , asm: Assembly-CSharp}
-      data:
-        ID:
-          m_Value0: 15860073360901266330
-          m_Value1: 15277916891373227993
-        Graph:
-          rid: 3795778358107439573
-        m_Parent:
-          rid: 3795778358107439581
-        Agent:
-          rid: 3795778358107439596
-        Destination:
-          rid: 3795778358107439584
-    - rid: 3795778358107439592
-      type: {class: 'GameObjectToComponentBlackboardVariable`1[[BezierCurveMovementAgent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: {fileID: 0}
-        m_LinkedVariable:
-          rid: 3795778358107439582
-    - rid: 3795778358107439593
-      type: {class: 'GameObjectToComponentBlackboardVariable`1[[NavmeshMovementAgent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: {fileID: 0}
-        m_LinkedVariable:
-          rid: 3795778358107439582
-    - rid: 3795778358107439594
-      type: {class: 'GameObjectToComponentBlackboardVariable`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: {fileID: 0}
-        m_LinkedVariable:
-          rid: 3795778358107439582
-    - rid: 3795778358107439595
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: 5
-    - rid: 3795778358107439596
-      type: {class: 'GameObjectToComponentBlackboardVariable`1[[NavmeshMovementAgent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: {fileID: 0}
-        m_LinkedVariable:
-          rid: 3795778358107439582
 --- !u!114 &6333458495487737285
 MonoBehaviour:
   m_ObjectHideFlags: 0
