@@ -61,7 +61,7 @@ public class SkyboxMaskController : MonoBehaviour
             _cachedPixelWidth = _camera.scaledPixelWidth;
             _cachedPixelHeight = _camera.scaledPixelHeight;
         }
-        Render();
+        //Render();
     }
 
     private void RecreateTexture()
@@ -78,6 +78,10 @@ public class SkyboxMaskController : MonoBehaviour
         );
 
         _targetMaterial.SetTexture("_SkyboxMask", _texture);
+
+        RenderTexture.active = _texture;
+        GL.Clear(true, true, new Color(0, 0, 0, 1));
+        RenderTexture.active = null;
     }
 
     private void Render()
